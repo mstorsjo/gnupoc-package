@@ -1,0 +1,46 @@
+#!/usr/bin/perl
+
+use strict;
+
+sub dodir($) {
+  my $dir = shift;
+
+  opendir(IN, $dir) || die("$dir: $!\n");
+  my @dir = readdir IN;
+  closedir IN;
+
+  foreach my $i (@dir) {
+    next if($i eq ".");
+    next if($i eq "..");
+    if(-d "$dir/$i") {
+      dodir("$dir/$i");
+    } else {
+      my $new = lc($i);
+      if($i =~ /libGLES_CM/i) {
+        $new =~ s/libGLES_CM/libGLES_CM/i;
+      }
+      if($i ne $new) {
+	#print "FILE: $i -> $new\n";
+	rename("$dir/$i", "$dir/$new") || die("Rename: $!\n");
+      }
+    }
+  }
+
+  my @dirs = split('/', $dir);
+  my $ldir = pop(@dirs);
+  my $newname = lc($ldir);
+  $newname = uc($ldir) if (uc($ldir) eq "GLES");
+  if($ldir ne $newname) {
+    my $ndir = join('/', @dirs);
+    if($ndir) {
+      $ndir .= "/" . $newname;
+    } else {
+      $ndir = $newname;
+    }
+    #print "DIR:  $dir -> $ndir\n";
+    rename($dir, $ndir) || die("Rename: $!\n");
+  }
+}
+
+die("Usage: lowercase dir\n") if(@ARGV != 1);
+dodir($ARGV[0]);

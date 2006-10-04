@@ -1,0 +1,72 @@
+#!/bin/sh
+
+if test $# != 2 -a $# != 3 -o $0 != "./install_gnupoc_s60_20"; then
+  echo "Usage: ./install_gnupoc_s60_20 <path-to-sdk-zip> <target-dir>"
+  echo " e.g.: ./install_gnupoc_s60_20 s60_sdk_v2_0.zip ~/symbian-sdks/s60_20"
+  exit 1
+fi
+
+SRC=$1
+DEST=`echo $2 | sed s:/\$::`
+
+mkdir -p $DEST
+
+while read a
+do
+  echo "$a"
+  sh -c "$a"
+  if test $? != 0; then
+    echo "Unexcpected error: aborting."
+    exit 1
+  fi
+done << __END
+
+### Unzip & Copy selected files
+mkdir _e
+unzip -qn $SRC -d _e
+
+mkdir epoc32
+cd epoc32; wine ../i6comp.exe x -gEpoc32 ../_e/data2.cab > /dev/null
+mv epoc32 $DEST
+
+mkdir examples
+cd examples; wine ../i6comp.exe x -gExamples ../_e/data2.cab > /dev/null
+mv examples $DEST
+
+mkdir symbiansamplecode
+cd symbiansamplecode; wine ../i6comp.exe x -gSymbianSampleCode ../_e/data2.cab > /dev/null
+mv symbiansamplecode $DEST
+
+mkdir series60ex
+cd series60ex; wine ../i6comp.exe x -gSeries60Ex ../_e/data2.cab >/dev/null
+mv series60ex $DEST
+
+mkdir series60doc
+cd series60doc; wine ../i6comp.exe x -gSeries60Doc ../_e/data2.cab>/dev/null
+mv series60doc $DEST
+
+mkdir series60tools
+cd series60tools; wine ../i6comp.exe x -gSeries60Tools ../_e/data2.cab>/dev/null
+mv series60tools $DEST
+
+
+### Fixing
+./lowercase $DEST/epoc32/tools
+./lowercase $DEST/epoc32/include
+./lowercase $DEST/epoc32/release
+./lowercase $DEST/epoc32/data
+./fixinclude $DEST/epoc32/include
+./lowercase $DEST/series60ex
+./fixinclude $DEST/series60ex
+./lowercase $DEST/examples
+./fixinclude $DEST/examples
+find $DEST/epoc32/tools -name \*.pl -or -name \*.pm | xargs -n 1 recode dos..latin1
+cp -a $DEST/epoc32/tools $DEST/epoc32/tools_orig
+cat gnupoc-s60_20-patch | (cd $DEST/epoc32; patch -p0 )
+cd $DEST/epoc32/tools; chmod a+x *.pl bldmake abld makmake bmconv rcomp makesis epoc eshell petran pfsdump setupcomms
+
+rm -rf _e
+
+__END
+
+exit 0

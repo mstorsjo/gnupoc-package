@@ -1,0 +1,84 @@
+#!/bin/sh
+
+if test $# != 2 -a $# != 3 -o $0 != "./install_gnupoc_s60_12"; then
+  echo "Usage: ./install_gnupoc_s60_12 <path-to-sdk-zip> <target-dir>"
+  echo " e.g.: ./install_gnupoc_s60_12 nS60_sdk_v1_2.zip ~/symbian-sdks/s60_12"
+  exit 1
+fi
+
+SRC=$1
+DEST=`echo $2 | sed s:/\$::`
+
+mkdir -p $DEST
+
+while read a
+do
+  echo "$a"
+  sh -c "$a"
+  if test $? != 0; then
+    echo "Unexcpected error: aborting."
+    exit 1
+  fi
+done << __END
+
+### Unzip & Copy selected files
+mkdir _e
+unzip -qn $SRC -d _e
+
+mkdir -p epoc32/release
+cd epoc32/release; wine ../../i6comp.exe x -gBinaries ../../_e/data2.cab > /dev/null
+mkdir -p epoc32/data
+cd epoc32/data; wine ../../i6comp.exe x -g"Epoc Icon" ../../_e/data2.cab > /dev/null
+mkdir -p epoc32/include
+cd epoc32/include; wine ../../i6comp.exe x -gTools_Include ../../_e/data2.cab > /dev/null
+mkdir -p epoc32/release/winc
+cd epoc32/release/winc; wine ../../../i6comp.exe x -gBin_Winc ../../../_e/data2.cab > /dev/null
+cd epoc32/include; wine ../../i6comp.exe x -gaiftool_rh ../../_e/data2.cab > /dev/null
+mkdir -p epoc32/gcc
+cd epoc32/gcc; wine ../../i6comp.exe x -gCompiler_GCC ../../_e/data2.cab > /dev/null
+mkdir -p epoc32/tools
+cd epoc32/tools; wine ../../i6comp.exe x -gabld_pl ../../_e/data2.cab > /dev/null
+cd epoc32/tools; wine ../../i6comp.exe x -gbldmake_pl ../../_e/data2.cab > /dev/null
+cd epoc32/tools; wine ../../i6comp.exe x -gTools ../../_e/data2.cab > /dev/null
+mkdir -p epoc32/wins
+cd epoc32/wins; wine ../../i6comp.exe x -gEmu_Wins ../../_e/data2.cab > /dev/null
+cd epoc32/data; wine ../../i6comp.exe x -gEmu_Data ../../_e/data2.cab > /dev/null
+mv epoc32 $DEST
+
+mkdir epoc32ex
+cd epoc32ex; wine ../i6comp.exe x -gSymbian_Examples ../_e/data2.cab > /dev/null
+mv epoc32ex $DEST
+
+mkdir series60ex
+cd series60ex; wine ../i6comp.exe x -gNokia_Examples ../_e/data2.cab >/dev/null
+mv series60ex $DEST
+
+mkdir series60doc
+cd series60doc; wine ../i6comp.exe x -gNokia_Docs ../_e/data2.cab>/dev/null
+mv series60doc $DEST
+
+mkdir series60tools
+cd series60tools; wine ../i6comp.exe x -gNokiaWizard ../_e/data2.cab>/dev/null
+mv series60tools $DEST
+
+
+### Fixing
+./lowercase $DEST/epoc32/tools
+./lowercase $DEST/epoc32/include
+./lowercase $DEST/epoc32/release
+./lowercase $DEST/epoc32/data
+./fixinclude $DEST/epoc32/include
+./lowercase $DEST/series60ex
+./fixinclude $DEST/series60ex
+./lowercase $DEST/epoc32ex
+./fixinclude $DEST/epoc32ex
+find $DEST/epoc32/tools -name \*.pl -or -name \*.pm | xargs -n 1 recode dos..latin1
+cp -a $DEST/epoc32/tools $DEST/epoc32/tools_orig
+cat gnupoc-s60_12-patch | (cd $DEST/epoc32; patch -p0 )
+cd $DEST/epoc32/tools; chmod a+x *.pl bldmake abld makmake bmconv rcomp makesis epoc eshell petran pfsdump setupcomms
+
+rm -rf _e
+
+__END
+
+exit 0
