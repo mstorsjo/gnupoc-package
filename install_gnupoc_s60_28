@@ -1,8 +1,8 @@
 #!/bin/sh
 
-if test $# != 2 -a $# != 3 -o $0 != "./install_gnupoc_s60_28_cw"; then
-  echo "Usage: ./install_gnupoc_s60_28_cw <path-to-sdk-zip> <target-dir>"
-  echo " e.g.: ./install_gnupoc_s60_28_cw s60_2nd_sdk_fp3.zip ~/symbian-sdks/s60_28_cw"
+if test $# != 2 -a $# != 3 -o $0 != "./install_gnupoc_s60_28"; then
+  echo "Usage: ./install_gnupoc_s60_28 <path-to-sdk-zip> <target-dir>"
+  echo " e.g.: ./install_gnupoc_s60_28 s60_2nd_sdk_fp3.zip ~/symbian-sdks/s60_28"
   exit 1
 fi
 
