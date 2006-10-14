@@ -1,9 +1,12 @@
 #!/bin/sh
 
+EKA1TOOLS = ~/symbian-gcc/bin
+EKA2TOOLS = ~/csl-gcc/bin
+
 if [ -f $EPOCROOT/epoc32/tools/elf2e32.exe ]; then
-  export PATH=~/csl-gcc/bin:$EPOCROOT/epoc32/tools:$PATH
+  export PATH=$EKA2TOOLS:$EPOCROOT/epoc32/tools:$PATH
 else
-  export PATH=~/symbian-gcc/bin:$EPOCROOT/epoc32/tools:$PATH
+  export PATH=$EKA1TOOLS:$EPOCROOT/epoc32/tools:$PATH
 fi
 
 TOOL=`basename $0`
