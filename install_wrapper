@@ -1,0 +1,19 @@
+#!/bin/sh
+
+if test $# != 1 -o $0 != "./install_wrapper"; then
+  echo "Usage: ./install_wrapper <target-dir>"
+  echo " e.g.: ./install_wrapper ~/gnupoc"
+  exit 1
+fi
+
+DEST=`echo $1 | sed s:/\$::`
+
+mkdir -p $DEST
+
+cp sign.sh wrapper.sh $DEST
+cd $DEST
+for i in abld bldmake bmconv epoc eshell makesis makmake rcomp signsis ; do
+	ln -s wrapper.sh $i
+done
+
+
