@@ -23,7 +23,7 @@ diff -urN tools_orig/abld tools/abld
 +perl -S abld.pl `perl -e 'use Cwd; my $cwd = cwd(); print "$cwd/"'` "$@"
 diff -urN tools_orig/abld.pl tools/abld.pl
 --- tools_orig/abld.pl	2006-07-28 22:32:52.000000000 +0300
-+++ tools/abld.pl	2006-10-15 02:18:50.378350784 +0300
++++ tools/abld.pl	2006-10-15 02:18:50.000000000 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -418,7 +418,7 @@ diff -urN tools_orig/bldmake tools/bldmake
 +perl -S bldmake.pl "$@"
 diff -urN tools_orig/bldmake.pl tools/bldmake.pl
 --- tools_orig/bldmake.pl	2006-09-27 13:36:02.000000000 +0300
-+++ tools/bldmake.pl	2006-10-15 02:21:07.000000000 +0300
++++ tools/bldmake.pl	2006-10-15 16:09:53.459418680 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -800,6 +800,17 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
     		}
  
  		$_=shift @$Line;
+@@ -769,8 +772,8 @@
+ #		check for section headers - don't test for the right ones here
+ #		because we do that in the first parse function
+ 
+-		if (/^PRJ_(\w*)$/o) {
+-			$Section=$1;
++		if (/^PRJ_(\w*)$/oi) {
++			$Section=uc $1;
+ 			next LINE;
+ 		}
+ 
 @@ -811,7 +814,7 @@
  					&FatalError("$CurFile($LineNum) : No 'start' corresponding to this 'end' in Extension Template section\n"); 
  				}
@@ -1245,7 +1256,7 @@ diff -urN tools_orig/checksource.pl tools/checksource.pl
  my $preprocess = 0;
 diff -urN tools_orig/checksource.pm tools/checksource.pm
 --- tools_orig/checksource.pm	2006-07-28 22:32:54.000000000 +0300
-+++ tools/checksource.pm	2006-10-15 02:22:52.658518600 +0300
++++ tools/checksource.pm	2006-10-15 02:22:52.000000000 +0300
 @@ -6,7 +6,7 @@
  # Routines involved in checking that source matches Symbian's filename policy
  
