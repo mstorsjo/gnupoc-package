@@ -52,8 +52,10 @@ mv S60Ex $DEST/s60ex
 ./fixinclude $DEST/epoc32/include
 ./lowercase $DEST/s60ex
 ./fixinclude $DEST/s60ex
+./fixexamples $DEST/s60ex
 ./lowercase $DEST/examples
 ./fixinclude $DEST/examples
+./fixexamples $DEST/examples
 find $DEST/epoc32/tools -name \*.pl -or -name \*.pm | xargs -n 1 recode dos..latin1
 cp -a $DEST/epoc32/tools $DEST/epoc32/tools_orig
 cat gnupoc-s60_31-patch | (cd $DEST/epoc32; patch -p0 )

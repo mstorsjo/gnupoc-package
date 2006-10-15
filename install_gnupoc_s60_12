@@ -70,8 +70,10 @@ mv series60tools $DEST
 ./fixinclude $DEST/epoc32/include
 ./lowercase $DEST/series60ex
 ./fixinclude $DEST/series60ex
+./fixexamples $DEST/series60ex
 ./lowercase $DEST/epoc32ex
 ./fixinclude $DEST/epoc32ex
+./fixexamples $DEST/epoc32ex
 find $DEST/epoc32/tools -name \*.pl -or -name \*.pm | xargs -n 1 recode dos..latin1
 cp -a $DEST/epoc32/tools $DEST/epoc32/tools_orig
 cat gnupoc-s60_12-patch | (cd $DEST/epoc32; patch -p0 )
