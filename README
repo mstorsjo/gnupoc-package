@@ -66,7 +66,7 @@ cd ../sis
 makesis helloworldbasic_gcce.pkg helloworldbasic.sis
 
 Then create a self-signed certificate if you haven't got one already:
-makekeys -cert -password <mypassword> -dname "CN=Joe Bloggs OU=Development OR=Acme Ltd CO=GB EM=noone@nowhere.com" mykey.key mycert.cer
+makekeys -cert -password mypassword -dname "CN=Joe Bloggs OU=Development OR=Acme Ltd CO=GB EM=noone@nowhere.com" mykey.key mycert.cer
 
 Then sign the sis file using this certificate and key:
 sign.sh helloworldbasic.sis helloworldbasic.sisx mycert.cer mykey.key
