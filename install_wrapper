@@ -12,7 +12,7 @@ mkdir -p $DEST
 
 cp sign.sh wrapper.sh $DEST
 cd $DEST
-for i in abld bldmake bmconv epoc eshell makesis makmake rcomp signsis ; do
+for i in abld bldmake bmconv epoc eshell makekeys makesis makmake rcomp signsis ; do
 	ln -s wrapper.sh $i
 done
 

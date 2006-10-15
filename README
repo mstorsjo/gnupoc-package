@@ -52,16 +52,24 @@ MWSym2LibraryFiles variables in the unix environment, since the perl build
 scripts need them for determining the compiler version.
 
 After installing everything, you're able to compile things in the same way
-as on windows, e.g.:
+as on windows. The install scripts clean up the usage of lower/upper case
+in the bundled examples (by forcing them to lowercase), so they should all
+be buildable directly. (Or at least it tries to, it might not work reliably
+in stranger examples.) To build the hello world example, do the following:
 
 export PATH=~/gnupoc:${PATH}
 export EPOCROOT=~/symbian-sdks/s60_30/
-cd project/group
+cd ~/symbian-sdks/s60_30/s60ex/helloworldbasic/group
 bldmake bldfiles
 abld build gcce urel
 cd ../sis
-makesis -d${EPOCROOT} project.pkg project.sis
-sign.sh project.sis project.sisx mycert.cer mykey.key
+makesis helloworldbasic_gcce.pkg helloworldbasic.sis
+
+Then create a self-signed certificate if you haven't got one already:
+makekeys -cert -password <mypassword> -dname "CN=Joe Bloggs OU=Development OR=Acme Ltd CO=GB EM=noone@nowhere.com" mykey.key mycert.cer
+
+Then sign the sis file using this certificate and key:
+sign.sh helloworldbasic.sis helloworldbasic.sisx mycert.cer mykey.key
 
 
 Martin Storsjö

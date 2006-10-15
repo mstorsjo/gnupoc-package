@@ -11,8 +11,8 @@ fi
 
 TOOL=`basename $0`
 if [ "`which $TOOL`" != "$0" ] && [ -x "`which $TOOL`" ]; then
-	exec $TOOL $*
+	exec $TOOL "$@"
 else
-	exec wine ${EPOCROOT}epoc32/tools/$TOOL.exe $*
+	exec wine ${EPOCROOT}epoc32/tools/$TOOL.exe "$@"
 fi
 
