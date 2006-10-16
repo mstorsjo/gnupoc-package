@@ -16,9 +16,8 @@ sub dodir($) {
       dodir("$dir/$i");
     } else {
       my $new = lc($i);
-      if($i =~ /libGLES_CM/i) {
-        $new =~ s/libGLES_CM/libGLES_CM/i;
-      }
+      $new =~ s/libGLES_CM/libGLES_CM/i;
+      $new =~ s/libOpenVG/libOpenVG/i;
       if($i ne $new) {
 	#print "FILE: $i -> $new\n";
 	rename("$dir/$i", "$dir/$new") || die("Rename: $!\n");
