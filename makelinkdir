@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ $# -lt 2 ]; then
+	echo "makelinkdir <source> <dest>"
+	exit 1
+fi
+
+SOURCE=$1
+DEST=$2
+
+cd $SOURCE
+mkdir -p $DEST
+for i in `find . -mindepth 1`; do
+	i=`echo $i | sed "s/^\\.\\///"`
+	if [ -d $i ]; then
+		mkdir $DEST/$i
+	else
+		ln -s $SOURCE/$i $DEST/$i
+	fi
+done
+
+
