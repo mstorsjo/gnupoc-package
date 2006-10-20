@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Note: in order to be able to use the emulator, you need a writable copy of the files within the wins(cw) directory
+
 if [ $# -lt 2 ]; then
 	echo "makelinkdir <source> <dest>"
 	exit 1
@@ -7,10 +9,6 @@ fi
 
 SOURCE=$1
 DEST=$2
-
-function dosomething {
-	echo $1
-}
 
 cd $SOURCE
 mkdir -p $DEST
