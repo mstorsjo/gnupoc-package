@@ -10,6 +10,11 @@ fi
 SOURCE=$1
 DEST=$2
 
+if [ "`echo $DEST | grep ^/`" = "" ] || [ "`echo $SOURCE | grep ^/`" = "" ]; then
+	echo "The source and destination must be a absolute paths!"
+	exit 2
+fi
+
 cd $SOURCE
 mkdir -p $DEST
 

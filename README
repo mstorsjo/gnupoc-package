@@ -1,6 +1,9 @@
 GnuPoc S60 SDK patches
 ======================
 
+Installation
+------------
+
 Start by installing the toolchain for your SDK. For Series 60 1st and 2nd
 edition, you at least need GCC, but you can also install native versions
 of e.g. rcomp, makesis, petran and bmconv. For Series 60 3rd edition,
@@ -51,6 +54,10 @@ you also have to set the MWCSym2Includes, MWSym2Libraries and
 MWSym2LibraryFiles variables in the unix environment, since the perl build
 scripts need them for determining the compiler version.
 
+
+Usage
+-----
+
 After installing everything, you're able to compile things in the same way
 as on windows. The install scripts clean up the usage of lower/upper case
 in the bundled examples (by forcing them to lowercase), so they should all
@@ -71,13 +78,54 @@ makekeys -cert -password mypassword -dname "CN=Joe Bloggs OU=Development OR=Acme
 Then sign the sis file using this certificate and key:
 sign.sh helloworldbasic.sis helloworldbasic.sisx mycert.cer mykey.key
 
+The certificate and signing is only needed on Series 60 3rd edition.
 
+
+Sharing an installation
+-----------------------
+
+If the SDK installation is to be shared by many users on a multiuser
+system, one might want to install a read-only copy of the SDK.
+
+However, the Symbian SDK structure requires every user to be able to
+write to the SDK, especially to the epoc32/build directory. A solution
+to this is to create a writeable copy of the directory structure, where
+all the original files are symbolic links to the original copies. (It
+still uses quite a bit of diskspace, but remarkably less than the whole
+SDK.)
+
+The included script makelinkdir can be used to create such a copy of the
+directory structure. If a read-only copy of the SDK is installed in
+e.g. /usr/local/symbian-sdks/s60_21_cw/, a user can create a usable
+copy of his own of the SDK:
+
+./makelinkdir /usr/local/symbian-sdks/s60_21_cw ~/symbian-sdks/s60_21_cw
+export EPOCROOT=~/symbian-sdks/s60_21_cw
+
+At this stage, all the files which were installed in the SDK are available
+in this local copy as links to read-only files. This works fine for
+building code, which only creates new files and directories. But for running
+the emulator, the existing files within the epoc32/wins(cw) directory must
+be writeable. In that case, do the following:
+
+cd ~/symbian-sdks/s60_21_cw/epoc32
+rm -rf winscw
+cp -Lr /usr/local/symbian-sdks/s60_21_cw/epoc32/winscw .
+chmod -R u+w winscw
+
+That is, the epoc32/winscw directory is replaced with a copy containing
+real writeable copies of all files.
+
+
+License
+-------
 
 The patches are based on earlier GnuPoc patches by Alfred E. Heggestad
-and modified by me, and are redistributable and usable according to the
-Gnu Public License (GPL), see the COPYING file. This only covers the
-patches, though; the use and redistribution of the SDKs still is
-restricted by their end user license agreements.
+and modified by me. The patches and the accompanying installation scripts
+are redistributable and usable according to the Gnu Public License (GPL),
+see the COPYING file. This only covers the patches, though; the use and
+redistribution of the SDKs still is restricted by their end user license
+agreements.
 
 
 
