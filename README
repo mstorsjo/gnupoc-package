@@ -72,6 +72,15 @@ Then sign the sis file using this certificate and key:
 sign.sh helloworldbasic.sis helloworldbasic.sisx mycert.cer mykey.key
 
 
+
+The patches are based on earlier GnuPoc patches by Alfred E. Heggestad
+and modified by me, and are redistributable and usable according to the
+Gnu Public License (GPL), see the COPYING file. This only covers the
+patches, though; the use and redistribution of the SDKs still is
+restricted by their end user license agreements.
+
+
+
 Martin Storsjö
 martin@martin.st
 
