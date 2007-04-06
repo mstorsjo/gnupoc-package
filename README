@@ -34,8 +34,13 @@ epoc32/tools directory within your newly installed SDK to a directory
 within your wine path, e.g. ~/.wine/drive_c/windows. It shouldn't matter
 which SDK you copy this from.
 
-When using them, set the EPOCROOT variable to point to your SDK and add
-the epoc32/tools directory and your toolchain to your PATH, e.g.:
+If using external makefiles (as for building icons in 3rd edition),
+copy make.exe and mifconv.exe, too. make.exe probably can be used from
+any SDK version, but you'll need mifconv.exe from the 3.0 SDK, since
+mifconv.exe in 3.1 has some problems starting within wine.
+
+When using the SDKs, set the EPOCROOT variable to point to your SDK and
+add the epoc32/tools directory and your toolchain to your PATH, e.g.:
 
 export EPOCROOT=~/symbian-sdks/s60_30/
 export PATH=~/csl-gcc/bin:${EPOCROOT}epoc32/tools:${PATH}
