@@ -47,7 +47,7 @@ rm -rf target
 find $DEST/epoc32/tools -name \*.pl -or -name \*.pm | xargs -n 1 recode dos..latin1
 cp -a $DEST/epoc32/tools $DEST/epoc32/tools_orig
 cat gnupoc-s60_21-patch | (cd $DEST/epoc32; patch -p0 )
-cd $DEST/epoc32/tools; chmod a+x *.pl bldmake abld makmake bmconv rcomp makesis epoc eshell petran pfsdump setupcomms
+cd $DEST/epoc32/tools; chmod a+x *.pl bldmake abld makmake bmconv rcomp makesis epoc eshell petran pfsdump setupcomms makekeys
 
 __END
 

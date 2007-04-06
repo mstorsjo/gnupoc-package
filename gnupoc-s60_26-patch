@@ -1,6 +1,6 @@
 diff -urN tools_orig/abld tools/abld
 --- tools_orig/abld	1970-01-01 02:00:00.000000000 +0200
-+++ tools/abld	2006-10-04 00:22:51.000000000 +0300
++++ tools/abld	2007-04-07 00:05:00.768266944 +0300
 @@ -0,0 +1,19 @@
 +#!/bin/sh
 +#
@@ -23,7 +23,7 @@ diff -urN tools_orig/abld tools/abld
 +perl -S abld.pl `perl -e 'use Cwd; my $cwd = cwd(); print "$cwd/"'` "$@"
 diff -urN tools_orig/abld.pl tools/abld.pl
 --- tools_orig/abld.pl	2004-12-10 14:18:20.000000000 +0200
-+++ tools/abld.pl	2006-10-04 00:22:51.000000000 +0300
++++ tools/abld.pl	2007-04-07 00:05:00.769266792 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -281,7 +281,7 @@ diff -urN tools_orig/abld.pl tools/abld.pl
  	}
 diff -urN tools_orig/aiftool tools/aiftool
 --- tools_orig/aiftool	1970-01-01 02:00:00.000000000 +0200
-+++ tools/aiftool	2006-10-04 00:22:51.000000000 +0300
++++ tools/aiftool	2007-04-07 00:05:00.770266640 +0300
 @@ -0,0 +1,74 @@
 +#! /bin/bash
 +#
@@ -359,7 +359,7 @@ diff -urN tools_orig/aiftool tools/aiftool
 +# EOF - aiftool
 diff -urN tools_orig/bldmake tools/bldmake
 --- tools_orig/bldmake	1970-01-01 02:00:00.000000000 +0200
-+++ tools/bldmake	2006-10-04 00:22:51.000000000 +0300
++++ tools/bldmake	2007-04-07 00:05:00.771266488 +0300
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -375,7 +375,7 @@ diff -urN tools_orig/bldmake tools/bldmake
 +perl -S bldmake.pl "$@"
 diff -urN tools_orig/bldmake.pl tools/bldmake.pl
 --- tools_orig/bldmake.pl	2004-12-10 14:18:32.000000000 +0200
-+++ tools/bldmake.pl	2006-10-15 17:18:30.317561112 +0300
++++ tools/bldmake.pl	2007-04-07 00:05:50.810659344 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -974,7 +974,28 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
  				"\n",
  			);
  			foreach $Command (qw(CLEANALL)) {
-@@ -1588,10 +1591,11 @@
+@@ -1578,22 +1581,32 @@
+ 				$MakefileCall="cd $ChopRefPath;$CallNmake";
+ 				$Call = $CallNmake;
+ 			} else {
+-				$MakefileCall="$CallGNUmake -C $ChopRefPath";
++				my $epocroot = $ENV{EPOCROOT};
++				$epocroot =~ s/\//\\\\/g;
++				my $winChopRefPath = $ChopRefPath;
++				$winChopRefPath =~ s/\//\\\\/g;
++				$MakefileCall="EPOCROOT=$epocroot wine $CallGNUmake -C $winChopRefPath";
+ 				$Call = $CallGNUmake." -s";
+ 			}
+ 
+-			$MakefileCall.=" -f \"$$Ref{Base}$$Ref{Ext}\" TO_ROOT=";
+-			$MakefileCall.=&Path_Chop(&Path_UpToRoot($$Ref{Path}));
++			my $makefile = "$$Ref{Base}$$Ref{Ext}";
++			my $to_root = &Path_Chop(&Path_UpToRoot($$Ref{Path}));
++			$makefile =~ s/\//\\\\/g;
++			$to_root =~ s/\//\\\\/g;
++			$MakefileCall.=" -f \"$makefile\" TO_ROOT=";
++			$MakefileCall.=$to_root;
+ 
  			my $Ext = $$Ref{Ext};
  			$Ext=~s/\./_/;	# Just get rid of the . in the extension. 
  
@@ -988,8 +1009,11 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
 +			my $MakefileCallBase = $MakefileCall." PLATFORM=$Plat "." \\\$\$\@";
  				# Pass in  platform so child gets variable, and overrides eviroment. 
  
++			$MakefileCallBase =~ s/\\/\\\\/g;
  			$MakefileCallBase =~ s/\"/\\\"/g;
-@@ -1697,8 +1701,9 @@
+ 				# ensure that the quotes get passed through. 
+ 
+@@ -1697,8 +1710,9 @@
  		}
  
  	}
@@ -1001,7 +1025,7 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
  }
  
  
-@@ -1795,7 +1800,8 @@
+@@ -1795,7 +1809,8 @@
  	}
  
  
@@ -1013,7 +1037,7 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
  }
 diff -urN tools_orig/bmconv tools/bmconv
 --- tools_orig/bmconv	1970-01-01 02:00:00.000000000 +0200
-+++ tools/bmconv	2006-10-04 00:22:51.000000000 +0300
++++ tools/bmconv	2007-04-07 00:05:00.774266032 +0300
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -1032,7 +1056,7 @@ diff -urN tools_orig/bmconv tools/bmconv
 +wine $ROOT/$PGM.exe $*
 diff -urN tools_orig/checkgcc.pm tools/checkgcc.pm
 --- tools_orig/checkgcc.pm	2004-12-10 14:18:20.000000000 +0200
-+++ tools/checkgcc.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/checkgcc.pm	2007-04-07 00:05:00.775265880 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -1076,7 +1100,7 @@ diff -urN tools_orig/checkgcc.pm tools/checkgcc.pm
  				;
 diff -urN tools_orig/cl_codewarrior.pm tools/cl_codewarrior.pm
 --- tools_orig/cl_codewarrior.pm	2004-12-10 14:18:20.000000000 +0200
-+++ tools/cl_codewarrior.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/cl_codewarrior.pm	2007-04-07 00:05:00.776265728 +0300
 @@ -4,7 +4,7 @@
  #
  
@@ -1515,7 +1539,7 @@ diff -urN tools_orig/cl_codewarrior.pm tools/cl_codewarrior.pm
  				"\n"
 diff -urN tools_orig/cl_gcc.pm tools/cl_gcc.pm
 --- tools_orig/cl_gcc.pm	2004-12-10 14:18:20.000000000 +0200
-+++ tools/cl_gcc.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/cl_gcc.pm	2007-04-07 00:05:00.778265424 +0300
 @@ -4,10 +4,10 @@
  #
  
@@ -2060,7 +2084,7 @@ diff -urN tools_orig/cl_gcc.pm tools/cl_gcc.pm
  }
 diff -urN tools_orig/cl_generic.pm tools/cl_generic.pm
 --- tools_orig/cl_generic.pm	2004-12-10 14:18:20.000000000 +0200
-+++ tools/cl_generic.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/cl_generic.pm	2007-04-07 00:05:00.779265272 +0300
 @@ -38,10 +38,10 @@
  	
  	$MakefileType=($makefileType eq "nmake")? 0:1;
@@ -2208,7 +2232,7 @@ diff -urN tools_orig/cl_generic.pm tools/cl_generic.pm
  		"\n"
 diff -urN tools_orig/cl_tools.pm tools/cl_tools.pm
 --- tools_orig/cl_tools.pm	2004-12-10 14:18:20.000000000 +0200
-+++ tools/cl_tools.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/cl_tools.pm	2007-04-07 00:05:00.780265120 +0300
 @@ -243,7 +243,7 @@
  		"\n",
  		"CLEANLIBRARY :\n"
@@ -2220,7 +2244,7 @@ diff -urN tools_orig/cl_tools.pm tools/cl_tools.pm
  }
 diff -urN tools_orig/cl_win.pm tools/cl_win.pm
 --- tools_orig/cl_win.pm	2004-12-10 14:18:20.000000000 +0200
-+++ tools/cl_win.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/cl_win.pm	2007-04-07 00:05:00.782264816 +0300
 @@ -2,9 +2,11 @@
  #
  # Copyright (c) 1997-2003 Symbian Ltd.  All rights reserved.
@@ -2906,7 +2930,7 @@ diff -urN tools_orig/cl_win.pm tools/cl_win.pm
  			);
 diff -urN tools_orig/defutl.pm tools/defutl.pm
 --- tools_orig/defutl.pm	2004-12-10 14:18:20.000000000 +0200
-+++ tools/defutl.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/defutl.pm	2007-04-07 00:05:00.783264664 +0300
 @@ -8,7 +8,7 @@
  # General Def file utilities
  #---------------------------
@@ -2918,7 +2942,7 @@ diff -urN tools_orig/defutl.pm tools/defutl.pm
  @ISA=qw(Exporter);
 diff -urN tools_orig/e32env.pm tools/e32env.pm
 --- tools_orig/e32env.pm	2004-12-10 14:18:20.000000000 +0200
-+++ tools/e32env.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/e32env.pm	2007-04-07 00:05:00.783264664 +0300
 @@ -6,7 +6,7 @@
  # Contains information for makmake and associated e32tools perl programs
  # within the Epoc32 Environment
@@ -2983,7 +3007,7 @@ diff -urN tools_orig/e32env.pm tools/e32env.pm
  1;
 diff -urN tools_orig/e32plat.pm tools/e32plat.pm
 --- tools_orig/e32plat.pm	2004-12-10 14:18:20.000000000 +0200
-+++ tools/e32plat.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/e32plat.pm	2007-04-07 00:05:00.784264512 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -3091,7 +3115,7 @@ diff -urN tools_orig/e32plat.pm tools/e32plat.pm
  	}
 diff -urN tools_orig/e32tpver.pm tools/e32tpver.pm
 --- tools_orig/e32tpver.pm	2004-12-10 14:18:20.000000000 +0200
-+++ tools/e32tpver.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/e32tpver.pm	2007-04-07 00:05:00.784264512 +0300
 @@ -6,7 +6,7 @@
  
  # Returns the version number for E32TOOLP - update for each release
@@ -3103,7 +3127,7 @@ diff -urN tools_orig/e32tpver.pm tools/e32tpver.pm
  @EXPORT=qw(
 diff -urN tools_orig/e32variant.pm tools/e32variant.pm
 --- tools_orig/e32variant.pm	2004-12-10 14:18:20.000000000 +0200
-+++ tools/e32variant.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/e32variant.pm	2007-04-07 00:05:00.784264512 +0300
 @@ -2,7 +2,7 @@
  #
  # Copyright (c) 2004 Symbian Ltd.  All rights reserved.
@@ -3145,7 +3169,7 @@ diff -urN tools_orig/e32variant.pm tools/e32variant.pm
  	while(<CPPPIPE>){
 diff -urN tools_orig/efreeze.pl tools/efreeze.pl
 --- tools_orig/efreeze.pl	2004-12-10 14:18:20.000000000 +0200
-+++ tools/efreeze.pl	2006-10-04 00:22:51.000000000 +0300
++++ tools/efreeze.pl	2007-04-07 00:05:00.785264360 +0300
 @@ -19,14 +19,13 @@
  	require 5.005_03;
  # establish the path to the Perl libraries: currently the same directory as this script
@@ -3167,7 +3191,7 @@ diff -urN tools_orig/efreeze.pl tools/efreeze.pl
  # THE MAIN PROGRAM SECTION
 diff -urN tools_orig/epoc tools/epoc
 --- tools_orig/epoc	1970-01-01 02:00:00.000000000 +0200
-+++ tools/epoc	2006-10-04 00:22:51.000000000 +0300
++++ tools/epoc	2007-04-07 00:05:00.785264360 +0300
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -3183,7 +3207,7 @@ diff -urN tools_orig/epoc tools/epoc
 +perl -S epoc.pl "$@"
 diff -urN tools_orig/epoc.pl tools/epoc.pl
 --- tools_orig/epoc.pl	2004-12-10 14:18:20.000000000 +0200
-+++ tools/epoc.pl	2006-10-04 00:22:51.000000000 +0300
++++ tools/epoc.pl	2007-04-07 00:05:00.786264208 +0300
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  #
@@ -3235,7 +3259,7 @@ diff -urN tools_orig/epoc.pl tools/epoc.pl
      return $epocroot;
 diff -urN tools_orig/epocaif.pl tools/epocaif.pl
 --- tools_orig/epocaif.pl	2004-12-10 14:18:20.000000000 +0200
-+++ tools/epocaif.pl	2006-10-04 00:22:51.000000000 +0300
++++ tools/epocaif.pl	2007-04-07 00:05:00.788263904 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -3486,7 +3510,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  		$curdrive="";
 diff -urN tools_orig/epocmbm.pl tools/epocmbm.pl
 --- tools_orig/epocmbm.pl	2004-12-10 14:18:20.000000000 +0200
-+++ tools/epocmbm.pl	2006-10-04 00:22:51.000000000 +0300
++++ tools/epocmbm.pl	2007-04-07 00:05:00.808260864 +0300
 @@ -14,7 +14,7 @@
  BEGIN {
  	require 5.005_03;		# check user has a version of perl that will cope
@@ -3513,7 +3537,7 @@ diff -urN tools_orig/epocmbm.pl tools/epocmbm.pl
  		print "* BMCONV failed\n";
 diff -urN tools_orig/epocrc.pl tools/epocrc.pl
 --- tools_orig/epocrc.pl	2004-12-10 14:18:20.000000000 +0200
-+++ tools/epocrc.pl	2006-10-04 00:22:51.000000000 +0300
++++ tools/epocrc.pl	2007-04-07 00:05:00.809260712 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -3559,7 +3583,7 @@ diff -urN tools_orig/epocrc.pl tools/epocrc.pl
  system($rcomp_spec);
 diff -urN tools_orig/eshell tools/eshell
 --- tools_orig/eshell	1970-01-01 02:00:00.000000000 +0200
-+++ tools/eshell	2006-10-04 00:22:51.000000000 +0300
++++ tools/eshell	2007-04-07 00:05:00.810260560 +0300
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -3575,7 +3599,7 @@ diff -urN tools_orig/eshell tools/eshell
 +perl -S eshell.pl "$@"
 diff -urN tools_orig/eshell.pl tools/eshell.pl
 --- tools_orig/eshell.pl	2004-12-10 14:18:20.000000000 +0200
-+++ tools/eshell.pl	2006-10-04 00:22:51.000000000 +0300
++++ tools/eshell.pl	2007-04-07 00:05:00.810260560 +0300
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  #
@@ -3616,7 +3640,7 @@ diff -urN tools_orig/eshell.pl tools/eshell.pl
      return $epocroot;
 diff -urN tools_orig/extmake.pl tools/extmake.pl
 --- tools_orig/extmake.pl	2004-12-10 14:18:20.000000000 +0200
-+++ tools/extmake.pl	2006-10-04 00:22:51.000000000 +0300
++++ tools/extmake.pl	2007-04-07 00:05:00.811260408 +0300
 @@ -24,19 +24,18 @@
  	require 5.005_03;
  # establish the path to the Perl libraries: currently the same directory as this script
@@ -3723,7 +3747,7 @@ diff -urN tools_orig/extmake.pl tools/extmake.pl
  		if ( $refOptions->{ithumb} )
 diff -urN tools_orig/fixupsym.pl tools/fixupsym.pl
 --- tools_orig/fixupsym.pl	2004-12-10 14:18:20.000000000 +0200
-+++ tools/fixupsym.pl	2006-10-04 00:22:51.000000000 +0300
++++ tools/fixupsym.pl	2007-04-07 00:05:00.811260408 +0300
 @@ -349,7 +349,7 @@
    {
  	my $build;
@@ -3735,7 +3759,7 @@ diff -urN tools_orig/fixupsym.pl tools/fixupsym.pl
  	  &E32tpver, ")\n";
 diff -urN tools_orig/genbldinf.pl tools/genbldinf.pl
 --- tools_orig/genbldinf.pl	1970-01-01 02:00:00.000000000 +0200
-+++ tools/genbldinf.pl	2006-10-04 00:22:51.000000000 +0300
++++ tools/genbldinf.pl	2007-04-07 00:05:00.812260256 +0300
 @@ -0,0 +1,38 @@
 +#!/usr/bin/perl -w
 +#
@@ -3777,7 +3801,7 @@ diff -urN tools_orig/genbldinf.pl tools/genbldinf.pl
 +system ("cat $BLDINF");
 diff -urN tools_orig/genutl.pm tools/genutl.pm
 --- tools_orig/genutl.pm	2004-12-10 14:18:22.000000000 +0200
-+++ tools/genutl.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/genutl.pm	2007-04-07 00:05:00.812260256 +0300
 @@ -6,7 +6,7 @@
  
  # Contains utility subroutines for MAKMAKE and associated scripts
@@ -3789,7 +3813,7 @@ diff -urN tools_orig/genutl.pm tools/genutl.pm
  @ISA=qw(Exporter);
 diff -urN tools_orig/hpsym.pl tools/hpsym.pl
 --- tools_orig/hpsym.pl	2004-12-10 14:18:22.000000000 +0200
-+++ tools/hpsym.pl	2006-10-04 00:22:51.000000000 +0300
++++ tools/hpsym.pl	2007-04-07 00:05:00.812260256 +0300
 @@ -161,7 +161,7 @@
    {
  	my $build;
@@ -3801,7 +3825,7 @@ diff -urN tools_orig/hpsym.pl tools/hpsym.pl
  	  &E32tpver, ")\n";
 diff -urN tools_orig/ide_vc6.pm tools/ide_vc6.pm
 --- tools_orig/ide_vc6.pm	2004-12-10 14:18:22.000000000 +0200
-+++ tools/ide_vc6.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/ide_vc6.pm	2007-04-07 00:05:00.813260104 +0300
 @@ -897,7 +897,8 @@
  			foreach (@ChopSysIncPaths) {
  				$SupText.=" -I \"$_\"";
@@ -3814,7 +3838,7 @@ diff -urN tools_orig/ide_vc6.pm tools/ide_vc6.pm
  			if ($Lang eq 'SC') {
 diff -urN tools_orig/lockit_info.pm tools/lockit_info.pm
 --- tools_orig/lockit_info.pm	2004-12-10 14:18:22.000000000 +0200
-+++ tools/lockit_info.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/lockit_info.pm	2007-04-07 00:05:00.814259952 +0300
 @@ -29,15 +29,15 @@
  	{
  	$epocroot = $ENV{EPOCROOT};
@@ -4004,7 +4028,7 @@ diff -urN tools_orig/lockit_info.pm tools/lockit_info.pm
  	return %Files;
 diff -urN tools_orig/makdeps.pm tools/makdeps.pm
 --- tools_orig/makdeps.pm	2004-12-10 14:18:22.000000000 +0200
-+++ tools/makdeps.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/makdeps.pm	2007-04-07 00:05:00.815259800 +0300
 @@ -7,7 +7,7 @@
  # Module which wraps the dependency information provided the preprocessor when invoked with certain switches
  # so that dependency information rather than preprocessing information is produced.
@@ -4110,7 +4134,7 @@ diff -urN tools_orig/makdeps.pm tools/makdeps.pm
  		}
 diff -urN tools_orig/makedef.pl tools/makedef.pl
 --- tools_orig/makedef.pl	2004-12-10 14:18:22.000000000 +0200
-+++ tools/makedef.pl	2006-10-04 00:22:51.000000000 +0300
++++ tools/makedef.pl	2007-04-07 00:05:00.815259800 +0300
 @@ -18,13 +18,12 @@
  BEGIN {
  	require 5.005_03;				# check user has a version of perl that will cope
@@ -4152,9 +4176,28 @@ diff -urN tools_orig/makedef.pl tools/makedef.pl
  				$LineNum++;
  				next if ($Line !~ /^\s+(.+)$/o);
  				$Comment = $1;
+diff -urN tools_orig/makekeys tools/makekeys
+--- tools_orig/makekeys	1970-01-01 02:00:00.000000000 +0200
++++ tools/makekeys	2007-04-07 00:05:00.816259648 +0300
+@@ -0,0 +1,15 @@
++#!/bin/sh
++#
++# makekeys - bash frontend for bmconv.exe, part of GnuPoc project
++#
++# (c) 2001-2006 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++PGM=`basename $0`
++echo "executing $PGM.exe"
++ROOT=$EPOCROOT/epoc32/tools
++wine $ROOT/$PGM.exe $*
 diff -urN tools_orig/makesis tools/makesis
 --- tools_orig/makesis	1970-01-01 02:00:00.000000000 +0200
-+++ tools/makesis	2006-10-04 00:22:51.000000000 +0300
++++ tools/makesis	2007-04-07 00:05:00.816259648 +0300
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -4173,7 +4216,7 @@ diff -urN tools_orig/makesis tools/makesis
 +wine $ROOT/$PGM.exe $*
 diff -urN tools_orig/makhelp.pm tools/makhelp.pm
 --- tools_orig/makhelp.pm	2004-12-10 14:18:22.000000000 +0200
-+++ tools/makhelp.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/makhelp.pm	2007-04-07 00:05:00.817259496 +0300
 @@ -4,7 +4,7 @@
  #
  
@@ -4212,7 +4255,7 @@ diff -urN tools_orig/makhelp.pm tools/makhelp.pm
  NOCOMPRESSTARGET
 diff -urN tools_orig/makmake tools/makmake
 --- tools_orig/makmake	1970-01-01 02:00:00.000000000 +0200
-+++ tools/makmake	2006-10-04 00:22:51.000000000 +0300
++++ tools/makmake	2007-04-07 00:05:00.818259344 +0300
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -4228,7 +4271,7 @@ diff -urN tools_orig/makmake tools/makmake
 +perl -S makmake.pl "$@"
 diff -urN tools_orig/makmake.pl tools/makmake.pl
 --- tools_orig/makmake.pl	2004-12-10 14:18:22.000000000 +0200
-+++ tools/makmake.pl	2006-10-04 00:22:51.000000000 +0300
++++ tools/makmake.pl	2007-04-07 00:05:00.819259192 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -4517,7 +4560,7 @@ diff -urN tools_orig/makmake.pl tools/makmake.pl
  }
 diff -urN tools_orig/maksym.pl tools/maksym.pl
 --- tools_orig/maksym.pl	2004-12-10 14:18:22.000000000 +0200
-+++ tools/maksym.pl	2006-10-04 00:22:51.000000000 +0300
++++ tools/maksym.pl	2007-04-07 00:05:00.820259040 +0300
 @@ -262,7 +262,7 @@
    {
  	my $build;
@@ -4529,7 +4572,7 @@ diff -urN tools_orig/maksym.pl tools/maksym.pl
  	&usage;
 diff -urN tools_orig/memtrace.pl tools/memtrace.pl
 --- tools_orig/memtrace.pl	2004-12-10 14:18:22.000000000 +0200
-+++ tools/memtrace.pl	2006-10-04 00:22:51.000000000 +0300
++++ tools/memtrace.pl	2007-04-07 00:05:00.820259040 +0300
 @@ -223,7 +223,7 @@
  	{
  	my $build;
@@ -4541,7 +4584,7 @@ diff -urN tools_orig/memtrace.pl tools/memtrace.pl
  	&usage;
 diff -urN tools_orig/mmp.pm tools/mmp.pm
 --- tools_orig/mmp.pm	2004-12-10 14:18:22.000000000 +0200
-+++ tools/mmp.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/mmp.pm	2007-04-07 00:05:00.823258584 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -5352,7 +5395,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  #		check deffile exists
 diff -urN tools_orig/modload.pm tools/modload.pm
 --- tools_orig/modload.pm	2004-12-10 14:18:22.000000000 +0200
-+++ tools/modload.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/modload.pm	2007-04-07 00:05:00.824258432 +0300
 @@ -7,7 +7,7 @@
  # Runtime module-loading routine for loading e32tools modules into 'main' module
  
@@ -5393,7 +5436,7 @@ diff -urN tools_orig/modload.pm tools/modload.pm
  }
 diff -urN tools_orig/output.pm tools/output.pm
 --- tools_orig/output.pm	2004-12-10 14:18:22.000000000 +0200
-+++ tools/output.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/output.pm	2007-04-07 00:05:00.824258432 +0300
 @@ -6,7 +6,7 @@
  
  # Text formatting module
@@ -5425,7 +5468,7 @@ diff -urN tools_orig/output.pm tools/output.pm
  
 diff -urN tools_orig/pathutl.pm tools/pathutl.pm
 --- tools_orig/pathutl.pm	2004-12-10 14:18:22.000000000 +0200
-+++ tools/pathutl.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/pathutl.pm	2007-04-07 00:05:00.825258280 +0300
 @@ -9,7 +9,7 @@
  #	Distinguish paths from filepaths by assuming paths end with "\"
  #	therefore ensure this is the case for all paths coming into programs using this module
@@ -5710,7 +5753,7 @@ diff -urN tools_orig/pathutl.pm tools/pathutl.pm
  1;
 diff -urN tools_orig/petran tools/petran
 --- tools_orig/petran	1970-01-01 02:00:00.000000000 +0200
-+++ tools/petran	2006-10-04 00:22:51.000000000 +0300
++++ tools/petran	2007-04-07 00:05:00.826258128 +0300
 @@ -0,0 +1,12 @@
 +#! /bin/bash
 +#
@@ -5726,7 +5769,7 @@ diff -urN tools_orig/petran tools/petran
 +wine $EPOCROOT/epoc32/tools/petran.exe "$@"
 diff -urN tools_orig/pfsdump tools/pfsdump
 --- tools_orig/pfsdump	1970-01-01 02:00:00.000000000 +0200
-+++ tools/pfsdump	2006-10-04 00:22:51.000000000 +0300
++++ tools/pfsdump	2007-04-07 00:05:00.826258128 +0300
 @@ -0,0 +1,17 @@
 +#!/bin/sh
 +#
@@ -5747,7 +5790,7 @@ diff -urN tools_orig/pfsdump tools/pfsdump
 +wine $ROOT/$PGM.exe $*
 diff -urN tools_orig/prepfile.pm tools/prepfile.pm
 --- tools_orig/prepfile.pm	2004-12-10 14:18:22.000000000 +0200
-+++ tools/prepfile.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/prepfile.pm	2007-04-07 00:05:00.826258128 +0300
 @@ -7,7 +7,7 @@
  # module for preprocessing makmake-style project files
  
@@ -5825,7 +5868,7 @@ diff -urN tools_orig/prepfile.pm tools/prepfile.pm
  			push @{$ArrayRef}, [ @Tmp ];
 diff -urN tools_orig/preprocessor.pm tools/preprocessor.pm
 --- tools_orig/preprocessor.pm	2004-12-10 14:18:22.000000000 +0200
-+++ tools/preprocessor.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/preprocessor.pm	2007-04-07 00:05:00.827257976 +0300
 @@ -7,7 +7,7 @@
  # Used to allow us to access and manipulate other pre processors
  #
@@ -5853,7 +5896,7 @@ diff -urN tools_orig/preprocessor.pm tools/preprocessor.pm
 +1;
 diff -urN tools_orig/rcomp tools/rcomp
 --- tools_orig/rcomp	1970-01-01 02:00:00.000000000 +0200
-+++ tools/rcomp	2006-10-04 00:22:51.000000000 +0300
++++ tools/rcomp	2007-04-07 00:05:00.827257976 +0300
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -5872,7 +5915,7 @@ diff -urN tools_orig/rcomp tools/rcomp
 +wine $ROOT/$PGM.exe $*
 diff -urN tools_orig/setupcomms tools/setupcomms
 --- tools_orig/setupcomms	1970-01-01 02:00:00.000000000 +0200
-+++ tools/setupcomms	2006-10-04 00:22:51.000000000 +0300
++++ tools/setupcomms	2007-04-07 00:05:00.827257976 +0300
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -5888,7 +5931,7 @@ diff -urN tools_orig/setupcomms tools/setupcomms
 +perl -S setupcomms.pl "$@"
 diff -urN tools_orig/trgtype.pm tools/trgtype.pm
 --- tools_orig/trgtype.pm	2004-12-10 14:18:22.000000000 +0200
-+++ tools/trgtype.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/trgtype.pm	2007-04-07 00:05:00.828257824 +0300
 @@ -10,7 +10,7 @@
  # Look at the existing types for an appropriate example
  #
@@ -5995,7 +6038,7 @@ diff -urN tools_orig/trgtype.pm tools/trgtype.pm
  	unless ($TrgHash{UID2}) {
 diff -urN tools_orig/winutl.pm tools/winutl.pm
 --- tools_orig/winutl.pm	2004-12-10 14:18:22.000000000 +0200
-+++ tools/winutl.pm	2006-10-04 00:22:51.000000000 +0300
++++ tools/winutl.pm	2007-04-07 00:05:00.828257824 +0300
 @@ -6,7 +6,7 @@
  
  # this package does various ancillary things for windows modules

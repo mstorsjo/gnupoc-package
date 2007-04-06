@@ -27,8 +27,6 @@ sub dodir($) {
         lcfile("$dir/$i");
       } elsif ($i eq "bld.inf") {
         lcfile("$dir/$i");
-      } elsif ($i =~ /\.mk$/) {
-        fixmake("$dir/$i");
       } elsif ($i =~ /\.pkg$/) {
         fixpkg("$dir/$i");
       }
@@ -46,29 +44,6 @@ sub lcfile($) {
     $line =~ tr [A-Z] [a-z];
     $line =~ s/libgles_cm.lib/libGLES_CM.lib/;
     $line =~ s/[\r\n]//g;
-    print FHOUT "$line\n";
-  }
-
-  close(FHIN);
-  close(FHOUT);
-  unlink "$file";
-  rename "$file.out", "$file";
-}
-
-sub fixmake($) {
-  my $file = shift;
-  
-  open FHIN,"$file" || die("Can't read $file");
-  open FHOUT,">$file.out" || die("Can't write to $file.out");
-
-  while(my $line = <FHIN>) {
-#    $line =~ tr [A-Z] [a-z];
-    next if ($line =~ /\@rem/);
-    $line =~ s/[\r\n]//g;
-    $line =~ s-\\(.)-/$1-g; # replace all backslashes with forward slashes except for backslashes at the end of the line
-    $line =~ s-/Z-/z-g; # lowercase z data directory
-    $line =~ s-/(\S*)\.svg-/\L$1\E\.svg-i; # lowercase everything from a / up to .svg, no whitespace
-    $line =~ s-/(\S*)\.mif-/\L$1\E\.mif-i;
     print FHOUT "$line\n";
   }
 
