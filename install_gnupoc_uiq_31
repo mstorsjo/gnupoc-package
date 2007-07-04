@@ -1,0 +1,51 @@
+#!/bin/sh
+
+if test $# != 2 -a $# != 3 -o $0 != "./install_gnupoc_uiq_31"; then
+  echo "Usage: ./install_gnupoc_uiq_31 <path-to-sdk-zip> <target-dir>"
+  echo " e.g.: ./install_gnupoc_uiq_31 UIQ3.1SDK.exe ~/symbian-sdks/uiq_31"
+  exit 1
+fi
+
+SRC=$1
+DEST=`echo $2 | sed s:/\$::`
+
+mkdir -p $DEST
+
+while read a
+do
+  echo "$a"
+  sh -c "$a"
+  if test $? != 0; then
+    echo "Unexcpected error: aborting."
+    exit 1
+  fi
+done << __END
+
+
+### Unzip & Copy selected files
+mkdir _e
+./7z x -o_e $SRC
+rm -rf _e/\\\\\$*
+mv _e/* $DEST
+rmdir _e
+
+### Fixing
+./lowercase $DEST/epoc32/tools
+./lowercase $DEST/epoc32/include
+./lowercase $DEST/epoc32/release
+./lowercase $DEST/epoc32/RELEASE
+./fixlib $DEST/epoc32/release/armv5/lib
+./lowercase $DEST/epoc32/data
+./fixinclude $DEST/epoc32/include
+./lowercase $DEST/Examples
+./fixinclude $DEST/examples
+./fixexamples $DEST/examples
+for i in \`find $DEST/epoc32/tools -name \*.pl -or -name \*.pm\`; do j=\`tempfile\`; tr -d '\\\\r' < \$i > \$j; mv \$j \$i; done
+cp -a $DEST/epoc32/tools $DEST/epoc32/tools_orig
+cp -a $DEST/epoc32/include $DEST/epoc32/include_orig
+cat gnupoc-uiq_31-patch | (cd $DEST/epoc32; patch -p0 )
+cd $DEST/epoc32/tools; chmod a+x *.pl bldmake abld makmake bmconv rcomp makesis epoc eshell petran pfsdump elf2e32 makekeys signsis
+
+__END
+
+exit 0
