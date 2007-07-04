@@ -22,12 +22,9 @@ do
 done << __END
 
 
-### Unzip & Copy selected files
-mkdir _e
-./7z x -o_e $SRC
-rm -rf _e/\\\\\$*
-mv _e/* $DEST
-rmdir _e
+### Unzip
+./7z x -o$DEST $SRC
+rm -rf $DEST/\\\\\$*
 
 ### Fixing
 ./lowercase $DEST/epoc32/tools
