@@ -1,0 +1,27 @@
+diff -urN p7zip_4.49-orig/CPP/7zip/Archive/Nsis/NsisIn.cpp p7zip_4.49/CPP/7zip/Archive/Nsis/NsisIn.cpp
+--- p7zip_4.49-orig/CPP/7zip/Archive/Nsis/NsisIn.cpp	2007-05-25 19:33:53.000000000 +0300
++++ p7zip_4.49/CPP/7zip/Archive/Nsis/NsisIn.cpp	2007-07-22 01:38:31.000000000 +0300
+@@ -60,6 +60,12 @@
+   RINOZ(MyCompare(
+     (**(const CItem **)p1).Pos, 
+     (**(const CItem **)p2).Pos));
++  RINOZ(
++    (**(const CItem **)p1).Prefix.Compare(
++    (**(const CItem **)p2).Prefix));
++  RINOZ(
++    (**(const CItem **)p1).Name.Compare(
++    (**(const CItem **)p2).Name));
+   return 0;
+ }
+ 
+@@ -905,7 +911,9 @@
+     int i;
+     for (i = 0; i + 1 < Items.Size();)
+     {
+-      if (Items[i].Pos == Items[i + 1].Pos)
++      if (Items[i].Pos == Items[i + 1].Pos &&
++          Items[i].Prefix == Items[i + 1].Prefix &&
++          Items[i].Name == Items[i + 1].Name)
+         Items.Delete(i + 1);
+       else
+         i++;

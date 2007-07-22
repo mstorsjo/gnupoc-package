@@ -23,7 +23,7 @@ done << __END
 
 
 ### Unzip
-./7z x -o$DEST $SRC
+7z/7z x -o$DEST $SRC
 rm -rf $DEST/\\\\\$*
 
 
@@ -32,7 +32,6 @@ rm -rf $DEST/\\\\\$*
 ./lowercase $DEST/epoc32/INCLUDE
 ./lowercase $DEST/epoc32/include
 ./lowercase $DEST/epoc32/release
-./fixlib $DEST/epoc32/release/armv5/lib
 ./lowercase $DEST/epoc32/data
 ./fixinclude $DEST/epoc32/include
 ./lowercase $DEST/Examples
