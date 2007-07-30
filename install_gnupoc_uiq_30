@@ -23,7 +23,7 @@ done << __END
 
 
 ### Unzip
-7z/7z x -o$DEST $SRC
+7z/7z x -y -o$DEST $SRC
 rm -rf $DEST/\\\\\$*
 
 
