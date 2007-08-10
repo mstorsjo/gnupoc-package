@@ -3285,7 +3285,7 @@ diff -urN tools_orig/epoc.pl tools/epoc.pl
      return $epocroot;
 diff -urN tools_orig/epocaif.pl tools/epocaif.pl
 --- tools_orig/epocaif.pl	2005-02-22 00:44:18.000000000 +0200
-+++ tools/epocaif.pl	2007-08-11 01:15:17.000000000 +0300
++++ tools/epocaif.pl	2007-08-11 01:49:07.000000000 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -3359,11 +3359,9 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  #-------------------------------------------------------
  # Copy source to epoc32\localisation
  #
-@@ -212,8 +212,10 @@
- # Run the resource compiler
+@@ -213,7 +213,8 @@
  #
  
-+# the version of rcomp compiled from source doesn't seem to understand how to dump resources, thus we're using the binary one
  my $rcomp_spec = "rcomp -u ";
 -$rcomp_spec .= "-:$tmpdir\\_dump_of_resource_ "; # causes Rcomp to dump each resource (uncompressed and unpadded) in $tmpdir\\_dump_of_resource_1, $tmpdir\\_dump_of_resource_2, etc
 +#my $rcomp_spec = "wine \$EPOCROOT/epoc32/tools/rcomp.exe -u ";
@@ -3371,7 +3369,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  $rcomp_spec .= "$opt_o $opt_h -s\"$rpp_name\" -i\"$sourcefile\"";
  
  print "* $rcomp_spec\n" if ($opt_v);
-@@ -234,15 +236,19 @@
+@@ -234,15 +235,19 @@
  
  if ($opt_b ne "")
  	{
@@ -3395,7 +3393,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  	
  	if ($? != 0)
  		{
-@@ -252,23 +258,23 @@
+@@ -252,23 +257,23 @@
  	}
  elsif ($opt_m ne "")
  	{
@@ -3425,7 +3423,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  binmode(DUMP_OF_RESOURCE_1);
  my $data;
  my $numberOfBytesRead=read(DUMP_OF_RESOURCE_1, $data, 4);
-@@ -283,8 +289,8 @@
+@@ -283,8 +288,8 @@
  # Produce the AIF file from the RSC and MBM files
  #
  
@@ -3436,7 +3434,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  
  print "* $uidcrc\n" if ($opt_v);
  system($uidcrc);
-@@ -305,17 +311,17 @@
+@@ -305,17 +310,17 @@
  	}
  
  
@@ -3457,7 +3455,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  my $numberOfPaddingBytes=(4-($lengthOfRscBlock%4))%4;
  print(OUT_AIF pack('V', $lengthOfRscBlock));
  if ($xipaif ne 0)
-@@ -323,10 +329,10 @@
+@@ -323,10 +328,10 @@
  	print(OUTXIP_AIF pack('V', $lengthOfRscBlock));
  	}
  print "* Appending the RSC-block\n" if ($opt_v);
@@ -3470,7 +3468,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  	}
  # append any necessary padding bytes so that the file-offset of the start of the MBM-block is a multiple of 4-bytes
  print(OUT_AIF ('_' x $numberOfPaddingBytes));
-@@ -334,15 +340,15 @@
+@@ -334,15 +339,15 @@
  	{
  	print(OUTXIP_AIF ('_' x $numberOfPaddingBytes));
  	}
@@ -3490,7 +3488,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  	}
  
  close(OUT_AIF) or die("* Can't close temporary file\n");
-@@ -350,23 +356,23 @@
+@@ -350,23 +355,23 @@
  	{
  	close(OUTXIP_AIF) or die("* Can't close temporary file\n");
  	}
@@ -3524,7 +3522,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  exit 0;
  
  #-------------------------------------------------------
-@@ -376,7 +382,7 @@
+@@ -376,7 +381,7 @@
  sub quoted_path
      {
      my ($arg) = @_;
