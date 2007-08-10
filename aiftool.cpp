@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
 		printf("genaif returned %d\n", ret);
 		printf("%s\n", command);
 	}
-//	unlink(specfile);
+	unlink(specfile);
 	return ret;
 }
 
