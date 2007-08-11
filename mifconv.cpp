@@ -9,18 +9,27 @@ void writeUint32(uint32_t value, FILE* out) {
 	fwrite(buf, 1, 4, out);
 }
 
-const char* outname = NULL;
-const char* headername = NULL;
-const char* parameterfile = NULL;
+char* outname = NULL;
+char* headername = NULL;
 
 uint32_t colorType = 0;
 uint32_t maskType = 0;
 uint32_t animType = 0;
 
+void fixDirSep(char* str) {
+	char* ptr = str;
+	while (*ptr) {
+		if (*ptr == '\\')
+			*ptr = '/';
+		ptr++;
+	}
+}
+
 class ImageFile {
 public:
 	ImageFile(const char* n) {
 		name = strdup(n);
+		fixDirSep(name);
 	}
 	~ImageFile() {
 		free(name);
@@ -70,9 +79,11 @@ struct ColorType {
 void processArgument(const char* arg) {
 	if (arg[0] == '/') {
 		const char* param = arg + 1;
-		if (param[0] == 'h' || param[0] == 'H')
-			headername = param + 1;
-		else if (param[0] == 'a' || param[0] == 'A')
+		if (param[0] == 'h' || param[0] == 'H') {
+			free(headername);
+			headername = strdup(param + 1);
+			fixDirSep(headername);
+		} else if (param[0] == 'a' || param[0] == 'A')
 			animType = 1;
 		else if (param[0] == 'f' || param[0] == 'F')
 			readParamFile(param + 1);
@@ -95,17 +106,17 @@ void processArgument(const char* arg) {
 		}
 	} else {
 		if (!outname) {
-			outname = arg;
+			outname = strdup(arg);
+			fixDirSep(outname);
 		} else {
-			// push new image using current color type
 			ImageFile image(arg);
 			image.colorType = colorType;
 			image.maskType = maskType;
 			image.animType = animType;
-			printf("Checking: %s\n", arg);
-			FILE* in = fopen(arg, "rb");
+			printf("Checking: %s\n", image.name);
+			FILE* in = fopen(image.name, "rb");
 			if (!in) {
-				perror(arg);
+				perror(image.name);
 				exit(1);
 			}
 			fseek(in, 0, SEEK_END);
@@ -120,12 +131,16 @@ void processArgument(const char* arg) {
 }
 
 void readParamFile(const char* filename) {
-	char line[1000];
-	FILE* in = fopen(filename, "r");
+	char* localName = strdup(filename);
+	fixDirSep(localName);
+	FILE* in = fopen(localName, "r");
 	if (!in) {
-		perror(filename);
+		perror(localName);
+		free(localName);
 		return;
 	}
+	free(localName);
+	char line[1000];
 	while (fgets(line, sizeof(line), in)) {
 		int len = strlen(line);
 		if (line[len-1] == '\n' || line[len-1] == '\r')  line[--len] = '\0';
