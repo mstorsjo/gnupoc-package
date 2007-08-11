@@ -102,6 +102,7 @@ void processArgument(const char* arg) {
 			image.colorType = colorType;
 			image.maskType = maskType;
 			image.animType = animType;
+			printf("Checking: %s\n", arg);
 			FILE* in = fopen(arg, "rb");
 			if (!in) {
 				perror(arg);
@@ -181,6 +182,7 @@ int main(int argc, char *argv[]) {
 			writeUint32(0x7b8a7fe0, out);
 		else
 			writeUint32(images[i].maskType, out);
+		printf("Loading file: %s\n", images[i].name);
 		FILE* in = fopen(images[i].name, "rb");
 		if (!in) {
 			perror(images[i].name);
@@ -203,6 +205,7 @@ int main(int argc, char *argv[]) {
 		fclose(in);
 	}
 
+	printf("Writing mif: %s\n", outname);
 	fclose(out);
 
 	return 0;
