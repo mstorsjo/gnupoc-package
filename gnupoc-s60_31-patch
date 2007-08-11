@@ -418,7 +418,7 @@ diff -urN tools_orig/bldmake tools/bldmake
 +perl -S bldmake.pl "$@"
 diff -urN tools_orig/bldmake.pl tools/bldmake.pl
 --- tools_orig/bldmake.pl	2006-09-27 13:36:02.000000000 +0300
-+++ tools/bldmake.pl	2007-04-07 01:34:15.000000000 +0300
++++ tools/bldmake.pl	2007-08-11 23:01:09.000000000 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -1079,7 +1079,7 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
  				"\n",
  			);
  			foreach $Command (qw(CLEANALL)) {
-@@ -1821,16 +1819,30 @@
+@@ -1821,16 +1819,31 @@
  			if ($$Ref{Makefile}==2) {
  				$MakefileCall="cd $ChopRefPath;$CallNmake";
  			} else {
@@ -1091,7 +1091,8 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
 +				$epocroot =~ s/\//\\\\/g;
 +				my $winChopRefPath = $ChopRefPath;
 +				$winChopRefPath =~ s/\//\\\\/g;
-+				$MakefileCall="EPOCROOT=$epocroot wine $CallGNUmake -C $winChopRefPath";
++#				$MakefileCall="EPOCROOT=$epocroot wine $CallGNUmake -C $winChopRefPath";
++				$MakefileCall="EPOCROOT=$epocroot extmake \$(VERBOSE) \$(KEEPGOING) -C $winChopRefPath";
 +			}
 +			my $makefile = "$$Ref{Base}$$Ref{Ext}";
 +			my $to_root = &Path_Chop(&Path_UpToRoot($$Ref{Path}));
@@ -1117,7 +1118,7 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
  			}
  			if ($$Ref{BuildAsARM}) {
  			  $MakefileCall.=" BUILD_AS_ARM=1";
-@@ -1908,8 +1920,9 @@
+@@ -1908,8 +1921,9 @@
  		}
  
  	}
@@ -1129,7 +1130,7 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
  }
  
  sub CreatePlatBatches ($$$) {
-@@ -1950,7 +1963,7 @@
+@@ -1950,7 +1964,7 @@
  sub WriteOutFileL ($$) { # takes batch file and boolean read-only flag
  	my ($BATFILE, $ReadOnly)=@_;
  
@@ -3259,7 +3260,7 @@ diff -urN tools_orig/epoc.pl tools/epoc.pl
      return $epocroot;
 diff -urN tools_orig/epocaif.pl tools/epocaif.pl
 --- tools_orig/epocaif.pl	2006-07-28 22:32:54.000000000 +0300
-+++ tools/epocaif.pl	2007-04-07 01:34:15.000000000 +0300
++++ tools/epocaif.pl	2007-08-11 01:53:37.000000000 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -3331,20 +3332,17 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  #-------------------------------------------------------
  # Copy source to epoc32\localisation
  #
-@@ -208,8 +208,10 @@
- # Run the resource compiler
+@@ -209,7 +209,8 @@
  #
  
--my $rcomp_spec = "rcomp -u ";
+ my $rcomp_spec = "rcomp -u ";
 -$rcomp_spec .= "-:$tmpdir\\_dump_of_resource_ "; # causes Rcomp to dump each resource (uncompressed and unpadded) in $tmpdir\\_dump_of_resource_1, $tmpdir\\_dump_of_resource_2, etc
-+# the version of rcomp compiled from source doesn't seem to understand how to dump resources, thus we're using the binary one
-+#my $rcomp_spec = "rcomp -u ";
-+my $rcomp_spec = "wine \$EPOCROOT/epoc32/tools/rcomp.exe -u ";
++#my $rcomp_spec = "wine \$EPOCROOT/epoc32/tools/rcomp.exe -u ";
 +$rcomp_spec .= "-:$tmpdir\/_dump_of_resource_ "; # causes Rcomp to dump each resource (uncompressed and unpadded) in $tmpdir\/_dump_of_resource_1, $tmpdir\/_dump_of_resource_2, etc
  $rcomp_spec .= "$opt_o $opt_h -s\"$rpp_name\" -i\"$sourcefile\"";
  
  print "* $rcomp_spec\n" if ($opt_v);
-@@ -230,15 +232,19 @@
+@@ -230,15 +231,19 @@
  
  if ($opt_b ne "")
  	{
@@ -3368,7 +3366,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  	
  	if ($? != 0)
  		{
-@@ -248,23 +254,23 @@
+@@ -248,23 +253,23 @@
  	}
  elsif ($opt_m ne "")
  	{
@@ -3398,7 +3396,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  binmode(DUMP_OF_RESOURCE_1);
  my $data;
  my $numberOfBytesRead=read(DUMP_OF_RESOURCE_1, $data, 4);
-@@ -279,8 +285,8 @@
+@@ -279,8 +284,8 @@
  # Produce the AIF file from the RSC and MBM files
  #
  
@@ -3409,7 +3407,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  
  print "* $uidcrc\n" if ($opt_v);
  system($uidcrc);
-@@ -301,17 +307,17 @@
+@@ -301,17 +306,17 @@
  	}
  
  
@@ -3430,7 +3428,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  my $numberOfPaddingBytes=(4-($lengthOfRscBlock%4))%4;
  print(OUT_AIF pack('V', $lengthOfRscBlock));
  if ($xipaif ne 0)
-@@ -319,10 +325,10 @@
+@@ -319,10 +324,10 @@
  	print(OUTXIP_AIF pack('V', $lengthOfRscBlock));
  	}
  print "* Appending the RSC-block\n" if ($opt_v);
@@ -3443,7 +3441,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  	}
  # append any necessary padding bytes so that the file-offset of the start of the MBM-block is a multiple of 4-bytes
  print(OUT_AIF ('_' x $numberOfPaddingBytes));
-@@ -330,15 +336,15 @@
+@@ -330,15 +335,15 @@
  	{
  	print(OUTXIP_AIF ('_' x $numberOfPaddingBytes));
  	}
@@ -3463,7 +3461,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  	}
  
  close(OUT_AIF) or die("* Can't close temporary file\n");
-@@ -346,23 +352,23 @@
+@@ -346,23 +351,23 @@
  	{
  	close(OUTXIP_AIF) or die("* Can't close temporary file\n");
  	}
@@ -3497,7 +3495,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  exit 0;
  
  #-------------------------------------------------------
-@@ -372,7 +378,7 @@
+@@ -372,7 +377,7 @@
  sub quoted_path
      {
      my ($arg) = @_;
@@ -3634,6 +3632,14 @@ diff -urN tools_orig/eshell.pl tools/eshell.pl
      die "ERROR: EPOCROOT must specify an existing directory.\n" 
  	if (!-d $epocroot);
      return $epocroot;
+diff -urN tools_orig/extmake tools/extmake
+--- tools_orig/extmake	1970-01-01 02:00:00.000000000 +0200
++++ tools/extmake	2007-08-11 23:05:58.000000000 +0300
+@@ -0,0 +1,4 @@
++#!/bin/sh
++
++wine make $*
++
 diff -urN tools_orig/fixupsym.pl tools/fixupsym.pl
 --- tools_orig/fixupsym.pl	2006-07-28 22:32:54.000000000 +0300
 +++ tools/fixupsym.pl	2007-04-07 01:34:15.000000000 +0300

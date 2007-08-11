@@ -1,54 +1,6 @@
-diff -urN include_orig/edg/edg3_7_rvct2_2.h include/edg/edg3_7_rvct2_2.h
---- include_orig/edg/edg3_7_rvct2_2.h	2007-07-03 23:27:05.000000000 +0300
-+++ include/edg/edg3_7_rvct2_2.h	2007-07-04 09:51:28.000000000 +0300
-@@ -12,7 +12,7 @@
- */
- 
- #if defined(__PRODUCT_INCLUDE__)
--#include __product_include__
-+#include __PRODUCT_INCLUDE__
- #endif
- 
- //RVCT predefined macros
-diff -urN include_orig/gcce/gcce.h include/gcce/gcce.h
---- include_orig/gcce/gcce.h	2007-07-03 23:27:05.000000000 +0300
-+++ include/gcce/gcce.h	2007-07-04 09:51:40.000000000 +0300
-@@ -12,7 +12,7 @@
- */
- 
- #if defined(__PRODUCT_INCLUDE__)
--#include __product_include__
-+#include __PRODUCT_INCLUDE__
- #endif
- 
- // stuff from e32def.h
-diff -urN include_orig/rvct2_1/rvct2_1.h include/rvct2_1/rvct2_1.h
---- include_orig/rvct2_1/rvct2_1.h	2007-07-03 23:27:05.000000000 +0300
-+++ include/rvct2_1/rvct2_1.h	2007-07-04 09:51:57.000000000 +0300
-@@ -18,7 +18,7 @@
- #endif
- 
- #if defined(__PRODUCT_INCLUDE__)
--#include __product_include__
-+#include __PRODUCT_INCLUDE__
- #endif
- 
- 
-diff -urN include_orig/rvct2_2/rvct2_2.h include/rvct2_2/rvct2_2.h
---- include_orig/rvct2_2/rvct2_2.h	2007-07-03 23:27:05.000000000 +0300
-+++ include/rvct2_2/rvct2_2.h	2007-07-04 09:52:08.000000000 +0300
-@@ -18,7 +18,7 @@
- #endif
- 
- #if defined(__PRODUCT_INCLUDE__)
--#include __product_include__
-+#include __PRODUCT_INCLUDE__
- #endif
- 
- 
 diff -urN tools_orig/abld tools/abld
 --- tools_orig/abld	1970-01-01 02:00:00.000000000 +0200
-+++ tools/abld	2007-07-03 23:36:01.000000000 +0300
++++ tools/abld	2007-07-30 17:41:26.000000000 +0300
 @@ -0,0 +1,19 @@
 +#!/bin/sh
 +#
@@ -70,8 +22,8 @@ diff -urN tools_orig/abld tools/abld
 +    
 +perl -S abld.pl `perl -e 'use Cwd; my $cwd = cwd(); print "$cwd/"'` "$@"
 diff -urN tools_orig/abld.pl tools/abld.pl
---- tools_orig/abld.pl	2007-07-04 20:05:25.000000000 +0300
-+++ tools/abld.pl	2007-07-03 23:49:18.000000000 +0300
+--- tools_orig/abld.pl	2007-07-30 17:41:09.000000000 +0300
++++ tools/abld.pl	2007-07-30 17:41:26.000000000 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -353,7 +305,7 @@ diff -urN tools_orig/abld.pl tools/abld.pl
  	}
 diff -urN tools_orig/aiftool tools/aiftool
 --- tools_orig/aiftool	1970-01-01 02:00:00.000000000 +0200
-+++ tools/aiftool	2007-07-03 23:36:01.000000000 +0300
++++ tools/aiftool	2007-07-30 17:41:26.000000000 +0300
 @@ -0,0 +1,74 @@
 +#! /bin/bash
 +#
@@ -430,8 +382,8 @@ diff -urN tools_orig/aiftool tools/aiftool
 +
 +# EOF - aiftool
 diff -urN tools_orig/armutl.pm tools/armutl.pm
---- tools_orig/armutl.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/armutl.pm	2007-07-03 23:36:01.000000000 +0300
+--- tools_orig/armutl.pm	2007-07-30 17:41:09.000000000 +0300
++++ tools/armutl.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -6,7 +6,7 @@
  
  # this package does various ancillary things for armedg modules
@@ -452,7 +404,7 @@ diff -urN tools_orig/armutl.pm tools/armutl.pm
  		chomp @lines;
 diff -urN tools_orig/bldmake tools/bldmake
 --- tools_orig/bldmake	1970-01-01 02:00:00.000000000 +0200
-+++ tools/bldmake	2007-07-03 23:36:01.000000000 +0300
++++ tools/bldmake	2007-07-30 17:41:26.000000000 +0300
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -467,8 +419,8 @@ diff -urN tools_orig/bldmake tools/bldmake
 +
 +perl -S bldmake.pl "$@"
 diff -urN tools_orig/bldmake.pl tools/bldmake.pl
---- tools_orig/bldmake.pl	2007-07-04 20:05:25.000000000 +0300
-+++ tools/bldmake.pl	2007-07-03 23:53:16.000000000 +0300
+--- tools_orig/bldmake.pl	2007-07-30 17:41:09.000000000 +0300
++++ tools/bldmake.pl	2007-08-11 23:28:56.000000000 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -1132,7 +1084,7 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
  				"\n",
  			);
  			foreach $Command (qw(CLEANALL)) {
-@@ -1868,16 +1866,30 @@
+@@ -1868,16 +1866,31 @@
  			if ($$Ref{Makefile}==2) {
  				$MakefileCall="cd $ChopRefPath;$CallNmake";
  			} else {
@@ -1144,7 +1096,8 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
 +				$epocroot =~ s/\//\\\\/g;
 +				my $winChopRefPath = $ChopRefPath;
 +				$winChopRefPath =~ s/\//\\\\/g;
-+				$MakefileCall="EPOCROOT=$epocroot wine $CallGNUmake -C $winChopRefPath";
++#				$MakefileCall="EPOCROOT=$epocroot wine $CallGNUmake -C $winChopRefPath";
++				$MakefileCall="EPOCROOT=$epocroot extmake \$(VERBOSE) \$(KEEPGOING) -C $winChopRefPath";
 +			}
 +			my $makefile = "$$Ref{Base}$$Ref{Ext}";
 +			my $to_root = &Path_Chop(&Path_UpToRoot($$Ref{Path}));
@@ -1170,7 +1123,7 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
  			}
  			if ($$Ref{BuildAsARM}) {
  			  $MakefileCall.=" BUILD_AS_ARM=1";
-@@ -1955,8 +1967,9 @@
+@@ -1955,8 +1968,9 @@
  		}
  
  	}
@@ -1182,7 +1135,7 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
  }
  
  sub CreatePlatBatches ($$$) {
-@@ -1997,7 +2010,7 @@
+@@ -1997,7 +2011,7 @@
  sub WriteOutFileL ($$) { # takes batch file and boolean read-only flag
  	my ($BATFILE, $ReadOnly)=@_;
  
@@ -1193,7 +1146,7 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
  	&FatalError($@) if $@;
 diff -urN tools_orig/bmconv tools/bmconv
 --- tools_orig/bmconv	1970-01-01 02:00:00.000000000 +0200
-+++ tools/bmconv	2007-07-03 23:36:01.000000000 +0300
++++ tools/bmconv	2007-07-30 17:41:26.000000000 +0300
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -1211,8 +1164,8 @@ diff -urN tools_orig/bmconv tools/bmconv
 +ROOT=$EPOCROOT/epoc32/tools
 +wine $ROOT/$PGM.exe $*
 diff -urN tools_orig/bpabiutl.pm tools/bpabiutl.pm
---- tools_orig/bpabiutl.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/bpabiutl.pm	2007-07-04 09:37:10.000000000 +0300
+--- tools_orig/bpabiutl.pm	2007-07-30 17:41:09.000000000 +0300
++++ tools/bpabiutl.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -6,7 +6,7 @@
  
  # This package  does various ancillary things for BPABI (Base Platform ABI) platforms
@@ -1302,8 +1255,8 @@ diff -urN tools_orig/bpabiutl.pm tools/bpabiutl.pm
      my $result = `$command`;
      my %vars;
 diff -urN tools_orig/checkgcc.pm tools/checkgcc.pm
---- tools_orig/checkgcc.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/checkgcc.pm	2007-07-03 23:36:01.000000000 +0300
+--- tools_orig/checkgcc.pm	2007-07-30 17:41:09.000000000 +0300
++++ tools/checkgcc.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -1346,8 +1299,8 @@ diff -urN tools_orig/checkgcc.pm tools/checkgcc.pm
  					"Is your path set up correctly?\n"
  				;
 diff -urN tools_orig/checksource.pl tools/checksource.pl
---- tools_orig/checksource.pl	2007-07-04 20:05:25.000000000 +0300
-+++ tools/checksource.pl	2007-07-03 23:36:01.000000000 +0300
+--- tools_orig/checksource.pl	2007-07-30 17:41:09.000000000 +0300
++++ tools/checksource.pl	2007-07-30 17:41:26.000000000 +0300
 @@ -9,10 +9,10 @@
  use Cwd;
  use Getopt::Long qw(:config posix_default);		#permits "+" in arguments, rather than as an option identifier
@@ -1363,8 +1316,8 @@ diff -urN tools_orig/checksource.pl tools/checksource.pl
  my $verbose = 0;
  
 diff -urN tools_orig/checksource.pm tools/checksource.pm
---- tools_orig/checksource.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/checksource.pm	2007-07-04 09:22:20.000000000 +0300
+--- tools_orig/checksource.pm	2007-07-30 17:41:09.000000000 +0300
++++ tools/checksource.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -6,7 +6,7 @@
  # Routines involved in checking that source matches various filename policy constraints
  
@@ -1533,8 +1486,8 @@ diff -urN tools_orig/checksource.pm tools/checksource.pm
  
  		if ($referenceDOSSlash =~ /$quotemetaExclusion$/i)
 diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
---- tools_orig/cl_bpabi.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/cl_bpabi.pm	2007-07-04 00:13:47.000000000 +0300
+--- tools_orig/cl_bpabi.pm	2007-07-30 17:41:09.000000000 +0300
++++ tools/cl_bpabi.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -4,7 +4,7 @@
  #
  
@@ -2392,8 +2345,8 @@ diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
  	else
  	{
 diff -urN tools_orig/cl_codewarrior.pm tools/cl_codewarrior.pm
---- tools_orig/cl_codewarrior.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/cl_codewarrior.pm	2007-07-03 23:36:01.000000000 +0300
+--- tools_orig/cl_codewarrior.pm	2007-07-30 17:41:09.000000000 +0300
++++ tools/cl_codewarrior.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -4,7 +4,7 @@
  #
  
@@ -2891,8 +2844,8 @@ diff -urN tools_orig/cl_codewarrior.pm tools/cl_codewarrior.pm
  				"\tmwwinrc -o \$\@ \"$Win32Resrc\"\n",
  				"\n"
 diff -urN tools_orig/cl_generic.pm tools/cl_generic.pm
---- tools_orig/cl_generic.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/cl_generic.pm	2007-07-04 09:47:39.000000000 +0300
+--- tools_orig/cl_generic.pm	2007-07-30 17:41:09.000000000 +0300
++++ tools/cl_generic.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -29,8 +29,8 @@
  
  use File::Basename;
@@ -3094,8 +3047,8 @@ diff -urN tools_orig/cl_generic.pm tools/cl_generic.pm
  	unshift (@userIncludes, $AbsSrcPath);	
  	my @systemIncludes = &main::Path_Chop(&main::Path_AbsToWork(&main::SysIncPaths));
 diff -urN tools_orig/cl_tools.pm tools/cl_tools.pm
---- tools_orig/cl_tools.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/cl_tools.pm	2007-07-03 23:36:01.000000000 +0300
+--- tools_orig/cl_tools.pm	2007-07-30 17:41:09.000000000 +0300
++++ tools/cl_tools.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -243,7 +243,7 @@
  		"\n",
  		"CLEANLIBRARY :\n"
@@ -3107,7 +3060,7 @@ diff -urN tools_orig/cl_tools.pm tools/cl_tools.pm
  }
 diff -urN tools_orig/compilation_config/gcce.mk tools/compilation_config/gcce.mk
 --- tools_orig/compilation_config/gcce.mk	2006-11-29 18:22:46.000000000 +0200
-+++ tools/compilation_config/gcce.mk	2007-07-03 23:37:04.000000000 +0300
++++ tools/compilation_config/gcce.mk	2007-07-30 17:41:26.000000000 +0300
 @@ -145,7 +145,7 @@
  #---------------------
  
@@ -3127,8 +3080,8 @@ diff -urN tools_orig/compilation_config/gcce.mk tools/compilation_config/gcce.mk
  # Include options required by Function Call Logger  
  FC_LOGGER_INCLUDE_OPTION=-I
 diff -urN tools_orig/defutl.pm tools/defutl.pm
---- tools_orig/defutl.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/defutl.pm	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/defutl.pm	2007-07-30 17:41:09.000000000 +0300
++++ tools/defutl.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -8,7 +8,7 @@
  # General Def file utilities
  #---------------------------
@@ -3139,8 +3092,8 @@ diff -urN tools_orig/defutl.pm tools/defutl.pm
  require Exporter;
  @ISA=qw(Exporter);
 diff -urN tools_orig/e32env.pm tools/e32env.pm
---- tools_orig/e32env.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/e32env.pm	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/e32env.pm	2007-07-30 17:41:09.000000000 +0300
++++ tools/e32env.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -6,7 +6,7 @@
  # Contains information for makmake and associated e32tools perl programs
  # within the Epoc32 Environment
@@ -3204,8 +3157,8 @@ diff -urN tools_orig/e32env.pm tools/e32env.pm
  	$Data{SecurePlatform} = 1;
  }
 diff -urN tools_orig/e32plat.pm tools/e32plat.pm
---- tools_orig/e32plat.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/e32plat.pm	2007-07-04 09:34:21.000000000 +0300
+--- tools_orig/e32plat.pm	2007-07-30 17:41:09.000000000 +0300
++++ tools/e32plat.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -3345,8 +3298,8 @@ diff -urN tools_orig/e32plat.pm tools/e32plat.pm
  		die "ERROR: Platform \"$Candidate\" not supported\n";
  	}
 diff -urN tools_orig/e32tpver.pm tools/e32tpver.pm
---- tools_orig/e32tpver.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/e32tpver.pm	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/e32tpver.pm	2007-07-30 17:41:09.000000000 +0300
++++ tools/e32tpver.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -6,7 +6,7 @@
  
  # Returns the version number for E32TOOLP - update for each release
@@ -3357,8 +3310,8 @@ diff -urN tools_orig/e32tpver.pm tools/e32tpver.pm
  @ISA=qw(Exporter);
  @EXPORT=qw(
 diff -urN tools_orig/e32variant.pm tools/e32variant.pm
---- tools_orig/e32variant.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/e32variant.pm	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/e32variant.pm	2007-07-30 17:41:10.000000000 +0300
++++ tools/e32variant.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -2,7 +2,7 @@
  #
  # Copyright (c) 2004-2006 Symbian Software Ltd.  All rights reserved.
@@ -3445,8 +3398,8 @@ diff -urN tools_orig/e32variant.pm tools/e32variant.pm
      return $file;
  }
 diff -urN tools_orig/efreeze.pl tools/efreeze.pl
---- tools_orig/efreeze.pl	2007-07-04 20:05:25.000000000 +0300
-+++ tools/efreeze.pl	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/efreeze.pl	2007-07-30 17:41:10.000000000 +0300
++++ tools/efreeze.pl	2007-07-30 17:41:26.000000000 +0300
 @@ -19,14 +19,13 @@
  	require 5.005_03;
  # establish the path to the Perl libraries: currently the same directory as this script
@@ -3468,7 +3421,7 @@ diff -urN tools_orig/efreeze.pl tools/efreeze.pl
  # THE MAIN PROGRAM SECTION
 diff -urN tools_orig/elf2e32 tools/elf2e32
 --- tools_orig/elf2e32	1970-01-01 02:00:00.000000000 +0200
-+++ tools/elf2e32	2007-07-03 23:37:04.000000000 +0300
++++ tools/elf2e32	2007-07-30 17:41:26.000000000 +0300
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -3487,7 +3440,7 @@ diff -urN tools_orig/elf2e32 tools/elf2e32
 +wine $ROOT/$PGM.exe $*
 diff -urN tools_orig/epoc tools/epoc
 --- tools_orig/epoc	1970-01-01 02:00:00.000000000 +0200
-+++ tools/epoc	2007-07-03 23:37:04.000000000 +0300
++++ tools/epoc	2007-07-30 17:41:26.000000000 +0300
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -3502,8 +3455,8 @@ diff -urN tools_orig/epoc tools/epoc
 +
 +perl -S epoc.pl "$@"
 diff -urN tools_orig/epoc.pl tools/epoc.pl
---- tools_orig/epoc.pl	2007-07-04 20:05:25.000000000 +0300
-+++ tools/epoc.pl	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/epoc.pl	2007-07-30 17:41:09.000000000 +0300
++++ tools/epoc.pl	2007-07-30 17:41:26.000000000 +0300
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  #
@@ -3554,14 +3507,14 @@ diff -urN tools_orig/epoc.pl tools/epoc.pl
  	if (!-d $epocroot);
      return $epocroot;
 diff -urN tools_orig/epocaif.pl tools/epocaif.pl
---- tools_orig/epocaif.pl	2007-07-04 20:05:25.000000000 +0300
-+++ tools/epocaif.pl	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/epocaif.pl	2007-07-30 17:41:10.000000000 +0300
++++ tools/epocaif.pl	2007-08-11 23:29:14.000000000 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
  # epocaif.pl
  #
- # Copyright (c) Symbian Software Ltd 2001 û 2004.  All rights reserved.
+ # Copyright (c) Symbian Software Ltd 2001 – 2004.  All rights reserved.
 @@ -18,12 +20,11 @@
  BEGIN {
  	require 5.005_03;		# check user has a version of perl that will cope
@@ -3627,20 +3580,17 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  #-------------------------------------------------------
  # Copy source to epoc32\localisation
  #
-@@ -208,8 +208,10 @@
- # Run the resource compiler
+@@ -209,7 +209,8 @@
  #
  
--my $rcomp_spec = "rcomp -u ";
+ my $rcomp_spec = "rcomp -u ";
 -$rcomp_spec .= "-:$tmpdir\\_dump_of_resource_ "; # causes Rcomp to dump each resource (uncompressed and unpadded) in $tmpdir\\_dump_of_resource_1, $tmpdir\\_dump_of_resource_2, etc
-+# the version of rcomp compiled from source doesn't seem to understand how to dump resources, thus we're using the binary one
-+#my $rcomp_spec = "rcomp -u ";
-+my $rcomp_spec = "wine \$EPOCROOT/epoc32/tools/rcomp.exe -u ";
++#my $rcomp_spec = "wine \$EPOCROOT/epoc32/tools/rcomp.exe -u ";
 +$rcomp_spec .= "-:$tmpdir\/_dump_of_resource_ "; # causes Rcomp to dump each resource (uncompressed and unpadded) in $tmpdir\/_dump_of_resource_1, $tmpdir\/_dump_of_resource_2, etc
  $rcomp_spec .= "$opt_o $opt_h -s\"$rpp_name\" -i\"$sourcefile\"";
  
  print "* $rcomp_spec\n" if ($opt_v);
-@@ -230,15 +232,19 @@
+@@ -230,15 +231,19 @@
  
  if ($opt_b ne "")
  	{
@@ -3664,7 +3614,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  	
  	if ($? != 0)
  		{
-@@ -248,23 +254,23 @@
+@@ -248,23 +253,23 @@
  	}
  elsif ($opt_m ne "")
  	{
@@ -3694,7 +3644,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  binmode(DUMP_OF_RESOURCE_1);
  my $data;
  my $numberOfBytesRead=read(DUMP_OF_RESOURCE_1, $data, 4);
-@@ -279,8 +285,8 @@
+@@ -279,8 +284,8 @@
  # Produce the AIF file from the RSC and MBM files
  #
  
@@ -3705,7 +3655,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  
  print "* $uidcrc\n" if ($opt_v);
  system($uidcrc);
-@@ -301,17 +307,17 @@
+@@ -301,17 +306,17 @@
  	}
  
  
@@ -3726,7 +3676,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  my $numberOfPaddingBytes=(4-($lengthOfRscBlock%4))%4;
  print(OUT_AIF pack('V', $lengthOfRscBlock));
  if ($xipaif ne 0)
-@@ -319,10 +325,10 @@
+@@ -319,10 +324,10 @@
  	print(OUTXIP_AIF pack('V', $lengthOfRscBlock));
  	}
  print "* Appending the RSC-block\n" if ($opt_v);
@@ -3739,7 +3689,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  	}
  # append any necessary padding bytes so that the file-offset of the start of the MBM-block is a multiple of 4-bytes
  print(OUT_AIF ('_' x $numberOfPaddingBytes));
-@@ -330,15 +336,15 @@
+@@ -330,15 +335,15 @@
  	{
  	print(OUTXIP_AIF ('_' x $numberOfPaddingBytes));
  	}
@@ -3759,7 +3709,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  	}
  
  close(OUT_AIF) or die("* Can't close temporary file\n");
-@@ -346,23 +352,23 @@
+@@ -346,23 +351,23 @@
  	{
  	close(OUTXIP_AIF) or die("* Can't close temporary file\n");
  	}
@@ -3793,7 +3743,7 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
  exit 0;
  
  #-------------------------------------------------------
-@@ -372,7 +378,7 @@
+@@ -372,7 +377,7 @@
  sub quoted_path
      {
      my ($arg) = @_;
@@ -3802,9 +3752,515 @@ diff -urN tools_orig/epocaif.pl tools/epocaif.pl
      if ($curdrive eq "x")
  		{
  		$curdrive="";
+diff -urN tools_orig/epocaif.pl.orig tools/epocaif.pl.orig
+--- tools_orig/epocaif.pl.orig	1970-01-01 02:00:00.000000000 +0200
++++ tools/epocaif.pl.orig	2007-07-30 17:41:10.000000000 +0300
+@@ -0,0 +1,502 @@
++# epocaif.pl
++#
++# Copyright (c) Symbian Software Ltd 2001 – 2004.  All rights reserved.
++#
++
++# Wrapper to support the EPOC AIF Compiler
++
++
++use FindBin;		# for FindBin::Bin
++use File::Copy;		# for copy()
++use Cwd;		# for cwd
++use File::Basename;	# for basename()
++
++my $PerlBinPath;	# fully qualified pathname of the directory containing this script
++my $curdrive="x";	    	# will be initialised when first needed
++
++# establish the path to the Perl binaries
++BEGIN {
++	require 5.005_03;		# check user has a version of perl that will cope
++	$PerlBinPath = $FindBin::Bin;	# X:/epoc32/tools
++	$PerlBinPath =~ s/\//\\/g;	# X:\epoc32\tools
++}
++use lib $PerlBinPath;
++use E32Variant;         # for variant specific macros
++use Pathutl;
++use Preprocessor;
++
++sub print_usage
++	{
++#........1.........2.........3.........4.........5.........6.........7.....
++	print <<USAGE_EOF;
++
++Usage:
++  epocaif [options] srcfile [-o outputfile] [-t tmpdir] [-b "bmps" | -m mbm] [-l "TargetPath:CWD"]
++
++
++The available options are
++
++   -Ixxx  -- C++ preprocessor arguments
++   -o	  -- output AIF file name including path
++   -t	  -- tempory directory for intermediate files
++   -b	  -- list of bitmaps Eg., "-b/c8\\location\\bmp1 /c8\\location\\bmp2.."
++   -m	  -- compiled MBM file (alternative to -b)
++   -l	  -- if specified, captures all source to \\epoc32\\localisation\\...
++
++The aif resource file is then passed through the C++ preprocessor, using any 
++specified preprocessor arguments, and then compiled with RCOMP.EXE to 
++generate a compiled resource.
++The -m or -b option is used to generate a suitable MBM file, if required.
++The MBM and the compiled resource are then combined to produce an AIF file.
++
++
++USAGE_EOF
++	}
++
++#-------------------------------------------------------
++# Process commandline arguments
++#
++# Can't use the Getopt package because it doesn't like the -D and -I style options
++#
++my $sourcefile="";
++my $opt_o="";
++my $opt_h="";	
++my $tmpdir="";
++my $opt_v=1;
++my $opt_b="";
++my $opt_l="";
++my $opt_m="";
++my $TrgPath;
++my $xipaif=1;
++
++my $exe = &PreprocessorToUseExe();
++my $cpp_spec= "$exe -undef -C ";	    # preserve comments
++
++my $errors = 0;
++while (@ARGV)
++	{
++	my $arg = shift @ARGV;
++
++	if ($arg =~ /^-I-$/)
++		{
++		$cpp_spec .= "-I- ";
++		next;
++		}
++	if ($arg =~ /^-I(.*)$/)
++		{
++		$cpp_spec .= "-I ";
++		if ($1 eq "")
++		    {
++		    $arg = shift @ARGV;
++		    }
++		else
++		    {
++		    $arg = $1;
++		    }
++		$cpp_spec .= quoted_path($arg)." ";
++		next;
++		}
++	if ($arg =~ /^-v$/)
++		{
++		$opt_v =1;
++		next;
++		}
++	if ($arg =~ /^-o(.*)$/)
++		{
++		$opt_o =$1;
++		$TrgPath = $opt_o;
++		next;
++		}
++
++	if ($arg =~ /^-t(.*)\\?$/)
++		{
++		$tmpdir =$1;
++		next;
++		}
++	if ($arg =~ /^-b(.*)$/)
++		{
++		$opt_b =$1;
++		next;
++		}	
++	if ($arg =~ /^-m(.*)$/)
++		{
++		$opt_m =$1;
++		next;
++		}	
++	if ($arg =~ /^-l(.*)$/)
++		{
++		$opt_l =$1;
++		next;
++		}	
++
++	if ($arg =~ /^-/)
++		{
++		print "Unknown arg: $arg\n";
++		$errors++;
++		next;
++		}
++	$sourcefile=$arg;
++	}
++
++if ($opt_m ne "" && $opt_b ne "")
++	{
++	print "Can't specify both -m and -b\n";
++	$errors++;
++	}
++if ($errors || $sourcefile eq "")
++	{
++	print_usage();
++	exit 1;
++	}
++
++my $rss_base = basename($sourcefile);
++my ($rssfile) = split(/\./, $rss_base);	    # remove extension
++my $rpp_name = "$tmpdir\\$rssfile.rpp";
++my $outputfile="$tmpdir\\AIF.RSC";	
++my $headerfile=$opt_h;
++
++if ($opt_v)
++	{
++	print "* Source file:   $sourcefile\n";
++	print "* Resource file: $outputfile\n" if ($outputfile ne "");
++	}
++
++$opt_o = "-o\"$outputfile\"" if ($outputfile ne "");
++$opt_h = "-h\"$headerfile\"" if ($headerfile ne "");
++
++
++#-------------------------------------------------------
++# Run the preprocessor
++#
++
++my $variantMacroHRHFile = Variant_GetMacroHRHFile();
++if($variantMacroHRHFile){
++    my $variantFilePath = Path_Split('Path',$variantMacroHRHFile);
++    chop ( $variantFilePath );
++    $cpp_spec .= " -I \"" . &Path_RltToWork($variantFilePath) . "\" -include " . &Path_RltToWork($variantMacroHRHFile) . " "; 
++}
++
++$cpp_spec .= "-I $PerlBinPath\\..\\include ";	# extra path to support shared tools
++$cpp_spec .= "-D_UNICODE ";
++
++$cpp_spec .= quoted_path($sourcefile) ." -o ". quoted_path($rpp_name);
++
++print "* $cpp_spec\n" if ($opt_v);
++system($cpp_spec);
++
++my $cpp_status = $?;
++die "* cpp failed\n" if ($cpp_status != 0);
++
++
++#-------------------------------------------------------
++# Copy source to epoc32\localisation
++#
++
++if ($opt_l ne "")
++{
++use lockit_info;
++	my ($rssfile, $FileType) = split(/\./, basename($TrgPath));
++	&Lockit_SrcFile($rssfile, $rpp_name, $opt_l, $FileType, $opt_b);
++}
++
++#-------------------------------------------------------
++# Merge rls strings to rpp
++#
++&Merge_rls_string($rpp_name);
++
++#-------------------------------------------------------
++# Run the resource compiler
++#
++
++my $rcomp_spec = "rcomp -u ";
++$rcomp_spec .= "-:$tmpdir\\_dump_of_resource_ "; # causes Rcomp to dump each resource (uncompressed and unpadded) in $tmpdir\\_dump_of_resource_1, $tmpdir\\_dump_of_resource_2, etc
++$rcomp_spec .= "$opt_o $opt_h -s\"$rpp_name\" -i\"$sourcefile\"";
++
++print "* $rcomp_spec\n" if ($opt_v);
++system($rcomp_spec);
++if ($? != 0)
++	{
++	print "* RCOMP failed - deleting output files\n";
++	unlink $outputfile if ($outputfile ne "");
++	unlink $headerfile if ($headerfile ne "");
++	exit 1;
++	}
++print "* deleting $rpp_name\n" if ($opt_v);
++unlink $rpp_name;
++
++#-------------------------------------------------------
++# Run bmconv, if needed
++#
++
++if ($opt_b ne "")
++	{
++	print "* bmconv /q $tmpdir\\AIF.MBM $opt_b\n" if ($opt_v);
++	system("bmconv /q $tmpdir\\AIF.MBM $opt_b");
++	if ($? != 0)
++		{
++		print "* BMCONV failed\n";
++		exit 1;
++		}
++	print "* bmconv /q /s $tmpdir\\AIF_XIP.MBM $opt_b\n" if ($opt_v);
++	system("bmconv /q /s $tmpdir\\AIF_xip.MBM $opt_b");
++	
++	if ($? != 0)
++		{
++		print "* BMCONV failed\n";
++		exit 1;
++		}
++	}
++elsif ($opt_m ne "")
++	{
++	print "* copy $opt_m $tmpdir\\AIF.MBM\n" if ($opt_v); 
++	copy($opt_m, "$tmpdir\\AIF.MBM");
++	# no xip file genarated 
++	$xipaif=0;
++	}
++else
++	{
++	# no bitmap specified - this is legitimate
++	unlink("$tmpdir\\AIF.MBM");
++	unlink("$tmpdir\\AIF_xip.MBM");
++	}
++
++#-------------------------------------------------------
++# Get the from UID from the first four bytes of "$tmpdir\\_dump_of_resource_1"
++#
++
++open(DUMP_OF_RESOURCE_1, "< $tmpdir\\_dump_of_resource_1") or die("* Can't open dump file\n");
++binmode(DUMP_OF_RESOURCE_1);
++my $data;
++my $numberOfBytesRead=read(DUMP_OF_RESOURCE_1, $data, 4);
++defined($numberOfBytesRead) or die("* Can't read from dump file\n");
++($numberOfBytesRead>=4) or die("* Dump file too short\n");
++my $uid=(unpack('V', $data))[0];
++undef($data);
++undef($numberOfBytesRead);
++close(DUMP_OF_RESOURCE_1) or die("* Can't close dump file\n");
++
++#-------------------------------------------------------
++# Produce the AIF file from the RSC and MBM files
++#
++
++my $uidcrc = "uidcrc.exe 0x101fb032 0 ".sprintf('0x%08x', $uid)." $tmpdir\\out.aif";
++my $uidcrc_xip = "uidcrc.exe 0x101fb032 0 ".sprintf('0x%08x', $uid)." $tmpdir\\out_xip.aif";
++
++print "* $uidcrc\n" if ($opt_v);
++system($uidcrc);
++if ($? != 0)
++	{
++	print "* UIDCRC failed\n";
++	exit 1;
++	}
++if ($xipaif ne 0)
++	{	
++	print "* $uidcrc\n" if ($opt_v);
++	system($uidcrc_xip);
++	if ($? != 0)
++		{
++		print "* UIDCRC failed\n";
++		exit 1;
++		}
++	}
++
++
++open(OUT_AIF, ">> $tmpdir\\out.aif") or die("* Can't open temporary file\n");
++binmode(OUT_AIF);
++
++if ($xipaif ne 0)
++	{
++	open(OUTXIP_AIF, ">> $tmpdir\\out_xip.aif") or die("* Can't open temporary file\n");
++	binmode(OUTXIP_AIF);
++	}
++
++print "* Writing length of the RSC-block\n" if ($opt_v);
++my $lengthOfRscBlock=-s("$tmpdir\\aif.rsc");
++my $numberOfPaddingBytes=(4-($lengthOfRscBlock%4))%4;
++print(OUT_AIF pack('V', $lengthOfRscBlock));
++if ($xipaif ne 0)
++	{
++	print(OUTXIP_AIF pack('V', $lengthOfRscBlock));
++	}
++print "* Appending the RSC-block\n" if ($opt_v);
++&appendFile(\*OUT_AIF, "$tmpdir\\aif.rsc");
++if ($xipaif ne 0)
++	{
++	&appendFile(\*OUTXIP_AIF, "$tmpdir\\aif.rsc");
++	}
++# append any necessary padding bytes so that the file-offset of the start of the MBM-block is a multiple of 4-bytes
++print(OUT_AIF ('_' x $numberOfPaddingBytes));
++if ($xipaif ne 0)
++	{
++	print(OUTXIP_AIF ('_' x $numberOfPaddingBytes));
++	}
++if (-e("$tmpdir\\aif.mbm"))
++	{
++	print "* Appending the MBM-block\n" if ($opt_v);
++	&appendFile(\*OUT_AIF, "$tmpdir\\aif.mbm");
++	}
++if (-e("$tmpdir\\aif_xip.mbm"))
++	{
++	print "* Appending the XIPMBM-block\n" if ($opt_v);
++	&appendFile(\*OUTXIP_AIF, "$tmpdir\\aif_xip.mbm");
++	}
++
++close(OUT_AIF) or die("* Can't close temporary file\n");
++if ($xipaif ne 0)
++	{
++	close(OUTXIP_AIF) or die("* Can't close temporary file\n");
++	}
++print "* copy $tmpdir\\out.aif $TrgPath\n" if ($opt_v);
++copy("$tmpdir\\out.aif", "$TrgPath");
++if ($xipaif ne 0)
++	{
++	my $basepath = &Path_Split('Path', $TrgPath);
++	my $ext=&Path_Split('Ext',  $TrgPath);
++	my $basename = basename($TrgPath, $ext);
++	my $xip="_xip";
++	print "* copy $tmpdir\\out_xip.aif $basepath$basename$xip$ext\n" if ($opt_v);
++	copy("$tmpdir\\out_xip.aif", "$basepath$basename$xip$ext");
++	}
++unlink("$tmpdir\\_dump_of_resource_*");
++unlink("$tmpdir\\aif.rsc");
++unlink("$tmpdir\\aif.mbm");
++unlink("$tmpdir\\out.aif");
++unlink("$tmpdir\\aif_xip.mbm");
++unlink("$tmpdir\\out_xip.aif");
++exit 0;
++
++#-------------------------------------------------------
++# Subroutine: convert path into something acceptable to CPP.EXE
++#
++
++sub quoted_path
++    {
++    my ($arg) = @_;
++    return "\"$arg\"" if ($arg !~ /^\\[^\\]/);	# not an absolute path
++    if ($curdrive eq "x")
++		{
++		$curdrive="";
++		$curdrive=$1 if (cwd =~ /^(.:)/);	
++		}
++    return "\"$curdrive$arg\"";
++    }
++
++#-------------------------------------------------------
++# Subroutine: Merge the rls strings in the rpp file specified
++#
++sub Merge_rls_string
++	{
++	my ($rppfile) = @_;
++
++	my $line;
++	my $StringId;
++	my $key;
++	my $value;
++	my $StringToSubstitute;
++	my %ResourceString;
++	
++	print "* merging text strings to $rppfile\n" if ($opt_v);
++	
++	open NEWRPP, ">$rppfile.new" or die "* Can't write to $rppfile.new";
++	open RPP, "$rppfile" or die "* Can't open $rppfile";
++	
++	while ($line = <RPP>) 	{
++		while (($StringId, $StringToSubstitute)=each %ResourceString)
++		{
++			$line=~s/\b$StringId\b/$StringToSubstitute/g if ($line !~ /^rls_string/);
++		}
++	
++		# find quoted "" strings
++		if($line =~ /^rls_string\s+(\S+)\s+(.*$)/)
++		{
++			my $text = $2;
++			$key = $1;
++			$line=~s/(.*)/\/\/$1/;
++			my $substr_count = 0;
++			if(!exists $ResourceString{$key})
++			{
++			SUBSTR:	while (1)
++			{
++				# find quoted "" strings e.g. "hello"
++				if($text =~ /^(\s*\"(.*?\\.)*.*?\")/)		
++				{
++					$value = $1;
++					$text = $';
++					++$substr_count;
++				}
++	
++				# find quoted '' strings. e.g. 'world'
++				elsif($text =~ /^(\s*\'(.*?\\.)*.*?\')/)			
++				{
++					$value = $1;
++					$text = $';
++					++$substr_count;
++				}
++	
++				# find hex strings e.g. <0x34><0x45><0x65>
++				elsif($text =~ /^(\s*(<.*?>)+)/)		
++				{
++					$value = $1;
++					$text = $';
++					++$substr_count;
++				}
++	
++				# find c comment e.g. /*hello world*/ (may exist between strings)
++				elsif($text =~ /^(\s*\/\*.*?\*\/)/)		
++				{
++					$text = $';
++					next SUBSTR; # ignore embedded comment
++				}
++	
++				# find c++ comment e.g. //hello world (may exist after strings)
++				elsif($text =~ /^(\s*\/\/.*$)/)		
++				{
++					$text = $';
++					next SUBSTR; # ignore trailing comment
++				}
++	
++				# exit search
++				else
++				{
++					if ($substr_count == 0)
++					{
++						warn("WARNING: rls_string $key either has incorrect syntax or no value\n");
++					}
++					last SUBSTR;
++				}
++			$ResourceString{$key} .= $value;
++			}
++		  	}
++		}
++		print NEWRPP $line;
++	}
++
++	close RPP;
++	close NEWRPP;
++	copy ("$rppfile.new", "$rppfile");
++	unlink ("$rppfile.new");
++	}
++
++#-------------------------------------------------------
++# Subroutine: Append a file into the open (binary) file already opened
++#
++sub appendFile
++	{
++	my $fileHandleOfTarget=shift;
++	my $fileNameOfSource=shift;
++	open(SOURCE, "< $fileNameOfSource") or die("* Can't open $fileNameOfSource\n");
++	binmode(SOURCE);
++	for (;;)
++		{
++		my $data;
++		my $numberOfBytesRead=read(SOURCE, $data, 1024);
++		defined($numberOfBytesRead) or die("* Can't read from $fileNameOfSource\n");
++		if ($numberOfBytesRead==0)
++			{
++			last;
++			}
++		print($fileHandleOfTarget $data);
++		}
++	close(SOURCE) or die("* Can't close $fileNameOfSource\n");
++	}
++
 diff -urN tools_orig/epocmbm.pl tools/epocmbm.pl
---- tools_orig/epocmbm.pl	2007-07-04 20:05:25.000000000 +0300
-+++ tools/epocmbm.pl	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/epocmbm.pl	2007-07-30 17:41:10.000000000 +0300
++++ tools/epocmbm.pl	2007-07-30 17:41:26.000000000 +0300
 @@ -14,7 +14,7 @@
  BEGIN {
  	require 5.005_03;		# check user has a version of perl that will cope
@@ -3830,8 +4286,8 @@ diff -urN tools_orig/epocmbm.pl tools/epocmbm.pl
  		{
  		print "* BMCONV failed\n";
 diff -urN tools_orig/epocrc.pl tools/epocrc.pl
---- tools_orig/epocrc.pl	2007-07-04 20:05:25.000000000 +0300
-+++ tools/epocrc.pl	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/epocrc.pl	2007-07-30 17:41:10.000000000 +0300
++++ tools/epocrc.pl	2007-07-30 17:41:26.000000000 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -3875,7 +4331,7 @@ diff -urN tools_orig/epocrc.pl tools/epocrc.pl
  $rcomp_spec .= "-v " if ($opt_vmore);
 diff -urN tools_orig/eshell tools/eshell
 --- tools_orig/eshell	1970-01-01 02:00:00.000000000 +0200
-+++ tools/eshell	2007-07-03 23:37:04.000000000 +0300
++++ tools/eshell	2007-07-30 17:41:26.000000000 +0300
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -3890,8 +4346,8 @@ diff -urN tools_orig/eshell tools/eshell
 +
 +perl -S eshell.pl "$@"
 diff -urN tools_orig/eshell.pl tools/eshell.pl
---- tools_orig/eshell.pl	2007-07-04 20:05:25.000000000 +0300
-+++ tools/eshell.pl	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/eshell.pl	2007-07-30 17:41:10.000000000 +0300
++++ tools/eshell.pl	2007-07-30 17:41:26.000000000 +0300
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  #
@@ -3930,9 +4386,17 @@ diff -urN tools_orig/eshell.pl tools/eshell.pl
      die "ERROR: EPOCROOT must specify an existing directory.\n" 
  	if (!-d $epocroot);
      return $epocroot;
+diff -urN tools_orig/extmake tools/extmake
+--- tools_orig/extmake	1970-01-01 02:00:00.000000000 +0200
++++ tools/extmake	2007-08-11 23:28:40.000000000 +0300
+@@ -0,0 +1,4 @@
++#!/bin/sh
++
++wine make $*
++
 diff -urN tools_orig/fixupsym.pl tools/fixupsym.pl
---- tools_orig/fixupsym.pl	2007-07-04 20:05:25.000000000 +0300
-+++ tools/fixupsym.pl	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/fixupsym.pl	2007-07-30 17:41:10.000000000 +0300
++++ tools/fixupsym.pl	2007-07-30 17:41:26.000000000 +0300
 @@ -406,7 +406,7 @@
    {
  	my $build;
@@ -3944,7 +4408,7 @@ diff -urN tools_orig/fixupsym.pl tools/fixupsym.pl
  	  &E32tpver, ")\n";
 diff -urN tools_orig/genbldinf.pl tools/genbldinf.pl
 --- tools_orig/genbldinf.pl	1970-01-01 02:00:00.000000000 +0200
-+++ tools/genbldinf.pl	2007-07-03 23:37:04.000000000 +0300
++++ tools/genbldinf.pl	2007-07-30 17:41:26.000000000 +0300
 @@ -0,0 +1,38 @@
 +#!/usr/bin/perl -w
 +#
@@ -3985,8 +4449,8 @@ diff -urN tools_orig/genbldinf.pl tools/genbldinf.pl
 +print "creating $BLDINF with:\n";
 +system ("cat $BLDINF");
 diff -urN tools_orig/genutl.pm tools/genutl.pm
---- tools_orig/genutl.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/genutl.pm	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/genutl.pm	2007-07-30 17:41:10.000000000 +0300
++++ tools/genutl.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -6,7 +6,7 @@
  
  # Contains utility subroutines for MAKMAKE and associated scripts
@@ -3997,8 +4461,8 @@ diff -urN tools_orig/genutl.pm tools/genutl.pm
  require Exporter;
  @ISA=qw(Exporter);
 diff -urN tools_orig/hpsym.pl tools/hpsym.pl
---- tools_orig/hpsym.pl	2007-07-04 20:05:25.000000000 +0300
-+++ tools/hpsym.pl	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/hpsym.pl	2007-07-30 17:41:10.000000000 +0300
++++ tools/hpsym.pl	2007-07-30 17:41:26.000000000 +0300
 @@ -161,7 +161,7 @@
    {
  	my $build;
@@ -4009,8 +4473,8 @@ diff -urN tools_orig/hpsym.pl tools/hpsym.pl
  	  " suitable for use\n        with a HP logic analyser (Build ",
  	  &E32tpver, ")\n";
 diff -urN tools_orig/ide_cw.pm tools/ide_cw.pm
---- tools_orig/ide_cw.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/ide_cw.pm	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/ide_cw.pm	2007-07-30 17:41:10.000000000 +0300
++++ tools/ide_cw.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -1261,7 +1261,7 @@
  		$UidText.=")\n";
  		$UidText.="#pragma data_seg()\n";
@@ -4021,8 +4485,8 @@ diff -urN tools_orig/ide_cw.pm tools/ide_cw.pm
  		}
  
 diff -urN tools_orig/lockit_info.pm tools/lockit_info.pm
---- tools_orig/lockit_info.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/lockit_info.pm	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/lockit_info.pm	2007-07-30 17:41:10.000000000 +0300
++++ tools/lockit_info.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -22,7 +22,7 @@
  	Close_InfoFile
  );
@@ -4226,8 +4690,8 @@ diff -urN tools_orig/lockit_info.pm tools/lockit_info.pm
  	$Files{$LockitInfoPath} =1;
  	return %Files;
 diff -urN tools_orig/makdeps.pm tools/makdeps.pm
---- tools_orig/makdeps.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/makdeps.pm	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/makdeps.pm	2007-07-30 17:41:10.000000000 +0300
++++ tools/makdeps.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -7,7 +7,7 @@
  # Module which wraps the dependency information provided the preprocessor when invoked with certain switches
  # so that dependency information rather than preprocessing information is produced.
@@ -4336,8 +4800,8 @@ diff -urN tools_orig/makdeps.pm tools/makdeps.pm
  			}
  		}
 diff -urN tools_orig/makedef.pl tools/makedef.pl
---- tools_orig/makedef.pl	2007-07-04 20:05:25.000000000 +0300
-+++ tools/makedef.pl	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/makedef.pl	2007-07-30 17:41:10.000000000 +0300
++++ tools/makedef.pl	2007-07-30 17:41:26.000000000 +0300
 @@ -21,13 +21,12 @@
  BEGIN {
  	require 5.005_03;				# check user has a version of perl that will cope
@@ -4381,7 +4845,7 @@ diff -urN tools_orig/makedef.pl tools/makedef.pl
  				$Comment = $1;
 diff -urN tools_orig/makekeys tools/makekeys
 --- tools_orig/makekeys	1970-01-01 02:00:00.000000000 +0200
-+++ tools/makekeys	2007-07-03 23:37:04.000000000 +0300
++++ tools/makekeys	2007-07-30 17:41:26.000000000 +0300
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -4400,7 +4864,7 @@ diff -urN tools_orig/makekeys tools/makekeys
 +wine $ROOT/$PGM.exe $*
 diff -urN tools_orig/makesis tools/makesis
 --- tools_orig/makesis	1970-01-01 02:00:00.000000000 +0200
-+++ tools/makesis	2007-07-03 23:37:04.000000000 +0300
++++ tools/makesis	2007-07-30 17:41:26.000000000 +0300
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -4418,8 +4882,8 @@ diff -urN tools_orig/makesis tools/makesis
 +ROOT=$EPOCROOT/epoc32/tools
 +wine $ROOT/$PGM.exe $*
 diff -urN tools_orig/makhelp.pm tools/makhelp.pm
---- tools_orig/makhelp.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/makhelp.pm	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/makhelp.pm	2007-07-30 17:41:10.000000000 +0300
++++ tools/makhelp.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -4,7 +4,7 @@
  #
  
@@ -4458,7 +4922,7 @@ diff -urN tools_orig/makhelp.pm tools/makhelp.pm
  EPOCALLOWDLLDATA
 diff -urN tools_orig/makmake tools/makmake
 --- tools_orig/makmake	1970-01-01 02:00:00.000000000 +0200
-+++ tools/makmake	2007-07-03 23:37:04.000000000 +0300
++++ tools/makmake	2007-07-30 17:41:26.000000000 +0300
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -4473,8 +4937,8 @@ diff -urN tools_orig/makmake tools/makmake
 +
 +perl -S makmake.pl "$@"
 diff -urN tools_orig/makmake.pl tools/makmake.pl
---- tools_orig/makmake.pl	2007-07-04 20:05:25.000000000 +0300
-+++ tools/makmake.pl	2007-07-04 09:49:14.000000000 +0300
+--- tools_orig/makmake.pl	2007-07-30 17:41:10.000000000 +0300
++++ tools/makmake.pl	2007-07-30 17:41:26.000000000 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -4849,8 +5313,8 @@ diff -urN tools_orig/makmake.pl tools/makmake.pl
 \ No newline at end of file
 +}
 diff -urN tools_orig/maksym.pl tools/maksym.pl
---- tools_orig/maksym.pl	2007-07-04 20:05:25.000000000 +0300
-+++ tools/maksym.pl	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/maksym.pl	2007-07-30 17:41:10.000000000 +0300
++++ tools/maksym.pl	2007-07-30 17:41:26.000000000 +0300
 @@ -325,7 +325,7 @@
  {
      my $build;
@@ -4861,8 +5325,8 @@ diff -urN tools_orig/maksym.pl tools/maksym.pl
  	&E32tpver, ")\n";
      &usage;
 diff -urN tools_orig/memtrace.pl tools/memtrace.pl
---- tools_orig/memtrace.pl	2007-07-04 20:05:25.000000000 +0300
-+++ tools/memtrace.pl	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/memtrace.pl	2007-07-30 17:41:10.000000000 +0300
++++ tools/memtrace.pl	2007-07-30 17:41:26.000000000 +0300
 @@ -237,7 +237,7 @@
  	{
  	my $build;
@@ -4873,8 +5337,8 @@ diff -urN tools_orig/memtrace.pl tools/memtrace.pl
  	  "Postprocess EPOC memory usage trace (Build ", &E32tpver, ")\n";
  	&usage;
 diff -urN tools_orig/mmp.pm tools/mmp.pm
---- tools_orig/mmp.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/mmp.pm	2007-07-04 00:25:51.000000000 +0300
+--- tools_orig/mmp.pm	2007-07-30 17:41:10.000000000 +0300
++++ tools/mmp.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -5849,8 +6313,8 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  
  		if ($Def{CheckSource_MMPEntry})
 diff -urN tools_orig/modload.pm tools/modload.pm
---- tools_orig/modload.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/modload.pm	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/modload.pm	2007-07-30 17:41:10.000000000 +0300
++++ tools/modload.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -7,7 +7,7 @@
  # Runtime module-loading routine for loading e32tools modules into 'main' module
  
@@ -5890,8 +6354,8 @@ diff -urN tools_orig/modload.pm tools/modload.pm
  	}
  }
 diff -urN tools_orig/output.pm tools/output.pm
---- tools_orig/output.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/output.pm	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/output.pm	2007-07-30 17:41:10.000000000 +0300
++++ tools/output.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -6,7 +6,7 @@
  
  # Text formatting module
@@ -5922,8 +6386,8 @@ diff -urN tools_orig/output.pm tools/output.pm
  }
  
 diff -urN tools_orig/pathutl.pm tools/pathutl.pm
---- tools_orig/pathutl.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/pathutl.pm	2007-07-04 09:22:06.000000000 +0300
+--- tools_orig/pathutl.pm	2007-07-30 17:41:10.000000000 +0300
++++ tools/pathutl.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -9,7 +9,7 @@
  #	Distinguish paths from filepaths by assuming paths end with "\"
  #	therefore ensure this is the case for all paths coming into programs using this module
@@ -6216,7 +6680,7 @@ diff -urN tools_orig/pathutl.pm tools/pathutl.pm
  
 diff -urN tools_orig/petran tools/petran
 --- tools_orig/petran	1970-01-01 02:00:00.000000000 +0200
-+++ tools/petran	2007-07-03 23:37:04.000000000 +0300
++++ tools/petran	2007-07-30 17:41:26.000000000 +0300
 @@ -0,0 +1,12 @@
 +#! /bin/bash
 +#
@@ -6232,7 +6696,7 @@ diff -urN tools_orig/petran tools/petran
 +wine $EPOCROOT/epoc32/tools/petran.exe "$@"
 diff -urN tools_orig/pfsdump tools/pfsdump
 --- tools_orig/pfsdump	1970-01-01 02:00:00.000000000 +0200
-+++ tools/pfsdump	2007-07-03 23:37:04.000000000 +0300
++++ tools/pfsdump	2007-07-30 17:41:26.000000000 +0300
 @@ -0,0 +1,17 @@
 +#!/bin/sh
 +#
@@ -6252,8 +6716,8 @@ diff -urN tools_orig/pfsdump tools/pfsdump
 +ROOT=$EPOCROOT/epoc32/tools
 +wine $ROOT/$PGM.exe $*
 diff -urN tools_orig/prepdef.pl tools/prepdef.pl
---- tools_orig/prepdef.pl	2007-07-04 20:05:25.000000000 +0300
-+++ tools/prepdef.pl	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/prepdef.pl	2007-07-30 17:41:10.000000000 +0300
++++ tools/prepdef.pl	2007-07-30 17:41:26.000000000 +0300
 @@ -14,14 +14,13 @@
  	require 5.005_03;
  # establish the path to the Perl libraries: currently the same directory as this script
@@ -6274,8 +6738,8 @@ diff -urN tools_orig/prepdef.pl tools/prepdef.pl
  
  # THE MAIN PROGRAM SECTION
 diff -urN tools_orig/prepfile.pm tools/prepfile.pm
---- tools_orig/prepfile.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/prepfile.pm	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/prepfile.pm	2007-07-30 17:41:10.000000000 +0300
++++ tools/prepfile.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -7,7 +7,7 @@
  # module for preprocessing makmake-style project files
  
@@ -6352,8 +6816,8 @@ diff -urN tools_orig/prepfile.pm tools/prepfile.pm
  			@Tmp=('#', $CurFile);
  			push @{$ArrayRef}, [ @Tmp ];
 diff -urN tools_orig/preprocessor.pm tools/preprocessor.pm
---- tools_orig/preprocessor.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/preprocessor.pm	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/preprocessor.pm	2007-07-30 17:41:10.000000000 +0300
++++ tools/preprocessor.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -7,7 +7,7 @@
  # Used to allow us to access and manipulate other pre processors
  #
@@ -6381,7 +6845,7 @@ diff -urN tools_orig/preprocessor.pm tools/preprocessor.pm
 +1;
 diff -urN tools_orig/rcomp tools/rcomp
 --- tools_orig/rcomp	1970-01-01 02:00:00.000000000 +0200
-+++ tools/rcomp	2007-07-03 23:37:04.000000000 +0300
++++ tools/rcomp	2007-07-30 17:41:26.000000000 +0300
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -6400,7 +6864,7 @@ diff -urN tools_orig/rcomp tools/rcomp
 +wine $ROOT/$PGM.exe $*
 diff -urN tools_orig/signsis tools/signsis
 --- tools_orig/signsis	1970-01-01 02:00:00.000000000 +0200
-+++ tools/signsis	2007-07-03 23:37:04.000000000 +0300
++++ tools/signsis	2007-07-30 17:41:26.000000000 +0300
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -6418,8 +6882,8 @@ diff -urN tools_orig/signsis tools/signsis
 +ROOT=$EPOCROOT/epoc32/tools
 +wine $ROOT/$PGM.exe $*
 diff -urN tools_orig/trgtype.pm tools/trgtype.pm
---- tools_orig/trgtype.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/trgtype.pm	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/trgtype.pm	2007-07-30 17:41:10.000000000 +0300
++++ tools/trgtype.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -10,7 +10,7 @@
  # Look at the existing types for an appropriate example
  #
@@ -6554,8 +7018,8 @@ diff -urN tools_orig/trgtype.pm tools/trgtype.pm
  
  	unless ($TrgHash{UID2}) {
 diff -urN tools_orig/winutl.pm tools/winutl.pm
---- tools_orig/winutl.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/winutl.pm	2007-07-04 00:29:04.000000000 +0300
+--- tools_orig/winutl.pm	2007-07-30 17:41:10.000000000 +0300
++++ tools/winutl.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -7,7 +7,7 @@
  
  # this package does various ancillary things for windows modules
@@ -6599,8 +7063,8 @@ diff -urN tools_orig/winutl.pm tools/winutl.pm
  	while (<PIPE>) {
  		unless ($DoneCheck) {
 diff -urN tools_orig/wrappermakefile.pm tools/wrappermakefile.pm
---- tools_orig/wrappermakefile.pm	2007-07-04 20:05:25.000000000 +0300
-+++ tools/wrappermakefile.pm	2007-07-03 23:37:04.000000000 +0300
+--- tools_orig/wrappermakefile.pm	2007-07-30 17:41:10.000000000 +0300
++++ tools/wrappermakefile.pm	2007-07-30 17:41:26.000000000 +0300
 @@ -11,7 +11,7 @@
  	GenerateWrapper
  );
