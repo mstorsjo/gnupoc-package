@@ -2,7 +2,7 @@
 
 for i in testcases/*.exe; do
 	echo $i
-	./test.sh $i
+	./testexe.sh $i
 done
 for i in testcases/*.dll; do
 	echo $i
