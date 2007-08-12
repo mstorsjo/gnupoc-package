@@ -284,8 +284,8 @@ unsigned char __x = __px[0]; __px[0] = __px[1]; __px[1] = __x; \
 #define pflipi(a,n) (void)0
 #define pflips(a,n) (void)0
 
-#define vflipi(x) (void)0
-#define vflips(x) (void)0
+#define vflipi(x) (x)
+#define vflips(x) (x)
 
 #define flipIMAGE_DOS_HEADER(x) (void)0
 #define flipIMAGE_OS2_HEADER(x) (void)0
