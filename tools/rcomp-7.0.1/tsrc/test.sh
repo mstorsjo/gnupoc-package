@@ -101,7 +101,7 @@ rm aknexsettinglistaif.rsc.test aknexsettinglistaif.rsc.test_dump_1
 mkdir -p aknexsettinglist.rsc.test_dump
 $RCOMP -u -saknexsettinglist.rpp -oaknexsettinglist.rsc.test -:aknexsettinglist.rsc.test_dump/dump_
 cmp aknexsettinglist.rsc aknexsettinglist.rsc.test
-diff -urN aknexsettinglist.rsc_dump aknexsettinglist.rsc.test_dump
+diff -urN -x .\* aknexsettinglist.rsc_dump aknexsettinglist.rsc.test_dump
 rm aknexsettinglist.rsc.test
 rm -rf aknexsettinglist.rsc.test_dump
 
