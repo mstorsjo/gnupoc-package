@@ -1,0 +1,38 @@
+#!/bin/sh
+
+if [ $# != 2 -a $# != 3 -o $0 != "./install_gcc_539" ]; then
+  echo "Usage: ./install_gcc_539 <path-to-sdk-zip> <target-dir>"
+  echo " e.g.: ./install_gcc_539 gcc-539-2aeh-source.tar.bz2 ~/symbian-gcc"
+  exit 1
+fi
+
+SRC=$1
+DEST=`echo $2 | sed s:/\$::`
+
+mkdir -p $DEST
+
+while read a
+do
+  echo "$a"
+  sh -c "$a"
+  if test $? != 0; then
+    echo "Unexcpected error: aborting."
+    exit 1
+  fi
+done << __END
+
+tar -jxvf $SRC
+patch -p0 < gcc-539.patch
+mkdir obj
+cd obj; sh ../src/configure --prefix=$DEST --target=arm-epoc-pe; 
+cd obj; make all-binutils all-gas all-ld all-gcc
+cd obj; make install-binutils install-gas install-ld install-gcc
+rm -rf obj
+rm -rf src
+cp arm-specs $DEST/lib/gcc-lib/arm-epoc-pe/2.9-psion-98r2/specs
+cd $DEST/bin; ln -s ../lib/gcc-lib/arm-epoc-pe/2.9-psion-98r2/cpp arm-epoc-pe-cpp
+cd $DEST/bin; if [ ! -e as ]; then ln -s arm-epoc-pe-as as; fi
+cd $DEST/bin; cpp=`which cpp`; if [ ! -e cpp ] && [ \"`file $cpp | grep 'shell script'`\" != \"\" ]; then ln -s arm-epoc-pe-cpp cpp; fi
+
+__END
+

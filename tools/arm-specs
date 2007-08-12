@@ -1,0 +1,87 @@
+*asm:
+%{mbig-endian:-EB} %{mthumb-interwork:-mthumb-interwork} %{mcpu=*:-m%*} %{march=*:-m%*} %{mapcs-*:-mapcs-%*} %{!march=*:-marmv4t} %{!march=*:-mthumb-interwork} 
+
+*asm_final:
+
+
+*cpp:
+-nostdinc -D_UNICODE -D__SYMBIAN32__ -D__GCC32__ -D__EPOC32__ -D__MARM__ -D__MARM_ARMI__ %(cpp_cpu_arch) %(cpp_apcs_pc) %(cpp_float) %(cpp_endian) %(subtarget_cpp_spec)
+
+*cc1:
+-fno-leading-underscore -fvtable-thunks %{!DIN_GCC:-fno-rtti} %{!DIN_GCC:-fno-exceptions} -fcheck-new -mapcs-32 %{!march=*:-mthumb-interwork} -march=armv4t -msoft-float -mno-short-load-words -Wno-ctor-dtor-privacy -fomit-frame-pointer -mthumb-interwork
+
+*cc1plus:
+
+
+*endfile:
+
+
+*link:
+%{mbig-endian:-EB} -X
+
+*lib:
+-lc
+
+*libgcc:
+-lgcc
+
+*startfile:
+%scrt0.o
+
+*switches_need_spaces:
+
+
+*signed_char:
+%{!fsigned-char:-D__CHAR_UNSIGNED__}
+
+*predefines:
+-Darm -D__pe__ -Acpu(arm) -Amachine(arm) -D__declspec(x)=__attribute__((x)) 
+
+*cross_compile:
+1
+
+*version:
+2.9-psion-98r2
+
+*multilib:
+. !mhard-float;fpu mhard-float;
+
+*multilib_defaults:
+mlittle-endian msoft-float mapcs-32 mno-thumb-interwork
+
+*multilib_extra:
+
+
+*multilib_matches:
+mhard-float mhard-float;
+
+*linker:
+collect2
+
+*cpp_cpu_arch:
+%{m2:-D__arm2__ -D__ARM_ARCH_2__} %{m3:-D__arm2__ -D__ARM_ARCH_2__} %{m6:-D__arm6__ -D__ARM_ARCH_3__} %{march=arm2:-D__ARM_ARCH_2__} %{march=arm250:-D__ARM_ARCH_2__} %{march=arm3:-D__ARM_ARCH_2__} %{march=arm6:-D__ARM_ARCH_3__} %{march=arm600:-D__ARM_ARCH_3__} %{march=arm610:-D__ARM_ARCH_3__} %{march=arm7:-D__ARM_ARCH_3__} %{march=arm700:-D__ARM_ARCH_3__} %{march=arm710:-D__ARM_ARCH_3__} %{march=arm7100:-D__ARM_ARCH_3__} %{march=arm7500:-D__ARM_ARCH_3__} %{march=arm7500fe:-D__ARM_ARCH_3__} %{march=arm7m:-D__ARM_ARCH_3M__} %{march=arm7dm:-D__ARM_ARCH_3M__} %{march=arm7dmi:-D__ARM_ARCH_3M__} %{march=arm7tdmi:-D__ARM_ARCH_4T__} %{march=arm8:-D__ARM_ARCH_4__} %{march=arm810:-D__ARM_ARCH_4__} %{march=strongarm:-D__ARM_ARCH_4__} %{march=strongarm110:-D__ARM_ARCH_4__} %{march=armv2:-D__ARM_ARCH_2__} %{march=armv2a:-D__ARM_ARCH_2__} %{march=armv3:-D__ARM_ARCH_3__} %{march=armv3m:-D__ARM_ARCH_3M__} %{march=armv4:-D__ARM_ARCH_4__} %{march=armv4t:-D__ARM_ARCH_4T__} %{!march=*:  %{mcpu=arm2:-D__ARM_ARCH_2__}  %{mcpu=arm250:-D__ARM_ARCH_2__}  %{mcpu=arm3:-D__ARM_ARCH_2__}  %{mcpu=arm6:-D__ARM_ARCH_3__}  %{mcpu=arm600:-D__ARM_ARCH_3__}  %{mcpu=arm610:-D__ARM_ARCH_3__}  %{mcpu=arm7:-D__ARM_ARCH_3__}  %{mcpu=arm700:-D__ARM_ARCH_3__}  %{mcpu=arm710:-D__ARM_ARCH_3__}  %{mcpu=arm7100:-D__ARM_ARCH_3__}  %{mcpu=arm7500:-D__ARM_ARCH_3__}  %{mcpu=arm7500fe:-D__ARM_ARCH_3__}  %{mcpu=arm7m:-D__ARM_ARCH_3M__}  %{mcpu=arm7dm:-D__ARM_ARCH_3M__}  %{mcpu=arm7dmi:-D__ARM_ARCH_3M__}  %{mcpu=arm7tdmi:-D__ARM_ARCH_4T__}  %{mcpu=arm8:-D__ARM_ARCH_4__}  %{mcpu=arm810:-D__ARM_ARCH_4__}  %{mcpu=strongarm:-D__ARM_ARCH_4__}  %{mcpu=strongarm110:-D__ARM_ARCH_4__}  %{!mcpu*:%{!m6:%{!m2:%{!m3:%(cpp_cpu_arch_default)}}}}} 
+
+*cpp_cpu_arch_default:
+-D__ARM_ARCH_4T__
+
+*cpp_apcs_pc:
+%{mapcs-32:%{mapcs-26:%e-mapcs-26 and -mapcs-32 may not be used together}  -D__APCS_32__} %{mapcs-26:-D__APCS_26__} %{!mapcs-32: %{!mapcs-26:%{m6:-D__APCS_32__} %{m2:-D__APCS_26__}  %{m3:-D__APCS_26__} %{!m6:%{!m3:%{!m2:%(cpp_apcs_pc_default)}}}}} 
+
+*cpp_apcs_pc_default:
+-D__APCS_32__
+
+*cpp_float:
+%{msoft-float:  %{mhard-float:%e-msoft-float and -mhard_float may not be used together}   -D__SOFTFP__} %{!mhard-float:%{!msoft-float:%(cpp_float_default)}} 
+
+*cpp_float_default:
+
+
+*cpp_endian:
+%{mbig-endian:   %{mlittle-endian:     %e-mbig-endian and -mlittle-endian may not be used together}   -D__ARMEB__ %{mwords-little-endian:-D__ARMWEL__}} %{!mlittle-endian:%{!mbig-endian:%(cpp_endian_default)}} 
+
+*cpp_endian_default:
+
+
+*subtarget_cpp_spec:
+
+

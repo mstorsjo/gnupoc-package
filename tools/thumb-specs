@@ -1,0 +1,60 @@
+*asm:
+-marm7tdmi %{mthumb-interwork:-mthumb-interwork} %{mbig-endian:-EB}
+
+*asm_final:
+
+
+*cpp:
+%{mbig-endian:-D__ARMEB__ -D__THUMBEB__} %{mbe:-D__ARMEB__ -D__THUMBEB__} %{!mbe: %{!mbig-endian:-D__ARMEL__ -D__THUMBEL__}} 
+
+*cc1:
+-fno-leading-underscore -fvtable-thunks %{!DIN_GCC:-fno-rtti} %{!DIN_GCC:-fno-exceptions} -fcheck-new
+
+*cc1plus:
+
+
+*endfile:
+
+
+*link:
+%{mbig-endian:-EB} -X
+
+*lib:
+%{!shared:%{g*:-lg} %{!p:%{!pg:-lc}}%{p:-lc_p}%{pg:-lc_p}}
+
+*libgcc:
+-lgcc
+
+*startfile:
+%{!shared:%{pg:gcrt0%O%s}%{!pg:%{p:mcrt0%O%s}%{!p:crt0%O%s}}}
+
+*switches_need_spaces:
+
+
+*signed_char:
+%{!fsigned-char:-D__CHAR_UNSIGNED__}
+
+*predefines:
+-Dthumb -D__thumb -D__pe__ -Acpu(arm) -Amachine(arm) -D__declspec(x)=__attribute__((x)) 
+
+*cross_compile:
+1
+
+*version:
+2.9-psion-98r2
+
+*multilib:
+. !mthumb-interwork;interwork mthumb-interwork;
+
+*multilib_defaults:
+
+
+*multilib_extra:
+
+
+*multilib_matches:
+mthumb-interwork mthumb-interwork;
+
+*linker:
+collect2
+
