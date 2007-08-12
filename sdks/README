@@ -1,43 +1,44 @@
-GnuPoc S60 SDK patches
-======================
+GnuPoc SDK patches
+==================
 
 Installation
 ------------
 
-Start by installing the toolchain for your SDK. For Series 60 1st and 2nd
-edition, you at least need GCC, but you can also install native versions
-of e.g. rcomp, makesis, petran and bmconv. For Series 60 3rd edition,
-install CodeSourcery's ARM GCC, tested with the 2005Q1C release but other
-releases might work, too.
+Start by installing the toolchain for your SDK, see tools/README in this
+package, or see instructions at http://www.martin.st/symbian/.
 
-Instructions for installing these tools are available at
-http://www.martin.st/symbian/.
+These patches use the native version of tools, if they are availble
+in the toolchain directory, otherwise it reverts to use the original
+versions through wine.
 
 Then download the SDK you want to install, from Forum Nokia
-(www.forum.nokia.com). The following versions are supported at the moment:
+(www.forum.nokia.com) or UIQ Developer Community (developer.uiq.com).
+The following versions are supported at the moment:
 
-1st Edition, FP1, WINS			nS60_sdk_v1_2.zip
-2nd Edition, WINS			s60_sdk_v2_0.zip
-2nd Edition, FP1, WINS			S60_SDK_2_1_NET.zip
-2nd Edition, FP1, CW			S60_SDK_v21c_CW.zip
-2nd Edition, FP2, WINS			s60_2nd_fp2_sdk_msb.zip
-2nd Edition, FP2, CW			s60_2nd_fp2_sdk.zip
-2nd Edition, FP3			s60_2nd_sdk_fp3.zip
-3rd Edition, Maintenance Release	S60-SDK-0616-3.0-mr.3.749.zip
-3rd Edition, FP 1			S60-SDK-200634-3.1-Cpp-f.1090b.zip
+S60 1st Edition, FP1, WINS		nS60_sdk_v1_2.zip
+S60 2nd Edition, WINS			s60_sdk_v2_0.zip
+S60 2nd Edition, FP1, WINS		S60_SDK_2_1_NET.zip
+S60 2nd Edition, FP1, CW		S60_SDK_v21c_CW.zip
+S60 2nd Edition, FP2, WINS		s60_2nd_fp2_sdk_msb.zip
+S60 2nd Edition, FP2, CW		s60_2nd_fp2_sdk.zip
+S60 2nd Edition, FP3			s60_2nd_sdk_fp3.zip
+S60 3rd Edition, Maintenance Release	S60-SDK-0616-3.0-mr.3.749.zip
+S60 3rd Edition, FP 1			S60-SDK-200634-3.1-Cpp-f.1090b.zip
+UIQ 3.0					UIQ3.0SDK.exe
+UIQ 3.1					UIQ3.1SDK.exe
 
 Install them using the matching install scripts, e.g.:
 ./install_gnupoc_s60_30 ../S60-SDK-0616-3.0-mr.3.749.zip ~/symbian-sdks/s60_30
 
-After installing the first SDK, you have to copy uidcrc.exe from the
-epoc32/tools directory within your newly installed SDK to a directory
-within your wine path, e.g. ~/.wine/drive_c/windows. It shouldn't matter
-which SDK you copy this from.
+If you're going to use some tools through wine (e.g. rcomp, petran),
+you have to copy uidcrc.exe from the epoc32/tools directory within your
+newly installed SDK to a directory within your wine path, e.g.
+~/.wine/drive_c/windows. It shouldn't matter which SDK you copy this from.
 
-If using external makefiles (as for building icons in 3rd edition),
-copy make.exe and mifconv.exe, too. make.exe probably can be used from
-any SDK version, but you'll need mifconv.exe from the 3.0 SDK, since
-mifconv.exe in 3.1 has some problems starting within wine.
+If using external makefiles (e.g. for building icons in 3rd edition)
+using wine, copy make.exe and mifconv.exe, too. make.exe probably can
+be used from any SDK version, but you'll need mifconv.exe from the 3.0
+SDK, since mifconv.exe in 3.1 has some problems starting within wine.
 
 When using the SDKs, set the EPOCROOT variable to point to your SDK and
 add the epoc32/tools directory and your toolchain to your PATH, e.g.:

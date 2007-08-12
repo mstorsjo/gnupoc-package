@@ -1,0 +1,85 @@
+GnuPoc tool package
+===================
+
+First you have to install the compiler needed for your SDK. The rest of
+the toolchain can be used through wine, or be used in (more or less
+compatible) native versions, included here.
+
+These tools can also be used with SDKs in the sdk2unix-style by Rudolf
+König.
+
+
+GCC for S60 1st and 2nd ed
+--------------------------
+
+Download the source to the GCC version for symbian,
+from http://www.symbianos.org/download/gcc-539-2aeh-source.tar.bz2
+or http://www.martin.st/symbian/gcc-539-2aeh-source.tar.bz2. Then
+compile and install it using the install_gcc_539 script:
+
+./install_gcc_539 gcc-539-2aeh-source.tar.bz2 ~/symbian-gcc
+
+
+GCC for S60 3rd ed and UIQ 3
+----------------------------
+
+On linux, you can use the prebuilt binaries from CodeSourcery,
+http://www.codesourcery.com/gnu_toolchains/arm/releases/2005Q1C,
+select IA32 GNU/Linux, or from
+http://www.martin.st/symbian/gnu-csl-arm-2005Q1C-arm-none-symbianelf-i686-pc-linux-gnu.tar.bz2.
+To use these, just extract the package to a directory:
+
+mkdir csl-gcc
+cd csl-gcc
+tar -jxvf ../gnu-csl-arm-2005Q1C-arm-none-symbianelf-i686-pc-linux-gnu.tar.bz2
+
+Otherwise (on other platforms), you can build the CodeSourcery GCC from
+source. Download the source package from the CodeSourcery url above, or
+from
+http://www.martin.st/symbian/gnu-csl-arm-2005Q1C-arm-none-symbianelf.src.tar.bz2.
+
+In this case, compile it using the install_csl_gcc script:
+
+./install_csl_gcc gnu-csl-arm-2005Q1C-arm-none-symbianelf.src.tar.bz2 ~/csl-gcc
+
+
+
+Additional tools
+----------------
+
+If you want to use native versions of the SDK tools instead of running
+them through wine, compile and install them using the appropriate script:
+
+./install_eka1_tools ~/symbian-gcc
+
+or
+
+./install_eka2_tools ~/csl-gcc
+
+depending on which toolchain they're for.
+
+
+The tools for eka2 includes a hacked version of gnu make, to handle
+external makefiles which uses dos-style paths with backslashes. This,
+toghether with the mifconv replacement, a symlink named rem and a small
+script named del, seems to be able to handle most icon makefiles.
+
+Rcomp is hacked somewhat, to handle both Symbian 6 resources (by
+adding the -6 flag) and to handle some new things in resources in 9.
+
+This package also includes a drop-in-replacement for elf2e32. It isn't
+compiled and installed by default, since it still lacks some important
+features (mainly deflate compression support). By compiling and installing
+this, you can build S60 3rd ed apps completely without wine.
+
+Makesis still requires wine. Ensymble (http://www.nbl.fi/~nbl928/ensymble.html)
+can build sis files for Symbian 9, but can't read .pkg files (as of
+version 0.23), so you have to manually create the directory structure
+and create a sis file from that.
+
+
+
+
+Martin Storsjö
+martin@martin.st
+
