@@ -64,8 +64,12 @@ external makefiles which uses dos-style paths with backslashes. This,
 toghether with the mifconv replacement, a symlink named rem and a small
 script named del, seems to be able to handle most icon makefiles.
 
-Rcomp is hacked somewhat, to handle both Symbian 6 resources (by
+Rcomp is somewhat hacked, to handle both Symbian 6 resources (by
 adding the -6 flag) and to handle some new things in resources in 9.
+This included cleaning up the lexer and grammar files so that flex and
+yacc could generate new code from them. This also added some changes to
+the integration with the rest of the application. In practice, this might
+give less informative error messages.
 
 This package also includes a drop-in-replacement for elf2e32. It isn't
 compiled and installed by default, since it still lacks some important
@@ -77,6 +81,10 @@ Makesis still requires wine. Ensymble (http://www.nbl.fi/~nbl928/ensymble.html)
 can build sis files for Symbian 9, but can't read .pkg files (as of
 version 0.23), so you have to manually create the directory structure
 and create a sis file from that.
+
+If you have problem with any of these native tools, just remove it from
+the toolchain directory, and the build scripts will use the original exe
+with wine instead, and let me know about the problems.
 
 
 
