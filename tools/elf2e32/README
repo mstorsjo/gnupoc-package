@@ -15,7 +15,7 @@ elf2e32 requires libelf. If you don't want to or can't install it system-wide,
 a version is included here. In that case, enter libelf-0.8.9 and compile it:
 
 cd libelf-0.8.9
-./configure --enabled-shared=no --prefix=`pwd`/../libelf
+./configure --enable-shared=no --prefix=`pwd`/../libelf
 make
 make install
 
