@@ -1,0 +1,27 @@
+Source: rcomp
+Section: utils
+Priority: optional
+Maintainer: Alfred E. Heggestad <alfredh@symbianos.org>
+Build-Depends: debhelper (>> 4.0.0), g++, libstdc++-dev
+Standards-Version: 3.5.8
+
+Package: rcomp
+Architecture: any
+Depends: ${shlibs:Depends} ${misc:Depends}
+Description: Symbian OS resource compiler.
+ .
+ Symbian OS resource compiler version 7.01
+ Create .rsc binary files and .rsg header files from .rss source resource files.
+ .
+ NOTE! The generated output is AFAIK only compatible with Symbian OS 7.x
+       which contains a 16-byte UID header (invoked with the external
+       program uidcrc) and compressed Unicode characters.
+       For Nokia 9210 and Nokia Series 60 platform SDKs you will need
+       rcomp v6.00 which is as of today only available as win32 binaries.
+ .
+ Copyright (c) 1997-2001 Symbian Ltd.
+ .
+ Ported to Linux by Alfred E. Heggestad <alfredh@symbianos.org>
+ .
+ See http://symbianos.org/ for details.
+ .
