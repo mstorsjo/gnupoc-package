@@ -4,6 +4,7 @@
 	License: GPL.
 	Copyright 1999 Rudolf Koenig.
 	Copyright 2001 KI-AG
+	Modifications 2007 by Martin Storsjö
 	See AIF format dokumentation on http://koeniglich.de
  */
 
