@@ -1,0 +1,36 @@
+#!/bin/sh
+
+if [ $# != 2 -o $0 != "./install_csl_gcc" ]; then
+  echo "Usage: ./install_csl_gcc <path-to-gcc-package> <target-dir>"
+  echo " e.g.: ./install_csl_gcc gnu-csl-arm-2005Q1C-arm-none-symbianelf.src.tar.bz2  ~/csl-gcc"
+  exit 1
+fi
+
+SRC=$1
+DEST=`echo $2 | sed s:/\$::`
+
+mkdir -p $DEST
+
+while read a
+do
+  echo "$a"
+  sh -c "$a"
+  if test $? != 0; then
+    echo "Unexcpected error: aborting."
+    exit 1
+  fi
+done << __END
+
+mkdir csl-build
+cd csl-build && tar -jxvf $SRC
+cd csl-build && tar -jxvf binutils-csl-arm-2005Q1C.tar.bz2
+cd csl-build/binutils-csl-arm-2005q1 && ./configure --target=arm-none-symbianelf --prefix=$DEST
+cd csl-build/binutils-csl-arm-2005q1 && make
+cd csl-build/binutils-csl-arm-2005q1 && make install
+cd csl-build && tar -jxvf gcc-csl-arm-2005Q1C.tar.bz2
+cd csl-build/gcc-csl-arm && ./configure --target=arm-none-symbianelf --enable-languages=c,c++ --prefix=$DEST
+cd csl-build/gcc-csl-arm && make
+cd csl-build/gcc-csl-arm && make install
+
+__END
+
