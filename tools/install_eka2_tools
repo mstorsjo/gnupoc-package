@@ -29,7 +29,7 @@ cd rcomp-7.0.1 && make && cp src/rcomp $DEST/bin
 #cd elf2e32 && make && cp elf2e32 $DEST/bin
 cd make-3.81 && ./configure && make && cp make $DEST/bin/extmake
 g++ mifconv.cpp -o $DEST/bin/mifconv
-ln -s $TRUE $DEST/bin/rem
+ln -sf $TRUE $DEST/bin/rem
 cp del $DEST/bin
 
 __END
