@@ -1,0 +1,30 @@
+elf2e32 replacement
+-------------------
+
+Compile this and drop into the toolchain directory, to use this instead
+of the exe version through wine.
+
+make
+cp elf2e32 ~/csl-gcc/bin
+
+This still lacks deflate compression support, and many parameters are
+ignored. It manages to build correctly working binaries, in all currently
+tested cases.
+
+elf2e32 requires libelf. If you don't want to or can't install it system-wide,
+a version is included here. In that case, enter libelf-0.8.9 and compile it:
+
+cd libelf-0.8.9
+./configure --enabled-shared=no --prefix=`pwd`/../libelf
+make
+make install
+
+Then compile elf2e32 using the makefile for local libelf:
+
+make -f Makefile.local-libelf
+
+
+
+Martin Storsjö
+martin@martin.st
+

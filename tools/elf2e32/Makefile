@@ -1,5 +1,5 @@
-CXXFLAGS = -Wall -pedantic -ggdb -Wno-long-long
-LDFLAGS = -lelf -lz
+CXXFLAGS += -Wall -pedantic -ggdb -Wno-long-long
+LDFLAGS += -lelf -lz
 
 all: elf2e32 bindiff
 
