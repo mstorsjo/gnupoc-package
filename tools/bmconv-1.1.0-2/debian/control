@@ -1,0 +1,19 @@
+Source: bmconv
+Section: utils
+Priority: optional
+Maintainer: Alfred E. Heggestad <alfredh@symbianos.org>
+Build-Depends: debhelper (>> 4.0.0), g++, libstdc++-dev
+Standards-Version: 3.5.8
+
+Package: bmconv
+Architecture: any
+Depends: ${shlibs:Depends} ${misc:Depends}
+Description: Symbian OS multiple bitmap file/rom store conversion program.
+ Program to convert to and from .bmp and Symbian OS .mbm files
+ .
+ Copyright (c) 1998-2001 Symbian Ltd.  All rights reserved.
+ .
+ Ported to Linux by Alfred E. Heggestad <alfredh@symbianos.org>
+ .
+ See http://symbianos.org/ for details.
+ .

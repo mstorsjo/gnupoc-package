@@ -1,0 +1,28 @@
+bmconv (1.1.0-2) unstable; urgency=low
+
+  * Fixing 64-bit issues (using int instead of long for u32 vars)
+  * Remove WritePalette() which was unused
+  * Fixing byteorder issues for big endian.
+  * Added decompilation to regression test
+  * Fix 64-bit and big-endian issues for bitmap decompilation
+  * Added run-time struct alignment checking
+  * The regression test is now working on the following machines:
+    (on the Sourceforge Compile Farm ;)
+
+    i386/Debian Linux     (32 bit, little endian)
+    i386/RedHat Linux     (32 bit, little endian)
+    i386/FreeBSD 4.9      (32 bit, little endian)
+    AMD64/SuSE Linux      (64 bit, little endian)
+    Alpha/Debian Linux    (64 bit, little endian)
+    Sparc64/Debian Linux  (64 bit, big endian)
+    Sparc64/SunOS         (64 bit, big endian)
+    PPC-G4 MacOS 10.2     (32 bit, big endian)
+
+ -- Alfred E. Heggestad <alfredh@symbianos.org>  Mon,  5 Jan 2004 01:20:19 +0100
+
+bmconv (1.1.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Alfred E. Heggestad <alfredh@symbianos.org>  Fri, 19 Dec 2003 00:14:00 +0100
+
