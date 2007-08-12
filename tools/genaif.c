@@ -13,8 +13,28 @@
 
 /* NOTE: we have to write intel byte oder. Fix this if not on native */
 
-#define PUTLONG(X) fwrite(&X, sizeof(long), 1, fpout)
-#define GETLONG(X) fread(&X, sizeof(long), 1, fpin)
+#define PUTLONG(X) PutLong(&X, fpout)
+#define GETLONG(X) GetLong(&X, fpin)
+
+void GetLong(long* ret_val, FILE *fp)
+{
+      long val;
+      val =  (long) (fgetc(fp) & 0xFF);
+      val |= ((long) (fgetc(fp) & 0xFF) << 0x08);
+      val |= ((long) (fgetc(fp) & 0xFF) << 0x10);
+      val |= ((long) (fgetc(fp) & 0xFF) << 0x18);
+      *ret_val = val;
+}
+
+void PutLong(long* val, FILE *fp)
+{
+      fputc(*val & 0xFF, fp);
+      fputc((*val >> 0x08) & 0xFF, fp);
+      fputc((*val >> 0x10) & 0xFF, fp);
+      fputc((*val >> 0x18) & 0xFF, fp);
+}
+
+
 
 static char *Usage =
 	"Usage: genaif [-u] UID3 aifspecfile app.aif\n"
@@ -85,15 +105,13 @@ unsigned long
 uidcsum(unsigned long u[3])
 {
   unsigned int i, crc1 = 0, crc2 = 0;
-  unsigned char *c;
   
   for(i = 0; i < 3; i++)
     {
-      c = (unsigned char *)&u[i];
-      crc1 = docrc16_1(crc1, c[0]);
-      crc2 = docrc16_1(crc2, c[1]);
-      crc1 = docrc16_1(crc1, c[2]);
-      crc2 = docrc16_1(crc2, c[3]);
+      crc1 = docrc16_1(crc1, (u[i] >>  0) & 0xff);
+      crc2 = docrc16_1(crc2, (u[i] >>  8) & 0xff);
+      crc1 = docrc16_1(crc1, (u[i] >> 16) & 0xff);
+      crc2 = docrc16_1(crc2, (u[i] >> 24) & 0xff);
     }
   return (crc2 << 16) | crc1;
 }
@@ -165,9 +183,9 @@ writeAif(int uni, char *cuid, char *finname, char *foutname)
       }
     }
   
-  if(uid == 0 || mbmfile == 0 || capno == 0)
+  if(uid == 0)
     {
-      fprintf(stderr, "Data (uid, mbmfile or caption) is missing\n%s", Usage);
+      fprintf(stderr, "Uid is missing\n%s", Usage);
       return 0;
     }
   
@@ -178,6 +196,15 @@ writeAif(int uni, char *cuid, char *finname, char *foutname)
 
   no = uidcsum(l);
   PUTLONG(no);
+
+  if (!mbmfile)
+    {
+    no = 0;
+    PUTLONG(no);
+    fclose(fpfile);
+    fclose(fpout);
+    return 0;
+    }
 
   /* Mbmfile reading */
   if(!(fpin = fopen(mbmfile, "rb")))
@@ -200,6 +227,7 @@ writeAif(int uni, char *cuid, char *finname, char *foutname)
   PUTLONG(idx);	/* This is the output offset */
 
   /* Copy the MBM file */
+  rd = 1;
   for(idx = 20; idx < no && rd != 0; idx += rd)
     {
       rd = (no-idx) > sizeof(buf) ? sizeof(buf) : no-idx;
@@ -313,8 +341,9 @@ changeAppUid(char *uid3, char *finname, char *foutname)
   PUTLONG(l[2]);
   PUTLONG(id);
   count++;
-  while(GETLONG(id) == 1)
+  while(!feof(fpin))
     {
+      GETLONG(id);
       if(id == oldid)
         count++, id = l[2];
       PUTLONG(id);
