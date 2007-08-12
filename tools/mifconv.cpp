@@ -23,7 +23,6 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <vector>
-#include <libgen.h>
 
 using std::vector;
 
@@ -179,7 +178,12 @@ void readParamFile(const char* filename) {
 }
 
 char* toName(const char* str) {
-	char* base = basename(strdup(str));
+	const char* slash = strrchr(str, '/');
+	if (slash)
+		slash++;
+	else
+		slash = str;
+	char* base = strdup(slash);
 	char* dot = strchr(base, '.');
 	if (dot)
 		*dot = '\0';
