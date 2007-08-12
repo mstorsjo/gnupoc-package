@@ -194,7 +194,7 @@ private:
 	int WriteRomheader();
 	int WriteRombitmap(SEpocBitmapHeader* aPbm);
 	int WriteFileheader();
-	int WriteFilebitmap(SEpocBitmapHeader* aPbm);
+	int WriteFilebitmap(SEpocBitmapHeader* aPbm, bool aCompress);
 	int WriteHeadStream();
 	void Write16(unsigned short v);
 	void WriteBuf16(const char *buf, int size);

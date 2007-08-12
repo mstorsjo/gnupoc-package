@@ -186,7 +186,7 @@ int BitmapCompiler::FileImage(int aCompress)
 		return ret;
 	for (count=0;count<iNumSources;count++)
 		{
-		ret = WriteFilebitmap(iPbmSources[count]);
+		ret = WriteFilebitmap(iPbmSources[count], aCompress);
 		if (ret)
 			return ret;
 		}
@@ -368,7 +368,7 @@ void BitmapCompiler::WriteBuf32(const char *buf, int size)
 }
 
 
-int BitmapCompiler::WriteFilebitmap(SEpocBitmapHeader* aPbm)
+int BitmapCompiler::WriteFilebitmap(SEpocBitmapHeader* aPbm, bool aCompress)
 	{
 	if (aPbm->iPaletteEntries != 0)
 		return PaletteSupportNotImplemented;
@@ -376,7 +376,10 @@ int BitmapCompiler::WriteFilebitmap(SEpocBitmapHeader* aPbm)
 	int dataSize = aPbm->iBitmapSize - sizeof(SEpocBitmapHeader);
 
 	WriteBuf32((char*)(aPbm),sizeof(SEpocBitmapHeader));
-	WriteBuf16(((char*)(aPbm)) + sizeof(SEpocBitmapHeader),dataSize);
+	if (aPbm->iBitsPerPixel==12 || (aPbm->iBitsPerPixel==16 && !aCompress))
+		WriteBuf16(((char*)(aPbm)) + sizeof(SEpocBitmapHeader),dataSize);
+	else
+		iDestFile.write(((char*)(aPbm)) + sizeof(SEpocBitmapHeader),dataSize);
 
 	return NoError;
 	}
@@ -773,17 +776,35 @@ int BitmapCompiler::WriteCompressedSixteenBitData(char*& aDest,unsigned short* a
 	while (aLength > 128)
 		{
 		*aDest++ = -128;
-		memcpy(aDest,srcePtr,256);
-		aDest += 256;
+//		memcpy(aDest,srcePtr,256);
+//		aDest += 256;
+		unsigned short *sptr = (unsigned short*) srcePtr;
+		for (int i = 0; i < 128; i++)
+			{
+			char lowByte = char(*sptr);
+			char highByte = char(*sptr >> 8);
+			sptr++;
+			*aDest++ = lowByte;
+			*aDest++ = highByte;
+			}
 		srcePtr += 256;
 		aLength -= 128;
 		}
 
 	*aDest++ = char(-aLength);
 
-	int remainingBytes = aLength * 2;
-	memcpy(aDest,srcePtr,remainingBytes);
-	aDest += remainingBytes;
+//	int remainingBytes = aLength * 2;
+//	memcpy(aDest,srcePtr,remainingBytes);
+//	aDest += remainingBytes;
+	unsigned short *sptr = (unsigned short*) srcePtr;
+	for (int i = 0; i < aLength; i++)
+		{
+		char lowByte = char(*sptr);
+		char highByte = char(*sptr >> 8);
+		sptr++;
+		*aDest++ = lowByte;
+		*aDest++ = highByte;
+		}
 
 	return NoError;
 	}
