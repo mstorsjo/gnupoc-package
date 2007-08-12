@@ -1,0 +1,13 @@
+TARGET		test.exe
+TARGETTYPE	exe
+UID		0 0
+
+VENDORID	0
+CAPABILITY	DRM TCB AllFiles
+
+SOURCE		test.cpp
+
+SYSTEMINCLUDE	\epoc32\include
+
+LIBRARY		euser.lib
+
