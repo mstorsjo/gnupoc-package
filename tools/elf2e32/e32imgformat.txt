@@ -12,7 +12,7 @@ import seg:
 		uint32_t dllname offset
 		uint32_t import count
 		for each import
-			uint32_t relocation address (e.g. 0x019c)
+			uint32_t relocation address
 	for each dll in iDllRefTableCount
 		dll name string
 	pad with zero to 4 byte alignment
@@ -23,11 +23,8 @@ code reloc seg:
 		uint32_t reloc prefix (value & 0xfffff000)
 		uint32_t size of this prefix area
 		for each reloc (every sym in .rel.dyn and .rel.other, which have a symbol value nonzero)
-			uint16_t 0x1000 | (symbol offset - code base)
+			uint16_t reloc type | (symbol offset - code base)
 		pad with zero to 4 byte alignment
+data reloc seg:
 
-		
-
-
-000080b8  00000517 R_ARM_RELATIVE    000085a0   .constdata
 
