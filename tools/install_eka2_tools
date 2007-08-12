@@ -1,0 +1,35 @@
+#!/bin/sh
+
+if [ $# != 1 -o $0 != "./install_eka2_tools" ]; then
+  echo "Usage: ./install_eka2_tools <target-dir>"
+  echo " e.g.: ./install_eka2_tools ~/csl-gcc"
+  exit 1
+fi
+
+DEST=`echo $1 | sed s:/\$::`
+
+mkdir -p $DEST
+
+TRUE=`which true`
+
+while read a
+do
+  echo "$a"
+  sh -c "$a"
+  if test $? != 0; then
+    echo "Unexcpected error: aborting."
+    exit 1
+  fi
+done << __END
+
+cd petran-1.1.0 && make && cp e32uid/uidcrc $DEST/bin
+cd bmconv-1.1.0-2 && make && cp src/bmconv $DEST/bin
+cd rcomp-7.0.1 && make && cp src/rcomp $DEST/bin
+g++ mifconv.cpp -o $DEST/bin/mifconv
+cd elf2e32 && make && cp elf2e32 $DEST/bin
+cd make-3.81 && make && cp make $DEST/bin/extmake
+ln -s $TRUE $DEST/bin/rem
+cp del $DEST/bin
+
+__END
+

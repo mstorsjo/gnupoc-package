@@ -1,0 +1,31 @@
+#!/bin/sh
+
+if [ $# != 1 -o $0 != "./install_eka1_tools" ]; then
+  echo "Usage: ./install_eka1_tools <target-dir>"
+  echo " e.g.: ./install_eka1_tools ~/symbian-gcc"
+  exit 1
+fi
+
+DEST=`echo $1 | sed s:/\$::`
+
+mkdir -p $DEST
+
+while read a
+do
+  echo "$a"
+  sh -c "$a"
+  if test $? != 0; then
+    echo "Unexcpected error: aborting."
+    exit 1
+  fi
+done << __END
+
+cd petran-1.1.0 && make && cp petran/petran e32uid/uidcrc $DEST/bin
+cd makesis-2.0.0 && make && cp src/makesis $DEST/bin
+cd bmconv-1.1.0-2 && make && cp src/bmconv $DEST/bin
+cd rcomp-7.0.1 && make && cp src/rcomp $DEST/bin
+gcc genaif.c -o $DEST/bin/genaif
+g++ aiftool.cpp -o $DEST/bin/aiftool
+
+__END
+
