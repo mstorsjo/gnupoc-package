@@ -145,7 +145,7 @@ int _wunlink(const wchar_t* wc)
   int ret = 0;
   int len = wcslen(wc);
 
-  char *tmp = new char[len];
+  char *tmp = new char[len+1];
   ret = wcstombs(tmp, wc, len);
   if(ret == -1) {
     printf("wunlink: wcstombs error\n");
