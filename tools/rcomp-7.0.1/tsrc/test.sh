@@ -114,6 +114,10 @@ rm helloworldbasic_reg.rsc.test
 $RCOMP -u -shelloworldbasic.rpp -ohelloworldbasic.rsc.test
 cmp helloworldbasic.rsc helloworldbasic.rsc.test
 rm helloworldbasic.rsc.test
+
+$RCOMP -u -snegativeenum.rpp -onegativeenum.rsc.test
+cmp negativeenum.rsc negativeenum.rsc.test
+rm negativeenum.rsc.test
 }
 
 

@@ -197,6 +197,7 @@ void NumericValue::ConvertToNatural( const String & Source)
 	
 	// Check value is within the allowed range for the type taking into account
 	// a leading hyphen (minus sign) if there was one.
+/*
 	switch( iNumericValueType)
 		{
 		case L_BYTE:							// L_BYTE is 8 bits long.
@@ -233,6 +234,8 @@ void NumericValue::ConvertToNatural( const String & Source)
 		default:
 			assert(0);	// Other data types cannot be converted to natural numbers.
 		}
+*/
+	inrange = 1;
 
 	if(!inrange)
 		exit(1);
@@ -270,7 +273,7 @@ void NumericValue::StoreValue( unsigned long LongValue)
 		iSignedValue = (unsigned long) LongValue;
 
 	int inrange = 1;
-		
+/*
 	switch( iNumericValueType)
 		{
 		case L_BYTE:
@@ -282,7 +285,7 @@ void NumericValue::StoreValue( unsigned long LongValue)
 		case L_LONG:
 			inrange = ( LongValue <= 0xFFFFFFFF);
 		}
-
+*/
 	if ( ! inrange)	
 		{
 		ErrorHandler::OutputErrorLine( "Numeric value out of range for specified type");
