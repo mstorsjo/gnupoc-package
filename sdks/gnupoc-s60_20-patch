@@ -363,7 +363,7 @@ diff -urN tools_orig/bldmake tools/bldmake
 +perl -S bldmake.pl "$@"
 diff -urN tools_orig/bldmake.pl tools/bldmake.pl
 --- tools_orig/bldmake.pl	2003-08-27 07:36:16.000000000 +0300
-+++ tools/bldmake.pl	2007-04-07 01:00:18.000000000 +0300
++++ tools/bldmake.pl	2007-08-12 17:33:31.000000000 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -932,7 +932,7 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
  				"\n",
  			);
  			foreach $Command (qw(CLEAN RESOURCE)) {
-@@ -1160,10 +1167,18 @@
+@@ -1160,10 +1167,19 @@
  			if ($$Ref{Makefile}==2) {
  				$MakefileCall="cd $ChopRefPath;$CallNmake";
  			} else {
@@ -944,7 +944,8 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
 +				$epocroot =~ s/\//\\\\/g;
 +				my $winChopRefPath = $ChopRefPath;
 +				$winChopRefPath =~ s/\//\\\\/g;
-+				$MakefileCall="EPOCROOT=$epocroot wine $CallGNUmake -C $winChopRefPath";
++#				$MakefileCall="EPOCROOT=$epocroot wine $CallGNUmake -C $winChopRefPath";
++				$MakefileCall="EPOCROOT=$epocroot extmake \$(VERBOSE) \$(KEEPGOING) -C $winChopRefPath";
 +			}
 +			my $makefile = "$$Ref{Base}$$Ref{Ext}";
 +			my $to_root = &Path_Chop(&Path_UpToRoot($$Ref{Path}));
@@ -955,7 +956,7 @@ diff -urN tools_orig/bldmake.pl tools/bldmake.pl
  			&Output(
  # should change to MAKEFILE
  				"MAKEFILE$$Ref{Base} :\n",
-@@ -1228,8 +1243,9 @@
+@@ -1228,8 +1244,9 @@
  		}
  
  	}
@@ -3554,6 +3555,14 @@ diff -urN tools_orig/eshell.pl tools/eshell.pl
      die "ERROR: EPOCROOT must specify an existing directory.\n" 
  	if (!-d $epocroot);
      return $epocroot;
+diff -urN tools_orig/extmake tools/extmake
+--- tools_orig/extmake	1970-01-01 02:00:00.000000000 +0200
++++ tools/extmake	2007-08-12 17:33:48.000000000 +0300
+@@ -0,0 +1,4 @@
++#!/bin/sh
++
++wine make $*
++
 diff -urN tools_orig/fixupsym.pl tools/fixupsym.pl
 --- tools_orig/fixupsym.pl	2003-08-27 07:36:10.000000000 +0300
 +++ tools/fixupsym.pl	2007-04-07 01:00:18.000000000 +0300
