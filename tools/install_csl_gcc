@@ -29,8 +29,8 @@ cd csl-build/binutils-csl-arm-2005q1 && make
 cd csl-build/binutils-csl-arm-2005q1 && make install
 cd csl-build && tar -jxvf gcc-csl-arm-2005Q1C.tar.bz2
 cd csl-build/gcc-csl-arm && ./configure --target=arm-none-symbianelf --enable-languages=c,c++ --prefix=$DEST
-cd csl-build/gcc-csl-arm && make
-cd csl-build/gcc-csl-arm && make install
+cd csl-build/gcc-csl-arm && PATH=$DEST/bin:$PATH make
+cd csl-build/gcc-csl-arm && PATH=$DEST/bin:$PATH make install
 rm -rf csl-build
 
 __END
