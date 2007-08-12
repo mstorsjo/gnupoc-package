@@ -1,0 +1,465 @@
+diff -urN src-orig/bfd/bfd-in2.h src/bfd/bfd-in2.h
+--- src-orig/bfd/bfd-in2.h	2002-10-22 13:13:54.000000000 +0300
++++ src/bfd/bfd-in2.h	2007-08-12 14:13:57.000000000 +0300
+@@ -701,20 +701,26 @@
+ /* ARM Interworking support.  Called from linker.  */
+ #ifdef COFF_IMAGE_WITH_PE
+ static
++#else 
++extern
+ #endif
+-extern boolean bfd_arm_allocate_interworking_sections
++boolean bfd_arm_allocate_interworking_sections
+   PARAMS ((struct bfd_link_info *));
+ 
+ #ifdef COFF_IMAGE_WITH_PE
+ static
++#else 
++extern
+ #endif
+-extern boolean bfd_arm_process_before_allocation
++boolean bfd_arm_process_before_allocation
+   PARAMS ((bfd *, struct bfd_link_info *, int));
+ 
+ #ifdef COFF_IMAGE_WITH_PE
+ static
++#else 
++extern
+ #endif
+-extern boolean bfd_arm_get_bfd_for_interworking
++boolean bfd_arm_get_bfd_for_interworking
+   PARAMS ((bfd *, struct bfd_link_info *));
+ 
+ /* And more from the source.  */
+diff -urN src-orig/bfd/pei-arm.c src/bfd/pei-arm.c
+--- src-orig/bfd/pei-arm.c	2002-10-22 13:13:55.000000000 +0300
++++ src/bfd/pei-arm.c	2007-08-12 14:13:57.000000000 +0300
+@@ -17,7 +17,6 @@
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
+ 
+-#include "bfd.h"
+ #include "sysdep.h"
+ 
+ #ifndef TARGET_LITTLE_SYM
+@@ -33,4 +32,5 @@
+ #define PCRELOFFSET         true
+ #define COFF_LONG_SECTION_NAMES
+ 
++#include "bfd.h"
+ #include "coff-arm.c"
+diff -urN src-orig/config.guess src/config.guess
+--- src-orig/config.guess	2002-10-22 13:13:56.000000000 +0300
++++ src/config.guess	2007-08-12 14:14:08.000000000 +0300
+@@ -219,6 +219,12 @@
+     mvme88k:OpenBSD:*:*)
+ 	echo m88k-unknown-openbsd${UNAME_RELEASE}
+ 	exit 0 ;;
++    Power*Macintosh:Darwin:*:*)
++	echo powerpc-apple-darwin${UNAME_RELEASE}
++	exit 0 ;;
++    i386:Darwin:*:*)
++	echo i386-apple-darwin${UNAME_RELEASE}
++	exit 0 ;;
+     powerpc:machten:*:*)
+ 	echo powerpc-apple-machten${UNAME_RELEASE}
+ 	exit 0 ;;
+diff -urN src-orig/config.sub src/config.sub
+--- src-orig/config.sub	2002-10-22 13:13:56.000000000 +0300
++++ src/config.sub	2007-08-12 14:13:34.000000000 +0300
+@@ -955,6 +955,8 @@
+ 	      | -windows* | -osx | -abug |  -netware* | -os9* | -beos* \
+ 	      | -macos* | -mpw* | -magic* | -mon960* | -lnews* )
+ 		;;
++	-darwin*)
++		;;
+ 	-mac*)
+ 		os=`echo $os | sed -e 's|mac|macos|'`
+ 		;;
+diff -urN src-orig/configure src/configure
+--- src-orig/configure	2002-10-22 13:13:56.000000000 +0300
++++ src/configure	2007-08-12 14:14:00.000000000 +0300
+@@ -697,6 +697,7 @@
+ if result=`${config_shell} ${configsub} ${host_alias}` ; then
+     true
+ else
++    echo "${config_shell} ${configsub} ${host_alias}." 1>&2
+     echo "Unrecognized host system name ${host_alias}." 1>&2
+     exit 1
+ fi
+@@ -1529,7 +1530,8 @@
+ # Perform the same cleanup as the trap handler, minus the "exit 1" of course,
+ # and reset the trap handler.
+ rm -f ${tmpfile}.com ${tmpfile}.tgt ${tmpfile}.hst ${tmpfile}.pos
+-trap 0
++#trap 0
++trap "rm -f Makefile.tem ${tmpfile}.com ${tmpfile}.tgt ${tmpfile}.hst ${tmpfile}.pos; exit 0" 0
+ 
+ exit 0
+ 
+diff -urN src-orig/diff/stamp-h src/diff/stamp-h
+--- src-orig/diff/stamp-h	1970-01-01 02:00:00.000000000 +0200
++++ src/diff/stamp-h	2007-08-12 14:13:34.000000000 +0300
+@@ -0,0 +1 @@
++Sat Dec 25 21:46:01 GMT 2004
+diff -urN src-orig/diff/system.h src/diff/system.h
+--- src-orig/diff/system.h	2002-10-22 13:13:58.000000000 +0300
++++ src/diff/system.h	2007-08-12 14:13:34.000000000 +0300
+@@ -93,6 +93,15 @@
+ 
+ #if HAVE_FCNTL_H
+ #include <fcntl.h>
++#ifdef HAVE_SETMODE
++#undef HAVE_SETMODE
++#endif
++#ifndef _O_BINARY
++#define _O_BINARY 0
++#endif
++#ifndef O_BINARY
++#define O_BINARY _O_BINARY
++#endif
+ #else
+ #if HAVE_SYS_FILE_H
+ #include <sys/file.h>
+diff -urN src-orig/gcc/config/arm/arm.h src/gcc/config/arm/arm.h
+--- src-orig/gcc/config/arm/arm.h	2002-10-22 13:14:06.000000000 +0300
++++ src/gcc/config/arm/arm.h	2007-08-12 14:13:57.000000000 +0300
+@@ -405,7 +405,7 @@
+ };
+ 
+ /* Recast the program mode class to be the prog_mode attribute */
+-#define arm_prog_mode ((enum attr_prog_mode) arm_prgmode)
++#define arm_prog_mode (/*(enum attr_prog_mode)*/ arm_prgmode)
+ 
+ extern enum prog_mode_type arm_prgmode;
+ 
+diff -urN src-orig/gcc/configure src/gcc/configure
+--- src-orig/gcc/configure	2002-10-22 13:14:13.000000000 +0300
++++ src/gcc/configure	2007-08-12 14:14:08.000000000 +0300
+@@ -4329,6 +4329,12 @@
+ 		xmake_file=romp/x-mach
+ 		use_collect2=yes
+ 		;;
++	powerpc-apple-darwin*)
++		xmake_file=rs6000/x-darwin
++		;;
++	i386-apple-darwin*)
++		xmake_file=i386/x-darwin
++		;;
+ 	powerpc-*-beos*)
+ 		cpu_type=rs6000
+ 		tm_file=rs6000/beos.h
+diff -urN src-orig/gcc/configure.in src/gcc/configure.in
+--- src-orig/gcc/configure.in	2002-10-22 13:14:13.000000000 +0300
++++ src/gcc/configure.in	2007-08-12 14:14:08.000000000 +0300
+@@ -2327,6 +2327,12 @@
+ 		xmake_file=romp/x-mach
+ 		use_collect2=yes
+ 		;;
++	powerpc-apple-darwin*)
++		xmake_file=rs6000/x-darwin
++		;;
++	i386-apple-darwin*)
++		xmake_file=i386/x-darwin
++		;;
+ 	powerpc-*-beos*)
+ 		cpu_type=rs6000
+ 		tm_file=rs6000/beos.h
+diff -urN src-orig/gcc/cplus-dem.c src/gcc/cplus-dem.c
+--- src-orig/gcc/cplus-dem.c	2002-10-22 13:14:14.000000000 +0300
++++ src/gcc/cplus-dem.c	2007-08-12 14:14:11.000000000 +0300
+@@ -3827,8 +3827,8 @@
+   exit (1);
+ }
+ 
+-char * malloc ();
+-char * realloc ();
++/* char * malloc (); */
++/* char * realloc (); */
+ 
+ char *
+ xmalloc (size)
+diff -urN src-orig/gcc/obstack.h src/gcc/obstack.h
+--- src-orig/gcc/obstack.h	2002-10-22 13:14:19.000000000 +0300
++++ src/gcc/obstack.h	2007-08-12 14:13:57.000000000 +0300
+@@ -417,7 +417,8 @@
+ ({ struct obstack *__o = (OBSTACK);					\
+    if (__o->next_free + sizeof (void *) > __o->chunk_limit)		\
+      _obstack_newchunk (__o, sizeof (void *));				\
+-   *((void **)__o->next_free)++ = ((void *)datum);			\
++   *((void **)__o->next_free) = (void *) datum;                         \
++   __o->next_free = (char *)((void **)__o->next_free + 1);              \
+    (void) 0; })
+ 
+ # define obstack_int_grow(OBSTACK,datum)				\
+diff -urN src-orig/gdb/config/i386/macos.mh src/gdb/config/i386/macos.mh
+--- src-orig/gdb/config/i386/macos.mh	1970-01-01 02:00:00.000000000 +0200
++++ src/gdb/config/i386/macos.mh	2007-08-12 14:14:08.000000000 +0300
+@@ -0,0 +1,3 @@
++
++NATDEPFILES= mac-nat.o
++NAT_FILE= nm-macos.h
+diff -urN src-orig/gdb/config/i386/nm-macos.h src/gdb/config/i386/nm-macos.h
+--- src-orig/gdb/config/i386/nm-macos.h	1970-01-01 02:00:00.000000000 +0200
++++ src/gdb/config/i386/nm-macos.h	2007-08-12 14:14:08.000000000 +0300
+@@ -0,0 +1,20 @@
++/* i386 native-dependent macros for GDB, the GNU debugger.
++   Copyright (C) 1995 Free Software Foundation, Inc.
++
++This file is part of GDB.
++
++This program is free software; you can redistribute it and/or modify
++it under the terms of the GNU General Public License as published by
++the Free Software Foundation; either version 2 of the License, or
++(at your option) any later version.
++
++This program is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++GNU General Public License for more details.
++
++You should have received a copy of the GNU General Public License
++along with this program; if not, write to the Free Software
++Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
++
++/* Nothing needed, at least so far.  */
+diff -urN src-orig/gdb/config/powerpc/xm.h src/gdb/config/powerpc/xm.h
+--- src-orig/gdb/config/powerpc/xm.h	1970-01-01 02:00:00.000000000 +0200
++++ src/gdb/config/powerpc/xm.h	2007-08-12 14:13:34.000000000 +0300
+@@ -0,0 +1,22 @@
++/* Macro definitions for running GDB on Apple Power Macintoshes.
++   Copyright (C) 1994 Free Software Foundation, Inc.
++
++This file is part of GDB.
++
++This program is free software; you can redistribute it and/or modify
++it under the terms of the GNU General Public License as published by
++the Free Software Foundation; either version 2 of the License, or
++(at your option) any later version.
++
++This program is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++GNU General Public License for more details.
++
++You should have received a copy of the GNU General Public License
++along with this program; if not, write to the Free Software
++Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
++
++#define HOST_BYTE_ORDER BIG_ENDIAN
++
++//#include <xm-mpw.h>
+diff -urN src-orig/gdb/configure src/gdb/configure
+--- src-orig/gdb/configure	2002-10-22 13:14:36.000000000 +0300
++++ src/gdb/configure	2007-08-12 14:13:34.000000000 +0300
+@@ -5586,13 +5586,13 @@
+ frags=
+ host_makefile_frag=${srcdir}/config/${gdb_host_cpu}/${gdb_host}.mh
+ if test ! -f ${host_makefile_frag}; then
+-{ echo "configure: error: "*** Gdb does not support host ${host}"" 1>&2; exit 1; }
++{ echo "configure: error: "*** ${srcdir}/config/${gdb_host_cpu}/${gdb_host}.mh Gdb does not support host ${host}"" 1>&2; exit 1; }
+ fi
+ frags="$frags $host_makefile_frag"
+ 
+ target_makefile_frag=${srcdir}/config/${gdb_target_cpu}/${gdb_target}.mt
+ if test ! -f ${target_makefile_frag}; then
+-{ echo "configure: error: "*** Gdb does not support target ${target}"" 1>&2; exit 1; }
++{ echo "configure: error: "*** ${srcdir}/config/${gdb_target_cpu}/${gdb_target}.mt Gdb does not support target ${target}"" 1>&2; exit 1; }
+ fi
+ frags="$frags $target_makefile_frag"
+ 
+diff -urN src-orig/gdb/configure.host src/gdb/configure.host
+--- src-orig/gdb/configure.host	2002-10-22 13:14:36.000000000 +0300
++++ src/gdb/configure.host	2007-08-12 14:14:08.000000000 +0300
+@@ -28,6 +28,9 @@
+ 
+ case "${host}" in
+ 
++powerpc-apple-darwin*)		gdb_host=macos ;;
++i386-apple-darwin*)		gdb_host=macos ;;
++
+ a29k-*-*)		gdb_host=ultra3 ;;
+ 
+ alpha*-*-osf1*)		gdb_host=alpha-osf1 ;;
+diff -urN src-orig/gdb/rdi-share/configure src/gdb/rdi-share/configure
+--- src-orig/gdb/rdi-share/configure	2002-10-22 13:14:39.000000000 +0300
++++ src/gdb/rdi-share/configure	2007-08-12 14:13:34.000000000 +0300
+@@ -696,8 +696,9 @@
+ 
+ VERSION=1.0
+ 
++rm -f $srcdir/config.status
+ if test "`cd $srcdir && pwd`" != "`pwd`" && test -f $srcdir/config.status; then
+-  { echo "configure: error: source directory already configured; run "make distclean" there first" 1>&2; exit 1; }
++  { echo "configure: dir: [$srcdir] pwd: [`pwd`] error: source directory already configured; run "make distclean" there first" 1>&2; exit 1; }
+ fi
+ cat >> confdefs.h <<EOF
+ #define PACKAGE "$PACKAGE"
+diff -urN src-orig/gdb/rdi-share/devsw.c src/gdb/rdi-share/devsw.c
+--- src-orig/gdb/rdi-share/devsw.c	2002-10-22 13:14:39.000000000 +0300
++++ src/gdb/rdi-share/devsw.c	2007-08-12 14:13:02.000000000 +0300
+@@ -267,7 +267,7 @@
+ 
+     /* Free memory */
+     free ((char *) device->SwitcherState);
+-    device->SwitcherState = 0x0;
++    ((DeviceDescr*)device)->SwitcherState = 0x0;
+ 
+     /* that's all */
+     return adp_ok;
+diff -urN src-orig/gdb/rdi-share/hostchan.h src/gdb/rdi-share/hostchan.h
+--- src-orig/gdb/rdi-share/hostchan.h	2002-10-22 13:14:39.000000000 +0300
++++ src/gdb/rdi-share/hostchan.h	2007-08-12 14:13:34.000000000 +0300
+@@ -16,6 +16,9 @@
+ #define angsd_hostchan_h
+ 
+ /* struct timeval */
++#ifndef __unix
++#define __unix
++#endif
+ #if defined(__unix) || defined(__CYGWIN32__)
+ #  include <sys/time.h>
+ #else
+diff -urN src-orig/gdb/rdi-share/unixcomm.c src/gdb/rdi-share/unixcomm.c
+--- src-orig/gdb/rdi-share/unixcomm.c	2002-10-22 13:14:39.000000000 +0300
++++ src/gdb/rdi-share/unixcomm.c	2007-08-12 14:13:34.000000000 +0300
+@@ -98,6 +98,13 @@
+ #define SERIAL_PREFIX "com"
+ #endif
+ 
++#ifndef SERPORT1
++#define SERPORT1   "/dev/ttya"
++#define SERPORT2   "/dev/ttyb"
++#define PARPORT1   "/dev/bpp0"
++#define PARPORT2   "/dev/bpp1"
++#endif
++
+ /*
+  * Parallel port output pins, used for signalling to target
+  */
+diff -urN src-orig/gdb/remote-rdp.c src/gdb/remote-rdp.c
+--- src-orig/gdb/remote-rdp.c	2002-10-22 13:14:39.000000000 +0300
++++ src/gdb/remote-rdp.c	2007-08-12 14:13:34.000000000 +0300
+@@ -490,7 +490,7 @@
+ 	  abort ();
+ 	}
+     }
+-  va_end (args);
++  va_end (alist);
+ 
+   if (dst != buf)
+     abort ();
+diff -urN src-orig/gdb/xm.h src/gdb/xm.h
+--- src-orig/gdb/xm.h	1970-01-01 02:00:00.000000000 +0200
++++ src/gdb/xm.h	2007-08-12 14:13:34.000000000 +0300
+@@ -0,0 +1,26 @@
++/* Macro definitions for running GDB on Apple Power Macintoshes.
++   Copyright (C) 1994 Free Software Foundation, Inc.
++
++This file is part of GDB.
++
++This program is free software; you can redistribute it and/or modify
++it under the terms of the GNU General Public License as published by
++the Free Software Foundation; either version 2 of the License, or
++(at your option) any later version.
++
++This program is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++GNU General Public License for more details.
++
++You should have received a copy of the GNU General Public License
++along with this program; if not, write to the Free Software
++Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
++
++#define HOST_BYTE_ORDER BIG_ENDIAN
++
++#ifndef __unix
++#define __unix
++#endif
++
++//#include <xm-mpw.h>
+diff -urN src-orig/libiberty/cplus-dem.c src/libiberty/cplus-dem.c
+--- src-orig/libiberty/cplus-dem.c	2002-10-22 13:14:49.000000000 +0300
++++ src/libiberty/cplus-dem.c	2007-08-12 14:14:00.000000000 +0300
+@@ -3827,8 +3827,8 @@
+   exit (1);
+ }
+ 
+-char * malloc ();
+-char * realloc ();
++/* char * malloc (); */
++/* char * realloc (); */
+ 
+ char *
+ xmalloc (size)
+diff -urN src-orig/libiberty/strerror.c src/libiberty/strerror.c
+--- src-orig/libiberty/strerror.c	2002-10-22 13:14:49.000000000 +0300
++++ src/libiberty/strerror.c	2007-08-12 14:13:02.000000000 +0300
+@@ -462,8 +462,10 @@
+ 
+ #else
+ 
++/*
+ extern int sys_nerr;
+ extern char *sys_errlist[];
++*/
+ 
+ #endif
+ 
+diff -urN src-orig/libstdc++/stdexcepti.cc src/libstdc++/stdexcepti.cc
+--- src-orig/libstdc++/stdexcepti.cc	2002-10-22 13:14:50.000000000 +0300
++++ src/libstdc++/stdexcepti.cc	2007-08-12 14:13:34.000000000 +0300
+@@ -12,10 +12,10 @@
+ void
+ __out_of_range (const char *s)
+ {
+-  throw out_of_range (s);
++ // throw out_of_range (s);
+ }
+ 
+ void __length_error (const char *s)
+ {
+-  throw length_error (s);
++  //throw length_error (s);
+ }
+diff -urN src-orig/mmalloc/mmap-sup.c src/mmalloc/mmap-sup.c
+--- src-orig/mmalloc/mmap-sup.c	2002-10-22 13:14:52.000000000 +0300
++++ src/mmalloc/mmap-sup.c	2007-08-12 14:13:02.000000000 +0300
+@@ -31,6 +31,7 @@
+ #endif
+ 
+ #include "mmprivate.h"
++#include <sys/types.h>
+ 
+ /* Cache the pagesize for the current host machine.  Note that if the host
+    does not readily provide a getpagesize() function, we need to emulate it
+diff -urN src-orig/tcl/unix/configure src/tcl/unix/configure
+--- src-orig/tcl/unix/configure	2002-10-22 13:15:07.000000000 +0300
++++ src/tcl/unix/configure	2007-08-12 14:13:52.000000000 +0300
+@@ -4170,9 +4170,9 @@
+ 	# Special check for weird MP-RAS system (uname returns weird
+ 	# results, and the version is kept in special file).
+     
+-	if test -r /etc/.relid -a "X`uname -n`" = "X`uname -s`" ; then
+-	    system=MP-RAS-`awk '{print $3}' /etc/.relid'`
+-	fi
++#	if test -r /etc/.relid -a "X`uname -n`" = "X`uname -s`" ; then
++#	    system=MP-RAS-`awk '{print $3}' /etc/.relid'`
++#	fi
+ 	if test "`uname -s`" = "AIX" ; then
+ 	    system=AIX-`uname -v`.`uname -r`
+ 	fi
+@@ -5072,9 +5072,9 @@
+ 	# Special check for weird MP-RAS system (uname returns weird
+ 	# results, and the version is kept in special file).
+     
+-	if test -r /etc/.relid -a "X`uname -n`" = "X`uname -s`" ; then
+-	    system=MP-RAS-`awk '{print $3}' /etc/.relid'`
+-	fi
++#	if test -r /etc/.relid -a "X`uname -n`" = "X`uname -s`" ; then
++#	    system=MP-RAS-`awk '{print $3}' /etc/.relid'`
++#	fi
+ 	if test "`uname -s`" = "AIX" ; then
+ 	    system=AIX-`uname -v`.`uname -r`
+ 	fi
