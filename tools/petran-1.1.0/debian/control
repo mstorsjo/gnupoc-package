@@ -1,0 +1,21 @@
+Source: petran
+Section: utils
+Priority: optional
+Maintainer: Alfred E. Heggestad <alfredh@symbianos.org>
+Build-Depends: debhelper (>> 4.0.0), g++, libstdc++-dev
+Standards-Version: 3.5.8
+
+Package: petran
+Architecture: any
+Depends: ${shlibs:Depends} ${misc:Depends}
+Description: Symbian OS PE file preprocessor.
+ Petran converts native ARM PE files into EPOC executables.
+ Petran can also dump the content of EPOC executables.
+ .
+ PETRAN - PE file preprocessor V01.00 (Build 175)
+ Copyright (c) 1996-2001 Symbian Ltd.
+ .
+ Ported to Linux by Alfred E. Heggestad <alfredh@symbianos.org>
+ .
+ See http://symbianos.org/ for details.
+ .
