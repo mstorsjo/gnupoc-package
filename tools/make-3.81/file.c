@@ -80,6 +80,15 @@ lookup_file (char *name)
 #if defined(VMS) && !defined(WANT_CASE_SENSITIVE_TARGETS)
   register char *lname, *ln;
 #endif
+  char *ptr;
+
+  ptr = name;
+  while (*ptr)
+    {
+      if (*ptr == '\\')
+        *ptr = '/';
+      ptr++;
+    }
 
   assert (*name != '\0');
 
@@ -141,6 +150,15 @@ enter_file (char *name)
 #if defined(VMS) && !defined(WANT_CASE_SENSITIVE_TARGETS)
   char *lname, *ln;
 #endif
+  char *ptr;
+
+  ptr = name;
+  while (*ptr)
+    {
+      if (*ptr == '\\')
+        *ptr = '/';
+      ptr++;
+    }
 
   assert (*name != '\0');
 

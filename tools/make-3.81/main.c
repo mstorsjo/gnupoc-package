@@ -1362,6 +1362,13 @@ main (int argc, char **argv, char **envp)
       {
 	char *dir = directories->list[i];
         char *expanded = 0;
+        char *ptr = dir;
+        while (*ptr)
+          {
+            if (*ptr == '\\')
+              *ptr = '/';
+            ptr++;
+          }
 	if (dir[0] == '~')
 	  {
             expanded = tilde_expand (dir);

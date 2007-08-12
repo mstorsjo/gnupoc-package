@@ -2499,7 +2499,7 @@ construct_command_argv_internal (char *line, char **restp, char *shell,
                 if (ap == new_argv[i])
                   p = next_token (p + 1) - 1;
 	      }
-	    else if (p[1] != '\0')
+	    else
               {
 #ifdef HAVE_DOS_PATHS
                 /* Only remove backslashes before characters special to Unixy
@@ -2527,7 +2527,7 @@ construct_command_argv_internal (char *line, char **restp, char *shell,
 #endif  /* HAVE_DOS_PATHS */
 
                 /* Copy and skip the following char.  */
-                *ap++ = *++p;
+                *ap++ = *p;
               }
 	    break;
 
