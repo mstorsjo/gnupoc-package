@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <vector>
+#include <libgen.h>
 
 using std::vector;
 
@@ -177,6 +178,15 @@ void readParamFile(const char* filename) {
 	fclose(in);
 }
 
+char* toName(const char* str) {
+	char* base = basename(strdup(str));
+	char* dot = strchr(base, '.');
+	if (dot)
+		*dot = '\0';
+	base[0] = toupper(base[0]);
+	return base;
+}
+
 int main(int argc, char *argv[]) {
 	for (int i = 1; i < argc; i++) {
 		char* arg = argv[i];
@@ -244,6 +254,35 @@ int main(int argc, char *argv[]) {
 
 	printf("Writing mif: %s\n", outname);
 	fclose(out);
+
+	if (headername) {
+		printf("Writing mbg: %s\n", headername);
+		out = fopen(headername, "w");
+		if (!out) {
+			perror(headername);
+			return 1;
+		}
+		char* base = toName(headername);
+		fprintf(out, " \r\n");
+		fprintf(out, "/* This file has been generated, DO NOT MODIFY. */\r\n");
+		fprintf(out, "enum TMif%s\r\n", base);
+		fprintf(out, "\t{\r\n");
+		uint32_t val = 16384;
+		for (unsigned int i = 0; i < images.size(); i++) {
+			char* curname = toName(images[i].name);
+			fprintf(out, "\tEMbm%s%s = %d,\r\n", base, curname, val);
+			val++;
+			if (images[i].colorType == 0 || images[i].maskType != 0) {
+				fprintf(out, "\tEMbm%s%s_mask = %d,\r\n", base, curname, val);
+			}
+			val++;
+			free(curname);
+		}
+		fprintf(out, "\tEMbm%sLastElement\r\n", base);
+		fprintf(out, "\t};\r\n");
+		free(base);
+		fclose(out);
+	}
 
 	return 0;
 }
