@@ -62,7 +62,8 @@ depending on which toolchain they're for.
 The tools for eka2 includes a hacked version of gnu make, to handle
 external makefiles which uses dos-style paths with backslashes. This,
 toghether with the mifconv replacement, a symlink named rem and a small
-script named del, seems to be able to handle most icon makefiles.
+script named del, seems to be able to handle many icon makefiles. In some,
+however, there might be some case issues.
 
 Rcomp is somewhat hacked, to handle both Symbian 6 resources (by
 adding the -6 flag) and to handle some new things in resources in 9.
