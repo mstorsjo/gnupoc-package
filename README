@@ -1,0 +1,19 @@
+Gnupoc package
+==============
+
+
+This is a collection of patched tools and scripts for compiling them,
+for building symbian applications. It also contains patches for different
+S60 and UIQ SDKs, to enable building in unix-like environments.
+
+The main goal of this project is to be able to build symbian software
+packages with as little modifications to the actual code to be built
+as possible.
+
+First you need to install a toolchain, see tools/README. Then you can
+install one or more SDKs, according to the instructions in sdks/README.
+
+
+Martin Storsjö
+martin@martin.st
+

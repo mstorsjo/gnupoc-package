@@ -70,13 +70,13 @@ adding the -6 flag) and to handle some new things in resources in 9.
 This package also includes a drop-in-replacement for elf2e32. It isn't
 compiled and installed by default, since it still lacks some important
 features (mainly deflate compression support). By compiling and installing
-this, you can build S60 3rd ed apps completely without wine.
+this, you can build S60 3rd ed apps completely without wine. See
+elf2e32/README for more instructions on this.
 
 Makesis still requires wine. Ensymble (http://www.nbl.fi/~nbl928/ensymble.html)
 can build sis files for Symbian 9, but can't read .pkg files (as of
 version 0.23), so you have to manually create the directory structure
 and create a sis file from that.
-
 
 
 
