@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-n_tests=2
+n_tests=3
 RCOMP=../src/rcomp
 
 
@@ -9,6 +9,7 @@ test_all()
 	echo Running through each test...
 	test_1
 	test_2
+	test_3
 }
 
 
@@ -80,6 +81,39 @@ echo ""
 echo "See the documentation in test.htm for an explanation of the error messages"
 }
 
+test_3()
+{
+echo "Test 3 : Test various real-life cases from different S60 SDKs"
+
+$RCOMP -6 -u -saknexslider.rpp -oaknexslider.rsc.test
+cmp aknexslider.rsc aknexslider.rsc.test
+rm aknexslider.rsc.test
+
+$RCOMP -6 -u -saknexslideraif.rpp -oaknexslideraif.rsc.test
+cmp aknexslideraif.rsc aknexslideraif.rsc.test
+rm aknexslideraif.rsc.test
+
+$RCOMP -u -saknexsettinglistaif.rpp -oaknexsettinglistaif.rsc.test -:aknexsettinglistaif.rsc.test_dump_
+cmp aknexsettinglistaif.rsc aknexsettinglistaif.rsc.test
+cmp aknexsettinglistaif.rsc_dump_1 aknexsettinglistaif.rsc.test_dump_1
+rm aknexsettinglistaif.rsc.test aknexsettinglistaif.rsc.test_dump_1
+
+mkdir -p aknexsettinglist.rsc.test_dump
+$RCOMP -u -saknexsettinglist.rpp -oaknexsettinglist.rsc.test -:aknexsettinglist.rsc.test_dump/dump_
+cmp aknexsettinglist.rsc aknexsettinglist.rsc.test
+diff -urN aknexsettinglist.rsc_dump aknexsettinglist.rsc.test_dump
+rm aknexsettinglist.rsc.test
+rm -rf aknexsettinglist.rsc.test_dump
+
+$RCOMP -u -shelloworldbasic_reg.rpp -ohelloworldbasic_reg.rsc.test
+cmp helloworldbasic_reg.rsc helloworldbasic_reg.rsc.test
+rm helloworldbasic_reg.rsc.test
+
+$RCOMP -u -shelloworldbasic.rpp -ohelloworldbasic.rsc.test
+cmp helloworldbasic.rsc helloworldbasic.rsc.test
+rm helloworldbasic.rsc.test
+}
+
 
 help()
 {
@@ -88,6 +122,7 @@ echo "where parameter may be \"HELP\", \"ALL\" or a test number."
 echo "The current tests are:"
 echo " 1 - Test compiler produces identical output to previous versions"
 echo " 2 - Test behaviour with various errors"
+echo " 3 - Test various real-life cases from different S60 SDKs"
 }
 
 
@@ -97,6 +132,7 @@ echo " 2 - Test behaviour with various errors"
 case $1 in
 	1) test_1;;
 	2) test_2;;
+	3) test_3;;
 	all) test_all;;
 	help) help;;
 	*) help;;
