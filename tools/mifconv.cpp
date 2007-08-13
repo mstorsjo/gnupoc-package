@@ -188,6 +188,11 @@ char* toName(const char* str) {
 	if (dot)
 		*dot = '\0';
 	base[0] = toupper(base[0]);
+	char* ptr = &base[1];
+	while (*ptr) {
+		*ptr = tolower(*ptr);
+		ptr++;
+	}
 	return base;
 }
 
