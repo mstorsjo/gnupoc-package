@@ -519,7 +519,7 @@ void PEFile::CopySectionData(TAny *source, TAny *dest, TUint32 fileLength, TUint
 		{
 		Print(EScreen,"   Copying %08x bytes from file at %08x to memory at %08x\n", fileLength, source, dest);
 		HMem::Copy(dest,source,fileLength);
-		dest = (TAny *)((TUint32)dest + fileLength);
+		dest = (TAny *)((TUint8*)dest + fileLength);
 		TUint32 remainingSize = memLength - fileLength;
 		Print(EScreen,"   Zeroing remaining %08x bytes at %08x\n", remainingSize, dest);
 		HMem::Set(dest, 0, remainingSize);
@@ -539,7 +539,7 @@ TBool PEFile::ProcessRelocData(TAny *relocData,TInt dataSize)
   TBool ret = ETrue;
   TBool hadBadRelocs=EFalse;
 
-  PIMAGE_BASE_RELOCATION pRelocData = (PIMAGE_BASE_RELOCATION)((TUint32)relocData);
+  PIMAGE_BASE_RELOCATION pRelocData = (PIMAGE_BASE_RELOCATION)(relocData);
   Print(ELog,"   Info on .reloc section...\n");
 
 	
@@ -557,7 +557,7 @@ TBool PEFile::ProcessRelocData(TAny *relocData,TInt dataSize)
 		Print(ELog,"      Virtual address: %08x  size: %08x\n",va, bsize);
 			
 		TUint numEntries = (bsize-sizeof(*pRelocData))/sizeof(TUint16);
-		TUint16 *pEntry = (TUint16 *)((TUint32)pRelocData+sizeof(*pRelocData));
+		TUint16 *pEntry = (TUint16 *)((TUint8*)pRelocData+sizeof(*pRelocData));
 		
 		for (TUint i=0; i<numEntries; i++)
 			{
@@ -594,7 +594,8 @@ TBool PEFile::ProcessRelocData(TAny *relocData,TInt dataSize)
 					TUint32 reloc = *relocAddr;					
 					flipi(reloc); // re order
 					
-					if (IsInCode((TUint32)relocAddr) || IsInData((TUint32)relocAddr))
+					// FIXME: is this really what we want, on 64 bit?
+					if (IsInCode((uintptr_t)relocAddr) || IsInData((uintptr_t)relocAddr))
 						{
 						if (IsInDataReloc(reloc))
 					   		{
@@ -624,7 +625,7 @@ TBool PEFile::ProcessRelocData(TAny *relocData,TInt dataSize)
 		dataSize-=bsize;
 		if(dataSize<=0)
 			break;
-		pRelocData = (PIMAGE_BASE_RELOCATION)((TUint32)pRelocData+bsize);
+		pRelocData = (PIMAGE_BASE_RELOCATION)((TUint8*)pRelocData+bsize);
 		}
 
 	if (hadBadRelocs)
@@ -736,7 +737,7 @@ TImportStat PEFile::GetNextImport(TText * &aDllName, TUint16 &aOrdinal, TUint32 
 		{
 		  TUint32 ch = impDesc->Characteristics;
 		  TUint32 nm = impDesc->Name;
-		  TUint32 ft = (TUint32)impDesc->FirstThunk;
+		  TUint32 ft = (uintptr_t)impDesc->FirstThunk;
 
 		  flipi(ch); // re order
 		  flipi(nm);
@@ -790,7 +791,7 @@ TUint32 PEFile::GetFixUp(const TUint16 aOrdinal)
 
 	TUint32 ordBase = iExpDirectory->Base;
 	flipi(ordBase); // re order because this struct is not re ordered
-	TUint32 **af = iExpDirectory->AddressOfFunctions;	
+	TUint32 af = iExpDirectory->AddressOfFunctions;	// TUint32**
 	flipi(af); // as above ...
 
 	TUint32 *functions = (TUint32 *)((TUint32)af + iMemBase);
@@ -819,7 +820,7 @@ TUint8 *PEFile::GetExportName(const TUint16 aOrdinal)
 	{
 	TUint32 ordBase = iExpDirectory->Base;
 	TUint32 nNames = iExpDirectory->NumberOfNames;
-	TUint32  **af = iExpDirectory->AddressOfNames;
+	TUint32  af = iExpDirectory->AddressOfNames; // TUint32**
 	flipi(nNames);
 	flipi(ordBase); // re order
 	flipi(af);
@@ -1273,7 +1274,7 @@ void PEFile::RelocateExportTable()
 // Relocate the export table
 //
 	{
-	  TUint32 **af = iExpDirectory->AddressOfFunctions;
+	  TUint32 af = iExpDirectory->AddressOfFunctions; // TUint32**
 	  flipi(af);
 	  TUint32 nf = iExpDirectory->NumberOfFunctions;
 	  TUint32 *expFns=(TUint32 *)((TUint32)af+iMemBase);

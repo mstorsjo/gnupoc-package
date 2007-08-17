@@ -309,7 +309,7 @@ typedef struct _IMAGE_SYMBOL {
             TUint32   Short;     // if 0, use LongName
             TUint32   Long;      // offset into string table
         } Name;
-        TUint8   *LongName[2];
+        TUint32   LongName[2]; // TUint8* 
     } N;
     TUint32   Value;
     TInt16   SectionNumber;
@@ -666,9 +666,9 @@ typedef struct _IMAGE_EXPORT_DIRECTORY {
     TUint32   Base;
     TUint32   NumberOfFunctions;
     TUint32   NumberOfNames;
-    TUint32  **AddressOfFunctions;
-    TUint32  **AddressOfNames;
-    TUint16   **AddressOfNameOrdinals;
+    TUint32   AddressOfFunctions; // TUint32**
+    TUint32   AddressOfNames; // TUint32**
+    TUint32   AddressOfNameOrdinals; // TUint16**
 } IMAGE_EXPORT_DIRECTORY, *PIMAGE_EXPORT_DIRECTORY;
 
 //
@@ -682,7 +682,7 @@ typedef struct _IMAGE_IMPORT_BY_NAME {
 
 typedef struct _IMAGE_THUNK_DATA {
     union {
-        TUint32 *Function;
+        TUint32 Function; // TUint32*
         TUint32 Ordinal;
         PIMAGE_IMPORT_BY_NAME AddressOfData;
     } u1;

@@ -90,7 +90,8 @@ public:
 	TBool Translate(const TText * const aFileName, TUint aDataBase, TBool aAllowDllData);
 	void Adjust(TInt aSize);
 	TUint VaOfOrdinal(TUint aOrdinal);
-	void RelocateSection(char* aPtr, char *aRelocs, TUint aCodeDelta, TUint aDataDelta, char* aImagePtr, TLinAddr** aIATRefs);
+//	void RelocateSection(char* aPtr, char *aRelocs, TUint aCodeDelta, TUint aDataDelta, char* aImagePtr, TLinAddr** aIATRefs);
+	void RelocateSection(char* aPtr, char *aRelocs, TUint aCodeDelta, TUint aDataDelta, TUint32 aImagePtr, TUint32* aIATRefs);
 	//
 	TUint TextOffset();
 	TUint ImportAddressTableOffset();

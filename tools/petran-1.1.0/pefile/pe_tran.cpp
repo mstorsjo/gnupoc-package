@@ -73,7 +73,7 @@ void E32ImageFile::CreateExportDirectory(char *aPtr, PEFile &aPeFile)
 	TUint *src=(TUint *)aPeFile.iSectionData[KExportSection];
 	TUint *dst=(TUint *)aPtr;
 	PIMAGE_EXPORT_DIRECTORY dir=(PIMAGE_EXPORT_DIRECTORY)src;
-	TUint32 **af = dir->AddressOfFunctions;
+	TUint32 af = dir->AddressOfFunctions; // TUint32**
 	
 	flipi(af); // re order
 	

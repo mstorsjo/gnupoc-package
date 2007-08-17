@@ -352,7 +352,7 @@ TUint E32ImageFile::FixAddress(PEFile &aPeFile, TUint va)
 	}
 
 
-void E32ImageFile::RelocateSection(char* aPtr, char *aRelocs, TUint aCodeDelta, TUint aDataDelta, char* aImagePtr, TLinAddr** aIATRefs)
+void E32ImageFile::RelocateSection(char* aPtr, char *aRelocs, TUint aCodeDelta, TUint aDataDelta, TUint32 aImagePtr, TUint32* aIATRefs) // char* aImagePtr, TLinAddr** aIATRefs
 //
 // Relocates the section data at aPtr
 //	
@@ -391,7 +391,7 @@ void E32ImageFile::RelocateSection(char* aPtr, char *aRelocs, TUint aCodeDelta, 
 						Print(EWarning, "Multiple relocations for IAT entry %d (0x%x, 0x%x)\n",
 								iatNum, aIATRefs[iatNum], dataptr);
 					else
-						aIATRefs[iatNum] = (TLinAddr*)(aImagePtr+va);	// ROM image address of importing pointer
+						aIATRefs[iatNum] = (TUint32) (aImagePtr+va);	// ROM image address of importing pointer
 					// XXX Should we byte re order anything here???
 					}
 				else if (data>=codeStart && data<codeFinish)

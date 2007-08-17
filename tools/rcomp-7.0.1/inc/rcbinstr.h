@@ -14,6 +14,7 @@
 #include "astring.h"
 #include "numval.h"
 #include "array.h"
+#include <stdint.h>
 
 class RCBinaryStream
 	{
@@ -74,18 +75,18 @@ private:
 	class Mark : public ArrayItem
 		{
 	public:
-		inline Mark(int aBufferPosition, MarkType aMarkType, unsigned int aOtherData) :iBufferPosition(aBufferPosition), iMarkType(aMarkType), iOtherData(aOtherData) {}
+		inline Mark(int aBufferPosition, MarkType aMarkType, uintptr_t aOtherData) :iBufferPosition(aBufferPosition), iMarkType(aMarkType), iOtherData(aOtherData) {}
 	public:
 		int iBufferPosition;
 		MarkType iMarkType;
-		unsigned int iOtherData;
+		uintptr_t iOtherData;
 		};
 	class ArrayOfMarks : public Array
 		{
 	public:
 		inline ArrayOfMarks() {}
-		inline void AppendMark(int aBufferPosition, MarkType aMarkType, unsigned int aOtherData=0xbebebebe) {Add(new Mark(aBufferPosition, aMarkType, aOtherData));}
-		inline void InsertMark(int aIndex, int aBufferPosition, MarkType aMarkType, unsigned int aOtherData=0xbebebebe) {Add(aIndex, new Mark(aBufferPosition, aMarkType, aOtherData));}
+		inline void AppendMark(int aBufferPosition, MarkType aMarkType, uintptr_t aOtherData=0xbebebebe) {Add(new Mark(aBufferPosition, aMarkType, aOtherData));}
+		inline void InsertMark(int aIndex, int aBufferPosition, MarkType aMarkType, uintptr_t aOtherData=0xbebebebe) {Add(aIndex, new Mark(aBufferPosition, aMarkType, aOtherData));}
 		inline void RemoveMark(int aIndex) {Discard(aIndex);}
 		inline Mark& MarkAt(int aIndex) const {return *(Mark*)(*this)[aIndex];}
 		};
