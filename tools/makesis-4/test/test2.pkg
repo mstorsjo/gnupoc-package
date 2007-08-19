@@ -1,9 +1,0 @@
-;
-; test2.pkg
-;
-&IC
-#{"test2"},(1),2,3,4
-
-; add directory 'a'
-"b.bin"-"!:\b.bin"
-"c.bin"-"!:\c.bin"
