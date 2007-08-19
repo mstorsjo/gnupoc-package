@@ -49,6 +49,7 @@ FileNameChar [^"]
 %s c_comment
 
 %option noyywrap
+%option yylineno
 %%
 
 

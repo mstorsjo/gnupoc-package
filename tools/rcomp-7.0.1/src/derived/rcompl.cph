@@ -160,7 +160,20 @@ extern FILE *yyin, *yyout;
 #define EOB_ACT_END_OF_FILE 1
 #define EOB_ACT_LAST_MATCH 2
 
-    #define YY_LESS_LINENO(n)
+    /* Note: We specifically omit the test for yy_rule_can_match_eol because it requires
+     *       access to the local variable yy_act. Since yyless() is a macro, it would break
+     *       existing scanners that call yyless() from OUTSIDE yylex. 
+     *       One obvious solution it to make yy_act a global. I tried that, and saw
+     *       a 5% performance hit in a non-yylineno scanner, because yy_act is
+     *       normally declared as a register variable-- so it is not worth it.
+     */
+    #define  YY_LESS_LINENO(n) \
+            do { \
+                int yyl;\
+                for ( yyl = n; yyl < yyleng; ++yyl )\
+                    if ( yytext[yyl] == '\n' )\
+                        --yylineno;\
+            }while(0)
     
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
@@ -598,6 +611,14 @@ static yyconst flex_int16_t yy_chk[429] =
       198,  198,  198,  198,  198,  198,  198,  198
     } ;
 
+/* Table of booleans, true if rule could match eol. */
+static yyconst flex_int32_t yy_rule_can_match_eol[66] =
+    {   0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 
+    0, 1, 0, 0, 0, 0,     };
+
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
 
@@ -647,7 +668,7 @@ char RealLineNumber[200];
 
 	
 
-#line 651 "rcompl.cph"
+#line 672 "rcompl.cph"
 
 #define INITIAL 0
 #define string_rules 1
@@ -807,11 +828,11 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 52 "../rcomp.l"
+#line 53 "../rcomp.l"
 
 
 
-#line 815 "rcompl.cph"
+#line 836 "rcompl.cph"
 
 	if ( !(yy_init) )
 		{
@@ -884,6 +905,16 @@ yy_find_action:
 
 		YY_DO_BEFORE_ACTION;
 
+		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
+			{
+			int yyl;
+			for ( yyl = 0; yyl < yyleng; ++yyl )
+				if ( yytext[yyl] == '\n' )
+					   
+    yylineno++;
+;
+			}
+
 do_action:	/* This label is used only to access EOF actions. */
 
 		switch ( yy_act )
@@ -897,194 +928,194 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 55 "../rcomp.l"
+#line 56 "../rcomp.l"
 return L_STRUCT;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 56 "../rcomp.l"
+#line 57 "../rcomp.l"
 return L_RESOURCE;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 57 "../rcomp.l"
+#line 58 "../rcomp.l"
 return L_UID2;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 58 "../rcomp.l"
+#line 59 "../rcomp.l"
 return L_UID3;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 59 "../rcomp.l"
+#line 60 "../rcomp.l"
 return L_NAME;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 60 "../rcomp.l"
+#line 61 "../rcomp.l"
 return L_CHARACTER_SET;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 61 "../rcomp.l"
+#line 62 "../rcomp.l"
 return L_OFFSET;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 62 "../rcomp.l"
+#line 63 "../rcomp.l"
 return L_SYSTEM;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 63 "../rcomp.l"
+#line 64 "../rcomp.l"
 return L_GLOBAL;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 64 "../rcomp.l"
+#line 65 "../rcomp.l"
 return L_LOCAL;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 65 "../rcomp.l"
+#line 66 "../rcomp.l"
 return L_ENUM;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 66 "../rcomp.l"
+#line 67 "../rcomp.l"
 return L_ENUM;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 69 "../rcomp.l"
+#line 70 "../rcomp.l"
 return L_BUF;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 70 "../rcomp.l"
+#line 71 "../rcomp.l"
 return L_BUF8;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 71 "../rcomp.l"
+#line 72 "../rcomp.l"
 return L_BUF16;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 72 "../rcomp.l"
+#line 73 "../rcomp.l"
 return L_WORD;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 73 "../rcomp.l"
+#line 74 "../rcomp.l"
 return L_BYTE;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 74 "../rcomp.l"
+#line 75 "../rcomp.l"
 return L_LONG;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 75 "../rcomp.l"
+#line 76 "../rcomp.l"
 return L_DOUBLE;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 76 "../rcomp.l"
+#line 77 "../rcomp.l"
 return L_TEXT;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 77 "../rcomp.l"
+#line 78 "../rcomp.l"
 return L_LTEXT;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 78 "../rcomp.l"
+#line 79 "../rcomp.l"
 return L_TEXT8;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 79 "../rcomp.l"
+#line 80 "../rcomp.l"
 return L_LTEXT8;
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 80 "../rcomp.l"
+#line 81 "../rcomp.l"
 return L_TEXT16;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 81 "../rcomp.l"
+#line 82 "../rcomp.l"
 return L_LTEXT16;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 82 "../rcomp.l"
+#line 83 "../rcomp.l"
 return L_LINK;
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 83 "../rcomp.l"
+#line 84 "../rcomp.l"
 return L_LLINK;
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 84 "../rcomp.l"
+#line 85 "../rcomp.l"
 return L_SRLINK;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 87 "../rcomp.l"
+#line 88 "../rcomp.l"
 return L_LEN;
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 90 "../rcomp.l"
+#line 91 "../rcomp.l"
 { BEGIN(string_rules); pCh = buf; isCharLiteral=0; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 91 "../rcomp.l"
+#line 92 "../rcomp.l"
 { BEGIN(string_rules); pCh = buf; isCharLiteral=1; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 93 "../rcomp.l"
+#line 94 "../rcomp.l"
 { CHECK_APPEND('"'); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 94 "../rcomp.l"
+#line 95 "../rcomp.l"
 { CHECK_APPEND('\''); };
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 96 "../rcomp.l"
+#line 97 "../rcomp.l"
 { CHECK_APPEND( * ( strchr("\rr\bb\ff\nn\tt\vv\aa", yytext[1])-1));}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 98 "../rcomp.l"
+#line 99 "../rcomp.l"
 { CHECK_APPEND('\\'); }
 	YY_BREAK
 case 36:
 /* rule 36 can match eol */
 YY_RULE_SETUP
-#line 100 "../rcomp.l"
+#line 101 "../rcomp.l"
 /* Escaped newline ignored*/ ;
 	YY_BREAK
 case 37:
 /* rule 37 can match eol */
 YY_RULE_SETUP
-#line 102 "../rcomp.l"
+#line 103 "../rcomp.l"
 { yyerror( isCharLiteral?"Unterminated character literal":"Unterminated string"); BEGIN 0; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 104 "../rcomp.l"
+#line 105 "../rcomp.l"
 { 
     if (!isCharLiteral) 
 	    {
@@ -1095,7 +1126,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 112 "../rcomp.l"
+#line 113 "../rcomp.l"
 { 
     if (isCharLiteral) 
 	    {
@@ -1106,12 +1137,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 120 "../rcomp.l"
+#line 121 "../rcomp.l"
 { CHECK_APPEND(*yytext); }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 123 "../rcomp.l"
+#line 124 "../rcomp.l"
 {	
     BEGIN(0);
     strcpy( yylval.Value, yytext);
@@ -1120,47 +1151,47 @@ YY_RULE_SETUP
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 129 "../rcomp.l"
+#line 130 "../rcomp.l"
 {	strcpy( yylval.Value, yytext); return L_NUM_NATURAL; }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 130 "../rcomp.l"
+#line 131 "../rcomp.l"
 {	strcpy( yylval.Value, yytext); return L_NUM_NATURAL; }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 131 "../rcomp.l"
+#line 132 "../rcomp.l"
 {	strcpy( yylval.Value, yytext); return L_NUM_FLOAT;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 132 "../rcomp.l"
+#line 133 "../rcomp.l"
 {	strcpy( yylval.Value, yytext); return L_NUM_FLOAT;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 133 "../rcomp.l"
+#line 134 "../rcomp.l"
 {	strcpy( yylval.Value, yytext); return L_NUM_FLOAT;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 134 "../rcomp.l"
+#line 135 "../rcomp.l"
 {	strcpy( yylval.Value, yytext); return L_NUM_FLOAT;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 135 "../rcomp.l"
+#line 136 "../rcomp.l"
 {	strcpy( yylval.Value, yytext); return L_NUM_FLOAT;}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 136 "../rcomp.l"
+#line 137 "../rcomp.l"
 {	strcpy( yylval.Value, yytext); return L_NUM_FLOAT;}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 138 "../rcomp.l"
+#line 139 "../rcomp.l"
 {	BEGIN( file_line_rules); strcpy( RealLineNumber, yytext+2); }
 	YY_BREAK
 case 51:
@@ -1168,7 +1199,7 @@ case 51:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 140 "../rcomp.l"
+#line 141 "../rcomp.l"
 {	BEGIN(0); // # <line> "" means start of base file.
 											pFileLineHandler->SetBase( InputBaseName, * pCurrentLineNumber);
 										}
@@ -1179,7 +1210,7 @@ case 52:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 144 "../rcomp.l"
+#line 145 "../rcomp.l"
 {	BEGIN(0); // # <line> <filename> means start of named base file.
 											pFileLineHandler->SetInclude( yytext, * pCurrentLineNumber);
 										}
@@ -1190,7 +1221,7 @@ case 53:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 148 "../rcomp.l"
+#line 149 "../rcomp.l"
 {
 											BEGIN(0); // # <line> <filename> 1 means start of an included file.
 											pFileLineHandler->SetInclude( yytext, * pCurrentLineNumber);
@@ -1202,7 +1233,7 @@ case 54:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 153 "../rcomp.l"
+#line 154 "../rcomp.l"
 {
 											BEGIN(0); // # <line> <filename> 2 means end of an included file and now at <line> in <filename>.
 											pFileLineHandler->PostInclude( yytext, RealLineNumber, * pCurrentLineNumber);
@@ -1211,62 +1242,62 @@ YY_RULE_SETUP
 case 55:
 /* rule 55 can match eol */
 YY_RULE_SETUP
-#line 160 "../rcomp.l"
+#line 161 "../rcomp.l"
 ; // skipped
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 162 "../rcomp.l"
+#line 163 "../rcomp.l"
 { BEGIN(cpp_comment); }
 	YY_BREAK
 case 57:
 /* rule 57 can match eol */
 YY_RULE_SETUP
-#line 163 "../rcomp.l"
+#line 164 "../rcomp.l"
 { BEGIN(0); }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 164 "../rcomp.l"
+#line 165 "../rcomp.l"
 ; // skipped
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 166 "../rcomp.l"
+#line 167 "../rcomp.l"
 { BEGIN(c_comment); }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 167 "../rcomp.l"
+#line 168 "../rcomp.l"
 { BEGIN(0); }
 	YY_BREAK
 case 61:
 /* rule 61 can match eol */
 YY_RULE_SETUP
-#line 168 "../rcomp.l"
+#line 169 "../rcomp.l"
 ; // skipped
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 169 "../rcomp.l"
+#line 170 "../rcomp.l"
 ; // skipped
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 171 "../rcomp.l"
+#line 172 "../rcomp.l"
 return * yytext;
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 174 "../rcomp.l"
+#line 175 "../rcomp.l"
 { yyerror("*** Unknown character '%c' (value 0x%x) ", *yytext, *yytext);}
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 175 "../rcomp.l"
+#line 176 "../rcomp.l"
 ECHO;
 	YY_BREAK
-#line 1270 "rcompl.cph"
+#line 1301 "rcompl.cph"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(string_rules):
 case YY_STATE_EOF(file_line_rules):
@@ -1624,6 +1655,10 @@ static int yy_get_next_buffer (void)
 
 	*--yy_cp = (char) c;
 
+    if ( c == '\n' ){
+        --yylineno;
+    }
+
 	(yytext_ptr) = yy_bp;
 	(yy_hold_char) = *yy_cp;
 	(yy_c_buf_p) = yy_cp;
@@ -1700,6 +1735,10 @@ static int yy_get_next_buffer (void)
 	(yy_hold_char) = *++(yy_c_buf_p);
 
 	YY_CURRENT_BUFFER_LVALUE->yy_at_bol = (c == '\n');
+	if ( YY_CURRENT_BUFFER_LVALUE->yy_at_bol )
+		   
+    yylineno++;
+;
 
 	return c;
 }
@@ -2167,6 +2206,9 @@ static int yy_init_globals (void)
      * This function is called from yylex_destroy(), so don't allocate here.
      */
 
+    /* We do not touch yylineno unless the option is enabled. */
+    yylineno =  1;
+    
     (yy_buffer_stack) = 0;
     (yy_buffer_stack_top) = 0;
     (yy_buffer_stack_max) = 0;
@@ -2259,4 +2301,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 175 "../rcomp.l"
+#line 176 "../rcomp.l"
