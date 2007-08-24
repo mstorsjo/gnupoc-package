@@ -894,6 +894,8 @@ public:
 		StringTable shstrtab;
 
 		int prime = exports.size()/2;
+		if (prime == 0)
+			prime = 1;
 		hashArray.appendObject(prime);
 		hashArray.appendObject(exports.size()+1);
 		for (int i = 0; i < prime; i++)
