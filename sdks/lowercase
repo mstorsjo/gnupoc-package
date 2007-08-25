@@ -24,6 +24,7 @@ sub mergedir($$) {
     }
   }
   rmdir($src);
+  return 1;
 }
 
 sub dodir($) {
