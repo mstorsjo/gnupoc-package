@@ -28,44 +28,44 @@ mkdir _e
 unzip -qn $SRC -d _e
 
 mkdir -p epoc32/release
-unshield x -g Binaries _e/data2.cab
+unshield -g Binaries x _e/data2.cab
 mv Binaries/* epoc32/release; rmdir Binaries
 mkdir -p epoc32/data
-unshield x -g "Epoc Icon" _e/data2.cab
+unshield -g "Epoc Icon" x _e/data2.cab
 mv Epoc_Icon/* epoc32/data; rmdir Epoc_Icon
 mkdir -p epoc32/include
-unshield x -g Tools_Include _e/data2.cab
+unshield -g Tools_Include x _e/data2.cab
 mv Tools_Include/* epoc32/include; rmdir Tools_Include
 mkdir -p epoc32/release/winc
-unshield x -g aiftool_rh _e/data2.cab
+unshield -g aiftool_rh x _e/data2.cab
 mv aiftool_rh/* epoc32/include; rmdir aiftool_rh
 mkdir -p epoc32/gcc
-unshield x -g Compiler_GCC _e/data2.cab
+unshield -g Compiler_GCC x _e/data2.cab
 mv Compiler_GCC/* epoc32/gcc; rmdir Compiler_GCC
 mkdir -p epoc32/tools
-unshield x -g abld_pl _e/data2.cab
+unshield -g abld_pl x _e/data2.cab
 mv abld_pl/* epoc32/tools; rmdir abld_pl
-unshield x -g bldmake_pl _e/data2.cab
+unshield -g bldmake_pl x _e/data2.cab
 mv bldmake_pl/* epoc32/tools; rmdir bldmake_pl
-unshield x -g Tools _e/data2.cab
+unshield -g Tools x _e/data2.cab
 mv Tools/* epoc32/tools; rmdir Tools
 mkdir -p epoc32/wins
-unshield x -g Emu_Wins _e/data2.cab
+unshield -g Emu_Wins x _e/data2.cab
 mv Emu_Wins/* epoc32/wins; rmdir Emu_Wins
-unshield x -g Emu_Data _e/data2.cab
+unshield -g Emu_Data x _e/data2.cab
 mv Emu_Data/* epoc32/data; rmdir Emu_Data
 mv epoc32 $DEST
 
-unshield x -g Symbian_Examples _e/data2.cab
+unshield -g Symbian_Examples x _e/data2.cab
 mv Symbian_Examples $DEST/epoc32ex
 
-unshield x -g Nokia_Examples _e/data2.cab
+unshield -g Nokia_Examples x _e/data2.cab
 mv Nokia_Examples $DEST/series60ex
 
-unshield x -g Nokia_Docs _e/data2.cab
+unshield -g Nokia_Docs x _e/data2.cab
 mv Nokia_Docs $DEST/series60doc
 
-unshield x -g NokiaWizard _e/data2.cab
+unshield -g NokiaWizard x _e/data2.cab
 mv NokiaWizard $DEST/series60tools
 
 

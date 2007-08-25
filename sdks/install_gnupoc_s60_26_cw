@@ -27,25 +27,25 @@ done << __END
 mkdir _e
 unzip -qn $SRC -d _e
 
-unshield x -g Epoc32 _e/data2.cab
+unshield -g Epoc32 x _e/data2.cab
 mv Epoc32 $DEST/epoc32
 
-unshield x -g Xtras_winscw _e/data2.cab
+unshield -g Xtras_winscw x _e/data2.cab
 mv Xtras_winscw/epoc32/release/winscw $DEST/epoc32/release
 mv Xtras_winscw/epoc32/stationery $DEST/epoc32
 mv Xtras_winscw/epoc32/winscw $DEST/epoc32
 rm -rf Xtras_winscw
 
-unshield x -g Examples _e/data2.cab
+unshield -g Examples x _e/data2.cab
 mv Examples $DEST/examples
 
-unshield x -g Series60Ex _e/data2.cab
+unshield -g Series60Ex x _e/data2.cab
 mv Series60Ex $DEST/series60ex
 
-unshield x -g Series60Doc _e/data2.cab
+unshield -g Series60Doc x _e/data2.cab
 mv Series60Doc $DEST/series60doc
 
-unshield x -g Series60Tools _e/data2.cab
+unshield -g Series60Tools x _e/data2.cab
 mv Series60Tools $DEST/series60tools
 
 ### Fixing

@@ -27,17 +27,17 @@ done << __END
 mkdir _e
 unzip -qn $SRC -d _e
 
-unshield x -g Epoc32 _e/data2.cab
+unshield -g Epoc32 x _e/data2.cab
 mv Epoc32 $DEST/epoc32
 
-unshield x -g icon _e/data2.cab
+unshield -g icon x _e/data2.cab
 mv icon/s60.ico $DEST
 rmdir icon
 
-unshield x -g Series60Doc _e/data2.cab
+unshield -g Series60Doc x _e/data2.cab
 mv Series60Doc $DEST/series60doc
 
-unshield x -g Series60Tools _e/data2.cab
+unshield -g Series60Tools x _e/data2.cab
 mv Series60Tools $DEST/series60tools
 
 unzip -qn _e/Examples.zip
