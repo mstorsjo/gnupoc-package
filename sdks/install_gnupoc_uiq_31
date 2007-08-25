@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if test $# != 2 -a $# != 3 -o $0 != "./install_gnupoc_uiq_31"; then
+if test $# != 2 -o $0 != "./install_gnupoc_uiq_31"; then
   echo "Usage: ./install_gnupoc_uiq_31 <path-to-sdk-zip> <target-dir>"
   echo " e.g.: ./install_gnupoc_uiq_31 UIQ3.1SDK.exe ~/symbian-sdks/uiq_31"
   exit 1
@@ -10,6 +10,8 @@ SRC=$1
 DEST=`echo $2 | sed s:/\$::`
 
 mkdir -p $DEST
+
+export PATH=7z:$PATH
 
 while read a
 do
@@ -23,7 +25,7 @@ done << __END
 
 
 ### Unzip
-7z/7z x -y -o$DEST $SRC
+7z x -y -o$DEST $SRC
 rm -rf $DEST/\\\\\$*
 
 ### Fixing

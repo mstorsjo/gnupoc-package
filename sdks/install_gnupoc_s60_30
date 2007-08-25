@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if test $# != 2 -a $# != 3 -o $0 != "./install_gnupoc_s60_30"; then
+if test $# != 2 -o $0 != "./install_gnupoc_s60_30"; then
   echo "Usage: ./install_gnupoc_s60_30 <path-to-sdk-zip> <target-dir>"
   echo " e.g.: ./install_gnupoc_s60_30 S60-SDK-0616-3.0-mr.3.749.zip ~/symbian-sdks/s60_30"
   exit 1
@@ -10,6 +10,8 @@ SRC=$1
 DEST=`echo $2 | sed s:/\$::`
 
 mkdir -p $DEST
+
+export PATH=unshield:$PATH
 
 while read a
 do
@@ -25,20 +27,18 @@ done << __END
 mkdir _e
 unzip -qn $SRC -d _e
 
-mkdir epoc32
-cd epoc32; wine ../i6comp.exe x -gEpoc32 ../_e/data2.cab > /dev/null
-mv epoc32 $DEST
+unshield x -g Epoc32 _e/data2.cab
+mv Epoc32 $DEST/epoc32
 
-wine i6comp.exe x -gicon _e/data2.cab > /dev/null
-mv s60.ico $DEST
+unshield x -g icon _e/data2.cab
+mv icon/s60.ico $DEST
+rmdir icon
 
-mkdir series60doc
-cd series60doc; wine ../i6comp.exe x -gSeries60Doc ../_e/data2.cab > /dev/null
-mv series60doc $DEST
+unshield x -g Series60Doc _e/data2.cab
+mv Series60Doc $DEST/series60doc
 
-mkdir series60tools
-cd series60tools; wine ../i6comp.exe x -gSeries60Tools ../_e/data2.cab > /dev/null
-mv series60tools $DEST
+unshield x -g Series60Tools _e/data2.cab
+mv Series60Tools $DEST/series60tools
 
 unzip -qn _e/Examples.zip
 mv Examples $DEST/examples
@@ -56,7 +56,7 @@ mv S60Ex $DEST/s60ex
 ./lowercase $DEST/examples
 ./fixinclude $DEST/examples
 ./fixexamples $DEST/examples
-find $DEST/epoc32/tools -name \*.pl -or -name \*.pm | xargs -n 1 recode dos..latin1
+for i in \`find $DEST/epoc32/tools -name \*.pl -or -name \*.pm\`; do j=\`tempfile\`; tr -d '\\\\r' < \$i > \$j; mv \$j \$i; done
 cp -a $DEST/epoc32/tools $DEST/epoc32/tools_orig
 cat gnupoc-s60_30-patch | (cd $DEST/epoc32; patch -p0 )
 cd $DEST/epoc32/tools; chmod a+x *.pl bldmake abld makmake bmconv rcomp makesis epoc eshell petran pfsdump setupcomms elf2e32 mifconv makekeys signsis extmake

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if test $# != 2 -a $# != 3 -o $0 != "./install_gnupoc_s60_12"; then
+if test $# != 2 -o $0 != "./install_gnupoc_s60_12"; then
   echo "Usage: ./install_gnupoc_s60_12 <path-to-sdk-zip> <target-dir>"
   echo " e.g.: ./install_gnupoc_s60_12 nS60_sdk_v1_2.zip ~/symbian-sdks/s60_12"
   exit 1
@@ -10,6 +10,8 @@ SRC=$1
 DEST=`echo $2 | sed s:/\$::`
 
 mkdir -p $DEST
+
+export PATH=unshield:$PATH
 
 while read a
 do
@@ -26,40 +28,45 @@ mkdir _e
 unzip -qn $SRC -d _e
 
 mkdir -p epoc32/release
-cd epoc32/release; wine ../../i6comp.exe x -gBinaries ../../_e/data2.cab > /dev/null
+unshield x -g Binaries _e/data2.cab
+mv Binaries/* epoc32/release; rmdir Binaries
 mkdir -p epoc32/data
-cd epoc32/data; wine ../../i6comp.exe x -g"Epoc Icon" ../../_e/data2.cab > /dev/null
+unshield x -g "Epoc Icon" _e/data2.cab
+mv Epoc_Icon/* epoc32/data; rmdir Epoc_Icon
 mkdir -p epoc32/include
-cd epoc32/include; wine ../../i6comp.exe x -gTools_Include ../../_e/data2.cab > /dev/null
+unshield x -g Tools_Include _e/data2.cab
+mv Tools_Include/* epoc32/include; rmdir Tools_Include
 mkdir -p epoc32/release/winc
-cd epoc32/release/winc; wine ../../../i6comp.exe x -gBin_Winc ../../../_e/data2.cab > /dev/null
-cd epoc32/include; wine ../../i6comp.exe x -gaiftool_rh ../../_e/data2.cab > /dev/null
+unshield x -g aiftool_rh _e/data2.cab
+mv aiftool_rh/* epoc32/include; rmdir aiftool_rh
 mkdir -p epoc32/gcc
-cd epoc32/gcc; wine ../../i6comp.exe x -gCompiler_GCC ../../_e/data2.cab > /dev/null
+unshield x -g Compiler_GCC _e/data2.cab
+mv Compiler_GCC/* epoc32/gcc; rmdir Compiler_GCC
 mkdir -p epoc32/tools
-cd epoc32/tools; wine ../../i6comp.exe x -gabld_pl ../../_e/data2.cab > /dev/null
-cd epoc32/tools; wine ../../i6comp.exe x -gbldmake_pl ../../_e/data2.cab > /dev/null
-cd epoc32/tools; wine ../../i6comp.exe x -gTools ../../_e/data2.cab > /dev/null
+unshield x -g abld_pl _e/data2.cab
+mv abld_pl/* epoc32/tools; rmdir abld_pl
+unshield x -g bldmake_pl _e/data2.cab
+mv bldmake_pl/* epoc32/tools; rmdir bldmake_pl
+unshield x -g Tools _e/data2.cab
+mv Tools/* epoc32/tools; rmdir Tools
 mkdir -p epoc32/wins
-cd epoc32/wins; wine ../../i6comp.exe x -gEmu_Wins ../../_e/data2.cab > /dev/null
-cd epoc32/data; wine ../../i6comp.exe x -gEmu_Data ../../_e/data2.cab > /dev/null
+unshield x -g Emu_Wins _e/data2.cab
+mv Emu_Wins/* epoc32/wins; rmdir Emu_Wins
+unshield x -g Emu_Data _e/data2.cab
+mv Emu_Data/* epoc32/data; rmdir Emu_Data
 mv epoc32 $DEST
 
-mkdir epoc32ex
-cd epoc32ex; wine ../i6comp.exe x -gSymbian_Examples ../_e/data2.cab > /dev/null
-mv epoc32ex $DEST
+unshield x -g Symbian_Examples _e/data2.cab
+mv Symbian_Examples $DEST/epoc32ex
 
-mkdir series60ex
-cd series60ex; wine ../i6comp.exe x -gNokia_Examples ../_e/data2.cab >/dev/null
-mv series60ex $DEST
+unshield x -g Nokia_Examples _e/data2.cab
+mv Nokia_Examples $DEST/series60ex
 
-mkdir series60doc
-cd series60doc; wine ../i6comp.exe x -gNokia_Docs ../_e/data2.cab>/dev/null
-mv series60doc $DEST
+unshield x -g Nokia_Docs _e/data2.cab
+mv Nokia_Docs $DEST/series60doc
 
-mkdir series60tools
-cd series60tools; wine ../i6comp.exe x -gNokiaWizard ../_e/data2.cab>/dev/null
-mv series60tools $DEST
+unshield x -g NokiaWizard _e/data2.cab
+mv NokiaWizard $DEST/series60tools
 
 
 ### Fixing
@@ -74,7 +81,7 @@ mv series60tools $DEST
 ./lowercase $DEST/epoc32ex
 ./fixinclude $DEST/epoc32ex
 ./fixexamples $DEST/epoc32ex
-find $DEST/epoc32/tools -name \*.pl -or -name \*.pm | xargs -n 1 recode dos..latin1
+for i in \`find $DEST/epoc32/tools -name \*.pl -or -name \*.pm\`; do j=\`tempfile\`; tr -d '\\\\r' < \$i > \$j; mv \$j \$i; done
 cp -a $DEST/epoc32/tools $DEST/epoc32/tools_orig
 cat gnupoc-s60_12-patch | (cd $DEST/epoc32; patch -p0 )
 cd $DEST/epoc32/tools; chmod a+x *.pl bldmake abld makmake bmconv rcomp makesis epoc eshell petran pfsdump setupcomms

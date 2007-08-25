@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if test $# != 2 -a $# != 3 -o $0 != "./install_gnupoc_s60_26_cw"; then
+if test $# != 2 -o $0 != "./install_gnupoc_s60_26_cw"; then
   echo "Usage: ./install_gnupoc_s60_26_cw <path-to-sdk-zip> <target-dir>"
   echo " e.g.: ./install_gnupoc_s60_26_cw s60_2nd_fp2_sdk.zip ~/symbian-sdks/s60_26_cw"
   exit 1
@@ -10,6 +10,8 @@ SRC=$1
 DEST=`echo $2 | sed s:/\$::`
 
 mkdir -p $DEST
+
+export PATH=unshield:$PATH
 
 while read a
 do
@@ -25,26 +27,26 @@ done << __END
 mkdir _e
 unzip -qn $SRC -d _e
 
-wine i6comp.exe x -gXtras_winscw _e/data2.cab > /dev/null
-cd epoc32; wine ../i6comp.exe x -gEpoc32 ../_e/data2.cab > /dev/null
-mv epoc32 $DEST
+unshield x -g Epoc32 _e/data2.cab
+mv Epoc32 $DEST/epoc32
 
-mkdir examples
-cd examples; wine ../i6comp.exe x -gExamples ../_e/data2.cab > /dev/null
-mv examples $DEST
+unshield x -g Xtras_winscw _e/data2.cab
+mv Xtras_winscw/epoc32/release/winscw $DEST/epoc32/release
+mv Xtras_winscw/epoc32/stationery $DEST/epoc32
+mv Xtras_winscw/epoc32/winscw $DEST/epoc32
+rm -rf Xtras_winscw
 
-mkdir series60ex
-cd series60ex; wine ../i6comp.exe x -gSeries60Ex ../_e/data2.cab >/dev/null
-mv series60ex $DEST
+unshield x -g Examples _e/data2.cab
+mv Examples $DEST/examples
 
-mkdir series60doc
-cd series60doc; wine ../i6comp.exe x -gSeries60Doc ../_e/data2.cab>/dev/null
-mv series60doc $DEST
+unshield x -g Series60Ex _e/data2.cab
+mv Series60Ex $DEST/series60ex
 
-mkdir series60tools
-cd series60tools; wine ../i6comp.exe x -gSeries60Tools ../_e/data2.cab>/dev/null
-mv series60tools $DEST
+unshield x -g Series60Doc _e/data2.cab
+mv Series60Doc $DEST/series60doc
 
+unshield x -g Series60Tools _e/data2.cab
+mv Series60Tools $DEST/series60tools
 
 ### Fixing
 ./lowercase $DEST/epoc32/tools
@@ -58,7 +60,7 @@ mv series60tools $DEST
 ./lowercase $DEST/examples
 ./fixinclude $DEST/examples
 ./fixexamples $DEST/examples
-find $DEST/epoc32/tools -name \*.pl -or -name \*.pm | xargs -n 1 recode dos..latin1
+for i in \`find $DEST/epoc32/tools -name \*.pl -or -name \*.pm\`; do j=\`tempfile\`; tr -d '\\\\r' < \$i > \$j; mv \$j \$i; done
 cp -a $DEST/epoc32/tools $DEST/epoc32/tools_orig
 cat gnupoc-s60_26-patch | (cd $DEST/epoc32; patch -p0 )
 cd $DEST/epoc32/tools; chmod a+x *.pl bldmake abld makmake bmconv rcomp makesis epoc eshell petran pfsdump setupcomms makekeys extmake
