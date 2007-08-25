@@ -522,7 +522,7 @@ void CSISFileGeneratorBase::CalculateOffsets()
 	const PKGLINENODE *pNode = m_pSISWriter->GetPkgLineBase(); 
 	while(pNode)
 		{
-		m_dwOffDepend += sizeof(TInstPackageLineType);
+		m_dwOffDepend += sizeof(uint32_t);
 		switch (pNode->iPackageLineType)
 			{
 			case EInstPkgLineFile:
@@ -533,7 +533,7 @@ void CSISFileGeneratorBase::CalculateOffsets()
 					wNumLangs = m_pSISWriter->GetNoLanguages();
 				
 				m_dwOffDepend += sizeof(TInstFile) +
-					((sizeof(unsigned long) + sizeof(FOFF) + sizeof(unsigned long)) * wNumLangs) +
+					((sizeof(uint32_t) + sizeof(FOFF) + sizeof(uint32_t)) * wNumLangs) +
 					sizeof(TInstString);
 				stringSizes += (wcslen(pNode->file->pszSource) + wcslen(pNode->file->pszDest)) * SizeOfChar() +
 					wcslen(pNode->file->pszMimeType);

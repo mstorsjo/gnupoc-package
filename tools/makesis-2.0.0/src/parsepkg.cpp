@@ -788,7 +788,7 @@ void CParsePkg::ParsePackageL()
 	else
 		{
 		int embeddedUID;
-		unsigned long numberOfBytesRead;
+		DWORD numberOfBytesRead;
 		int ok = ReadFile(hEmbeddedFile, (void*)&embeddedUID, sizeof(embeddedUID),
 			&numberOfBytesRead,NULL);
 		if (!ok)

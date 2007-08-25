@@ -14,11 +14,19 @@
 #include <e32def.h>
 #else
 // Windows build - define a limited number of EPOC types
+#include <stdint.h>
+/*
 typedef short int TInt16;
 typedef unsigned short int TUint16;
 typedef long int TInt32;
 typedef unsigned long int TUint32;
 typedef unsigned char TUint8;
+*/
+typedef int16_t TInt16;
+typedef uint16_t TUint16;
+typedef int32_t TInt32;
+typedef uint32_t TUint32;
+typedef uint8_t TUint8;
 #endif
 
 // file offset type

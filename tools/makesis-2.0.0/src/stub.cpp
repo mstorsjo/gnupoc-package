@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <wchar.h> /* wcslen */
 #include <string.h> /* strncpy */
+#include <stdint.h>
 
 
 #ifdef UNICODE
@@ -68,7 +69,7 @@ HANDLE CreateFileA(LPCSTR filename, DWORD access, DWORD sharing,
 BOOL ReadFile(HANDLE hFile, LPVOID buffer, DWORD bytesToRead,
 	      LPDWORD bytesRead, void *)
 {
-	int fd = (int)hFile;
+	int fd = (intptr_t)hFile;
 
 	const int size = read(fd, buffer, bytesToRead);
 
@@ -84,13 +85,13 @@ BOOL ReadFile(HANDLE hFile, LPVOID buffer, DWORD bytesToRead,
 
 BOOL CloseHandle(HANDLE fd)
 {
-	return close((int)fd) == 0;
+	return close((intptr_t)fd) == 0;
 }
 
 
 DWORD WINAPI GetFileSize(HANDLE h, LPDWORD)
 {
-	int fd = (int)h;
+	int fd = (intptr_t)h;
 	int ret = 0;
 
 	struct stat s;
@@ -167,7 +168,7 @@ BOOL WriteFile(HANDLE hFile,
 	       LPCVOID buffer, DWORD bytesToWrite,
 	       LPDWORD bytesWritten, void*)
 {
-	int fd = (int)hFile;
+	int fd = (intptr_t)hFile;
 
 	ssize_t ret = write(fd, buffer, bytesToWrite);
 	if(ret == -1) {
@@ -188,7 +189,7 @@ DWORD SetFilePointer(HANDLE hFile,
 {
   (void)highword;
 
-  int fd = (int)hFile;
+  int fd = (intptr_t)hFile;
   off_t off = 0;
 
   if(method == FILE_BEGIN)

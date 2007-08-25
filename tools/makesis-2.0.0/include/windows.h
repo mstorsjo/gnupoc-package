@@ -151,17 +151,19 @@ extern "C" {
 
 /* Standard data types */
 
+#include <stdint.h>
+
 typedef void                                   *LPVOID;
 typedef const void                             *LPCVOID;
 typedef int             BOOL,       *PBOOL,    *LPBOOL;
 typedef unsigned char   BYTE,       *PBYTE,    *LPBYTE;
 typedef unsigned char   UCHAR,      *PUCHAR;
-typedef unsigned short  WORD,       *PWORD,    *LPWORD;
+typedef uint16_t        WORD,       *PWORD,    *LPWORD;
 typedef unsigned short  USHORT,     *PUSHORT;
 typedef int             INT,        *PINT,     *LPINT;
 typedef unsigned int    UINT,       *PUINT;
 typedef long                                   *LPLONG;
-typedef unsigned long   DWORD,      *PDWORD,   *LPDWORD;
+typedef uint32_t        DWORD,      *PDWORD,   *LPDWORD;
 typedef unsigned long   ULONG,      *PULONG;
 typedef float           FLOAT,      *PFLOAT;
 typedef double          DOUBLE;
