@@ -27,9 +27,10 @@ S60 3rd Edition, FP 1			S60-SDK-200634-3.1-Cpp-f.1090b.zip
 UIQ 3.0					UIQ3.0SDK.exe
 UIQ 3.1					UIQ3.1SDK.exe
 
-Unpacking of all S60 SDKs except 2.1 for WINS requires wine. The UIQ SDKs
-require p7zip. A prebuilt binary of 7z for linux is provided, otherwise you
-can compile it yourself from the source in the 7z directory.
+Unpacking of all S60 SDKs except 2.1 for WINS requires unshield, the UIQ
+SDKs require p7zip. Both unshield and p7zip are included in this package,
+as precompiled binaries and source. The S60 2.1 WINS SDK requires cabextract,
+which isn't included.
 
 Install them using the matching install scripts, e.g.:
 ./install_gnupoc_s60_30 ../S60-SDK-0616-3.0-mr.3.749.zip ~/symbian-sdks/s60_30
