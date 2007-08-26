@@ -1,0 +1,17 @@
+
+The included binary is for linux/x86. If it doesn't work for you, you can
+either remove it (and let the install script use 7z from somewhere else
+in your PATH; however, it must be at least version 4.51) or compile it
+from source.
+
+To compile it from source on OS X:
+
+tar -jxvf p7zip_4.51_src_all.tar.bz2
+cd p7zip_4.51
+cp makefile.macosx makefile.machine
+make 7z
+cp bin/7z ..
+cp bin/7z.so ..
+
+On linux, do the same, just skip copying the makefile.
+

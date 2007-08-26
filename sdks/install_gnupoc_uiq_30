@@ -12,6 +12,8 @@ DEST=`echo $2 | sed s:/\$::`
 mkdir -p $DEST
 
 export PATH=7z:$PATH
+# 7z must find the path to 7z.so
+P7ZIP=`which 7z`
 
 while read a
 do
@@ -25,7 +27,7 @@ done << __END
 
 
 ### Unzip
-7z x -y -o$DEST $SRC
+$P7ZIP x -y -o$DEST $SRC
 rm -rf $DEST/\\\\\$*
 
 
