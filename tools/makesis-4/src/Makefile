@@ -20,29 +20,30 @@ OBJS=\
 	wcstub.o \
 	signutils.o \
 	sisfilegen.o \
-	crc.o
+	crc.o \
+	sisfield.o
 
-BIN=makesis
+BIN=makesis signsis makekeys
+DEVTOOLS=finddatetime dumpcontroller dumptree
 
-all: $(BIN) signsis makekeys
+all: $(BIN)
 
-$(BIN): $(OBJS) Makefile
+devtools: finddatetime dumpcontroller dumptree
+
+makesis: $(OBJS) Makefile
 	g++$(GCC_VERSION) $(LFLAGS) $(OBJS) -o $@ $(LIBS)
 
-signsis: signsis.o crc.o signutils.o
+signsis: signsis.o crc.o signutils.o sisfield.o
 	g++$(GCC_VERSION) $(LFLAGS) $+ -o $@ $(LIBS)
 
-testsis: testsis.o crc16.o
-	g++ -o $@ $+ $(LDFLAGS) $(LIBS)
+finddatetime: finddatetime.o sisfield.o
+	g++$(GCC_VERSION) -o $@ $+ $(LDFLAGS) $(LIBS)
 
-finddatetime: finddatetime.o
-	g++ -o $@ $+ $(LDFLAGS) $(LIBS)
+dumpcontroller: dumpcontroller.o sisfield.o
+	g++$(GCC_VERSION) -o $@ $+ $(LDFLAGS) $(LIBS)
 
-dumpcontroller: dumpcontroller.o
-	g++ -o $@ $+ $(LDFLAGS) $(LIBS)
-
-dumptree: dumptree.o
-	g++ -o $@ $+ $(LDFLAGS) $(LIBS)
+dumptree: dumptree.o sisfield.o
+	g++$(GCC_VERSION) -o $@ $+ $(LDFLAGS) $(LIBS)
 
 %.o: %.cpp crtsis.h makesis.h parsecmd.h parsepkg.h utf8.h utils.h \
 	../include/windows.h ../include/tchar.h
@@ -58,4 +59,4 @@ uninstall:
 	rm -f $(DESTDIR)/usr/bin/$(BIN)
 
 clean:
-	rm -f *.o $(BIN) signsis makekeys core
+	rm -f *.o $(BIN) $(DEVTOOLS) core

@@ -401,8 +401,8 @@ public:
 			perror(iName);
 			throw SISFieldBadSourceFile;
 		}
-		fseeko(fp, 0, SEEK_END);
-		iLength = ftello(fp);
+		fseek(fp, 0, SEEK_END);
+		iLength = ftell(fp);
 		fclose(fp);
 	}
 	~RawFile() {
@@ -1274,94 +1274,5 @@ public:
 		AddElement(aData);
 	}
 };
-
-inline SISField* SISField::NewObject(uint32_t aType) {
-	switch (aType) {
-	case SISFieldType::SISString:
-		return new SISString();
-	case SISFieldType::SISArray:
-		return new SISArray();
-	case SISFieldType::SISCompressed:
-		return new SISCompressed();
-	case SISFieldType::SISVersion:
-		return new SISVersion();
-	case SISFieldType::SISVersionRange:
-		return new SISVersionRange();
-	case SISFieldType::SISDate:
-		return new SISDate();
-	case SISFieldType::SISTime:
-		return new SISTime();
-	case SISFieldType::SISDateTime:
-		return new SISDateTime();
-	case SISFieldType::SISUid:
-		return new SISUid();
-	case SISFieldType::SISUnused1:
-		return NULL;
-	case SISFieldType::SISLanguage:
-		return new SISLanguage();
-	case SISFieldType::SISContents:
-		return new SISContents();
-	case SISFieldType::SISController:
-		return new SISController();
-	case SISFieldType::SISInfo:
-		return new SISInfo();
-	case SISFieldType::SISSupportedLanguages:
-		return new SISSupportedLanguages();
-	case SISFieldType::SISSupportedOptions:
-		return new SISSupportedOptions();
-	case SISFieldType::SISPrerequisites:
-		return new SISPrerequisites();
-	case SISFieldType::SISDependency:
-		return new SISDependency();
-	case SISFieldType::SISProperties:
-		return new SISProperties();
-	case SISFieldType::SISProperty:
-		return new SISProperty();
-	case SISFieldType::SISSignatures:
-		return NULL;
-	case SISFieldType::SISCertificateChain:
-		return new SISCertificateChain();
-	case SISFieldType::SISLogo:
-		return new SISLogo();
-	case SISFieldType::SISFileDescription:
-		return new SISFileDescription();
-	case SISFieldType::SISHash:
-		return new SISHash();
-	case SISFieldType::SISIf:
-		return new SISIf();
-	case SISFieldType::SISElseIf:
-		return new SISElseIf();
-	case SISFieldType::SISInstallBlock:
-		return new SISInstallBlock();
-	case SISFieldType::SISExpression:
-		return new SISExpression();
-	case SISFieldType::SISData:
-		return new SISData();
-	case SISFieldType::SISDataUnit:
-		return new SISDataUnit();
-	case SISFieldType::SISFileData:
-		return new SISFileData();
-	case SISFieldType::SISSupportedOption:
-		return new SISSupportedOption();
-	case SISFieldType::SISControllerChecksum:
-		return new SISControllerChecksum();
-	case SISFieldType::SISDataChecksum:
-		return new SISDataChecksum();
-	case SISFieldType::SISSignature:
-		return new SISSignature();
-	case SISFieldType::SISBlob:
-		return new SISBlob();
-	case SISFieldType::SISSignatureAlgorithm:
-		return new SISSignatureAlgorithm();
-	case SISFieldType::SISSignatureCertificateChain:
-		return new SISSignatureCertificateChain();
-	case SISFieldType::SISDataIndex:
-		return new SISDataIndex();
-	case SISFieldType::SISCapabilities:
-		return new SISCapabilities();
-	default:
-		return NULL;
-	}
-}
 
 #endif
