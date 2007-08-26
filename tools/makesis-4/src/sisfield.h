@@ -481,7 +481,7 @@ public:
 				return;
 			delete [] iCompressedBuffer;
 			iCompressedBuffer = CompressDeflate(iUncompressedBuffer, iUncompressedSize, &iCompressedSize);
-			if (iCompressedSize < iUncompressedSize || iAlgorithm == ECompressDeflate) {
+			if (iCompressedSize < iUncompressedSize || aAlgorithm == ECompressDeflate) {
 				iAlgorithm = ECompressDeflate;
 				delete [] iUncompressedBuffer;
 				iUncompressedBuffer = NULL;
