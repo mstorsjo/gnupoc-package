@@ -753,9 +753,10 @@ void CParsePkg::ParseFileL()
 		throw ErrBadDestinationPath;
 
 	// ANN-5ESFPV If there is no drive specified, assume it's C:
-	if ((wcslen(m_tokenValue.pszString) < 3) ||
-			(m_tokenValue.pszString[1] != ':') ||
-			(m_tokenValue.pszString[2] != '\\'))
+	if ((wcslen(m_tokenValue.pszString) > 0) &&
+			((wcslen(m_tokenValue.pszString) < 3) ||
+			 (m_tokenValue.pszString[1] != ':') ||
+			 (m_tokenValue.pszString[2] != '\\')))
 	{// The drive is not specified, we will assume the user meant C:
 		wcscpy(pNode->file->pszDest, L"c:\\");
 		wcscat(pNode->file->pszDest, m_tokenValue.pszString);
