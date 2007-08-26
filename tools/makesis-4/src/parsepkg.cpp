@@ -270,6 +270,7 @@ const SParseToken KVariableLookupTable[] =
 #define X(a) {L ## #a , E ## a},
 #include "haltable.hm"
 #undef X
+		{L"NumHalAttributes",			0x66},
 #else
 		{L"Manufacturer",				HALData::EManufacturer},
 		{L"ManufacturerHardwareRev",	HALData::EManufacturerHardwareRev},
@@ -1440,7 +1441,7 @@ PKGLINECONDITION* CParsePkg::ParseLogicalOp()
 					expr->exprType=EInstCondLogOpOr;
 				expr->b.pLhs=left;
 				GetNextToken();
-				expr->b.pRhs=ParseRelation();
+				expr->b.pRhs=ParseLogicalOp();
 				left=expr;
 				}
 				continue;
