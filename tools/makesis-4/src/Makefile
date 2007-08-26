@@ -7,7 +7,7 @@ CFLAGS+=-Wall -gstabs+
 CFLAGS+=-I../include
 #CFLAGS+=-D_UNICODE -DUNICODE
 CFLAGS+=-DTEST -ggdb
-LFLAGS=
+LDFLAGS=
 LIBS=-lz -lcrypto
 OBJS=\
 	crtsis.o \
@@ -31,10 +31,10 @@ all: $(BIN)
 devtools: finddatetime dumpcontroller dumptree
 
 makesis: $(OBJS) Makefile
-	g++$(GCC_VERSION) $(LFLAGS) $(OBJS) -o $@ $(LIBS)
+	g++$(GCC_VERSION) $(LDFLAGS) $(OBJS) -o $@ $(LIBS)
 
 signsis: signsis.o crc.o signutils.o sisfield.o
-	g++$(GCC_VERSION) $(LFLAGS) $+ -o $@ $(LIBS)
+	g++$(GCC_VERSION) $(LDFLAGS) $+ -o $@ $(LIBS)
 
 finddatetime: finddatetime.o sisfield.o
 	g++$(GCC_VERSION) -o $@ $+ $(LDFLAGS) $(LIBS)
