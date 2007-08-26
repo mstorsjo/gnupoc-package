@@ -78,10 +78,11 @@ features (mainly deflate compression support). By compiling and installing
 this, you can build S60 3rd ed apps completely without wine. See
 elf2e32/README for more instructions on this.
 
-Makesis still requires wine. Ensymble (http://www.nbl.fi/~nbl928/ensymble.html)
-can build sis files for Symbian 9, but can't read .pkg files (as of
-version 0.23), so you have to manually create the directory structure
-and create a sis file from that.
+Makesis is a modified version of the original makesis-2 released by Symbian.
+The parser has been modified to support the new pkg file syntax, the
+sis file generation backend is written from scratch. This also contains
+a signsis replacement and a makekeys replacement (with slightly different
+syntax compared to the original makekeys).
 
 If you have problem with any of these native tools, just remove it from
 the toolchain directory, and the build scripts will use the original exe
