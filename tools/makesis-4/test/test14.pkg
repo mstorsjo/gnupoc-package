@@ -1,0 +1,19 @@
+&EN
+
+%{""}
+:""
+
+; standard SIS file header
+#{"Test 14"},(0x07357140),1,0,0,NC
+
+[0x101F7961], 0, 0, 0, {"Series60ProductID"}
+[0x12345678], 1, 2, 3, {"SomethingElse"}
+[0x12345679], -1, 2, -1, {"SomethingElse"}
+(0x10000003), 2, 2, 3, {"Depend-EN"}
+(0x10000004), 2, 2, 3 ~ 3, 0, 0, {"Depend-EN"}
+[0x10000005], *, *, * ~ 2, 2, 3, {"Depend-EN"}
+[0x101F61CE], *, *, *, {"UIQ21ProductID"}
+(0x101f7960), *, *, *, {"Series60ProductID"}
+
+"data\test.txt"-"c:\resource\test.txt"
+

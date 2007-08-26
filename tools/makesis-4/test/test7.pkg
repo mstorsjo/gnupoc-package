@@ -1,0 +1,12 @@
+;Language - standard language definitions
+&EN
+
+%{""}
+:""
+
+; standard SIS file header
+#{"Test 7"},(0x07357070),1,0,0
+
+"data/test.txt"-"c:\resource\test.txt"
+""-"c:\data\createdfile",FN
+

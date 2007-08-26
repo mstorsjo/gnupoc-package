@@ -1,0 +1,13 @@
+;Language - standard language definitions
+&EN
+
+%{""}
+:""
+
+; standard SIS file header
+#{"Test 8"},(0x07357080),1,0,0
+
+if exists("c:")
+""-"c:\data\createdfile",FN
+endif
+

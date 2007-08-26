@@ -1,0 +1,13 @@
+;Language - standard language definitions
+&EN,SW,FI
+
+%{"English", "Swedish", "Finnish"}
+:"Vendor name"
+
+; standard SIS file header
+#{"Test 4", "Test 4...", "Test4"},(0x07357040),1,0,0
+
+{"data/test.exe" "data/test2.exe" "data/test.dll"}-"!:\sys\bin\test.exe"
+{"data/test.txt" "data/test.exe" "data/test.dll"}-"!:\resource\anotherfile"
+"data/test.txt"-"!:\resource\normalfile"
+

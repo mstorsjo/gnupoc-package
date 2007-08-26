@@ -1,0 +1,17 @@
+&EN,SW
+
+%{"",""}
+:""
+
+; standard SIS file header
+#{"Test 15",""},(0x07357150),1,0,0,NC
+
+!({"Option 1","Opt1SW"}, {"Option 2","Opt2SW"})
+!({"Option 3","Opt3SW"}, {"Option 4","Opt4SW"})
+
+if (option1 = 1) and (option2 = 1)
+
+"data\test.txt"-"c:\resource\test.txt"
+
+endif
+

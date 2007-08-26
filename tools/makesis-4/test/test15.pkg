@@ -1,0 +1,15 @@
+&EN
+
+%{""}
+:""
+
+; standard SIS file header
+#{"Test 15"},(0x07357150),1,0,0,NC
+
++(2=1,1=2,0=-1)
++(4=3)
++(2=5)
++(7=8, 9=10, 11=11)
+
+"data\test.txt"-"c:\resource\test.txt"
+

@@ -1,0 +1,28 @@
+;Language - standard language definitions
+&EN
+
+%{""}
+:""
+
+; standard SIS file header
+#{"Test 9"},(0x07357090),1,0,0
+
+if exists("c:")
+""-"c:\data\createdfile",FN
+elseif (appprop(0x10000003,0) = 1)
+"data\test.txt"-"c:\resource\file.txt"
+elseif (package(0x12348765) = 7)
+
+;Ordinary file to fixed drive
+IF MemoryRAM>0
+    "data\test.exe"-"c:\sys\bin\foo.exe"
+ELSEIF MemoryRAM=0
+    "data\test.exe"-"c:\sys\bin\foo2.exe"
+ELSEIF NOT(EXISTS("c:\private\1000000F\import\test.txt"))
+    "data\test.exe"-"c:\sys\bin\foo3.exe"
+ELSE
+    "data\test2.exe"-"c:\sys\bin\foo4.exe"
+ENDIF
+
+endif
+

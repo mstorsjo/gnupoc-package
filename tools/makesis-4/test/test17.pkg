@@ -1,0 +1,14 @@
+&EN
+
+%{""}
+:""
+
+; standard SIS file header
+#{"Test 17"},(0x07357170),1,0,0,NC
+
+="data\test.txt", "somethingelse", ""
+="data\test.txt", "text/plain", "c:\resource\test.txt"
+
+"data\test.txt"-"c:\resource\test.txt"
+
+

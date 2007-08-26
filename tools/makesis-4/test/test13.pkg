@@ -1,0 +1,19 @@
+;Language - standard language definitions
+&EN,SW
+
+%{"",""}
+:""
+
+; standard SIS file header
+#{"Test 13",""},(0x07357130),1,0,0, TYPE=PU, NC
+
+"data\test.txt"-"c:\resource\test.txt", FILE
+"data\test.txt"-"", FT, TC
+"data\test.txt"-"", FT, TS
+{"data\test.txt" "data\test.exe"}-"", FT, TA
+{"data\test.txt" "data\test.exe"}-"c:\resource\someplace"
+"data\test.txt"-"", FT, TE
+{"data\test.exe" "data\test2.exe"}-"!:\sys\bin\run.exe", FR, RI
+"data\test.txt"-"c:\data\test.txt", FM, "text/plain"
+"data\test.exe"-"!:\sys\bin\run3.exe", FR, RB
+

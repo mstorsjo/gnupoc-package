@@ -1,0 +1,11 @@
+;Language - standard language definitions
+&EN
+
+%{"Localized vendor name"}
+:"Vendor name"
+
+; standard SIS file header
+#{"Test 2"},(0x07357020),1,0,0
+
+"data/test.exe"-"!:\sys\bin\test.exe"
+

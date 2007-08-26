@@ -1,0 +1,20 @@
+;Language - standard language definitions
+&EN
+
+%{""}
+:""
+
+; standard SIS file header
+#{"Test 12"},(0x07357120),1,0,0, TYPE=SP, SH, NC
+
+"data\test.txt"-"c:\resource\test.txt", FILE
+""-"c:\resource\test2.txt", FILENULL
+"data\test.txt"-"", FT, TC
+"data\test.txt"-"", FT, TS
+"data\test.txt"-"", FT, TA
+"data\test.txt"-"", FT, TE
+"data\test.exe"-"!:\sys\bin\run.exe", FR, RI
+"data\test.txt"-"c:\data\test.txt", FM, "text/plain"
+"data\test.exe"-"!:\sys\bin\run2.exe", FR, RR
+"data\test.exe"-"!:\sys\bin\run3.exe", FR, RB
+
