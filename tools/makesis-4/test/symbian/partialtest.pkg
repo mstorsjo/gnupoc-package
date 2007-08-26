@@ -1,0 +1,22 @@
+&EN
+
+#{"partialtest"}, (0x10000041), 1, 2, 3
+
+%{"Vendor"}
+:"Vendor"
+
+!({"Option1"},{"Option2"},{"Option3"})
+
+"files\zeros"-"!:\private\10000041\import\InstTest\zeros"
+if exists("c:\private\10000041\import\InstTest\romeo.txt")
+    "text\romeo.txt"-"!:\private\10000041\import\InstTest\romeo1.txt"
+else
+    "text\romeo.txt"-"!:\private\10000041\import\InstTest\romeo.txt"
+endif
+
+"partialtest.pkg"-"", FT, TA
+"text\epoc_style.txt"-"!:\private\10000041\import\InstTest\epoc_style.txt"
+if (option1 = 1) AND (option2 = 1)
+    "files\tbit.gif"-"!:\private\10000041\import\InstTest\tbit.gif"
+endif
+        

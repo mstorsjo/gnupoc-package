@@ -1,0 +1,11 @@
+&EN
+
+#{"dsasigned"}, (0x15800030), 1, 2, 3
+
+%{"Vendor"}
+:"Vendor"
+
+*"files\dsaprivate1.key","files\dsacert1.cer"
+
+"dsasigned.pkg"-"", FT, TA
+"text\epoc_cpp.txt"-"C:\private\15800030\import\InstTest\epoc_cpp.txt"

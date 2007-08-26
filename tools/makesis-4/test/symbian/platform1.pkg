@@ -1,0 +1,12 @@
+&EN
+
+#{"ExampleForPlatform1"}, (0x12345678), 1, 2, 3
+
+%{""}
+:""
+
+(0x00001000), 0, 0, 0, {"ProductID"}
+
+"ExampleForPlatform1.txt"-"C:\private\12345678\import\ExampleForPlatform1.txt"
+
+

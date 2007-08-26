@@ -1,0 +1,8 @@
+&EN,FR
+
+#{"App-EN", "App-FR"}, (0x10000003), 1, 2, 3, TYPE=SA
+
+%{"Vendor-EN", "Vendor-FR"}
+:"Vendor"
+
+="symbianos.mbm", "image/x-mbm", ""

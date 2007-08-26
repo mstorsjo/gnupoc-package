@@ -1,0 +1,14 @@
+&EN,GE
+
+#{"Depend-EN", "Depend-GE"}, (0x80000003), 1, 2, 3
+
+%{"Vendor","Verkaufer"}
+:"Vendor"
+
++(0=1,1=2,2=-1)
+
+{
+"text\englishfile.txt"
+"text\germanfile.txt"
+}-"C:\private\80000003\import\dep-lang.txt"
+

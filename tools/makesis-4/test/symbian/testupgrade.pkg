@@ -1,0 +1,11 @@
+&EN,FR
+
+#{"An upgrade-EN", "An upgrade-FR"}, (0x80000134), 1, 3, 4, TYPE=PU
+
+%{"Vendor", "Vendeur"}
+:"Vendor"
+
+(0x80000134), 1, 2, 3, {"TestRun-EN", "TestRun-FR"}
+
+"text\file1.txt"-"c:\private\10000134\import\file.txt"
+"text\textfilec.txt"-"", FT, TC

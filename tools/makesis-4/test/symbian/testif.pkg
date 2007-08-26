@@ -1,0 +1,80 @@
+
+&   EN,
+     FR
+
+#{
+    "TestIf-EN",
+    "TestIf-FR"
+}, (0x1000000F), 1, 2, 3
+
+%{"Vendor-EN", "Vendor-FR"}
+:"Vendor"
+
+(0x80000003), 1, 2, 3, {"Depend-EN", "Depend-FR"}
+
+IF  (LANGUAGE=0) OR
+    (MANUFACTURER=5) OR
+    (MANUFACTURER<>5) OR
+    (ManufacturerHardwareRev>0x100) OR
+    (ManufacturerSoftwareRev>0x100) OR
+    (ManufacturerSoftwareBuild>257) OR
+    (Model=0) OR
+    (MachineUid=0) OR
+    (DeviceFamily=0) OR
+    (DeviceFamilyRev>=6) OR
+    (CPU=0) OR
+    (CPUArch=0) OR
+    (CPUABI=0) OR
+    (CPUSpeed>=36) OR
+    (SystemTickPeriod>1) OR
+    (MemoryRAM>=0x800000) OR
+    (MemoryROM>=0x800000) OR
+    (MemoryPageSize=0x1000) OR
+    (PowerBackup) OR
+    (Keyboard) OR
+    (KeyboardDeviceKeys=5) OR
+    (KeyboardAppKeys=8) OR
+    (KeyboardClick) OR
+    (KeyboardClickVolumeMax=10) OR
+    (DisplayXPixels>=640) OR
+    (DisplayYPixels>=200) OR
+    (DisplayXTwips=3200) OR
+    (DisplayYTwips=1440) OR
+    (DisplayColors>=256) OR
+    (DisplayContrastMax=37) OR
+    (Backlight) OR
+    (Pen) OR
+    (PenX>=695) OR
+    (PenY>=280) OR
+    (PenDisplayOn) OR
+    (PenClick) OR
+    (PenClickVolumeMax=1) OR
+    (Mouse) OR
+    (MouseX>=640) OR
+    (MouseY>=200) OR
+    (MouseButtons=2) OR
+    (Mouse) OR
+    (CaseSwitch) OR
+    (LEDs=2) OR
+    (Integratedphone) OR
+    (NumHalAttributes>1)
+    @"sub.sis",(0x80000002)
+    "text\pass.txt"-"", FT, TC
+ENDIF
+
+IF MemoryRAM>0
+    "text\pass.txt"-"", FT, TC
+ELSEIF MemoryRAM=0
+    "text\fail.txt"-"", FT, TC
+ELSEIF EXISTS("c:\private\1000000F\import\test.txt")
+    {
+    "text\englishfile.txt"
+    "text\frenchfile.txt"
+    }-"C:\private\1000000F\import\lang.txt"
+ELSE
+    {
+    "text\englishfile.txt"
+    "text\frenchfile.txt"
+    }-"C:\private\1000000F\import\lang2.txt"
+ENDIF
+

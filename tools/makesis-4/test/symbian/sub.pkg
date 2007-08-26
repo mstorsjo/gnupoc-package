@@ -1,0 +1,18 @@
+
+&EN,GE
+
+#{"Sub-EN", "Sub-GE"}, (0x80000002), 1, 2, 3
+
+%{"Vendor", "Verkaufer"}
+:"Vendor"
+
+{
+"text\englishfile.txt"
+"text\germanfile.txt"
+}-"C:\private\80000002\import\InstTest\sub-lang.txt"
+
+"text\file1.txt"-"!:\private\80000002\import\InstTest\sub-file1.txt", FF
+
+"text\textfilesc.txt"-"", FT, TC
+
+""-"!:\private\80000002\import\InstTest\sub-created.txt", FN

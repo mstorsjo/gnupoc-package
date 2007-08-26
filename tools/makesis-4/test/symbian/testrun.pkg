@@ -1,0 +1,22 @@
+&EN,FR
+
+#{"TestRun-EN", "TestRun-FR"}, (0x10000134), 1, 2, 3, IU, SH
+
+%{"Vendor", "Vendeur"}
+:"Vendor"
+
+"files\zoom_reg.rsc"-"!:\private\10003a3f\import\apps\zoom_reg.rsc"
+"files\zoom.rsc"-"!:\resource\apps\zoom.rsc"
+if CpuABI=0
+    "files\zoom_gcce.exe"-"!:\sys\bin\zoom.exe", FILERUN, RUNINSTALL
+elseif CpuABI=1
+    "files\zoom_gcce.exe"-"!:\sys\bin\zoom.exe", FILERUN, RUNINSTALL
+elseif CpuABI=2
+    "files\zoom_gcce.exe"-"!:\sys\bin\zoom.exe", FILERUN, RUNINSTALL
+elseif CpuABI=4
+    "files\zoom_gcce.exe"-"!:\sys\bin\zoom.exe", FILERUN, RUNINSTALL
+endif
+
+"files\tbit.gif"-"!:\private\<process SID>\tbit.gif", FR, RB, RW
+"text\file1.txt"-"!:\private\<process SID>\runfile.txt", FM, "foo/bar"
+;"files\P5Manual"-"!:\private\<process SID>\P5Manual", FR, RB, RS

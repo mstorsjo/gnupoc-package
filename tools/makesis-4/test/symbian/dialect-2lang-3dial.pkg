@@ -1,0 +1,9 @@
+&EN(1024),EN,FR
+
+#{"English-1024","English","French"}, (0x1000001F), 1, 2, 3, TYPE=SA
+
+%{"Vendor","Vendor","Vendeur"}
+:"Vendor"
+
+"dialect-2lang-3dial.pkg"-"",FT,TC
+{"text\english-1024.txt" "text\englishfile.txt" "text\frenchfile.txt"}-"C:\private\1000001F\import\dialect.txt"

@@ -1,0 +1,21 @@
+&EN,FR
+
+#{"Stub-EN", "Stub-FR"}, (0x10000017), 1, 2, 3
+
+%{"Vendor", "Vendeur"}
+:"Vendor"
+
+*"files\mykey.key","files\mycert.cer",KEY="password"
+
+(0x80000003), 1, 2, 3, {"Depend-EN", "Depend-FR"}
+
+@"sub.sis",(0x80000002)
+
+{
+"text\englishfile.txt"
+"text\frenchfile.txt"
+}-"C:\private\10000017\import\lang.txt"
+
+"text\file1.txt"-"!:\private\10000017\import\file1.txt", FF
+
+"text\textfilec.txt"-"", FT, TC

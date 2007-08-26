@@ -1,0 +1,10 @@
+&EN,FR
+
+#{"DependPatch-EN", "DependPatch-FR"}, (0x80000003), 2, 2, 3, TYPE=SP
+
+%{"Vendor-EN","Vendor-FR"}
+:"Vendor"
+
+(0x80000003), 1, 2, 3, {"Depend-EN", "Depend-FR"}
+
+"text\romeo.txt"-"!:\private\80000003\import\romeo.txt"

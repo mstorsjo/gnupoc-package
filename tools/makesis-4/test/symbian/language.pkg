@@ -1,0 +1,9 @@
+&EN,FR,GE
+
+#{"Language-EN", "Langauge-FR", "Language-GE"}, (0x10000020), 1, 2, 3, TYPE=SA, NC
+
+%{"Vendor", "Vendeur", "Verkaufer"}
+:"Vendor"
+
+"language.pkg"-"",FT,TC
+{"text\englishfile.txt" "text\frenchfile.txt" "text\germanfile.txt"}-"c:\private\10000020\import\file.txt"

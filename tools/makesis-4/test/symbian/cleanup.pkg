@@ -1,0 +1,15 @@
+&EN
+
+#{"cleanup"}, (0x88000031), 1, 2, 3
+
+%{"Vendor"}
+:"Vendor"
+
+"cleanup.pkg"-"", FT, TC
+
+"text\file1.txt"-"C:\private\88000031\import\InstTest\file1.txt"
+
+""-"C:\private\88000031\import\InstTest\deleteme", FN
+""-"C:\private\88000031\import\InstTest\deleteme1\", FN
+""-"C:\private\88000031\import\InstTest\deleteme2\*.*", FN
+""-"C:\private\88000031\import\InstTest\romeo.txt", FN

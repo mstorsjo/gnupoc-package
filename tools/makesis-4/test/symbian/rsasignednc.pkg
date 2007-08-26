@@ -1,0 +1,11 @@
+&EN
+
+#{"rsasignednc"}, (0x11000031), 1, 2, 3, NC
+
+%{"Vendor"}
+:"Vendor"
+
+*"files\rsaprivate1.key","files\rsacert1.cer"
+
+"text\epoc_cpp.txt"-"C:\private\11000031\import\epoc_cpp.txt"
+"rsasignednc.pkg"-"", FT, TC
