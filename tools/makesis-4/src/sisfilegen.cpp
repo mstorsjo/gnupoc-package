@@ -134,10 +134,13 @@ SISInfo* CSISFileGenerator::CreateSISInfo(bool stub) {
 	SISUid* uid = new SISUid(siswriter->GetUID());
 	SISString* vendorName = NULL;
 	const LANGSTRINGNODE* vendorNameNode = siswriter->GetVendorName();
-	if (vendorNameNode)
-		vendorName = new SISString(vendorNameNode->pszString);
+	if (!vendorNameNode)
+		throw ErrNoVendorName;
+	vendorName = new SISString(vendorNameNode->pszString);
 
 	SISArray* pkgNames = GetStringArray(siswriter->GetLangStringBase());
+	if (!siswriter->GetLocalizedVendorBase())
+		throw ErrNoLocalizedVendorName;
 	SISArray* locVenNames = GetStringArray(siswriter->GetLocalizedVendorBase());
 
 	WORD major, minor;

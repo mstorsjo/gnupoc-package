@@ -410,6 +410,12 @@ void CMakeSIS::ShowGeneratorError(TSISFileGeneratorException err)
 		case ErrCantRead:
 			DoErrMsg(__T("Can't read source file"));
 			break;
+		case ErrNoVendorName:
+			DoErrMsg(__T("No vendor name specified"));
+			break;
+		case ErrNoLocalizedVendorName:
+			DoErrMsg(__T("No localized vendor name specified"));
+			break;
 		default:
 			DoErrMsg(__T("internal error"));
 			break;
