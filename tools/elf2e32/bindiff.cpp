@@ -83,6 +83,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	bool identical = true;
 	FILE* file1 = fopen(filename1, "rb");
 	FILE* file2 = fopen(filename2, "rb");
 	fseek(file1, 0, SEEK_END);
@@ -106,6 +107,7 @@ int main(int argc, char *argv[]) {
 		if (ignores.isIgnored(pos))
 			match = true;
 		if (!match) {
+			identical = false;
 			if (matching) {
 				matching = false;
 				diffstart = pos;
@@ -126,10 +128,12 @@ int main(int argc, char *argv[]) {
 		printf("%s is %d bytes longer than %s\n", filename1, size1-size2, filename2);
 	else if (size1 < size2)
 		printf("%s is %d bytes shorter than %s\n", filename1, size2-size1, filename2);
+	if (size1 != size2)
+		identical = false;
 	if (tot)
 		printf("a total of %d bytes differ\n", tot);
 	delete [] buf1;
 	delete [] buf2;
-	return 0;
+	return identical ? 0 : 1;
 }
 
