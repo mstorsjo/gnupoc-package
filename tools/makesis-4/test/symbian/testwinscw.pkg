@@ -1,0 +1,8 @@
+&EN,FR
+
+#{"TestWinscw-EN", "TestWinscw-FR"}, (0x10000134), 1, 2, 3, IU, SH
+
+%{"Vendor", "Vendeur"}
+:"Vendor"
+
+"files\zoom_winscw.exe"-"!:\sys\bin\zoom.exe", FILERUN, RUNINSTALL
