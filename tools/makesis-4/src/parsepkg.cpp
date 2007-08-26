@@ -506,6 +506,7 @@ void CParsePkg::ParseLanguagesL()
 
 	for(;;)
 	{
+		LANGNODE *pNode = new LANGNODE;
 		if (m_token==ALPHA_TOKEN)
 		{
 			// Look for the option
@@ -514,10 +515,8 @@ void CParsePkg::ParseLanguagesL()
 			{
 				if(!wcsicmp(m_tokenValue.pszString, KLangOptions[wLoop].pszOpt))
 				{ // found match
-					LANGNODE *pNode = new LANGNODE;
 					if (!pNode) throw ErrNotEnoughMemory;
 					pNode->wLang = (WORD)KLangOptions[wLoop].dwOpt;
-					m_pSISWriter->AddLanguageNode(pNode);
 					break;
 				}
 			}
@@ -527,14 +526,21 @@ void CParsePkg::ParseLanguagesL()
 		else if (m_token==NUMERIC_TOKEN && m_tokenValue.dwNumber>=0 && m_tokenValue.dwNumber<=1000)
 			// language codes may be given as a numeric value
 		{
-			LANGNODE *pNode = new LANGNODE;
 			if (!pNode) throw ErrNotEnoughMemory;
 			pNode->wLang = (WORD)m_tokenValue.dwNumber;
-			m_pSISWriter->AddLanguageNode(pNode);
 		}
 		else
 			throw ErrUnknownLanguagesId;
 		GetNextToken();
+		if (m_token == '(') {
+			GetNextToken();
+			ExpectToken(NUMERIC_TOKEN);
+			pNode->wLang += m_tokenValue.dwNumber;
+			GetNextToken();
+			ExpectToken(')');
+			GetNextToken();
+		}
+		m_pSISWriter->AddLanguageNode(pNode);
 		if (m_token!=',') return;
 		GetNextToken();
 	}
