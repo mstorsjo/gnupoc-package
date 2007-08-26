@@ -1110,13 +1110,14 @@ void CParsePkg::ParseSignatureL()
 
 	ExpectToken(QUOTED_STRING_TOKEN);
 	wcscpy(pSig->pszPublicKey,m_tokenValue.pszString);
-	
+/*	
 	DWORD dwSize;
+
 	// Test that the files exist
 	if (!DoesExist(pSig->pszPrivateKey, &dwSize) ||
 		!DoesExist(pSig->pszPublicKey, &dwSize))
 		throw ErrFileNotFound;
-
+*/
 	GetNextToken();
 	
 	//check for optional items (password)
@@ -1134,7 +1135,9 @@ void CParsePkg::ParseSignatureL()
 			}
 		}
 
-	m_pSISWriter->AddSignatureNode(pSig);
+	delete pSig;
+//	m_pSISWriter->AddSignatureNode(pSig);
+	printf("Signatures directly from the pkg files are deprecated, ignoring\n");
 }
 
 void CParsePkg::ParseCapabilityL()
