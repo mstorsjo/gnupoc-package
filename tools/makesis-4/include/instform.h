@@ -152,7 +152,7 @@ union TInstFileOption
 	TInstFileSimpleOption iSimpleOption;
 	TInstFileTextOption iTextOption;
 	TInt32 iComponentUid;
-	TInstFileRunOption iRunOption;
+	TInt32 iRunOption;
 	TInstFileMimeOption iMimeOption;
 	TInstFileNullOption iNullOption;
 	};

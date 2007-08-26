@@ -97,18 +97,22 @@ const SParseOpt KRunOptions[] =
 		{L"RI",  EInstFileRunOptionInstall},
 		{L"RR", (EInstFileRunOptionUninstall | EInstFileRunOptionWaitEnd)},
 		{L"RB", (EInstFileRunOptionInstall | EInstFileRunOptionUninstall | EInstFileRunOptionWaitEnd)},
+		{L"RS", EInstFileRunOptionSendEnd},
+		{L"RW", EInstFileRunOptionWaitEnd},
 		{L"RUNINSTALL",	EInstFileRunOptionInstall},
 		{L"RUNREMOVE", (EInstFileRunOptionUninstall | EInstFileRunOptionWaitEnd)},
 		{L"RUNBOTH",   (EInstFileRunOptionInstall | EInstFileRunOptionUninstall | EInstFileRunOptionWaitEnd)},
+		{L"RUNSENDEND", EInstFileRunOptionSendEnd},
+		{L"RUNWAITEND", EInstFileRunOptionWaitEnd},
 	};
 #define NUMRUNOPTIONS (sizeof(KRunOptions)/sizeof(SParseOpt))
 
 const SParseOpt KCtrlOptions[] =
 	{
-		{L"RS", EInstRunSendEnd},
-		{L"RW", EInstRunWaitEnd},
-		{L"RUNSENDEND", EInstRunSendEnd},
-		{L"RUNWAITEND", EInstRunWaitEnd},
+		{L"RS", EInstFileRunOptionSendEnd},
+		{L"RW", EInstFileRunOptionWaitEnd},
+		{L"RUNSENDEND", EInstFileRunOptionSendEnd},
+		{L"RUNWAITEND", EInstFileRunOptionWaitEnd},
 	};
 #define NUMCTRLOPTIONS (sizeof(KCtrlOptions)/sizeof(SParseOpt))
 
@@ -789,7 +793,7 @@ void CParsePkg::ParseFileL()
 			wcscpy(pNode->file->pszMimeType, m_tokenValue.pszString);
 			GetNextToken();
 		}
-		if (m_token==',')
+		while (m_token==',')
 		{
 			DWORD options=0;
 			switch (pNode->file->type)
@@ -803,7 +807,9 @@ void CParsePkg::ParseFileL()
 				case EInstFileTypeRun:
 					GetNextToken();
 					ParseOption(KRunOptions,NUMRUNOPTIONS, &options);
-					pNode->file->options.iRunOption=(TInstFileRunOption)options;
+					if (options & (EInstFileRunOptionWaitEnd | EInstFileRunOptionSendEnd))
+						pNode->file->options.iRunOption &= ~(EInstFileRunOptionWaitEnd | EInstFileRunOptionSendEnd);
+					pNode->file->options.iRunOption |= options;
 					break;
 				case EInstFileTypeMime:
 					GetNextToken();
