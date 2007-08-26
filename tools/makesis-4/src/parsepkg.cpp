@@ -107,15 +107,6 @@ const SParseOpt KRunOptions[] =
 	};
 #define NUMRUNOPTIONS (sizeof(KRunOptions)/sizeof(SParseOpt))
 
-const SParseOpt KCtrlOptions[] =
-	{
-		{L"RS", EInstFileRunOptionSendEnd},
-		{L"RW", EInstFileRunOptionWaitEnd},
-		{L"RUNSENDEND", EInstFileRunOptionSendEnd},
-		{L"RUNWAITEND", EInstFileRunOptionWaitEnd},
-	};
-#define NUMCTRLOPTIONS (sizeof(KCtrlOptions)/sizeof(SParseOpt))
-
 // Parse options lookups
 #define MAXTOKENLEN	30
 struct SParseToken
@@ -793,6 +784,7 @@ void CParsePkg::ParseFileL()
 			ExpectToken(QUOTED_STRING_TOKEN);
 			wcscpy(pNode->file->pszMimeType, m_tokenValue.pszString);
 			GetNextToken();
+			pNode->file->options.iMimeOption = EInstFileRunOptionByMimeType | EInstFileRunOptionInstall;
 		}
 		while (m_token==',')
 		{
@@ -814,8 +806,12 @@ void CParsePkg::ParseFileL()
 					break;
 				case EInstFileTypeMime:
 					GetNextToken();
-					ParseOption(KCtrlOptions,NUMCTRLOPTIONS, &options);
-					pNode->file->options.iMimeOption=(TInstFileMimeOption)options;
+					ParseOption(KRunOptions,NUMRUNOPTIONS, &options);
+					if (options & EInstFileRunOptionUninstall)
+						pNode->file->options.iMimeOption &= ~EInstFileRunOptionInstall;
+					if (options & (EInstFileRunOptionWaitEnd | EInstFileRunOptionSendEnd))
+						pNode->file->options.iMimeOption &= ~(EInstFileRunOptionWaitEnd | EInstFileRunOptionSendEnd);
+					pNode->file->options.iMimeOption|=options;
 					break;
 				default:
 					throw ErrBadOption;
@@ -1310,9 +1306,11 @@ void CParsePkg::ParseLanguageBlockL()
 				ExpectToken(QUOTED_STRING_TOKEN);
 				wcscpy(pszMimeType, m_tokenValue.pszString);
 				GetNextToken();
+				dwOptions = EInstFileRunOptionByMimeType | EInstFileRunOptionInstall;
 				}
-			if (m_token==',')
+			while (m_token==',')
 				{
+				DWORD options = 0;
 				switch ((TInstFileType)dwType)
 					{
 					case EInstFileTypeText:
@@ -1321,14 +1319,19 @@ void CParsePkg::ParseLanguageBlockL()
 						break;
 					case EInstFileTypeRun:
 						GetNextToken();
-						ParseOption(KRunOptions,NUMRUNOPTIONS, &dwOptions);
+						ParseOption(KRunOptions,NUMRUNOPTIONS, &options);
+						if (options & (EInstFileRunOptionWaitEnd | EInstFileRunOptionSendEnd))
+							dwOptions &= ~(EInstFileRunOptionWaitEnd | EInstFileRunOptionSendEnd);
+						dwOptions |= options;
 						break;
 					case EInstFileTypeMime:
-						if (m_token==',')
-							{
-							GetNextToken();
-							ParseOption(KCtrlOptions,NUMCTRLOPTIONS, &dwOptions);
-							}
+						GetNextToken();
+						ParseOption(KRunOptions,NUMRUNOPTIONS, &options);
+						if (options & EInstFileRunOptionUninstall)
+							dwOptions &= ~EInstFileRunOptionInstall;
+						if (options & (EInstFileRunOptionWaitEnd | EInstFileRunOptionSendEnd))
+							dwOptions &= ~(EInstFileRunOptionWaitEnd | EInstFileRunOptionSendEnd);
+						dwOptions |= options;
 						break;
 					default:
 						throw ErrBadOption;

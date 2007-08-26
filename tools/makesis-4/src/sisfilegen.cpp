@@ -287,7 +287,7 @@ void CSISFileGenerator::GetFileDescription(const PKGLINEFILE* file, int index, S
 	}
 	if (mimeType->Length() > 0) {
 		operation = EOpRun;
-		options = EInstFileRunOptionByMimeType | EInstFileRunOptionInstall | file->options.iMimeOption;
+		options = file->options.iMimeOption;
 	}
 
 	*fileDesc = new SISFileDescription(target, mimeType, capabilities, hash, operation, options, compressedSize, uncompressedSize, index);
