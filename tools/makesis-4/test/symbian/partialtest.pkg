@@ -1,3 +1,5 @@
+; Sis file designed to test partial installs
+
 &EN
 
 #{"partialtest"}, (0x10000041), 1, 2, 3
@@ -19,4 +21,3 @@ endif
 if (option1 = 1) AND (option2 = 1)
     "files\tbit.gif"-"!:\private\10000041\import\InstTest\tbit.gif"
 endif
-        

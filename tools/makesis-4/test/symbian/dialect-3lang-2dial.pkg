@@ -1,3 +1,5 @@
+; This package file tests dialects feature.
+
 &EN(1024),EN(2048),FR(1024),FR(2048),GE(1024),GE(2048)
 
 #{"English-1024","English-2048","French-1024","French-2048","German-1024","German-2048"}, (0x1000001F), 1, 2, 3, TYPE=SA
@@ -7,5 +9,3 @@
 
 "dialect-3lang-2dial.pkg"-"",FT,TC
 {"text\english-1024.txt" "text\english-2048.txt" "text\french-1024.txt" "text\french-2048.txt" "text\german-1024.txt" "text\german-2048.txt"}-"C:\private\1000001F\import\dialect.txt"
-
-

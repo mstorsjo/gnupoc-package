@@ -1,17 +1,22 @@
+; tests various IF statements
 
+;Languages
 &   EN,
      FR
 
+;Header
 #{
     "TestIf-EN",
     "TestIf-FR"
 }, (0x1000000F), 1, 2, 3
 
-%{"Vendor-EN", "Vendor-FR"}
+%{"Vendor", "Vendeur"}
 :"Vendor"
 
+;Dependencies
 (0x80000003), 1, 2, 3, {"Depend-EN", "Depend-FR"}
 
+;Test big if
 IF  (LANGUAGE=0) OR
     (MANUFACTURER=5) OR
     (MANUFACTURER<>5) OR
@@ -62,6 +67,7 @@ IF  (LANGUAGE=0) OR
     "text\pass.txt"-"", FT, TC
 ENDIF
 
+;Ordinary file to fixed drive
 IF MemoryRAM>0
     "text\pass.txt"-"", FT, TC
 ELSEIF MemoryRAM=0
@@ -77,4 +83,3 @@ ELSE
     "text\frenchfile.txt"
     }-"C:\private\1000000F\import\lang2.txt"
 ENDIF
-

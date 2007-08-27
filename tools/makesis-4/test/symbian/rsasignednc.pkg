@@ -1,3 +1,5 @@
+; Package file showing the RSA private key and public key certificate which will be used for digitally signing the SIS file.
+
 &EN
 
 #{"rsasignednc"}, (0x11000031), 1, 2, 3, NC

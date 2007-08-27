@@ -1,5 +1,7 @@
+;Languages
 &EN,FR
 
+;Header - 0x10000134=UID of zoom app
 #{"TestRun-EN", "TestRun-FR"}, (0x10000134), 1, 2, 3, IU, SH
 
 %{"Vendor", "Vendeur"}
@@ -17,6 +19,7 @@ elseif CpuABI=4
     "files\zoom_gcce.exe"-"!:\sys\bin\zoom.exe", FILERUN, RUNINSTALL
 endif
 
+;Programs run when install
 "files\tbit.gif"-"!:\private\<process SID>\tbit.gif", FR, RB, RW
-"text\file1.txt"-"!:\private\<process SID>\runfile.txt", FM, "foo/bar"
+"text\file1.txt"-"!:\private\<process SID>\runfile.txt", FR, RB, RW
 ;"files\P5Manual"-"!:\private\<process SID>\P5Manual", FR, RB, RS

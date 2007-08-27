@@ -1,18 +1,25 @@
+; A SIS file which is embedded in others
 
+;Languages
 &EN,GE
 
+;Header
 #{"Sub-EN", "Sub-GE"}, (0x80000002), 1, 2, 3
 
 %{"Vendor", "Verkaufer"}
 :"Vendor"
 
+;Ordinary file to fixed drive
 {
 "text\englishfile.txt"
 "text\germanfile.txt"
 }-"C:\private\80000002\import\InstTest\sub-lang.txt"
 
+;Ordinary file to selected drive
 "text\file1.txt"-"!:\private\80000002\import\InstTest\sub-file1.txt", FF
 
+;Display text files
 "text\textfilesc.txt"-"", FT, TC
 
+;File which does not exist, (deleted when removed)
 ""-"!:\private\80000002\import\InstTest\sub-created.txt", FN

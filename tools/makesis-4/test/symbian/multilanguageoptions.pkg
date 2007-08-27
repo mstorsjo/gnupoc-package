@@ -1,5 +1,7 @@
+;Languages
 &EN,FR
 
+;Header
 #{"MultiLanguageOption-EN", "MultiLanguageOption-FR"}, (0x81111107), 1, 2, 3
 
 %{"Vendor","Vendeur"}
@@ -8,14 +10,13 @@
 !({"ENOption1", "FROption1"},{"ENOption2","FROption2"},{"ENOption3","FROption3"})
 
 if option1 = 1
-    {"text\englishfile1.txt" "text\frenchfile1.txt"}-"!:\private\81111107\import\file1.txt"
+    {"text\englishfile1.txt" "text\frenchfile1.txt"}-"!:\private\81111107\import\file1.txt";
 endif
 
 if option2 = 1
-    {"text\englishfile2.txt" "text\frenchfile2.txt"}-"!:\private\81111107\import\file2.txt"
+    {"text\englishfile2.txt" "text\frenchfile2.txt"}-"!:\private\81111107\import\file2.txt";
 endif
 
 if option3 = 1
-    {"text\englishfile3.txt" "text\frenchfile3.txt"}-"!:\private\81111107\import\file3.txt"
+    {"text\englishfile3.txt" "text\frenchfile3.txt"}-"!:\private\81111107\import\file3.txt";
 endif
-        

@@ -1,12 +1,19 @@
-&EN
+; Example Package file for Platform1
 
-#{"ExampleForPlatform1"}, (0x12345678), 1, 2, 3
+;Language - standard language definitions
+&EN
 
 %{""}
 :""
 
+;Header - standard sis file header
+#{"ExampleForPlatform1"}, (0x12345678), 1, 2, 3
+
+;Supports Platform 1
+;This line must appear _exactly_ as shown below in the sis file
+;If this line is missing or incorrect, the sis file will not be able
+;to be installed on Platform 1
 (0x00001000), 0, 0, 0, {"ProductID"}
 
+;Files - standard file specifications
 "ExampleForPlatform1.txt"-"C:\private\12345678\import\ExampleForPlatform1.txt"
-
-

@@ -1,3 +1,5 @@
+; a sis file which installs nothing but should clean up a directory
+
 &EN
 
 #{"cleanup"}, (0x88000031), 1, 2, 3

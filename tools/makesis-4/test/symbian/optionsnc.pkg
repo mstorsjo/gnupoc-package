@@ -1,5 +1,7 @@
+;Languages
 &EN
 
+;Header
 #{"Optionsnc"}, (0x81111107), 1, 2, 3,TYPE=SA, NC
 
 %{"Vendor"}
@@ -8,15 +10,15 @@
 !({"Option1"},{"Option2"},{"Option3"})
 
 if option1 = 1
-    "files\option1.txt"-"!:\private\81111107\import\option1.txt"
+    "files\option1.txt"-"!:\private\81111107\import\option1.txt";
 endif
 
 if option2 = 1
-    "files\option2.txt"-"!:\private\81111107\import\option2.txt"
+    "files\option2.txt"-"!:\private\81111107\import\option2.txt";
 endif
 
 if option3 = 1
-    "files\option3.txt"-"!:\private\81111107\import\option3.txt"
+    "files\option3.txt"-"!:\private\81111107\import\option3.txt";
 endif
 
 "optionsnc.pkg"-"", FT

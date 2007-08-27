@@ -1,17 +1,22 @@
+; test handling data by MIME type
 
+;Languages
 &EN,GE
 
+;Header
 #{"Test Mime-EN", "Test Mime-GE"}, (0x80000010), 1, 2, 3
 
 %{"Vendor", "Verkaufer"}
 :"Vendor"
 
-"files\tbit.gif"-"!:\private\80000010\tswi\tbit_gif",FILEMIME,"image/gif",RR
-"files\tbit.gif"-"!:\private\80000010\tswi\tbit_gif",FILERUN, RR, RI
+; an image
+"files\tbit.gif"-"!:\private\80000010\tswi\tbit_gif",FILEMIME,"image/gif",RUNWAITEND,RI
 
+; text file
 "text\englishfile.txt"-"!:\private\80000010\tswi\text_file1.txt",FILEMIME,"text/plain",RUNWAITEND,RR
 
+;language dependent file
 {
 "text\englishfile.txt"
 "text\germanfile.txt"
-}-"!:\private\80000010\tswi\test2.txt",FILERUN, RR, RI
+}-"!:\private\80000010\tswi\test2.txt",FILEMIME,"text/plain"

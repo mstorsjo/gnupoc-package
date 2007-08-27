@@ -1,36 +1,48 @@
+;Languages
 &EN,260
 
+;Header
 #{"Testall"<169>"-EN", <169><169>"Testall-FR"<0xA9>}, (0x10000004), 1, 2, 3
 
 %{"Vendor","Vendeur"}
 :"Vendor"
 
+;Dependencies
 (0x80000003), 1, 2, 3, {"Depend-EN", "Depend-FR"}
 
-@"sub.sis", (0x80000002)
+;Embedded component
+@"sub.sis",(0x80000002)
 
+;Ordinary file to fixed drive
 {
 "text\englishfile.txt"
 "text\frenchfile.txt"
 }-"C:\private\10000004\import\InstTest\lang.txt"
 
+;Ordinary file to selected drive
 "text\file1.txt"-"!:\private\10000004\import\InstTest\file1.txt", FF
 
+;Display some options
 !({"Option1","Option1"},{"Option2","Option2"})
 if option1
-    "files\option1.txt"-"!:\private\10000004\import\InstTest\option1.txt"
+    "files\option1.txt"-"!:\private\10000004\import\InstTest\option1.txt";
 endif
 if option2
-    "files\option2.txt"-"!:\private\10000004\import\InstTest\option2.txt"
+    "files\option2.txt"-"!:\private\10000004\import\InstTest\option2.txt";
 endif
 
+;Display text files
 "text\textfilec.txt"-"", FT, TC
 "text\textfiles.txt"-"", FT, TS
 "text\file1.txt"-"!:\private\10000004\import\InstTest\skipfile.txt", FF
 "text\textfilea.txt"-"", FT, TA
+; UNICODE file
 "text\charsetu.txt"-"", FT, TC
+; UNICODE bigendian file
 "text\charsetbu.txt"-"", FT, TC
 
+;File which does not exist, (deleted when removed)
 ""-"!:\private\10000004\import\InstTest\createdfile.txt", FN
 
+;Programs run/displayed when install
 "files\tbit.gif"-"!:\private\10000004\import\InstTest\tbit.gif", FR, RB, RW

@@ -1,14 +1,19 @@
+; A simple SIS file upon which others depend
+
+; Languages
 &EN,GE
 
+; Header
 #{"Depend-EN", "Depend-GE"}, (0x80000003), 1, 2, 3
 
 %{"Vendor","Verkaufer"}
 :"Vendor"
 
+; Some PKG property key/value pairs
 +(0=1,1=2,2=-1)
 
+;Ordinary file to fixed drive
 {
 "text\englishfile.txt"
 "text\germanfile.txt"
 }-"C:\private\80000003\import\dep-lang.txt"
-

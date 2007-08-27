@@ -1,3 +1,5 @@
+; This package file tests dialects feature.
+
 &EN(1024),EN,FR
 
 #{"English-1024","English","French"}, (0x1000001F), 1, 2, 3, TYPE=SA

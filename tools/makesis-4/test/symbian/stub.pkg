@@ -1,21 +1,29 @@
+;Languages
 &EN,FR
 
+;Header
 #{"Stub-EN", "Stub-FR"}, (0x10000017), 1, 2, 3
 
 %{"Vendor", "Vendeur"}
 :"Vendor"
 
+;Signature
 *"files\mykey.key","files\mycert.cer",KEY="password"
 
+;Dependencies
 (0x80000003), 1, 2, 3, {"Depend-EN", "Depend-FR"}
 
+;Embedded component
 @"sub.sis",(0x80000002)
 
+;Ordinary file to fixed drive
 {
 "text\englishfile.txt"
 "text\frenchfile.txt"
 }-"C:\private\10000017\import\lang.txt"
 
+;Ordinary file to selected drive
 "text\file1.txt"-"!:\private\10000017\import\file1.txt", FF
 
+;Display text files
 "text\textfilec.txt"-"", FT, TC
