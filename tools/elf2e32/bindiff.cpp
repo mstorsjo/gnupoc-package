@@ -52,6 +52,12 @@ public:
 	vector<Segment> segments;
 };
 
+void printHelp(const char* argv0) {
+	printf("%s file1 file2 [-i range ...]\n", argv0);
+	printf("\t-i range\tignore changes in the given range (e.g. 0x42,0x43)\n");
+	printf("\n");
+}
+
 int main(int argc, char *argv[]) {
 	const char* filename1 = NULL, *filename2 = NULL;
 	Ignore ignores;
@@ -59,16 +65,6 @@ int main(int argc, char *argv[]) {
 	char opt;
 	while ((opt = getopt(argc, argv, "f:i:h")) != -1) {
 		switch (opt) {
-		case 'f':
-			if (!filename1)
-				filename1 = optarg;
-			else if (!filename2)
-				filename2 = optarg;
-			else {
-				printf("Two files are already specified\n");
-				return 1;
-			}
-			break;
 		case 'i': {
 			uint32_t start, end;
 			sscanf(optarg, "%x,%x", &start, &end);
@@ -78,9 +74,25 @@ int main(int argc, char *argv[]) {
 		case 'h':
 		case ':':
 		case '?':
-			printf("%s -f file1 -f file2 [-i 0x42,0x69 ...]\n", argv[0]);
+			printHelp(argv[0]);
 			return 0;
 		}
+	}
+
+	for (int i = optind; i < argc; i++) {
+		if (!filename1)
+			filename1 = argv[i];
+		else if (!filename2)
+			filename2 = argv[i];
+		else {
+			printf("Two files are already specified\n");
+			printHelp(argv[0]);
+			return 1;
+		}
+	}
+	if (!filename2) {
+		printHelp(argv[0]);
+		return 0;
 	}
 
 	bool identical = true;
