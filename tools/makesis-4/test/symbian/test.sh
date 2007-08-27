@@ -8,6 +8,6 @@ DT=`../../src/finddatetime ref.sis`
 ../../src/dumpcontroller test.sis test.controller
 ../../src/dumptree test.controller 0 > test.controller.tree
 diff -u ref.controller.tree test.controller.tree || exit 1
-../../../elf2e32/bindiff -f ref.controller -f test.controller || echo controller && exit 1
-../../../elf2e32/bindiff -f ref.sis -f test.sis || echo sis && exit 1
+../../../elf2e32/bindiff ref.controller test.controller || echo controller && exit 1
+../../../elf2e32/bindiff ref.sis test.sis || echo sis && exit 1
 
