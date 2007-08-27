@@ -34,7 +34,7 @@ typedef TInt32 FOFF;
 
 // Current SIS file version
 // (was 100 up to and including ER5)
-const TInt32 KInstallerVersion=200;
+const TInt32 KInstallerVersion=400;
 
 // UID values
 #define KUidInstallNumUid 3
