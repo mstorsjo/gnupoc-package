@@ -170,6 +170,13 @@ SISInfo* CSISFileGenerator::CreateSISInfo(bool stub) {
 }
 
 SISCapabilities* CSISFileGenerator::GetCapabilities(const char* filename) {
+	SISCapabilities* cap = GetE32Capabilities(filename);
+	if (cap)
+		return cap;
+	return GetPECapabilities(filename);
+}
+
+SISCapabilities* CSISFileGenerator::GetE32Capabilities(const char* filename) {
 	FILE* in = fopen(filename, "rb");
 	if (!in) {
 		perror(filename);
@@ -200,6 +207,65 @@ SISCapabilities* CSISFileGenerator::GetCapabilities(const char* filename) {
 	return capabilities;
 }
 
+SISCapabilities* CSISFileGenerator::GetPECapabilities(const char* filename) {
+	FILE* in = fopen(filename, "rb");
+	if (!in) {
+		perror(filename);
+		return NULL;
+	}
+	uint8_t buf[4];
+	memset(buf, 0, sizeof(buf));
+	fread(buf, 1, 2, in);
+	if (memcmp(buf, "MZ", 2)) {
+		fclose(in);
+		return NULL;
+	}
+	fseek(in, 0x3c, SEEK_SET);
+	uint8_t coffOffset;
+	fread(&coffOffset, 1, 1, in);
+	fseek(in, coffOffset, SEEK_SET);
+	fread(buf, 1, 4, in);
+	if (memcmp(buf, "PE\0\0", 4)) {
+		fclose(in);
+		return NULL;
+	}
+	fseek(in, 2, SEEK_CUR);
+	fread(buf, 1, 2, in);
+	uint16_t numberOfSections = buf[0] | (buf[1] << 8);
+	bool found = false;
+	uint32_t sectionOffset = 0;
+	for (uint16_t i = 0; i < numberOfSections; i++) {
+		fseek(in, coffOffset + 248 + 40*i, SEEK_SET);
+		uint8_t nameBuf[8];
+		fread(nameBuf, 1, 8, in);
+		if (!memcmp(nameBuf, ".SYMBIAN", 8)) {
+			fseek(in, 12, SEEK_CUR);
+			fread(buf, 1, 4, in);
+			found = true;
+			sectionOffset = buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
+			break;
+		}
+	}
+	if (!found) {
+		fclose(in);
+		return NULL;
+	}
+	fseek(in, sectionOffset + 24, SEEK_SET);
+	uint8_t caps[4];
+	if (fread(caps, 1, 4, in) != 4) {
+		fprintf(stderr, "Unable to read caps from %s\n", filename);
+		fclose(in);
+		return NULL;
+	}
+	fclose(in);
+	uint8_t zeroCaps[4];
+	memset(zeroCaps, 0, sizeof(zeroCaps));
+	if (!memcmp(caps, zeroCaps, 4))
+		return NULL;
+	SISCapabilities* capabilities = new SISCapabilities();
+	capabilities->AddCapabilityBytes(caps, 4);
+	return capabilities;
+}
 SISHash* GetHash(RawFile* rawFile) {
 	SHA_CTX sha;
 	SHA1_Init(&sha);

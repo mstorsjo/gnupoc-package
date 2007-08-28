@@ -71,6 +71,8 @@ protected:
 	void WriteHeaderL(uint32_t uid1, uint32_t uid2, uint32_t uid3, FILE* out);
 	SISInfo* CreateSISInfo(bool stub);
 	SISCapabilities* GetCapabilities(const char* filename);
+	SISCapabilities* GetE32Capabilities(const char* filename);
+	SISCapabilities* GetPECapabilities(const char* filename);
 	void GetFileDescription(const PKGLINEFILE* file, int index, SISFileDescription** fileDesc, SISFileData** fileData, bool langDep);
 	bool GetLogo(const LOGO* logo, int index, SISFileDescription** fileDesc, SISFileData** fileData);
 	void LoadFile(const wchar_t* filename, RawFile** rawFile, uint64_t* compressedSize, uint64_t* uncompressedSize, int* index, SISFileData** fileData);
