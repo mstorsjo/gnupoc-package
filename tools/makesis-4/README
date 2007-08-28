@@ -22,9 +22,6 @@ This also includes a signsis replacement, and a small makekeys tool which
 acts as a wrapper for the openssl commandline tool for generating keys
 and certificates.
 
-One known unimplemented feature is getting the platform security
-capabilities from windows binaries.
-
 
 
 Martin Storsjö
