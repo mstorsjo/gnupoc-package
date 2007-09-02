@@ -33,6 +33,12 @@
 #include <fcntl.h>
 #include <libelf.h>
 #include <zlib.h>
+#include <fstream>
+#include "deflate.h"
+
+using namespace std;
+void DeflateCompress(char* bytes, TInt size, ostream& os);
+
 
 #ifndef EF_ARM_INTERWORK
 #define EF_ARM_INTERWORK 0x04
@@ -292,6 +298,8 @@ void getCapabilities(char* str, uint32_t* caps) {
 #define KImageCrcInitialiser	0xc90fdaa2
 #define KTextRelocType		0x1000
 #define KDataRelocType		0x2000
+
+#define KUidCompressionDeflate	0x101f7afc
 
 #define R_ARM_ABS32	2
 #define R_ARM_GLOB_DAT	21
@@ -1336,7 +1344,7 @@ int main(int argc, char *argv[]) {
 	header.signature = 'E' | ('P'<<8) | ('O'<<16) | ('C'<<24);
 	header.headerCrc = 0;
 	header.moduleVersion = 10<<16 | 0;
-	header.compressionType = 0;
+	header.compressionType = KUidCompressionDeflate;
 	header.toolsVersion = 2 | (0<<8) | (505<<16);
 	uint64_t timestamp = uint64_t(time(NULL))*1000000 + 0xDCDDB3E5D20000LL;
 	header.timeLo = (timestamp >> 0) & 0xffffffff;
@@ -1375,8 +1383,6 @@ int main(int argc, char *argv[]) {
 	const char* defoutput = NULL;
 	char* dso = NULL;
 	const char* linkas = NULL;
-
-	bool compress = true;
 
 	while (true) {
 		int option_index = 0;
@@ -1444,7 +1450,17 @@ int main(int argc, char *argv[]) {
 					ptr++;
 				}
 			} else if (!strcmp(name, "uncompressed")) {
-				compress = false;
+				header.compressionType = 0;
+			} else if (!strcmp(name, "compressionmethod")) {
+				if (!strcmp(optarg, "none")) {
+					header.compressionType = 0;
+				} else if (!strcmp(optarg, "inflate")) {
+					header.compressionType = KUidCompressionDeflate;
+				} else if (!strcmp(optarg, "bytepair")) {
+					printf("Bytepair compression not supported!\n");
+				} else {
+					printf("Unknown compression method \"%s\"\n", optarg);
+				}
 			} else {
 				fprintf(stderr, "*** Unhandled parameter %s\n", name);
 			}
@@ -1659,13 +1675,31 @@ int main(int argc, char *argv[]) {
 	fseek(out, 0, SEEK_SET);
 	writeHeaders(out, &header, &headerComp, &headerV);
 
-	fclose(out);
+
+	if (header.compressionType == KUidCompressionDeflate) {
+		fseek(out, 0, SEEK_END);
+		uint32_t len = ftell(out);
+		len -= CRCSIZE;
+		uint8_t* headerData = (uint8_t*) malloc(CRCSIZE);
+		uint8_t* data = (uint8_t*) malloc(len);
+		fseek(out, 0, SEEK_SET);
+		fread(headerData, 1, CRCSIZE, out);
+		fread(data, 1, len, out);
+		fclose(out);
+
+		ofstream stream(output, ios_base::binary | ios_base::out);
+		stream.write((const char*) headerData, CRCSIZE);
+//		writeHeaders(out, &header, &headerComp, &headerV);
+		DeflateCompress((char*) data, len, stream);
+		stream.close();
+
+		free(data);
+		free(headerData);
+	} else {
+		fclose(out);
+	}
 
 	free(dso);
-	
-	if (compress) {
-		printf("E32Image compression not supported!\n");
-	}
 
 	return 0;
 }
