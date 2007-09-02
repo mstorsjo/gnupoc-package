@@ -7,9 +7,8 @@ of the exe version through wine.
 make
 cp elf2e32 ~/csl-gcc/bin
 
-This still lacks deflate compression support, and many parameters are
-ignored. It manages to build correctly working binaries, in all currently
-tested cases.
+Currently some parameters are ignored. However, it manages to build correctly
+working binaries, in all currently tested cases.
 
 elf2e32 requires libelf. If you don't want to or can't install it system-wide,
 a version is included here. In that case, enter libelf-0.8.9 and compile it:
@@ -22,6 +21,11 @@ make install
 Then compile elf2e32 using the makefile for local libelf:
 
 make -f Makefile.local-libelf
+
+
+The main elf2e32-code is licensed according to the GPL (see COPYING). The
+deflate code is licensed according to the Symbian Example Source License
+(see deflate/license.txt).
 
 
 
