@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
 		return 0;
 	}
 
-	printf("%s -cert [-password] privatekey certificate\n", argv[0]);
+	printf("%s -cert [-password] [-len keylength] [-expdays days] privatekey certificate\n", argv[0]);
 	printf("%s -view certificate\n", argv[0]);
 	
 
