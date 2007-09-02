@@ -95,7 +95,7 @@ private:
 extern HPrint H;
 extern TBool PVerbose;
 //
-TAny *operator new(TUint aSize);
+TAny *operator new(size_t aSize);
 void operator delete(TAny *aPtr);
 //
 istrstream &operator>>(istrstream &is, TVersion &aVersion);
