@@ -165,4 +165,20 @@ inline TUint TInt64::High() const
 	{return(iHigh);}
 
 
+template<class T> T* PtrAdd(T* ptr, int val) { return (T*) (((uint8_t*)ptr) + val); } 
+
+#define _FOFF(type, field) ((int)&(((type*)NULL)->field))
+
+template<class T> T Min(T a, T b) { if (a < b) return a; return b; }
+
+class User {
+public:
+	static void Invariant();
+};
+
+
+#define __ASSERT_ALWAYS(x, y) do { if (!(x)) { y; } } while (0)
+#define ASSERT(x) do { if (!(x)) { fprintf(stderr, "Assertion failed at %s:%d\n", __FILE__, __LINE__); } } while (0)
+
+
 #endif

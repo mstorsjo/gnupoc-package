@@ -19,7 +19,11 @@
 #include <h_utl.h>
 #include <h_ver.h>
 
+#include <deflate.h>
+
 using namespace std;
+
+void DeflateCompress(char* bytes, TInt size, ostream& os);
 
 extern int gAlignConstSection;
 extern TUint gConstSectionAddressMask;
@@ -47,6 +51,8 @@ int gSetUid3=FALSE;
 int gSetCallEntryPoints=FALSE;
 int gSetFixedAddress=FALSE;
 int gSetPriority=FALSE;
+int gCompress=FALSE;
+int gSetCompress=FALSE;
 
 TBool gDumpPe = FALSE;
 
@@ -104,14 +110,56 @@ int dotran(char *ifilename, char *ofilename)
 		else
 			f.SetFixedAddress(gFixedAddress);
 		}
-	ofstream ofile(ofilename/*, ios::binary*/);
+	if (gCompress) {
+		f.iHeader->iFlags |= 0x01000000;
+		f.iHeader->iCheckSumData = 0x101f7afc;
+	}
+
+	ofstream ofile(ofilename, ios_base::binary);
 	if (!ofile)
 		{
 		Print(EError,"Cannot open %s for output.\n",ofilename);
 		return 1;
 		}
 	ofile << f;
+	TUint32 len = ofile.tellp();
 	ofile.close();
+
+	if (gCompress) {
+		len -= 124;
+		ifstream ifile(ofilename, ios_base::binary);
+		if (!ifile)
+			{
+			Print(EError,"Cannot open %s for input.\n",ofilename);
+			return 1;
+			}
+		TUint8* header = new TUint8[124];
+		ifile.read((char*) header, 124);
+		TUint8* data = new TUint8[len];
+		ifile.read((char*) data, len);
+		ifile.close();
+
+		ofstream ofile(ofilename, ios::binary);
+		if (!ofile)
+			{
+			Print(EError,"Cannot open %s for output.\n",ofilename);
+			return 1;
+			}
+		ofile.write((char*)header, 124);
+		TUint8 uncompressedLength[4];
+		uncompressedLength[0] = (len >>  0) & 0xff;
+		uncompressedLength[1] = (len >>  8) & 0xff;
+		uncompressedLength[2] = (len >> 16) & 0xff;
+		uncompressedLength[3] = (len >> 24) & 0xff;
+		ofile.write((char*) uncompressedLength, 4);
+		DeflateCompress((char*) data, len, ofile);
+		ofile.close();
+
+		delete [] data;
+		delete [] header;
+	}
+
+
 	if (gVerbose)
 		f.Dump((TText *)ofilename);
 	return KErrNone;
@@ -226,6 +274,7 @@ int helpme(char *aStr)
 	Print(EAlways,"        [-stack <size>] [-heap <min> <max>] [-uid<n> <uid>]\n");
 	Print(EAlways,"        [-allowdlldata] [-datalinkaddress <base>] [-fixed] [-moving]\n");
 	Print(EAlways,"        [-align-const-section] [-const-section-address-mask <mask>] [-dump-pe]\n");
+	Print(EAlways,"        [-[no]compress]\n");
 	return KErrArgument;
 	}
 
@@ -363,6 +412,16 @@ int processCL(int argc, char *argv[])
 		else if (strncasecmp("-allowdlldata", argv[i], 6)==0)
 			{
 			gAllowDllData=TRUE;
+			}
+		else if (strncasecmp("-compress", argv[i], 9)==0)
+			{
+			gCompress=TRUE;
+			gSetCompress=TRUE;
+			}
+		else if (strncasecmp("-nocompress", argv[i], 11)==0)
+			{
+			gCompress=FALSE;
+			gSetCompress=TRUE;
 			}
 		else if (strncasecmp("-datalinkaddress", argv[i], 5)==0)
 			{

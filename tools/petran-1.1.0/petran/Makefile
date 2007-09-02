@@ -4,7 +4,7 @@
 
 # GCC_VERSION=-2.95
 CFLAGS+=-Wall -gstabs+ -Wno-deprecated
-CFLAGS+=-I../inc
+CFLAGS+=-I../inc -I../deflate
 LFLAGS=
 DEPS=\
 	../inc/pe_defs.h \
@@ -30,7 +30,13 @@ OBJS=\
 	../pefile/pe_io.o \
 	../pefile/pe_tran.o \
 	../pefile/pe_reloc.o \
-	../pefile/pe_file.o
+	../pefile/pe_file.o \
+	../deflate/compress.o \
+	../deflate/decode.o \
+	../deflate/deflate.o \
+	../deflate/encode.o \
+	../deflate/inflate.o \
+	../deflate/panic.o
 
 BIN=petran
 

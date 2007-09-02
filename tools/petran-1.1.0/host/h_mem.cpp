@@ -40,6 +40,11 @@ void HMem::Set(TAny * const aDestAddr, const TUint8 aFillChar, const TUint32 aLe
 	memset(aDestAddr, aFillChar, aLength);
 	}
 
+void HMem::FillZ(TAny * const aDestAddr, const TUint32 aLength)
+	{
+	memset(aDestAddr, 0, aLength);
+	}
+
 TUint HMem::CheckSum(TUint *aPtr, TInt aSize)
 	{
 	TUint sum=0;

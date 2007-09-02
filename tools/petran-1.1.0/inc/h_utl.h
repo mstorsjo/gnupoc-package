@@ -46,6 +46,8 @@ public:
 	static void Free(TAny * const aMem);
 	static void Copy(TAny * const aDestAddr,const TAny * const aSourceAddr,const TUint32 aLength);
 	static void Set(TAny * const aDestAddr, const TUint8 aFillChar, const TUint32 aLength);
+	static void FillZ(TAny * const aDestAddr, const TUint32 aLength);
+
 	static TUint CheckSum(TUint *aPtr, TInt aSize);
 	static TUint CheckSum8(TUint8 *aPtr, TInt aSize);
 	static TUint CheckSumOdd8(TUint8 *aPtr, TInt aSize);
