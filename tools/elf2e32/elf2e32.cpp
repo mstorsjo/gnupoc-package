@@ -817,6 +817,9 @@ public:
 		presetOrdinals = 0;
 	}
 	~ExportList() {
+		clear();
+	}
+	void clear() {
 		for (unsigned int i = 0; i < exports.size(); i++)
 			delete exports[i];
 		exports.clear();
@@ -1304,7 +1307,6 @@ void parseDefFile(const char* filename, ExportList* exportList) {
 
 int main(int argc, char *argv[]) {
 	int fixedaddress = 0;
-	int uncompressed = 0;
 	int unfrozen = 0;
 	int noexportlibrary = 0;
 	int dlldata = 0;
@@ -1322,7 +1324,7 @@ int main(int argc, char *argv[]) {
 		{ "sid", 1, NULL, 0 },
 		{ "vid", 1, NULL, 0 },
 		{ "fixedaddress", 0, &fixedaddress, 1 },
-		{ "uncompressed", 0, &uncompressed, 1 },
+		{ "uncompressed", 0, NULL, 0 },
 		{ "compressionmethod", 0, NULL, 0 },
 		{ "heap", 1, NULL, 0 },
 		{ "stack", 1, NULL, 0 },
@@ -1471,6 +1473,12 @@ int main(int argc, char *argv[]) {
 				} else {
 					printf("Unknown compression method \"%s\"\n", optarg);
 				}
+			} else if (!strcmp(name, "fixedaddress")) {
+				// FIXME
+			} else if (!strcmp(name, "noexportlibrary")) {
+			} else if (!strcmp(name, "dlldata")) {
+				// FIXME
+			} else if (!strcmp(name, "unfrozen")) {
 			} else {
 				fprintf(stderr, "*** Unhandled parameter %s\n", name);
 			}
@@ -1482,6 +1490,9 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	header.uidChecksum = uidCrc(header.uid1, header.uid2, header.uid3);
+
+	if (unfrozen) // FIXME: is this the correct behaviour?
+		exportList.clear();
 
 	if (!elfinput && (exportList.numExports() == 0 || !dso)) {
 		printf("nothing to do\n");
@@ -1497,7 +1508,8 @@ int main(int argc, char *argv[]) {
 
 	if (!elfinput) {
 		exportList.doSort();
-		exportList.writeDso(dso, linkas);
+		if (dso && !noexportlibrary)
+			exportList.writeDso(dso, linkas);
 		free(dso);
 		return 0;
 	}
@@ -1629,7 +1641,7 @@ int main(int argc, char *argv[]) {
 		exportList.doSort();
 		if (defoutput)
 			exportList.writeDef(defoutput);
-		if (dso)
+		if (dso && !noexportlibrary)
 			exportList.writeDso(dso, linkas);
 		header.exportDirOffset = ftell(out) + 4;
 		header.exportDirCount = exportList.numExports();
