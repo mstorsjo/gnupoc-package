@@ -126,7 +126,7 @@ SISSignature* makeSignature(SISField* controller, const char* keyData, const cha
 
 	return new SISSignature(signatureAlgorithm, blob);
 }
-
+/*
 uint8_t* decodeBase64(const char* str, uint32_t* length) {
 	BIO* b64 = BIO_new(BIO_f_base64());
 	BIO* bio = BIO_new_mem_buf((void*) str, -1);
@@ -196,6 +196,39 @@ SISCertificateChain* makeChain(const char* certData) {
 	}
 	SISBlob* blob = new SISBlob(data, dataLength);
 	delete [] data;
+	return new SISCertificateChain(blob);
+}
+*/
+
+SISCertificateChain* makeChain(const char* certData) {
+	BIO* in = BIO_new_mem_buf((void*) certData, -1);
+	BIO* out = BIO_new(BIO_s_mem());
+
+	while (true) {
+		X509* cert = PEM_read_bio_X509(in, NULL, NULL, NULL);
+		if (!cert) {
+			unsigned long err = ERR_peek_last_error();
+			int lib = ERR_GET_LIB(err);
+			int func = ERR_GET_FUNC(err);
+			int reason = ERR_GET_REASON(err);
+			if (lib == ERR_LIB_PEM && func == PEM_F_PEM_READ_BIO && reason == PEM_R_NO_START_LINE)
+				break;
+			ERR_print_errors_fp(stderr);
+			throw SignBadCert;
+		}
+		i2d_X509_bio(out, cert);
+	}
+	BIO_free_all(in);
+
+	char* ptr;
+	long length = BIO_get_mem_data(out, &ptr);
+	if (length <= 0) {
+		fprintf(stderr, "Bad certificate file\n");
+		throw SignBadCert;
+	}
+	SISBlob* blob = new SISBlob((uint8_t*) ptr, length);
+	BIO_free_all(out);
+
 	return new SISCertificateChain(blob);
 }
 
