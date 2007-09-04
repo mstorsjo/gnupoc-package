@@ -145,7 +145,7 @@ void CSISWriter::Release()
 		while(m_pDependBase->pLangStringBase)
 			{
 			pLangStringNode = pLangStringNode->pNext;
-			delete m_pLangStringBase;
+			delete m_pDependBase->pLangStringBase;
 			m_pDependBase->pLangStringBase = pLangStringNode;
 			}
 		delete m_pDependBase;
@@ -161,7 +161,7 @@ void CSISWriter::Release()
 		while(m_pPlatformDependBase->pLangStringBase)
 			{
 			pLangStringNode = pLangStringNode->pNext;
-			delete m_pLangStringBase;
+			delete m_pPlatformDependBase->pLangStringBase;
 			m_pPlatformDependBase->pLangStringBase = pLangStringNode;
 			}
 		delete m_pPlatformDependBase;
