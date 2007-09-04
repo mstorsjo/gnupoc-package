@@ -489,6 +489,7 @@ void CSISFileGenerator::LoadEmbeddedSis(const PKGLINEFILE* file, SISArray* embed
 		Recompress(embedDataUnit, algorithm);
 		dataUnitArray->AddElement(embedDataUnit);
 	}
+	delete embedDataUnitArray;
 }
 
 void CSISFileGenerator::GenerateSISFile(const wchar_t* target, bool stub) {

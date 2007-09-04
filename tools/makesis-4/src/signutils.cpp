@@ -126,6 +126,7 @@ SISSignature* makeSignature(SISField* controller, const char* keyData, const cha
 
 	return new SISSignature(signatureAlgorithm, blob);
 }
+
 /*
 uint8_t* decodeBase64(const char* str, uint32_t* length) {
 	BIO* b64 = BIO_new(BIO_f_base64());
@@ -217,6 +218,11 @@ SISCertificateChain* makeChain(const char* certData) {
 			throw SignBadCert;
 		}
 		i2d_X509_bio(out, cert);
+
+		X509_OBJECT obj;
+		obj.type = X509_LU_X509;
+		obj.data.x509 = cert;
+		X509_OBJECT_free_contents(&obj);
 	}
 	BIO_free_all(in);
 
@@ -246,6 +252,9 @@ void initSigning() {
 }
 
 void cleanupSigning() {
+	ERR_remove_state(0);
+//	ENGINE_cleanup();
+//	CONF_modules_unload();
 	EVP_cleanup();
 	ERR_free_strings();
 	CRYPTO_cleanup_all_ex_data();
