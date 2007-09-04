@@ -728,9 +728,13 @@ void CSISFileGenerator::GenerateSISFile(const wchar_t* target, bool stub) {
 
 	if (siswriter->GetSelfsign()) {
 		initSigning();
-		SISSignatureCertificateChain* chain = makeChain(controller, selfsignedCer, selfsignedKey, NULL);
+		try {
+			SISSignatureCertificateChain* chain = makeChain(controller, selfsignedCer, selfsignedKey, NULL);
+			controller->AddElement(chain);
+		} catch (SignUtilError err) {
+			throw ErrCantSign;
+		}
 		cleanupSigning();
-		controller->AddElement(chain);
 	}
 
 	SISDataIndex* dataIndex = new SISDataIndex(0);

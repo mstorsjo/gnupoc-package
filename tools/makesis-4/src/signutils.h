@@ -46,6 +46,7 @@ enum SigType {
 enum SignUtilError {
 	SignFileNotFound,
 	SignBadKey,
+	SignBadCert,
 	SignOpenSSLErr
 };
 

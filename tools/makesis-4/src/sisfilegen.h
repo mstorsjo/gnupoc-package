@@ -57,7 +57,8 @@ enum TSISFileGeneratorException {
 	ErrCantWrite,
 	ErrCantRead,
 	ErrNoVendorName,
-	ErrNoLocalizedVendorName
+	ErrNoLocalizedVendorName,
+	ErrCantSign
 };
 
 class CSISFileGenerator {

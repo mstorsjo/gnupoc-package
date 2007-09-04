@@ -127,9 +127,9 @@ SISSignature* makeSignature(SISField* controller, const char* keyData, const cha
 	return new SISSignature(signatureAlgorithm, blob);
 }
 
-SISCertificateChain* makeChain(const char* certData) {
+uint8_t* decodeBase64(const char* str, uint32_t* length) {
 	BIO* b64 = BIO_new(BIO_f_base64());
-	BIO* bio = BIO_new_mem_buf((void*) certData, -1);
+	BIO* bio = BIO_new_mem_buf((void*) str, -1);
 	bio = BIO_push(b64, bio);
 	uint32_t bufferSize = 4096;
 	uint8_t* buffer = new uint8_t[bufferSize];
@@ -146,8 +146,56 @@ SISCertificateChain* makeChain(const char* certData) {
 		}
 	}
 	BIO_free_all(bio);
-	SISBlob* blob = new SISBlob(buffer, bufferLength);
-	delete [] buffer;
+	if (length)
+		*length = bufferLength;
+	return buffer;
+}
+
+static const char* certStartTag = "-----BEGIN CERTIFICATE----";
+static const char* certEndTag = "-----END CERTIFICATE-----";
+
+SISCertificateChain* makeChain(const char* certData) {
+	uint8_t* data = NULL;
+	uint32_t dataLength = 0;
+	while (true) {
+		const char* start = strstr(certData, certStartTag);
+		if (!start)
+			break;
+		start += strlen(certStartTag);
+		const char* end = strstr(start, certEndTag);
+		if (!end) {
+			fprintf(stderr, "Bad certificate file\n");
+			throw SignBadCert;
+		}
+		certData = end + strlen(certStartTag);
+
+		int len = end - start;
+		char* certBuf = new char[len+1];
+		memcpy(certBuf, start, len);
+		certBuf[len] = '\0';
+		uint32_t rawLength;
+		uint8_t* rawBuf = decodeBase64(certBuf, &rawLength);
+		delete [] certBuf;
+
+		if (!data) {
+			data = new uint8_t[rawLength];
+		} else {
+			uint8_t* newBuf = new uint8_t[dataLength + rawLength];
+			memcpy(newBuf, data, dataLength);
+			delete [] data;
+			data = newBuf;
+		}
+		memcpy(data + dataLength, rawBuf, rawLength);
+		dataLength += rawLength;
+		delete [] rawBuf;
+
+	}
+	if (!data) {
+		fprintf(stderr, "Bad certificate file\n");
+		throw SignBadCert;
+	}
+	SISBlob* blob = new SISBlob(data, dataLength);
+	delete [] data;
 	return new SISCertificateChain(blob);
 }
 

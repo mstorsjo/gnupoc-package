@@ -416,6 +416,9 @@ void CMakeSIS::ShowGeneratorError(TSISFileGeneratorException err)
 		case ErrNoLocalizedVendorName:
 			DoErrMsg(__T("No localized vendor name specified"));
 			break;
+		case ErrCantSign:
+			DoErrMsg(__T("Can't sign the package"));
+			break;
 		default:
 			DoErrMsg(__T("internal error"));
 			break;
