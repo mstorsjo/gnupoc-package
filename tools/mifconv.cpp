@@ -31,12 +31,23 @@ void writeUint32(uint32_t value, FILE* out) {
 	fwrite(buf, 1, 4, out);
 }
 
+uint32_t readUint32(FILE* in) {
+	uint8_t buf[4];
+	if (fread(buf, 1, 4, in) != 4) {
+		fprintf(stderr, "Unexpected enf od file\n");
+		exit(1);
+	}
+	return buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
+}
+
 char* outname = NULL;
 char* headername = NULL;
 
 uint32_t colorType = 0;
 uint32_t maskType = 0;
 uint32_t animType = 0;
+
+bool extract = false;
 
 void fixDirSep(char* str) {
 	char* ptr = str;
@@ -109,6 +120,8 @@ void processArgument(const char* arg) {
 			animType = 1;
 		else if (param[0] == 'f' || param[0] == 'F')
 			readParamFile(param + 1);
+		else if (param[0] == 'u' || param[0] == 'U')
+			extract = true;
 		ColorType* type = colors;
 		while (type->name) {
 			int len = strlen(type->name);
@@ -196,6 +209,77 @@ char* toName(const char* str) {
 	return base;
 }
 
+void expectUint32(uint32_t value, FILE* in) {
+	if (readUint32(in) != value) {
+		fprintf(stderr, "Expected value not found\n");
+		exit(2);
+	}
+}
+
+int outIndex = 1;
+
+FILE* openOutFile() {
+	char buf[200];
+	while (true) {
+		sprintf(buf, "mif%03d.svg", outIndex++);
+		FILE* in = fopen(buf, "rb");
+		if (in) {
+			fclose(in);
+			continue;
+		}
+		FILE* out = fopen(buf, "wb");
+		printf("Dumping image to %s...\n", buf);
+		return out;
+	}
+	return NULL;
+}
+
+void doExtract(const char* name) {
+	FILE* in = fopen(name, "rb");
+	if (!in) {
+		perror(name);
+		return;
+	}
+	expectUint32(0x34232342, in);
+	expectUint32(2, in);
+	expectUint32(0x10, in);
+	uint32_t n = readUint32(in);
+	n /= 2;
+	vector<uint32_t> offsets;
+	vector<uint32_t> sizes;
+	for (uint32_t i = 0; i < n; i++) {
+		uint32_t offset = readUint32(in);
+		uint32_t size = readUint32(in);
+		expectUint32(offset, in);
+		expectUint32(size, in);
+		offsets.push_back(offset);
+		sizes.push_back(size);
+	}
+
+	for (uint32_t i = 0; i < offsets.size(); i++) {
+		fseek(in, offsets[i], SEEK_SET);
+		expectUint32(0x34232343, in);
+		expectUint32(1, in);
+		expectUint32(0x20, in);
+		uint32_t size = readUint32(in);
+		expectUint32(1, in);
+		readUint32(in);
+		readUint32(in);
+		readUint32(in);
+		FILE* out = openOutFile();
+		uint8_t* buf = new uint8_t[size];
+		if (fread(buf, 1, size, in) != size) {
+			fprintf(stderr, "Unexpected end of file\n");
+			exit(3);
+		}
+		fwrite(buf, 1, size, out);
+		fclose(out);
+		delete [] buf;
+	}
+
+	fclose(in);
+}
+
 int main(int argc, char *argv[]) {
 	for (int i = 1; i < argc; i++) {
 		char* arg = argv[i];
@@ -205,6 +289,11 @@ int main(int argc, char *argv[]) {
 	if (!outname) {
 		fprintf(stderr, "No MIF file name specified\n");
 		return 1;
+	}
+
+	if (extract) {
+		doExtract(outname);
+		return 0;
 	}
 
 	FILE* out = fopen(outname, "wb");
