@@ -253,7 +253,7 @@ void TBitInput::Set(const TUint8* aPtr, TInt aLength, TInt aOffset)
 	@param "TInt aOffset" The bit offset from the start of the buffer to the bit stream (defaults to zero)
 */
 	{
-	TUint p=(TUint)aPtr;
+	uintptr_t p=(uintptr_t)aPtr;
 	p+=aOffset>>3;			// nearest byte to the specified bit offset
 	aOffset&=7;				// bit offset within the byte
 	const TUint32* ptr=(const TUint32*)(p&~3);	// word containing this byte
