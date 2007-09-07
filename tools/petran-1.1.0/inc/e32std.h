@@ -167,7 +167,7 @@ inline TUint TInt64::High() const
 
 template<class T> T* PtrAdd(T* ptr, int val) { return (T*) (((uint8_t*)ptr) + val); } 
 
-#define _FOFF(type, field) ((int)&(((type*)NULL)->field))
+#define _FOFF(type, field) ((intptr_t)&(((type*)NULL)->field))
 
 template<class T> T Min(T a, T b) { if (a < b) return a; return b; }
 
