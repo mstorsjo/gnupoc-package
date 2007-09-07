@@ -37,6 +37,7 @@
 extern "C" {
 #include "crc.h"
 }
+#include <getopt.h>
 
 #include "selfsigned.cer.h"
 #include "selfsigned.key.h"

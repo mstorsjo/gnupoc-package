@@ -35,7 +35,9 @@
 #include "signutils.h"
 #include <openssl/evp.h>
 #include <openssl/pem.h>
+#ifndef WIN32
 #include <pwd.h>
+#endif
 #include <unistd.h>
 #include <string.h>
 #include <stdint.h>
@@ -43,6 +45,28 @@
 #include <unistd.h>
 #include "sisfield.h"
 
+#ifdef WIN32
+char passwordBuffer[200];
+#include <conio.h>
+char* getpass(const char* prompt) {
+	fprintf(stderr, "%s", prompt);
+	int index = 0;
+	while (true) {
+		char c = getch();
+		if (c == '\r' || c == '\n') {
+			break;
+		} else if (c == '\b') {
+			if (index > 0)
+				index--;
+		} else {
+			passwordBuffer[index++] = c;
+		}
+	}
+	fprintf(stderr, "\n");
+	passwordBuffer[index] = '\0';
+	return passwordBuffer;
+}
+#endif
 
 int password_cb(char *buf, int size, int rwflag, void *userdata) {
 	char* pwd = (char*) userdata;

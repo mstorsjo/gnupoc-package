@@ -663,11 +663,16 @@ public:
 	}
 	SISDate() {
 		time_t timestamp = time(NULL);
+#ifdef WIN32
+		struct tm* tptr = gmtime(&timestamp);
+#else
 		struct tm tm;
 		gmtime_r(&timestamp, &tm);
-		iYear = tm.tm_year + 1900;
-		iMonth = tm.tm_mon;
-		iDay = tm.tm_mday;
+		struct tm* tptr = &tm;
+#endif
+		iYear = tptr->tm_year + 1900;
+		iMonth = tptr->tm_mon;
+		iDay = tptr->tm_mday;
 	}
 	uint32_t Id() const {
 		return SISFieldType::SISDate;
@@ -697,11 +702,16 @@ public:
 	}
 	SISTime() {
 		time_t timestamp = time(NULL);
+#ifdef WIN32
+		struct tm* tptr = gmtime(&timestamp);
+#else
 		struct tm tm;
 		gmtime_r(&timestamp, &tm);
-		iHours = tm.tm_hour;
-		iMinutes = tm.tm_min;
-		iSeconds = tm.tm_sec;
+		struct tm* tptr = &tm;
+#endif
+		iHours = tptr->tm_hour;
+		iMinutes = tptr->tm_min;
+		iSeconds = tptr->tm_sec;
 	}
 	uint32_t Id() const {
 		return SISFieldType::SISTime;
