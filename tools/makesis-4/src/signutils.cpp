@@ -273,6 +273,7 @@ SISSignatureCertificateChain* makeChain(SISField* controller, const char* certDa
 void initSigning() {
 	OpenSSL_add_all_algorithms();
 	ERR_load_crypto_strings();
+//	EVP_add_cipher(EVP_des_ede3_cbc());
 }
 
 void cleanupSigning() {
