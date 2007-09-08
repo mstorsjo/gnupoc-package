@@ -1,0 +1,29 @@
+#!/bin/sh
+
+if [ $# != 2 ]; then
+  echo "Usage: ./extract_svgttool <path-to-installer> <target-dir>"
+  echo " e.g.: ./extract_svgttool svg2svgtconverter.exe ~/svgttool"
+  exit 1
+fi
+
+SRC=$1
+DEST=$2
+
+mkdir _e || exit 1
+unzip -qn $SRC -d _e
+(cd _e/InstallerData && unzip -qn Resource1.zip) || exit 1
+mkdir -p $DEST || exit 1
+mv "_e/InstallerData/C_/Documents and Settings/vive/My Documents/SVG2SVGTBuild"/* $DEST || exit 1
+rm -rf _e || exit 1
+mkdir $DEST/bin || exit 1
+
+cat <<EOF > $DEST/bin/svgttool.sh || exit 1
+#!/bin/sh
+
+java -cp ../lib/help.jar:../lib/jh.jar:../lib/svg2svgt.jar:../config com.nokia.svg2svgt.SVG2SVGTConverterApplication \$*
+EOF
+
+chmod a+x $DEST/bin/svgttool.sh || exit 1
+sed -i 's/\\\\/\//g' $DEST/config/SVG2SVGTProperties.properties
+sed -i 's/\\\\/\//g' $DEST/config/StringBundle_GB.properties
+
