@@ -1479,6 +1479,7 @@ int main(int argc, char *argv[]) {
 			} else if (!strcmp(name, "dlldata")) {
 				// FIXME
 			} else if (!strcmp(name, "unfrozen")) {
+				// FIXME
 			} else {
 				fprintf(stderr, "*** Unhandled parameter %s\n", name);
 			}
@@ -1490,9 +1491,6 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	header.uidChecksum = uidCrc(header.uid1, header.uid2, header.uid3);
-
-	if (unfrozen) // FIXME: is this the correct behaviour?
-		exportList.clear();
 
 	if (!elfinput && (exportList.numExports() == 0 || !dso)) {
 		printf("nothing to do\n");
