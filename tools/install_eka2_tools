@@ -8,7 +8,7 @@ fi
 
 DEST=`echo $1 | sed s:/\$::`
 
-mkdir -p $DEST
+mkdir -p $DEST/bin
 
 TRUE=`which true`
 
