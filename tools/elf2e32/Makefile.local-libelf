@@ -3,3 +3,8 @@ LDFLAGS = -Llibelf/lib
 
 include Makefile
 
+libelf.a: libelf/lib/libelf.a
+
+libelf/lib/libelf.a:
+	cd libelf-0.8.9 && ./configure --enable-shared=no --prefix=`pwd`/../libelf && make && make install
+
