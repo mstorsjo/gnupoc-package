@@ -72,11 +72,9 @@ yacc could generate new code from them. This also added some changes to
 the integration with the rest of the application. In practice, this might
 give less informative error messages.
 
-This package also includes a drop-in-replacement for elf2e32. It isn't
-compiled and installed by default, since it still lacks some important
-features (mainly deflate compression support). By compiling and installing
-this, you can build S60 3rd ed apps completely without wine. See
-elf2e32/README for more instructions on this.
+This package also includes a drop-in-replacement for elf2e32. It doesn't
+support all the command line parameters the original one does, but works
+for building binaries in all tested cases.
 
 Makesis is a modified version of the original makesis-2 released by Symbian.
 The parser has been modified to support the new pkg file syntax, the
