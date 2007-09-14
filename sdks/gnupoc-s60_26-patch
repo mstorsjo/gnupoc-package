@@ -4590,7 +4590,7 @@ diff -urN tools_orig/memtrace.pl tools/memtrace.pl
  	&usage;
 diff -urN tools_orig/mmp.pm tools/mmp.pm
 --- tools_orig/mmp.pm	2004-12-10 14:18:22.000000000 +0200
-+++ tools/mmp.pm	2007-04-07 01:11:02.000000000 +0300
++++ tools/mmp.pm	2007-09-14 20:27:49.000000000 +0300
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -4871,7 +4871,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  					$CurResource{BaseTrg}=&Path_Split('Base',$src);
  					$CurResource{Source}="$CurSrcPath$src";
  				}
-@@ -438,7 +444,7 @@
+@@ -438,15 +444,18 @@
  			next LINE;
  		}
  
@@ -4880,17 +4880,19 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			my ($trg, $dir, $file, $clDepth, @bitmaps)=@$Line;
  			unless ($file) { # bitmaps aren't essential
  				push @MmpDie, "$CurFile($LineNum) : Not enough arguments for keyword AIF\n";
-@@ -446,7 +452,8 @@
+ 				next LINE;
  			}
  			my %Data;
++			$trg=~s/\\/\//g;      # force to forward slash
  			$Data{Trg} = $trg;	# BUG: may include directory
 -			$dir=~s-^(.*[^\\])$-$1\\-o;   # ensure path ends with a backslash
 +			$dir=~s/\\/\//g;      # force to forward slash
++			$file=~s/\\/\//g;      # force to forward slash
 +			$dir=~s-^(.*[^\/])$-$1\/-o;   # ensure path ends with a slash
  			$Data{Source}=&Path_MakeAbs($CurFile, "$dir$file");
  			unless (-e "$Data{Source}") {
  				push @MmpWarn, "$CurFile($LineNum) : AIF source \"$Data{Source}\" not found\n";
-@@ -468,7 +475,8 @@
+@@ -468,7 +477,8 @@
  			}
  			@ClDepths = (@ClDepths) x @bitmaps;	# make a sufficiently long list of color depths
  			foreach $file (@bitmaps) {
@@ -4900,7 +4902,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  					$file = &Path_MakeAbs($CurFile, "$dir$file");
  				}
  				push @{$Data{BitMaps}}, { # sources must be kept in order
-@@ -481,21 +489,21 @@
+@@ -481,21 +491,21 @@
  			}
  			next LINE;
  		}
@@ -4925,7 +4927,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if (@$Line) {
  				my $Candidate;
  				foreach $Candidate (@$Line) {
-@@ -511,10 +519,10 @@
+@@ -511,10 +521,10 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Libraries specified for keyword ASSPLIBRARY\n";
  			next LINE;
  		}
@@ -4938,7 +4940,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if (@$Line) {
  				my $Candidate;
  				foreach $Candidate (@$Line) {
-@@ -530,7 +538,7 @@
+@@ -530,7 +540,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Libraries specified for keyword DEBUGLIBRARY\n";
  			next LINE;
  		}
@@ -4947,7 +4949,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if ($CheckDef) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine DEFFILE\n";
  				next LINE;
-@@ -540,6 +548,7 @@
+@@ -540,6 +550,7 @@
  				push @MmpWarn, "$CurFile($LineNum) : No file specified for keyword DEFFILE\n";
  				next LINE;
  			}
@@ -4955,7 +4957,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			$Def{Base}=&Path_Split('Base',$_);
  			$Def{Ext}=&Path_Split('Ext',$_);
  			$Def{Path}=&Path_Split('Path',$_);
-@@ -548,10 +557,11 @@
+@@ -548,10 +559,11 @@
  			}
  			next LINE;
  		}
@@ -4968,7 +4970,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  					if ($CheckDoc{"$CurSrcPath$Candidate"}) {
  						push @MmpWarn, "$CurFile($LineNum) : Duplicate Document \"$CurSrcPath$Candidate\" at line ", $CheckDoc{"$CurSrcPath$Candidate"}, "\n";
  						next; 
-@@ -567,28 +577,28 @@
+@@ -567,28 +579,28 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Files specified for keyword DOCUMENT\n";
  			next LINE;
  		}
@@ -5001,7 +5003,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if (@$Line) { 
  				my $temp=&main::Genutl_AnyToHex(shift @$Line);
  				if (defined $temp) {
-@@ -600,14 +610,14 @@
+@@ -600,14 +612,14 @@
  			push @MmpWarn, "$CurFile($LineNum) : No data link address specified for keyword $_\n";
  			next LINE;
  		}
@@ -5018,7 +5020,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if (@$Line) {
  				my $tempMin=&main::Genutl_AnyToHex(shift @$Line);
  				if (defined $tempMin) {
-@@ -630,7 +640,7 @@
+@@ -630,7 +642,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No minimum heap size specified for keyword $_\n";
  			next LINE;
  		}
@@ -5027,7 +5029,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if ($ProcessPriority) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine EPOCPROCESSPRIORITY\n";
  				next LINE;
-@@ -645,7 +655,7 @@
+@@ -645,7 +657,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Priority specified for keyword EPOCPROCESSPRIORITY\n";
  			next LINE;
  		}
@@ -5036,7 +5038,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if (@$Line) {
  				my $temp=&main::Genutl_AnyToHex(shift @$Line);
  				if (defined $temp) {
-@@ -658,28 +668,28 @@
+@@ -658,28 +670,28 @@
  			push @MmpWarn, "$CurFile($LineNum) : No stack size specified for keyword STACKSIZE\n";
  			next LINE;
  		}
@@ -5069,7 +5071,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if ($FirstLib) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine FIRSTLIB\n";
  				next LINE;
-@@ -690,7 +700,7 @@
+@@ -690,7 +702,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : Nothing specified for keyword FIRSTLIB\n";
  			next LINE;
  		}
@@ -5078,7 +5080,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if (@$Line) {
  				my $Candidate;
  				foreach $Candidate (@$Line) {
-@@ -698,7 +708,7 @@
+@@ -698,7 +710,7 @@
  						push @MmpWarn, "$CurFile($LineNum) : Duplicate Language \"$Candidate\" at line $CheckLang{$Candidate}\n";
  						next; 
  					}
@@ -5087,7 +5089,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  					$CheckLang{$Candidate}="$CurFile($LineNum)";
  				}
  				next LINE;
-@@ -706,7 +716,7 @@
+@@ -706,7 +718,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Languages specified for keyword LANG\n";
  			next LINE;
  		}
@@ -5096,7 +5098,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if (@$Line) {
  				my $Candidate;
  				foreach $Candidate (@$Line) {
-@@ -723,7 +733,7 @@
+@@ -723,7 +735,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Libraries specified for keyword LIBRARY\n";
  			next LINE;
  		}
@@ -5105,7 +5107,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if ($LinkAs) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine LINKAS\n";
  				next LINE;
-@@ -734,7 +744,7 @@
+@@ -734,7 +746,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No name specified for keyword LINKAS\n";
  			next LINE;
  		}
@@ -5114,7 +5116,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if ($NoExportLibrary) {
  				push @MmpDie, "$CurFile($LineNum) : Can't specify both EXPORTLIBRARY and NOEXPORTLIBRARY\n";
  				next LINE;
-@@ -749,7 +759,7 @@
+@@ -749,7 +761,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No name specified for keyword EXPORTLIBRARY\n";
  			next LINE;
  		}
@@ -5123,7 +5125,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if ($ExportLibrary) {
  				push @MmpDie, "$CurFile($LineNum) : Can't specify both EXPORTLIBRARY and NOEXPORTLIBRARY\n";
  				next LINE;
-@@ -757,13 +767,13 @@
+@@ -757,13 +769,13 @@
  			$NoExportLibrary = 1;
  			next LINE;
  		}
@@ -5139,7 +5141,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  					}
  					push @Macros, $Candidate;
  					$CheckMacro{$Candidate}="$CurFile($LineNum)";
-@@ -772,7 +782,7 @@
+@@ -772,7 +784,7 @@
  			}
  			next LINE; 
  		}
@@ -5148,7 +5150,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if ($NoStrictDef) {
  				push @MmpWarn, "$CurFile($LineNum) : NOSTRICTDEF already set\n";
  				next LINE;
-@@ -783,7 +793,7 @@
+@@ -783,7 +795,7 @@
  			$NoStrictDef=1;
  			next LINE;
  		}
@@ -5157,7 +5159,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if ($CheckRamTargets) {
  				push @MmpWarn, "$CurFile($LineNum) : RAM targets already specified at line $CheckRamTargets\n";
  				next LINE;
-@@ -807,10 +817,11 @@
+@@ -807,10 +819,11 @@
  			}
  			next LINE;
  		}
@@ -5170,7 +5172,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  					if ($CheckResrc{$Candidate}) {
  						push @MmpDie, "$CurFile($LineNum) : Duplicate Resource $Candidate at line $CheckResrc{$Candidate}\n";
  						next;
-@@ -833,7 +844,7 @@
+@@ -833,7 +846,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Resources specified for keyword RESOURCE\n";
  			next LINE; 
  		}
@@ -5179,7 +5181,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if ($CheckRomTargets) {
  				push @MmpWarn, "$CurFile($LineNum) : ROM targets already specified at line $CheckRomTargets\n";
  				next LINE;
-@@ -858,11 +869,11 @@
+@@ -858,11 +871,11 @@
  			}
  			next LINE;
  		}
@@ -5193,7 +5195,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  					if ($CheckSrc{$Candidate}) {
  						push @MmpDie, "$CurFile($LineNum) : Duplicate Source \"$Candidate\" at line $CheckSrc{$Candidate}\n";
  						next;
-@@ -875,9 +886,10 @@
+@@ -875,9 +888,10 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Sources specified for keyword SOURCE\n";
  			next LINE; 
  		}
@@ -5206,7 +5208,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  				$CurSrcPath=&Path_MakeEAbs($EPOCPath,$CurFile,$CurSrcPath);
  				if (-d &Path_Chop($CurSrcPath)) {
  					next LINE;
-@@ -888,7 +900,7 @@
+@@ -888,7 +902,7 @@
  			push @MmpDie, "$CurFile($LineNum) : No Source Path specified for keyword SOURCEPATH\n";
  			next LINE;
  		}
@@ -5215,7 +5217,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if (@$Line) {
  				my $Candidate;
  				foreach $Candidate (@$Line) {
-@@ -904,7 +916,7 @@
+@@ -904,7 +918,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Libraries specified for keyword STATICLIBRARY\n";
  			next LINE;
  		}
@@ -5224,7 +5226,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if ($MmpFlag{StrictDepend}) {
  				push @MmpWarn, "$CurFile($LineNum) : STRICTDEPEND already set\n";
  				next LINE;
-@@ -915,11 +927,12 @@
+@@ -915,11 +929,12 @@
  			$MmpFlag{StrictDepend}=1;
  			next LINE;
  		}
@@ -5239,7 +5241,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  					$Candidate=&Path_MakeEAbs($EPOCPath,$CurFile,$Candidate);
  					if ($CheckSysInc{$Candidate}) {
  						push @MmpWarn, "$CurFile($LineNum) : Duplicate SYSTEMINCLUDE path $Candidate at line $CheckSysInc{$Candidate}\n";
-@@ -937,10 +950,11 @@
+@@ -937,10 +952,11 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Paths specified for keyword SYSTEMINCLUDE\n";
  			next LINE;
  		}
@@ -5252,7 +5254,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  					if ($CheckSysResrc{$Candidate}) {
  						push @MmpDie, "$CurFile($LineNum) : Duplicate Resource \"$Candidate\" at line $CheckSysResrc{$Candidate}\n";
  						next; 
-@@ -953,7 +967,7 @@
+@@ -953,7 +969,7 @@
  					$CurResource{BaseTrg}=&Path_Split('Base',$Candidate);
  					$CurResource{Source}=$source;
  					$CurResource{Hdr}="$CurFile($LineNum)";
@@ -5261,7 +5263,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  					my %Resource=%CurResource;
  					undef %CurResource;
  					push @ResourceStruct, \%Resource;
-@@ -963,7 +977,7 @@
+@@ -963,7 +979,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Resources specified for keyword SYSTEMRESOURCE\n";
  			next LINE; 
  		}
@@ -5270,7 +5272,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if ($Trg) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine TARGET\n";
  				next LINE;
-@@ -974,7 +988,7 @@
+@@ -974,7 +990,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Target specified for keyword TARGET\n";
  			next LINE;
  		}
@@ -5279,7 +5281,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if ($TrgPath) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine TARGETPATH\n";
  				next LINE;
-@@ -983,15 +997,16 @@
+@@ -983,15 +999,16 @@
  				push @MmpWarn, "$CurFile($LineNum) : No Path specified for keyword TARGETPATH\n";
  				next LINE;
  			}
@@ -5300,7 +5302,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if ($TrgType) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine TARGETTYPE\n";
  				next LINE;
-@@ -1006,7 +1021,7 @@
+@@ -1006,7 +1023,7 @@
  			}
  			next LINE;
  		}
@@ -5309,7 +5311,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if (@$Line) {
  				foreach (@$Line) {
  					if ($#UidList>=1) {
-@@ -1026,14 +1041,15 @@
+@@ -1026,14 +1043,15 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Uids specified for keyword UID\n";
  			next LINE;
  		}
@@ -5328,7 +5330,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  					$Candidate=&Path_MakeEAbs($EPOCPath,$CurFile,$Candidate);
  					if ($CheckUserInc{$Candidate}) {
  						push @MmpWarn, "$CurFile($LineNum) : Duplicate USERINCLUDE path \"$Candidate\" at line $CheckUserInc{$Candidate}\n";
-@@ -1051,7 +1067,7 @@
+@@ -1051,7 +1069,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Paths specified for keyword USERINCLUDE\n";
  			next LINE;
  		}
@@ -5337,7 +5339,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if (@$Line) {
  				push @MmpWarn, "$CurFile($LineNum) : Keyword $_ takes no arguments\n";
  			}
-@@ -1059,7 +1075,7 @@
+@@ -1059,7 +1077,7 @@
  			next LINE;
  		}
  		
@@ -5346,7 +5348,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			if (@$origLine >= 2) {
  				my $compilerkey=uc shift @$origLine;
  				if (!defined($Compiler{$compilerkey})) {
-@@ -1125,7 +1141,7 @@
+@@ -1125,7 +1143,7 @@
  	}
  
  	# check for languages
@@ -5355,7 +5357,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  
  #	ensure all bitmaps have targetpaths and check for duplicate bitmaps
  	my %BitMapCheck;
-@@ -1158,7 +1174,7 @@
+@@ -1158,7 +1176,7 @@
  		foreach my $lang (@list) {
  			my %newResourceRef = %{$ResourceRef};
  			$newResourceRef{Lang} = $lang;
@@ -5364,7 +5366,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  			push @PerLanguageResourceStruct, \%newResourceRef;
  		}
  	}
-@@ -1257,7 +1273,7 @@
+@@ -1257,7 +1275,7 @@
  #	Get the EPOC entrypoint static library - must be done after EXEDLL basic types reconciled
  	unless ($FirstLib) {
  		unless ($TrgType{FirstLib}) {
@@ -5373,7 +5375,7 @@ diff -urN tools_orig/mmp.pm tools/mmp.pm
  		}
  		else {
  			$FirstLib=$TrgType{FirstLib};
-@@ -1319,21 +1335,21 @@
+@@ -1319,21 +1337,21 @@
  			$Def{Base}=&Path_Split('Base',$LinkAs);
  		}
  		unless ($Def{Ext}) {
