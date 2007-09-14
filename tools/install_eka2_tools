@@ -26,9 +26,8 @@ cd petran-1.1.0 && make && cp e32uid/uidcrc $DEST/bin
 cd bmconv-1.1.0-2 && make && cp src/bmconv $DEST/bin
 cd rcomp-7.0.1 && make && cp src/rcomp $DEST/bin
 cd makesis-4 && make && cp src/makesis src/signsis src/makekeys $DEST/bin
-# not installing elf2e32, since it's still experimental
-#cd elf2e32 && make && cp elf2e32 $DEST/bin
 cd make-3.81 && ./configure && make && cp make $DEST/bin/extmake
+cd elf2e32 && make -f Makefile.local-libelf libelf.a elf2e32 && cp elf2e32 $DEST/bin
 g++ mifconv.cpp -o $DEST/bin/mifconv
 ln -sf $TRUE $DEST/bin/rem
 cp del $DEST/bin
