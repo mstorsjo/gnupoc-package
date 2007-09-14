@@ -48,7 +48,7 @@ TInt CInflater::ReadL(TUint8* aBuffer,TInt aLength)
 	TInt tfr=0;
 	for (;;)
 		{
-		TInt len=Min((intptr_t)aLength,iLimit-iAvail);
+		TInt len=Min((intptr_t)aLength, (intptr_t)(iLimit-iAvail));
 		if (len && aBuffer)
 			{
 			HMem::Copy(aBuffer,iAvail,len);
@@ -137,7 +137,7 @@ TInt CInflater::InflateL()
 			iRptr+=KDeflateMaxDistance;
 		}
 useHistory:
-		TInt tfr=Min(end-out,(intptr_t)iLen);
+		TInt tfr=Min((intptr_t)(end-out), (intptr_t)iLen);
 		iLen-=tfr;
 		const TUint8* from=iRptr;
 		do
