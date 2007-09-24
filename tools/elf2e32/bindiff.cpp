@@ -97,7 +97,15 @@ int main(int argc, char *argv[]) {
 
 	bool identical = true;
 	FILE* file1 = fopen(filename1, "rb");
+	if (!file1) {
+		perror(filename1);
+		return 1;
+	}
 	FILE* file2 = fopen(filename2, "rb");
+	if (!file2) {
+		perror(filename2);
+		return 1;
+	}
 	fseek(file1, 0, SEEK_END);
 	fseek(file2, 0, SEEK_END);
 	int size1 = ftell(file1);
