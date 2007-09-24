@@ -1325,7 +1325,7 @@ int main(int argc, char *argv[]) {
 		{ "vid", 1, NULL, 0 },
 		{ "fixedaddress", 0, &fixedaddress, 1 },
 		{ "uncompressed", 0, NULL, 0 },
-		{ "compressionmethod", 0, NULL, 0 },
+		{ "compressionmethod", 1, NULL, 0 },
 		{ "heap", 1, NULL, 0 },
 		{ "stack", 1, NULL, 0 },
 		{ "unfrozen", 0, &unfrozen, 1 },
