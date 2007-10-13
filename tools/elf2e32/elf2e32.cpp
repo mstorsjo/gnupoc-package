@@ -1329,6 +1329,7 @@ int main(int argc, char *argv[]) {
 		{ "heap", 1, NULL, 0 },
 		{ "stack", 1, NULL, 0 },
 		{ "unfrozen", 0, &unfrozen, 1 },
+		{ "ignorenoncallable", 0, NULL, 0 },
 		{ "noexportlibrary", 0, &noexportlibrary, 1 },
 		{ "capability", 1, NULL, 0 },
 		{ "libpath", 1, NULL, 0 },
@@ -1343,6 +1344,11 @@ int main(int argc, char *argv[]) {
 		{ "version", 1, NULL, 0 },
 		{ "callentry", 1, NULL, 0 },
 		{ "fpu", 1, NULL, 0 },
+		{ "paged", 0, NULL, 0 },
+		{ "unpaged", 0, NULL, 0 },
+		{ "defaultpaged", 0, NULL, 0 },
+		{ "customdlltarget", 0, NULL, 0 },
+		{ "namedlookup", 0, NULL, 0 },
 		{ NULL, 0, NULL, 0 }
 	};
 
