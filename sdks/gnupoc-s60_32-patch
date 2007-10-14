@@ -1,5 +1,27 @@
-Only in tools: abld
-diff -u tools_orig/abld.pl tools/abld.pl
+diff -urN tools_orig/abld tools/abld
+--- tools_orig/abld	1970-01-01 02:00:00.000000000 +0200
++++ tools/abld	2007-10-11 18:34:39.000000000 +0300
+@@ -0,0 +1,19 @@
++#!/bin/sh
++#
++# abld - shell frontend for abld.pl, part of GnuPoc project
++#
++# (c) 2001-2002 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++#
++# note: small tweak to get symlinks working. 'pwd' returns the path as seen
++#       by `pwd` - but 'cwd' returns the real path, as used by the tool chain.
++#       this also works if no symlinks are used:
++#
++#       perl -S abld.pl `pwd`/ "$@"
++    
++perl -S abld.pl `perl -e 'use Cwd; my $cwd = cwd(); print "$cwd/"'` "$@"
+diff -urN tools_orig/abld.pl tools/abld.pl
 --- tools_orig/abld.pl	2007-10-11 18:34:10.000000000 +0300
 +++ tools/abld.pl	2007-10-11 19:49:15.000000000 +0300
 @@ -1,3 +1,5 @@
@@ -275,9 +297,85 @@ diff -u tools_orig/abld.pl tools/abld.pl
  	unless ($CommandHash{notest}) {
  		print ' [test]';
  	}
-Only in tools: aiftool
-Common subdirectories: tools_orig/alp2csh and tools/alp2csh
-diff -u tools_orig/armutl.pm tools/armutl.pm
+diff -urN tools_orig/aiftool tools/aiftool
+--- tools_orig/aiftool	1970-01-01 02:00:00.000000000 +0200
++++ tools/aiftool	2007-10-11 18:34:39.000000000 +0300
+@@ -0,0 +1,74 @@
++#! /bin/bash
++#
++# aiftool - Unix frontend for aiftool.exe
++#
++# (c) 2001-2006 Alfred E. Heggestad 
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License as published by
++#    the Free Software Foundation; either version 2 of the License, or
++#    (at your option) any later version.
++#
++# Arguments:
++#
++#   $1 input resource filename
++#   $2 input mbmname
++#
++
++usage()
++{
++echo 'AIFTOOL filename mbmname'
++echo 'Use this command to produce an AIF from'
++echo '- a resource file containing language, caption'
++echo '  and capability specifications'
++echo '- a multi-bitmap file containing icons and masks'
++echo '  in various sizes'
++echo 'Specify'
++echo '  filename: the name of the input resource file; the'
++echo '            .rss extension is added by AIFTOOL'
++echo '  mbmname:  the name of the input .mbm file: you'
++echo '            must specify the extension'
++}
++
++echo AIF tool
++
++#
++# check arguments - need at least 2 of them
++#
++if [ $# -lt 2  ] ; then usage ; exit 0 ; fi
++if [ $1 = ""   ] ; then usage ; exit 0 ; fi
++if [ $1 = "/?" ] ; then usage ; exit 0 ; fi
++if [ $1 = "/h" ] ; then usage ; exit 0 ; fi
++if [ $1 = "/H" ] ; then usage ; exit 0 ; fi
++
++
++#
++# compile the resource file
++#
++echo Compiling resource file
++arm-none-symbianelf-cpp -I. -I../inc -I../../epoc32/include -I$EPOCROOT/epoc32/include -D_UNICODE < $1.rss > $1.rpp
++wine $EPOCROOT/epoc32/tools/rcomp.exe -D_UNICODE -oaif.rsc -h$1.rs~ -i$1.rss -s$1.rpp
++rm -f $1.rs~
++rm -f $1.rpp
++
++#
++# duplicate mbm file
++#
++cp $2 aif.mbm
++
++
++#
++# run Aiftool
++#
++echo Running AIF writer
++#emxaif aif.rsc $2 -o $1.aif
++wine $EPOCROOT/epoc32/release/winc/udeb/aiftool.exe .
++
++#
++# cleanup
++#
++mv out.aif $1.aif
++#rm -f aif.rsc
++#rm -f aif.mbm
++
++# EOF - aiftool
+diff -urN tools_orig/armutl.pm tools/armutl.pm
 --- tools_orig/armutl.pm	2007-10-11 18:34:10.000000000 +0300
 +++ tools/armutl.pm	2007-10-11 18:34:39.000000000 +0300
 @@ -6,7 +6,7 @@
@@ -298,8 +396,23 @@ diff -u tools_orig/armutl.pm tools/armutl.pm
  		# Read all output from armcc into array
  		my @lines=<ARMCCPIPE>;
  		chomp @lines;
-Only in tools: bldmake
-diff -u tools_orig/bldmake.pl tools/bldmake.pl
+diff -urN tools_orig/bldmake tools/bldmake
+--- tools_orig/bldmake	1970-01-01 02:00:00.000000000 +0200
++++ tools/bldmake	2007-10-11 18:34:39.000000000 +0300
+@@ -0,0 +1,12 @@
++#!/bin/sh
++#
++# bldmake - bash interface for bldmake.pl, part of GnuPoc project
++#
++# (c) 2001 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++perl -S bldmake.pl "$@"
+diff -urN tools_orig/bldmake.pl tools/bldmake.pl
 --- tools_orig/bldmake.pl	2007-10-11 18:34:10.000000000 +0300
 +++ tools/bldmake.pl	2007-10-13 17:13:00.000000000 +0300
 @@ -1,3 +1,5 @@
@@ -1048,8 +1161,26 @@ diff -u tools_orig/bldmake.pl tools/bldmake.pl
  
  	eval { &Path_MakePathL($BATFILE); };
  	&FatalError($@) if $@;
-Only in tools: bmconv
-diff -u tools_orig/bpabiutl.pm tools/bpabiutl.pm
+diff -urN tools_orig/bmconv tools/bmconv
+--- tools_orig/bmconv	1970-01-01 02:00:00.000000000 +0200
++++ tools/bmconv	2007-10-11 18:34:39.000000000 +0300
+@@ -0,0 +1,15 @@
++#!/bin/sh
++#
++# bmconv - bash frontend for bmconv.exe, part of GnuPoc project
++#
++# (c) 2001-2006 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++PGM=`basename $0`
++echo "executing $PGM.exe"
++ROOT=$EPOCROOT/epoc32/tools
++wine $ROOT/$PGM.exe $*
+diff -urN tools_orig/bpabiutl.pm tools/bpabiutl.pm
 --- tools_orig/bpabiutl.pm	2007-10-11 18:34:10.000000000 +0300
 +++ tools/bpabiutl.pm	2007-10-13 17:48:05.000000000 +0300
 @@ -6,7 +6,7 @@
@@ -1139,11 +1270,7 @@ diff -u tools_orig/bpabiutl.pm tools/bpabiutl.pm
      my $command = "make CONFIG_FILE=$configfile -s -f $extractvars" ;
      my $result = `$command`;
      my %vars;
-Common subdirectories: tools_orig/build and tools/build
-Common subdirectories: tools_orig/captools and tools/captools
-Common subdirectories: tools_orig/cdb and tools/cdb
-Common subdirectories: tools_orig/charconv and tools/charconv
-diff -u tools_orig/checkgcc.pm tools/checkgcc.pm
+diff -urN tools_orig/checkgcc.pm tools/checkgcc.pm
 --- tools_orig/checkgcc.pm	2007-10-11 18:34:11.000000000 +0300
 +++ tools/checkgcc.pm	2007-10-11 18:34:39.000000000 +0300
 @@ -1,3 +1,5 @@
@@ -1187,7 +1314,7 @@ diff -u tools_orig/checkgcc.pm tools/checkgcc.pm
  					"this program depends upon are stored.\n",
  					"Is your path set up correctly?\n"
  				;
-diff -u tools_orig/checksource.pl tools/checksource.pl
+diff -urN tools_orig/checksource.pl tools/checksource.pl
 --- tools_orig/checksource.pl	2007-10-11 18:34:11.000000000 +0300
 +++ tools/checksource.pl	2007-10-11 18:34:39.000000000 +0300
 @@ -9,10 +9,10 @@
@@ -1204,7 +1331,7 @@ diff -u tools_orig/checksource.pl tools/checksource.pl
  
  my $verbose = 0;
  
-diff -u tools_orig/checksource.pm tools/checksource.pm
+diff -urN tools_orig/checksource.pm tools/checksource.pm
 --- tools_orig/checksource.pm	2007-10-11 18:34:11.000000000 +0300
 +++ tools/checksource.pm	2007-10-13 17:47:37.000000000 +0300
 @@ -6,7 +6,7 @@
@@ -1365,7 +1492,7 @@ diff -u tools_orig/checksource.pm tools/checksource.pm
  		my $quotemetaExclusion = quotemeta ($exclusion);
  
  		if ($referenceDOSSlash =~ /$quotemetaExclusion$/i)
-diff -u tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
+diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
 --- tools_orig/cl_bpabi.pm	2007-10-11 18:34:11.000000000 +0300
 +++ tools/cl_bpabi.pm	2007-10-13 18:04:43.000000000 +0300
 @@ -4,7 +4,7 @@
@@ -2209,9 +2336,9 @@ diff -u tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
  	}
  	else
  	{
-diff -u tools_orig/cl_codewarrior.pm tools/cl_codewarrior.pm
+diff -urN tools_orig/cl_codewarrior.pm tools/cl_codewarrior.pm
 --- tools_orig/cl_codewarrior.pm	2007-10-11 18:34:11.000000000 +0300
-+++ tools/cl_codewarrior.pm	2007-10-13 16:57:11.000000000 +0300
++++ tools/cl_codewarrior.pm	2007-10-14 22:21:07.000000000 +0300
 @@ -4,7 +4,7 @@
  #
  
@@ -2233,6 +2360,15 @@ diff -u tools_orig/cl_codewarrior.pm tools/cl_codewarrior.pm
  
  my $NamedSymLkup = 0;
  
+@@ -108,7 +108,7 @@
+ 		}
+ 	}
+ 
+-	open PIPE, "$MWCC |", or &main::FatalError( "Failed to find version information for $MWCC \n");
++	open PIPE, "wine $MWCC |", or &main::FatalError( "Failed to find version information for $MWCC \n");
+ 	while (<PIPE>) {
+ 		if($_ =~ /Version\s+(\d+)\.(\d+)\.(\d+)\s+build\s+(\d+)/) {
+ 			my $MajorVer = $1;
 @@ -172,7 +172,7 @@
  	my $TrgDir="";
  	my $AifTrgDir="";
@@ -2807,7 +2943,7 @@ diff -u tools_orig/cl_codewarrior.pm tools/cl_codewarrior.pm
  				&Generic_Quote($Win32Resrc), " \$(DEPEND)\n",
  				"\tmwwinrc -o \$\@ \"$Win32Resrc\"\n",
  				"\n"
-diff -u tools_orig/cl_generic.pm tools/cl_generic.pm
+diff -urN tools_orig/cl_generic.pm tools/cl_generic.pm
 --- tools_orig/cl_generic.pm	2007-10-11 18:34:11.000000000 +0300
 +++ tools/cl_generic.pm	2007-10-13 18:05:33.000000000 +0300
 @@ -29,8 +29,8 @@
@@ -2988,7 +3124,7 @@ diff -u tools_orig/cl_generic.pm tools/cl_generic.pm
  	my @userIncludes = &main::Path_Chop(&main::Path_AbsToWork(&main::UserIncPaths));
  	unshift (@userIncludes, $AbsSrcPath);	
  	my @systemIncludes = &main::Path_Chop(&main::Path_AbsToWork(&main::ResourceSysIncPaths));
-diff -u tools_orig/cl_tools.pm tools/cl_tools.pm
+diff -urN tools_orig/cl_tools.pm tools/cl_tools.pm
 --- tools_orig/cl_tools.pm	2007-10-11 18:34:11.000000000 +0300
 +++ tools/cl_tools.pm	2007-10-11 18:34:39.000000000 +0300
 @@ -243,7 +243,7 @@
@@ -3000,10 +3136,28 @@ diff -u tools_orig/cl_tools.pm tools/cl_tools.pm
  
  	&Generic_Releaseables;
  }
-Common subdirectories: tools_orig/commdb-schema and tools/commdb-schema
-Common subdirectories: tools_orig/compilation_config and tools/compilation_config
-Common subdirectories: tools_orig/cshlpcmp and tools/cshlpcmp
-diff -u tools_orig/defutl.pm tools/defutl.pm
+diff -urN tools_orig/compilation_config/gcce.mk tools/compilation_config/gcce.mk
+--- tools_orig/compilation_config/gcce.mk	2007-07-03 19:30:34.000000000 +0300
++++ tools/compilation_config/gcce.mk	2007-10-11 18:34:42.000000000 +0300
+@@ -145,7 +145,7 @@
+ #---------------------
+ 
+ # Prefix Header File passed to the preprocessor
+-PREFIXFILE=$(EPOCROOT)EPOC32\INCLUDE\GCCE\GCCE.h
++PREFIXFILE=$(EPOCROOT)epoc32/include/gcce/gcce.h
+ 
+ # For .cpp Source files
+ CPP_LANG_OPTION=-x c++
+@@ -188,7 +188,7 @@
+ 
+ # Preinclude file for that compiler that contains all the compiler specific definitions
+ # required by the Symbian OS source code.
+-PREINCLUDE_OPTION=-include $(EPOCROOT)EPOC32/INCLUDE/GCCE/GCCE.h
++PREINCLUDE_OPTION=-include $(EPOCROOT)epoc32/include/gcce/gcce.h
+ 
+ # Include options required by Function Call Logger  
+ FC_LOGGER_INCLUDE_OPTION=-I
+diff -urN tools_orig/defutl.pm tools/defutl.pm
 --- tools_orig/defutl.pm	2007-10-11 18:34:11.000000000 +0300
 +++ tools/defutl.pm	2007-10-11 18:34:42.000000000 +0300
 @@ -8,7 +8,7 @@
@@ -3015,10 +3169,7 @@ diff -u tools_orig/defutl.pm tools/defutl.pm
  
  require Exporter;
  @ISA=qw(Exporter);
-Common subdirectories: tools_orig/depcheck and tools/depcheck
-Common subdirectories: tools_orig/depmodel and tools/depmodel
-Common subdirectories: tools_orig/distrib and tools/distrib
-diff -u tools_orig/e32env.pm tools/e32env.pm
+diff -urN tools_orig/e32env.pm tools/e32env.pm
 --- tools_orig/e32env.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/e32env.pm	2007-10-11 19:29:02.000000000 +0300
 @@ -6,7 +6,7 @@
@@ -3083,7 +3234,7 @@ diff -u tools_orig/e32env.pm tools/e32env.pm
  	
  	$Data{SecurePlatform} = 1;
  }
-diff -u tools_orig/e32plat.pm tools/e32plat.pm
+diff -urN tools_orig/e32plat.pm tools/e32plat.pm
 --- tools_orig/e32plat.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/e32plat.pm	2007-10-11 18:37:47.000000000 +0300
 @@ -1,3 +1,5 @@
@@ -3205,7 +3356,7 @@ diff -u tools_orig/e32plat.pm tools/e32plat.pm
  	unless (defined $Plat{$Candidate}) {
  		die "ERROR: Platform \"$Candidate\" not supported\n";
  	}
-diff -u tools_orig/e32tpver.pm tools/e32tpver.pm
+diff -urN tools_orig/e32tpver.pm tools/e32tpver.pm
 --- tools_orig/e32tpver.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/e32tpver.pm	2007-10-11 18:34:42.000000000 +0300
 @@ -6,7 +6,7 @@
@@ -3217,7 +3368,7 @@ diff -u tools_orig/e32tpver.pm tools/e32tpver.pm
  require Exporter;
  @ISA=qw(Exporter);
  @EXPORT=qw(
-diff -u tools_orig/e32variant.pm tools/e32variant.pm
+diff -urN tools_orig/e32variant.pm tools/e32variant.pm
 --- tools_orig/e32variant.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/e32variant.pm	2007-10-11 18:34:42.000000000 +0300
 @@ -2,7 +2,7 @@
@@ -3305,8 +3456,7 @@ diff -u tools_orig/e32variant.pm tools/e32variant.pm
      }
      return $file;
  }
-Common subdirectories: tools_orig/ecmt and tools/ecmt
-diff -u tools_orig/efreeze.pl tools/efreeze.pl
+diff -urN tools_orig/efreeze.pl tools/efreeze.pl
 --- tools_orig/efreeze.pl	2007-10-11 18:34:12.000000000 +0300
 +++ tools/efreeze.pl	2007-10-11 18:34:42.000000000 +0300
 @@ -19,14 +19,13 @@
@@ -3328,9 +3478,42 @@ diff -u tools_orig/efreeze.pl tools/efreeze.pl
  
  
  # THE MAIN PROGRAM SECTION
-Only in tools: elf2e32
-Only in tools: epoc
-diff -u tools_orig/epoc.pl tools/epoc.pl
+diff -urN tools_orig/elf2e32 tools/elf2e32
+--- tools_orig/elf2e32	1970-01-01 02:00:00.000000000 +0200
++++ tools/elf2e32	2007-10-11 18:34:42.000000000 +0300
+@@ -0,0 +1,15 @@
++#!/bin/sh
++#
++# elf2e32 - bash frontend for elf2e32.exe, part of GnuPoc project
++#
++# (c) 2001-2006 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++PGM=`basename $0`
++echo "executing $PGM.exe"
++ROOT=$EPOCROOT/epoc32/tools
++wine $ROOT/$PGM.exe $*
+diff -urN tools_orig/epoc tools/epoc
+--- tools_orig/epoc	1970-01-01 02:00:00.000000000 +0200
++++ tools/epoc	2007-10-11 18:34:42.000000000 +0300
+@@ -0,0 +1,12 @@
++#!/bin/sh
++#
++# epoc - bash interface for epoc.pl, part of GnuPoc project
++#
++# (c) 2002 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++perl -S epoc.pl "$@"
+diff -urN tools_orig/epoc.pl tools/epoc.pl
 --- tools_orig/epoc.pl	2007-10-11 18:34:12.000000000 +0300
 +++ tools/epoc.pl	2007-10-11 18:34:42.000000000 +0300
 @@ -1,3 +1,4 @@
@@ -3382,7 +3565,7 @@ diff -u tools_orig/epoc.pl tools/epoc.pl
      die "ERROR: EPOCROOT must specify an existing directory.\n" 
  	if (!-d $epocroot);
      return $epocroot;
-diff -u tools_orig/epocaif.pl tools/epocaif.pl
+diff -urN tools_orig/epocaif.pl tools/epocaif.pl
 --- tools_orig/epocaif.pl	2007-10-11 18:34:12.000000000 +0300
 +++ tools/epocaif.pl	2007-10-11 18:34:42.000000000 +0300
 @@ -1,3 +1,5 @@
@@ -3628,7 +3811,7 @@ diff -u tools_orig/epocaif.pl tools/epocaif.pl
      if ($curdrive eq "x")
  		{
  		$curdrive="";
-diff -u tools_orig/epocmbm.pl tools/epocmbm.pl
+diff -urN tools_orig/epocmbm.pl tools/epocmbm.pl
 --- tools_orig/epocmbm.pl	2007-10-11 18:34:12.000000000 +0300
 +++ tools/epocmbm.pl	2007-10-11 18:34:42.000000000 +0300
 @@ -14,7 +14,7 @@
@@ -3655,7 +3838,7 @@ diff -u tools_orig/epocmbm.pl tools/epocmbm.pl
  	if ($? != 0)
  		{
  		print "* BMCONV failed\n";
-diff -u tools_orig/epocrc.pl tools/epocrc.pl
+diff -urN tools_orig/epocrc.pl tools/epocrc.pl
 --- tools_orig/epocrc.pl	2007-10-11 18:34:12.000000000 +0300
 +++ tools/epocrc.pl	2007-10-11 18:34:42.000000000 +0300
 @@ -1,3 +1,5 @@
@@ -3690,8 +3873,23 @@ diff -u tools_orig/epocrc.pl tools/epocrc.pl
  		next;
  		}
  	if ($arg =~ /^-l(.*)$/)
-Only in tools: eshell
-diff -u tools_orig/eshell.pl tools/eshell.pl
+diff -urN tools_orig/eshell tools/eshell
+--- tools_orig/eshell	1970-01-01 02:00:00.000000000 +0200
++++ tools/eshell	2007-10-11 18:34:42.000000000 +0300
+@@ -0,0 +1,12 @@
++#!/bin/sh
++#
++# eshell - bash interface for eshell.pl, part of GnuPoc project
++#
++# (c) 2002 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++perl -S eshell.pl "$@"
+diff -urN tools_orig/eshell.pl tools/eshell.pl
 --- tools_orig/eshell.pl	2007-10-11 18:34:12.000000000 +0300
 +++ tools/eshell.pl	2007-10-11 18:34:42.000000000 +0300
 @@ -1,3 +1,4 @@
@@ -3732,8 +3930,15 @@ diff -u tools_orig/eshell.pl tools/eshell.pl
      die "ERROR: EPOCROOT must specify an existing directory.\n" 
  	if (!-d $epocroot);
      return $epocroot;
-Only in tools: extmake
-diff -u tools_orig/fixupsym.pl tools/fixupsym.pl
+diff -urN tools_orig/extmake tools/extmake
+--- tools_orig/extmake	1970-01-01 02:00:00.000000000 +0200
++++ tools/extmake	2007-10-11 18:34:42.000000000 +0300
+@@ -0,0 +1,4 @@
++#!/bin/sh
++
++wine make $*
++
+diff -urN tools_orig/fixupsym.pl tools/fixupsym.pl
 --- tools_orig/fixupsym.pl	2007-10-11 18:34:12.000000000 +0300
 +++ tools/fixupsym.pl	2007-10-11 18:34:42.000000000 +0300
 @@ -406,7 +406,7 @@
@@ -3745,8 +3950,49 @@ diff -u tools_orig/fixupsym.pl tools/fixupsym.pl
  	print "\nfixupsym - " .
  	  "Fix up executables with locations taken from a ROM image (Build ",
  	  &E32tpver, ")\n";
-Only in tools: genbldinf.pl
-diff -u tools_orig/genutl.pm tools/genutl.pm
+diff -urN tools_orig/genbldinf.pl tools/genbldinf.pl
+--- tools_orig/genbldinf.pl	1970-01-01 02:00:00.000000000 +0200
++++ tools/genbldinf.pl	2007-10-11 18:34:42.000000000 +0300
+@@ -0,0 +1,38 @@
++#!/usr/bin/perl -w
++#
++# genbldinf.pl - part of GnuPoc project
++#
++# Recursively generate a bld.inf file from a given subsystem
++#
++# (c) 2001 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++my $BLDINF = "bld.inf";
++
++print "OS: $^O\n";
++
++unlink $BLDINF if (-f $BLDINF);
++
++$_ = `find . -iname $BLDINF`;
++
++s/(.*bld.inf.*)/\#include "$1"/igm;
++
++if ($^O eq "MSWin32") {
++  print "win32 hack:\n";
++  s|/|\\|gm;
++  $_ = lc $_;
++}
++
++open FO, ">$BLDINF" or die "Could not create $BLDINF";
++print FO "//\n";
++print FO "// bld.inf - generated by 'genbldinf.pl' - part of GnuPoc project\n";
++print FO "//\n";
++print FO $_;
++close FO;
++
++print "creating $BLDINF with:\n";
++system ("cat $BLDINF");
+diff -urN tools_orig/genutl.pm tools/genutl.pm
 --- tools_orig/genutl.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/genutl.pm	2007-10-11 18:34:42.000000000 +0300
 @@ -6,7 +6,7 @@
@@ -3758,7 +4004,7 @@ diff -u tools_orig/genutl.pm tools/genutl.pm
  
  require Exporter;
  @ISA=qw(Exporter);
-diff -u tools_orig/hpsym.pl tools/hpsym.pl
+diff -urN tools_orig/hpsym.pl tools/hpsym.pl
 --- tools_orig/hpsym.pl	2007-10-11 18:34:12.000000000 +0300
 +++ tools/hpsym.pl	2007-10-11 18:34:42.000000000 +0300
 @@ -161,7 +161,7 @@
@@ -3770,7 +4016,7 @@ diff -u tools_orig/hpsym.pl tools/hpsym.pl
  	print "\nhpsym - Produce symbolic info in \"HP GPA Symbol File Format\"" .
  	  " suitable for use\n        with a HP logic analyser (Build ",
  	  &E32tpver, ")\n";
-diff -u tools_orig/ide_cw.pm tools/ide_cw.pm
+diff -urN tools_orig/ide_cw.pm tools/ide_cw.pm
 --- tools_orig/ide_cw.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/ide_cw.pm	2007-10-11 18:34:42.000000000 +0300
 @@ -1261,7 +1261,7 @@
@@ -3782,8 +4028,7 @@ diff -u tools_orig/ide_cw.pm tools/ide_cw.pm
  		&main::CreateExtraFile("${ExtraFilesPath}$UIDFile", $UidText);
  		}
  
-Common subdirectories: tools_orig/j2me and tools/j2me
-diff -u tools_orig/lockit_info.pm tools/lockit_info.pm
+diff -urN tools_orig/lockit_info.pm tools/lockit_info.pm
 --- tools_orig/lockit_info.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/lockit_info.pm	2007-10-11 19:36:06.000000000 +0300
 @@ -22,7 +22,7 @@
@@ -3971,7 +4216,7 @@ diff -u tools_orig/lockit_info.pm tools/lockit_info.pm
  	}
  
  	my %loggedFiles;
-diff -u tools_orig/makdeps.pm tools/makdeps.pm
+diff -urN tools_orig/makdeps.pm tools/makdeps.pm
 --- tools_orig/makdeps.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/makdeps.pm	2007-10-11 18:34:42.000000000 +0300
 @@ -7,7 +7,7 @@
@@ -4081,7 +4326,7 @@ diff -u tools_orig/makdeps.pm tools/makdeps.pm
  				$GenHdr=1;
  			}
  		}
-diff -u tools_orig/makedef.pl tools/makedef.pl
+diff -urN tools_orig/makedef.pl tools/makedef.pl
 --- tools_orig/makedef.pl	2007-10-11 18:34:12.000000000 +0300
 +++ tools/makedef.pl	2007-10-11 18:34:42.000000000 +0300
 @@ -21,13 +21,12 @@
@@ -4125,9 +4370,45 @@ diff -u tools_orig/makedef.pl tools/makedef.pl
  				$LineNum++;
  				next if ($Line !~ /^\s+(.+)$/o);
  				$Comment = $1;
-Only in tools: makekeys
-Only in tools: makesis
-diff -u tools_orig/makhelp.pm tools/makhelp.pm
+diff -urN tools_orig/makekeys tools/makekeys
+--- tools_orig/makekeys	1970-01-01 02:00:00.000000000 +0200
++++ tools/makekeys	2007-10-11 18:34:42.000000000 +0300
+@@ -0,0 +1,15 @@
++#!/bin/sh
++#
++# makekeys - bash frontend for makekeys.exe, part of GnuPoc project
++#
++# (c) 2001-2006 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++PGM=`basename $0`
++echo "executing $PGM.exe"
++ROOT=$EPOCROOT/epoc32/tools
++wine $ROOT/$PGM.exe $*
+diff -urN tools_orig/makesis tools/makesis
+--- tools_orig/makesis	1970-01-01 02:00:00.000000000 +0200
++++ tools/makesis	2007-10-11 18:34:42.000000000 +0300
+@@ -0,0 +1,15 @@
++#!/bin/sh
++#
++# makesis - bash frontend for makesis.exe, part of GnuPoc project
++#
++# (c) 2001-2006 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++PGM=`basename $0`
++echo "executing $PGM.exe"
++ROOT=$EPOCROOT/epoc32/tools
++wine $ROOT/$PGM.exe $*
+diff -urN tools_orig/makhelp.pm tools/makhelp.pm
 --- tools_orig/makhelp.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/makhelp.pm	2007-10-11 18:35:20.000000000 +0300
 @@ -4,7 +4,7 @@
@@ -4166,8 +4447,23 @@ diff -u tools_orig/makhelp.pm tools/makhelp.pm
                          If the path ends in \~\ the ~ is replace by B[platform] ]
  DOCUMENT               [sourcepath-relative_documents]
  EPOCALLOWDLLDATA
-Only in tools: makmake
-diff -u tools_orig/makmake.pl tools/makmake.pl
+diff -urN tools_orig/makmake tools/makmake
+--- tools_orig/makmake	1970-01-01 02:00:00.000000000 +0200
++++ tools/makmake	2007-10-11 18:34:42.000000000 +0300
+@@ -0,0 +1,12 @@
++#!/bin/sh
++#
++# makmake - bash frontend for makmake.pl, part of GnuPoc project
++#
++# (c) 2001-2002 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++perl -S makmake.pl "$@"
+diff -urN tools_orig/makmake.pl tools/makmake.pl
 --- tools_orig/makmake.pl	2007-10-11 18:34:12.000000000 +0300
 +++ tools/makmake.pl	2007-10-13 17:56:22.000000000 +0300
 @@ -1,3 +1,5 @@
@@ -4532,7 +4828,7 @@ diff -u tools_orig/makmake.pl tools/makmake.pl
  	}
  	$Path;
  }
-diff -u tools_orig/maksym.pl tools/maksym.pl
+diff -urN tools_orig/maksym.pl tools/maksym.pl
 --- tools_orig/maksym.pl	2007-10-11 18:34:12.000000000 +0300
 +++ tools/maksym.pl	2007-10-11 18:34:42.000000000 +0300
 @@ -354,7 +354,7 @@
@@ -4544,7 +4840,7 @@ diff -u tools_orig/maksym.pl tools/maksym.pl
      print "\nmaksym - Produce symbolic information given a ROM image (Build ",
  	&E32tpver, ")\n";
      &usage;
-diff -u tools_orig/memtrace.pl tools/memtrace.pl
+diff -urN tools_orig/memtrace.pl tools/memtrace.pl
 --- tools_orig/memtrace.pl	2007-10-11 18:34:12.000000000 +0300
 +++ tools/memtrace.pl	2007-10-11 18:34:42.000000000 +0300
 @@ -237,7 +237,7 @@
@@ -4556,8 +4852,31 @@ diff -u tools_orig/memtrace.pl tools/memtrace.pl
  	print "\nmemtrace - " .
  	  "Postprocess EPOC memory usage trace (Build ", &E32tpver, ")\n";
  	&usage;
-Only in tools: mifconv
-diff -u tools_orig/mmp.pm tools/mmp.pm
+diff -urN tools_orig/mifconv tools/mifconv
+--- tools_orig/mifconv	1970-01-01 02:00:00.000000000 +0200
++++ tools/mifconv	2007-10-11 18:34:42.000000000 +0300
+@@ -0,0 +1,20 @@
++#!/bin/sh
++#
++# mifconv - bash frontend for mifconv.exe, part of GnuPoc project
++#
++# (c) 2001-2006 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++PGM=`basename $0`
++echo "executing $PGM.exe"
++ROOT=$EPOCROOT/epoc32/tools
++
++# mifconv in S60 3rd FP1 seems to try to call svgtbinencode.exe if EPOCROOT
++# is set, and this doesn't seem to work in wine (tested on 0.9.15)
++unset EPOCROOT
++
++wine $ROOT/$PGM.exe $*
+diff -urN tools_orig/mmp.pm tools/mmp.pm
 --- tools_orig/mmp.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/mmp.pm	2007-10-13 17:41:50.000000000 +0300
 @@ -1,3 +1,5 @@
@@ -5519,7 +5838,7 @@ diff -u tools_orig/mmp.pm tools/mmp.pm
  			}
  		}
  		unless ($Def{Base}) {
-diff -u tools_orig/modload.pm tools/modload.pm
+diff -urN tools_orig/modload.pm tools/modload.pm
 --- tools_orig/modload.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/modload.pm	2007-10-11 18:34:42.000000000 +0300
 @@ -7,7 +7,7 @@
@@ -5560,7 +5879,7 @@ diff -u tools_orig/modload.pm tools/modload.pm
  		$Package->import;
  	}
  }
-diff -u tools_orig/output.pm tools/output.pm
+diff -urN tools_orig/output.pm tools/output.pm
 --- tools_orig/output.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/output.pm	2007-10-11 18:34:42.000000000 +0300
 @@ -6,7 +6,7 @@
@@ -5592,7 +5911,7 @@ diff -u tools_orig/output.pm tools/output.pm
  	}
  }
  
-diff -u tools_orig/pathutl.pm tools/pathutl.pm
+diff -urN tools_orig/pathutl.pm tools/pathutl.pm
 --- tools_orig/pathutl.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/pathutl.pm	2007-10-11 18:34:42.000000000 +0300
 @@ -9,7 +9,7 @@
@@ -5885,11 +6204,44 @@ diff -u tools_orig/pathutl.pm tools/pathutl.pm
  	@WorkPathList=&Path_Dirs($WorkPath);
  }
  
-Common subdirectories: tools_orig/perl and tools/perl
-Common subdirectories: tools_orig/perllib and tools/perllib
-Only in tools: petran
-Only in tools: pfsdump
-diff -u tools_orig/prepdef.pl tools/prepdef.pl
+diff -urN tools_orig/petran tools/petran
+--- tools_orig/petran	1970-01-01 02:00:00.000000000 +0200
++++ tools/petran	2007-10-11 18:34:42.000000000 +0300
+@@ -0,0 +1,12 @@
++#! /bin/bash
++#
++# petran - bash frontend for petran.exe, part of GnuPoc project
++#
++# (c) 2001-2006 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++wine $EPOCROOT/epoc32/tools/petran.exe "$@"
+diff -urN tools_orig/pfsdump tools/pfsdump
+--- tools_orig/pfsdump	1970-01-01 02:00:00.000000000 +0200
++++ tools/pfsdump	2007-10-11 18:34:42.000000000 +0300
+@@ -0,0 +1,17 @@
++#!/bin/sh
++#
++# pfsdump - bash frontend for pfsdump.exe, part of GnuPoc project
++#
++# PFS = Permanent File Store
++#
++# (c) 2001-2006 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++PGM=`basename $0`
++echo "executing $PGM.exe"
++ROOT=$EPOCROOT/epoc32/tools
++wine $ROOT/$PGM.exe $*
+diff -urN tools_orig/prepdef.pl tools/prepdef.pl
 --- tools_orig/prepdef.pl	2007-10-11 18:34:12.000000000 +0300
 +++ tools/prepdef.pl	2007-10-11 18:34:42.000000000 +0300
 @@ -14,14 +14,13 @@
@@ -5911,7 +6263,7 @@ diff -u tools_orig/prepdef.pl tools/prepdef.pl
  
  
  # THE MAIN PROGRAM SECTION
-diff -u tools_orig/prepfile.pm tools/prepfile.pm
+diff -urN tools_orig/prepfile.pm tools/prepfile.pm
 --- tools_orig/prepfile.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/prepfile.pm	2007-10-13 17:51:22.000000000 +0300
 @@ -7,7 +7,7 @@
@@ -5989,7 +6341,7 @@ diff -u tools_orig/prepfile.pm tools/prepfile.pm
  			$CurFile=&Path_AbsToWork($CurFile);
  			@Tmp=('#', $CurFile);
  			push @{$ArrayRef}, [ @Tmp ];
-diff -u tools_orig/preprocessor.pm tools/preprocessor.pm
+diff -urN tools_orig/preprocessor.pm tools/preprocessor.pm
 --- tools_orig/preprocessor.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/preprocessor.pm	2007-10-11 18:34:42.000000000 +0300
 @@ -7,7 +7,7 @@
@@ -6017,13 +6369,61 @@ diff -u tools_orig/preprocessor.pm tools/preprocessor.pm
 -1;
 \ No newline at end of file
 +1;
-Common subdirectories: tools_orig/productinstaller and tools/productinstaller
-Only in tools: rcomp
-Only in tools: setupcomms
-Common subdirectories: tools_orig/shell and tools/shell
-Only in tools: signsis
-Common subdirectories: tools_orig/systemdefinition and tools/systemdefinition
-diff -u tools_orig/trgtype.pm tools/trgtype.pm
+diff -urN tools_orig/rcomp tools/rcomp
+--- tools_orig/rcomp	1970-01-01 02:00:00.000000000 +0200
++++ tools/rcomp	2007-10-11 18:34:42.000000000 +0300
+@@ -0,0 +1,15 @@
++#!/bin/sh
++#
++# rcomp - bash frontend for rcomp.exe, part of GnuPoc project
++#
++# (c) 2001 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++PGM=`basename $0`
++echo "executing $PGM.exe"
++ROOT=$EPOCROOT/epoc32/tools
++wine $ROOT/$PGM.exe $*
+diff -urN tools_orig/setupcomms tools/setupcomms
+--- tools_orig/setupcomms	1970-01-01 02:00:00.000000000 +0200
++++ tools/setupcomms	2007-10-11 18:34:42.000000000 +0300
+@@ -0,0 +1,12 @@
++#!/bin/sh
++#
++# setupcomms - bash interface for setupcomms.pl, part of GnuPoc project
++#
++# (c) 2002 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++perl -S setupcomms.pl "$@"
+diff -urN tools_orig/signsis tools/signsis
+--- tools_orig/signsis	1970-01-01 02:00:00.000000000 +0200
++++ tools/signsis	2007-10-11 18:34:42.000000000 +0300
+@@ -0,0 +1,15 @@
++#!/bin/sh
++#
++# signsis - bash frontend for signsis.exe, part of GnuPoc project
++#
++# (c) 2001-2006 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++PGM=`basename $0`
++echo "executing $PGM.exe"
++ROOT=$EPOCROOT/epoc32/tools
++wine $ROOT/$PGM.exe $*
+diff -urN tools_orig/trgtype.pm tools/trgtype.pm
 --- tools_orig/trgtype.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/trgtype.pm	2007-10-11 18:34:42.000000000 +0300
 @@ -10,7 +10,7 @@
@@ -6159,9 +6559,7 @@ diff -u tools_orig/trgtype.pm tools/trgtype.pm
  	}
  
  	unless ($TrgHash{UID2}) {
-Common subdirectories: tools_orig/tz and tools/tz
-Common subdirectories: tools_orig/variant and tools/variant
-diff -u tools_orig/winutl.pm tools/winutl.pm
+diff -urN tools_orig/winutl.pm tools/winutl.pm
 --- tools_orig/winutl.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/winutl.pm	2007-10-11 18:38:56.000000000 +0300
 @@ -7,7 +7,7 @@
@@ -6206,7 +6604,7 @@ diff -u tools_orig/winutl.pm tools/winutl.pm
  	my $DoneCheck=0;
  	while (<PIPE>) {
  		unless ($DoneCheck) {
-diff -u tools_orig/wrappermakefile.pm tools/wrappermakefile.pm
+diff -urN tools_orig/wrappermakefile.pm tools/wrappermakefile.pm
 --- tools_orig/wrappermakefile.pm	2007-10-11 18:34:12.000000000 +0300
 +++ tools/wrappermakefile.pm	2007-10-11 18:34:42.000000000 +0300
 @@ -11,7 +11,7 @@
