@@ -33,6 +33,7 @@ sub dodir($) {
         if($line =~ m/^#include/) {
 	  $line =~ tr [A-Z\\] [a-z/];
 	  $line =~ s/gles\//GLES\//;
+	  $line =~ s/product_include/PRODUCT_INCLUDE/;
 	}
 	$line =~ s/[\r\n]//g;
 	print FHOUT "$line\n";

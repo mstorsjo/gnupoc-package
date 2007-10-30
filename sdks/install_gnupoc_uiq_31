@@ -42,7 +42,6 @@ rm -rf $DEST/\\\\\$*
 ./fixexamples $DEST/examples
 for i in \`find $DEST/epoc32/tools -name \*.pl -or -name \*.pm\`; do tr -d '\\\\r' < \$i > \$i.tmp; mv \$i.tmp \$i; done
 cp -pR $DEST/epoc32/tools $DEST/epoc32/tools_orig
-cp -pR $DEST/epoc32/include $DEST/epoc32/include_orig
 cat gnupoc-uiq_31-patch | (cd $DEST/epoc32; patch -p0 )
 cd $DEST/epoc32/tools; chmod a+x *.pl bldmake abld makmake bmconv rcomp makesis epoc eshell petran pfsdump elf2e32 makekeys signsis extmake
 
