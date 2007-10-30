@@ -1486,6 +1486,8 @@ int main(int argc, char *argv[]) {
 				// FIXME
 			} else if (!strcmp(name, "unfrozen")) {
 				// FIXME
+			} else if (!strcmp(name, "version")) {
+				// FIXME
 			} else {
 				fprintf(stderr, "*** Unhandled parameter %s\n", name);
 			}
