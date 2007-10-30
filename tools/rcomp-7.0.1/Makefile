@@ -2,8 +2,8 @@
 # Makefile
 #
 all clean install uninstall:
-	make $@ -sC src
+	$(MAKE) $@ -sC src
 
 regtest:
-	make all -sC src
-	make regtest -sC tsrc
+	$(MAKE) all -sC src
+	$(MAKE) regtest -sC tsrc
