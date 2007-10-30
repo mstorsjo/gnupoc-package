@@ -10,6 +10,11 @@ DEST=`echo $1 | sed s:/\$::`
 
 mkdir -p $DEST/bin
 
+MAKE=make
+if [ "`which gmake`" != "" ]; then
+	MAKE=gmake
+fi
+
 while read a
 do
   echo "$a"
@@ -20,14 +25,14 @@ do
   fi
 done << __END
 
-cd petran-1.1.0 && make && cp petran/petran e32uid/uidcrc $DEST/bin
-cd makesis-2.0.0 && make && cp src/makesis $DEST/bin
-cd bmconv-1.1.0-2 && make && cp src/bmconv $DEST/bin
-cd rcomp-7.0.1 && make && cp src/rcomp $DEST/bin
+cd petran-1.1.0 && $MAKE && cp petran/petran e32uid/uidcrc $DEST/bin
+cd makesis-2.0.0 && $MAKE && cp src/makesis $DEST/bin
+cd bmconv-1.1.0-2 && $MAKE && cp src/bmconv $DEST/bin
+cd rcomp-7.0.1 && $MAKE && cp src/rcomp $DEST/bin
 gcc genaif.c -o $DEST/bin/genaif
 g++ aiftool.cpp -o $DEST/bin/aiftool
 
-cd make-3.81 && ./configure && make && cp make $DEST/bin/extmake
+cd make-3.81 && ./configure && $MAKE && cp make $DEST/bin/extmake
 g++ mifconv.cpp -o $DEST/bin/mifconv
 ln -sf $TRUE $DEST/bin/rem
 cp del $DEST/bin
