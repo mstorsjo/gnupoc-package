@@ -4,9 +4,6 @@
 //
 
 #include <stdlib.h>   
-#ifndef __APPLE__
-#include <malloc.h>
-#endif
 #include <stdio.h>
 #include <memory.h>
 #include <e32std.h>
