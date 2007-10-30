@@ -7,12 +7,12 @@ elf2e32: elf2e32.o crc.o deflate/deflate.a
 	$(CXX) -o $@ $+ $(LDFLAGS)
 
 deflate/deflate.a:
-	make -C deflate deflate.a
+	$(MAKE) -C deflate deflate.a
 
 bindiff: bindiff.o
 	$(CXX) -o $@ $+
 
 clean:
-	make -C deflate clean
+	$(MAKE) -C deflate clean
 	rm -f elf2e32 bindiff *.o
 
