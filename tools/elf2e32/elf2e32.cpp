@@ -1487,7 +1487,9 @@ int main(int argc, char *argv[]) {
 			} else if (!strcmp(name, "unfrozen")) {
 				// FIXME
 			} else if (!strcmp(name, "version")) {
-				// FIXME
+				int major = 10, minor = 0;
+				sscanf(optarg, "%d.%d", &major, &minor);
+				header.moduleVersion = (major << 16) | (minor);
 			} else {
 				fprintf(stderr, "*** Unhandled parameter %s\n", name);
 			}
