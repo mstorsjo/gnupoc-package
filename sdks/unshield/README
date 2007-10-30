@@ -8,5 +8,5 @@ To compile it from source:
 tar -zxvf unshield-0.5.tar.gz
 cd unshield-0.5
 ./configure --enable-shared=no
-cp src/unshield
+cp src/unshield ..
 
