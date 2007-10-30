@@ -1,11 +1,11 @@
 VERSION=2.0.0
 
 all clean install uninstall:
-	make $@ -C src
+	$(MAKE) $@ -C src
 
 tarball: clean
 	cd .. && tar -czvf makesis-$(VERSION).tar.gz makesis-$(VERSION) --exclude CVS	
 
 regtest:
-	make all -sC src
-	make regtest -sC test
+	$(MAKE) all -sC src
+	$(MAKE) regtest -sC test
