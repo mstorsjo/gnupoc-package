@@ -11,6 +11,11 @@ DEST=`echo $2 | sed s:/\$::`
 
 mkdir -p $DEST
 
+MAKE=make
+if [ "`which gmake`" != "" ]; then
+        MAKE=gmake
+fi
+
 cpp=`which cpp`
 if [ ! -e $DEST/bin/cpp ] && [ "`file $cpp | grep 'shell script'`" != "" ]; then LINK_CPP=1; fi
 
@@ -28,8 +33,8 @@ tar -jxvf $SRC
 patch -p0 < gcc-539.patch
 mkdir obj-thumb
 cd obj-thumb; sh ../src/configure --prefix=$DEST --target=thumb-epoc-pe; 
-cd obj-thumb; make all-binutils all-gas all-ld all-gcc
-cd obj-thumb; make install-binutils install-gas install-ld install-gcc
+cd obj-thumb; $MAKE all-binutils all-gas all-ld all-gcc
+cd obj-thumb; $MAKE install-binutils install-gas install-ld install-gcc
 rm -rf obj-thumb
 rm -rf src
 cp thumb-specs $DEST/lib/gcc-lib/thumb-epoc-pe/2.9-psion-98r2/specs
