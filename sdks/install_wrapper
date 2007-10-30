@@ -15,5 +15,9 @@ cd $DEST
 for i in abld bldmake bmconv epoc eshell makekeys makesis makmake mifconv rcomp signsis ; do
 	ln -s wrapper.sh $i
 done
+if [ "`which gmake`" != "" ]; then
+	ln -s `which gmake` $DEST/make
+fi
+
 
 
