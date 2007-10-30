@@ -58,7 +58,7 @@ mv Series60Tools $DEST/series60tools
 ./lowercase $DEST/examples
 ./fixinclude $DEST/examples
 ./fixexamples $DEST/examples
-for i in \`find $DEST/epoc32/tools -name \*.pl -or -name \*.pm\`; do j=\`tempfile\`; tr -d '\\\\r' < \$i > \$j; mv \$j \$i; done
+for i in \`find $DEST/epoc32/tools -name \*.pl -or -name \*.pm\`; do tr -d '\\\\r' < \$i > \$i.tmp; mv \$i.tmp \$i; done
 cp -pR $DEST/epoc32/tools $DEST/epoc32/tools_orig
 cat gnupoc-s60_20-patch | (cd $DEST/epoc32; patch -p0 )
 cd $DEST/epoc32/tools; chmod a+x *.pl bldmake abld makmake bmconv rcomp makesis epoc eshell petran pfsdump setupcomms makekeys extmake
