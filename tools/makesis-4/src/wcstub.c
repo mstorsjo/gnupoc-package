@@ -1,7 +1,5 @@
 #include <wchar.h>
-#ifdef __APPLE__
 #include <wctype.h>
-#endif
 #include "wcstub.h"
 
 
@@ -11,7 +9,10 @@ extern int wcsncasecmp(const wchar_t *s1, const wchar_t *s2, size_t n);
 
 int wcsicmp(const wchar_t *s1, const wchar_t *s2)
 {
-#ifdef __APPLE__
+//#ifdef __APPLE__
+// enable this workaround on all platforms, instead of
+// specifying which platforms don't have wcscasecmp
+#if 1
      int i;
 
      for (i = 0; 
@@ -31,7 +32,8 @@ int wcsicmp(const wchar_t *s1, const wchar_t *s2)
 
 int wcsnicmp(const wchar_t *s1, const wchar_t *s2, size_t n)
 {
-#ifdef __APPLE__
+//#ifdef __APPLE__
+#if 1
      int i;
 
      for (i = 0; 
