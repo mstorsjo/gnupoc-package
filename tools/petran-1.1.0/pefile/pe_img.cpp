@@ -2,11 +2,7 @@
 //
 // Copyright (c) 1996-1999 Symbian Ltd.  All rights reserved.
 //
-#ifndef __APPLE__
-#include <malloc.h>
-#else
 #include <stdlib.h>
-#endif
 #include <string.h>
 #include <e32image.h>
 #include <h_utl.h>

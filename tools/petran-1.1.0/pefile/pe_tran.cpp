@@ -4,11 +4,7 @@
 //
 
 #include <time.h>
-#ifndef __APPLE__
-#include <malloc.h>
-#else
 #include <stdlib.h>
-#endif
 #include <string.h>
 #include <e32image.h>
 #include <e32std.h>
