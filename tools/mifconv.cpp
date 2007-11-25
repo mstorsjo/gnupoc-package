@@ -24,7 +24,72 @@
 #include <stdint.h>
 #include <vector>
 
+#include <sys/types.h>
+#include <dirent.h>
+#include <ctype.h>
+
 using std::vector;
+
+int stricmp(const char* str1, const char* str2) {
+	while (true) {
+		int a = tolower(*str1);
+		int b = tolower(*str2);
+		if (a < b)
+			return -1;
+		if (a > b)
+			return 1;
+		if (a == '\0')
+			return 0;
+		str1++;
+		str2++;
+	}
+	return 0;
+}
+
+bool findCaseInsensitive(char* path, char* fullpath = NULL) {
+	char* ptr = strchr(path, '/');
+	if (!ptr)
+		return true;
+	if (!fullpath) {
+		return findCaseInsensitive(ptr+1, path);
+	}
+	if (ptr == path) {
+		return findCaseInsensitive(path+1, fullpath);
+	}
+	int dirnamelen = path - fullpath;
+	char* dirname = (char*) malloc(dirnamelen+1);
+	strncpy(dirname, fullpath, dirnamelen);
+	dirname[dirnamelen] = '\0';
+
+	int filenamelen = ptr - path;
+	char* filename = (char*) malloc(filenamelen+1);
+	strncpy(filename, path, filenamelen);
+	filename[filenamelen] = '\0';
+
+	DIR* dir = opendir(dirname);
+	if (!dir) {
+		free(filename);
+		free(dirname);
+		return false;
+	}
+	struct dirent* entry;
+	bool found = false;
+	while ((entry = readdir(dir)) != NULL) {
+		if (!stricmp(filename, entry->d_name)) {
+			char* testPath = strdup(fullpath);
+			memcpy(testPath + dirnamelen, entry->d_name, filenamelen);
+			if (findCaseInsensitive(testPath + dirnamelen + filenamelen + 1, testPath)) {
+				strcpy(path, testPath + dirnamelen);
+				found = true;
+				break;
+			}
+			free(testPath);
+		}
+	}
+	free(filename);
+	free(dirname);
+	return found;
+}
 
 void writeUint32(uint32_t value, FILE* out) {
 	uint8_t buf[] = { value >> 0, value >> 8, value >> 16, value >> 24 };
@@ -298,8 +363,12 @@ int main(int argc, char *argv[]) {
 
 	FILE* out = fopen(outname, "wb");
 	if (!out) {
-		perror(outname);
-		return 1;
+		if (findCaseInsensitive(outname))
+			out = fopen(outname, "wb");
+		if (!out) {
+			perror(outname);
+			return 1;
+		}
 	}
 	writeUint32(0x34232342, out);
 	writeUint32(2, out);
