@@ -42,6 +42,8 @@ In this case, compile it using the install_csl_gcc script:
 
 ./install_csl_gcc gnu-csl-arm-2005Q1C-arm-none-symbianelf.src.tar.bz2 ~/csl-gcc
 
+This requires that you have flex and bison installed.
+
 
 
 Additional tools
