@@ -3932,7 +3932,7 @@ diff -urN tools_orig/lockit_info.pm tools/lockit_info.pm
  	return %Files;
 diff -urN tools_orig/makdeps.pm tools/makdeps.pm
 --- tools_orig/makdeps.pm	2006-07-28 22:32:52.000000000 +0300
-+++ tools/makdeps.pm	2007-04-07 01:34:15.000000000 +0300
++++ tools/makdeps.pm	2007-12-16 22:22:26.000000000 +0200
 @@ -7,7 +7,7 @@
  # Module which wraps the dependency information provided the preprocessor when invoked with certain switches
  # so that dependency information rather than preprocessing information is produced.
@@ -4019,6 +4019,15 @@ diff -urN tools_orig/makdeps.pm tools/makdeps.pm
  				push @GoodList, "$EPOCIncPath$File";
  				next DEPLOOP;
  			}
+@@ -280,7 +280,7 @@
+ # preprocessor lists any missing user headers as existing in the current directory,
+ # and, if no userinclude paths are specified,
+ # searches to path containing the source file for user headers by default
+-		if ($Path eq lc &Path_WorkPath) { # possible missing user headers
++		if ($Path eq &Path_WorkPath) { # possible missing user headers
+ 			$File=&Path_Split('File',$Dep);
+ 			# does the userinclude path contain the current working directory?
+ 			my $LoopPath;
 @@ -297,6 +297,11 @@
  					next DEPLOOP;
  				}
