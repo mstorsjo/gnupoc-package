@@ -24,7 +24,7 @@ do
 done << __END
 
 ### Unzip & Copy selected files
-mkdir _e
+mkdir -p _e
 unzip -qn $SRC -d _e
 
 unshield -g Epoc32 x _e/data2.cab

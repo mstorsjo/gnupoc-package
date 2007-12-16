@@ -24,7 +24,7 @@ do
 done << __END
 
 ### Unzip & Copy selected files
-mkdir _e
+mkdir -p _e
 unzip -qn $SRC -d _e
 
 mkdir -p epoc32/release
