@@ -1,0 +1,120 @@
+diff -urN binutils-csl-arm-2005q1-orig/binutils/configure binutils-csl-arm-2005q1/binutils/configure
+--- binutils-csl-arm-2005q1-orig/binutils/configure	2005-03-10 12:38:56.000000000 +0200
++++ binutils-csl-arm-2005q1/binutils/configure	2007-12-16 23:19:18.000000000 +0200
+@@ -1654,31 +1654,31 @@
+ 
+ 
+ 
+-echo $ac_n "checking for executable suffix""... $ac_c" 1>&6
+-echo "configure:1659: checking for executable suffix" >&5
+-if eval "test \"`echo '$''{'ac_cv_exeext'+set}'`\" = set"; then
+-  echo $ac_n "(cached) $ac_c" 1>&6
+-else
+-  if test "$CYGWIN" = yes || test "$MINGW32" = yes; then
+-  ac_cv_exeext=.exe
+-else
+-  rm -f conftest*
+-  echo 'int main () { return 0; }' > conftest.$ac_ext
+-  ac_cv_exeext=
+-  if { (eval echo configure:1669: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then
+-    for file in conftest.*; do
+-      case $file in
+-      *.c | *.o | *.obj) ;;
+-      *) ac_cv_exeext=`echo $file | sed -e s/conftest//` ;;
+-      esac
+-    done
+-  else
+-    { echo "configure: error: installation or configuration problem: compiler cannot create executables." 1>&2; exit 1; }
+-  fi
+-  rm -f conftest*
+-  test x"${ac_cv_exeext}" = x && ac_cv_exeext=no
+-fi
+-fi
++#echo $ac_n "checking for executable suffix""... $ac_c" 1>&6
++#echo "configure:1659: checking for executable suffix" >&5
++#if eval "test \"`echo '$''{'ac_cv_exeext'+set}'`\" = set"; then
++#  echo $ac_n "(cached) $ac_c" 1>&6
++#else
++#  if test "$CYGWIN" = yes || test "$MINGW32" = yes; then
++#  ac_cv_exeext=.exe
++#else
++#  rm -f conftest*
++#  echo 'int main () { return 0; }' > conftest.$ac_ext
++#  ac_cv_exeext=
++#  if { (eval echo configure:1669: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then
++#    for file in conftest.*; do
++#      case $file in
++#      *.c | *.o | *.obj) ;;
++#      *) ac_cv_exeext=`echo $file | sed -e s/conftest//` ;;
++#      esac
++#    done
++#  else
++#    { echo "configure: error: installation or configuration problem: compiler cannot create executables." 1>&2; exit 1; }
++#  fi
++#  rm -f conftest*
++#  test x"${ac_cv_exeext}" = x && ac_cv_exeext=no
++#fi
++#fi
+ 
+ EXEEXT=""
+ test x"${ac_cv_exeext}" != xno && EXEEXT=${ac_cv_exeext}
+diff -urN binutils-csl-arm-2005q1-orig/ld/configure binutils-csl-arm-2005q1/ld/configure
+--- binutils-csl-arm-2005q1-orig/ld/configure	2005-02-21 13:49:47.000000000 +0200
++++ binutils-csl-arm-2005q1/ld/configure	2007-12-16 23:19:41.000000000 +0200
+@@ -1658,31 +1658,31 @@
+ 
+ 
+ 
+-echo $ac_n "checking for executable suffix""... $ac_c" 1>&6
+-echo "configure:1663: checking for executable suffix" >&5
+-if eval "test \"`echo '$''{'ac_cv_exeext'+set}'`\" = set"; then
+-  echo $ac_n "(cached) $ac_c" 1>&6
+-else
+-  if test "$CYGWIN" = yes || test "$MINGW32" = yes; then
+-  ac_cv_exeext=.exe
+-else
+-  rm -f conftest*
+-  echo 'int main () { return 0; }' > conftest.$ac_ext
+-  ac_cv_exeext=
+-  if { (eval echo configure:1673: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then
+-    for file in conftest.*; do
+-      case $file in
+-      *.c | *.o | *.obj) ;;
+-      *) ac_cv_exeext=`echo $file | sed -e s/conftest//` ;;
+-      esac
+-    done
+-  else
+-    { echo "configure: error: installation or configuration problem: compiler cannot create executables." 1>&2; exit 1; }
+-  fi
+-  rm -f conftest*
+-  test x"${ac_cv_exeext}" = x && ac_cv_exeext=no
+-fi
+-fi
++#echo $ac_n "checking for executable suffix""... $ac_c" 1>&6
++#echo "configure:1663: checking for executable suffix" >&5
++#if eval "test \"`echo '$''{'ac_cv_exeext'+set}'`\" = set"; then
++#  echo $ac_n "(cached) $ac_c" 1>&6
++#else
++#  if test "$CYGWIN" = yes || test "$MINGW32" = yes; then
++#  ac_cv_exeext=.exe
++#else
++#  rm -f conftest*
++#  echo 'int main () { return 0; }' > conftest.$ac_ext
++#  ac_cv_exeext=
++#  if { (eval echo configure:1673: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; }; then
++#    for file in conftest.*; do
++#      case $file in
++#      *.c | *.o | *.obj) ;;
++#      *) ac_cv_exeext=`echo $file | sed -e s/conftest//` ;;
++#      esac
++#    done
++#  else
++#    { echo "configure: error: installation or configuration problem: compiler cannot create executables." 1>&2; exit 1; }
++#  fi
++#  rm -f conftest*
++#  test x"${ac_cv_exeext}" = x && ac_cv_exeext=no
++#fi
++#fi
+ 
+ EXEEXT=""
+ test x"${ac_cv_exeext}" != xno && EXEEXT=${ac_cv_exeext}
