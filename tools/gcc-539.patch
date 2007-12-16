@@ -487,3 +487,60 @@ diff -urN src-orig/tcl/unix/configure src/tcl/unix/configure
  	if test "`uname -s`" = "AIX" ; then
  	    system=AIX-`uname -v`.`uname -r`
  	fi
+diff -urN src-orig/texinfo/configure src/texinfo/configure
+--- src-orig/texinfo/configure	2002-10-22 13:15:08.000000000 +0300
++++ src/texinfo/configure	2007-12-17 00:46:02.000000000 +0200
+@@ -1339,29 +1339,31 @@
+ test "$am_cv_mingw32" = yes && MINGW32=yes
+ 
+ 
+-echo $ac_n "checking for executable suffix""... $ac_c" 1>&6
+-echo "configure:1344: checking for executable suffix" >&5
+-if eval "test \"`echo '$''{'am_cv_exeext'+set}'`\" = set"; then
+-  echo $ac_n "(cached) $ac_c" 1>&6
+-else
+-  if test "$CYGWIN32" = yes || test "$MINGW32" = yes; then
+-am_cv_exeext=.exe
+-else
+-cat > am_c_test.c << 'EOF'
+-int main() {
+-/* Nothing needed here */
+-}
+-EOF
+-${CC-cc} -o am_c_test $CFLAGS $CPPFLAGS $LDFLAGS am_c_test.c $LIBS 1>&5
+-am_cv_exeext=`echo am_c_test.* | grep -v am_c_test.c | sed -e s/am_c_test//`
+-rm -f am_c_test*
+-fi
+-
+-test x"${am_cv_exeext}" = x && am_cv_exeext=no
+-fi
++#echo $ac_n "checking for executable suffix""... $ac_c" 1>&6
++#echo "configure:1344: checking for executable suffix" >&5
++#if eval "test \"`echo '$''{'am_cv_exeext'+set}'`\" = set"; then
++#  echo $ac_n "(cached) $ac_c" 1>&6
++#else
++#  if test "$CYGWIN32" = yes || test "$MINGW32" = yes; then
++#am_cv_exeext=.exe
++#else
++#cat > am_c_test.c << 'EOF'
++#int main() {
++#/* Nothing needed here */
++#}
++#EOF
++#${CC-cc} -o am_c_test $CFLAGS $CPPFLAGS $LDFLAGS am_c_test.c $LIBS 1>&5
++#am_cv_exeext=`echo am_c_test.* | grep -v am_c_test.c | sed -e s/am_c_test//`
++#rm -f am_c_test*
++#fi
++#
++#test x"${am_cv_exeext}" = x && am_cv_exeext=no
++#fi
++#EXEEXT=""
++#test x"${am_cv_exeext}" != xno && EXEEXT=${am_cv_exeext}
++#echo "$ac_t""${am_cv_exeext}" 1>&6
+ EXEEXT=""
+-test x"${am_cv_exeext}" != xno && EXEEXT=${am_cv_exeext}
+-echo "$ac_t""${am_cv_exeext}" 1>&6
++am_cv_exeext=""
+ 
+ 
+ 
