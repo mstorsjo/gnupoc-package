@@ -3260,17 +3260,13 @@ diff -urN tools_orig/epoc.pl tools/epoc.pl
      return $epocroot;
 diff -urN tools_orig/epocaif.pl tools/epocaif.pl
 --- tools_orig/epocaif.pl	2007-12-16 02:14:51.000000000 +0200
-+++ tools/epocaif.pl	2007-08-11 01:53:37.000000000 +0300
-@@ -1,6 +1,8 @@
++++ tools/epocaif.pl	2007-12-17 09:43:48.000000000 +0200
+@@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
  # epocaif.pl
  #
--# Copyright (c) Symbian Software Ltd 2001 – 2004.  All rights reserved.
-+# Copyright (c) Symbian Software Ltd 2001 û 2004.  All rights reserved.
- #
- 
- # Wrapper to support the EPOC AIF Compiler
+ # Copyright (c) Symbian Software Ltd 2001 – 2004.  All rights reserved.
 @@ -18,12 +20,11 @@
  BEGIN {
  	require 5.005_03;		# check user has a version of perl that will cope
