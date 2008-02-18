@@ -61,7 +61,7 @@ mv Series60Tools $DEST/series60tools
 ./lowercase $DEST/examples
 ./fixinclude $DEST/examples
 ./fixexamples $DEST/examples
-for i in \`find $DEST/epoc32/tools -name \\\*.pl -or -name \\\*.pm\`; do tr -d '\\\\r' < \$i > \$i.tmp; mv \$i.tmp \$i; done
+for i in \`find $DEST/epoc32/tools -name \\\*.pl -or -name \\\*.pm\`; do ./dos2unix \$i; done
 cp -pR $DEST/epoc32/tools $DEST/epoc32/tools_orig
 cat gnupoc-s60_21_cw-patch | (cd $DEST/epoc32; patch -p0 )
 find $DEST/epoc32/tools -name \\\*.orig -exec rm {} \\\\;
