@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+
+use strict;
+
+sub mergedir($$) {
+  my $src = shift;
+  my $dest = shift;
+
+  opendir(IN, $src) || die("$src: $!\n");
+  my @dir = readdir IN;
+  closedir IN;
+
+  foreach my $i (@dir) {
+    next if($i eq ".");
+    next if($i eq "..");
+    if(-d "$src/$i") {
+      if(-e "$dest/$i") {
+        mergedir("$src/$i", "$dest/$i");
+      } else {
+	rename("$src/$i", "$dest/$i") || die("Rename: $!\n");
+      }
+    } else {
+      rename("$src/$i", "$dest/$i") || die("Rename: $!\n");
+    }
+  }
+  rmdir($src);
+  return 1;
+}
+
+die("Usage: mergedir source target\n") if(@ARGV != 2);
+dodir($ARGV[0], $ARGV[1]);
