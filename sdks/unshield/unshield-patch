@@ -1,0 +1,13 @@
+diff -urN unshield-0.5-orig/lib/libunshield.c unshield-0.5/lib/libunshield.c
+--- unshield-0.5-orig/lib/libunshield.c	2004-08-24 09:10:27.000000000 +0300
++++ unshield-0.5/lib/libunshield.c	2008-03-23 00:58:59.000000000 +0200
+@@ -271,6 +271,9 @@
+       
+       header->major_version = (header->common.version >> 12) & 0xf;
+ 
++      if (header->major_version == 0)
++        header->major_version = 6;
++
+ #if 0
+       if (header->major_version < 5)
+         header->major_version = 5;
