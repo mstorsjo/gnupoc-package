@@ -60,7 +60,6 @@ unshield -g S60_tools x _e/data2.cab
 mv S60_tools $DEST/series60tools
 
 ### Fixing
-cp -pR $DEST/epoc32 $DEST/epoc32_orig
 ./lowercase $DEST/epoc32/tools
 ./lowercase $DEST/epoc32/include
 ./lowercase $DEST/epoc32/release
