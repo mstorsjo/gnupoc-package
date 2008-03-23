@@ -2,6 +2,8 @@
 The included binary is for linux/x86. If it doesn't work for you, you can
 either remove it (and let the install script use unshield from somewhere
 else in your PATH) or compile it from source.
+For S60 3.2, though, you need specifically this version (an unpatched
+unshield doesn't work).
 
 To compile it from source:
 
