@@ -51,13 +51,13 @@ mv Doc_required/* $DEST
 rmdir Doc_required
 
 unshield -g Cpp_Examples x _e/data2.cab
-mv Cpp_Examples $DEST/s60ex
+mv Cpp_Examples $DEST/s60cppexamples
 
 unshield -g Symbian_Examples x _e/data2.cab
 mv Symbian_Examples $DEST/examples
 
 unshield -g S60_tools x _e/data2.cab
-mv S60_tools $DEST/series60tools
+mv S60_tools $DEST/s60tools
 
 ### Fixing
 ./lowercase $DEST/epoc32/tools
