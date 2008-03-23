@@ -3259,7 +3259,7 @@ diff -urN tools_orig/e32env.pm tools/e32env.pm
  }
 diff -urN tools_orig/e32plat.pm tools/e32plat.pm
 --- tools_orig/e32plat.pm	2008-03-23 01:59:14.000000000 +0200
-+++ tools/e32plat.pm	2008-03-23 01:59:31.000000000 +0200
++++ tools/e32plat.pm	2008-03-23 11:42:59.000000000 +0200
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -3299,7 +3299,12 @@ diff -urN tools_orig/e32plat.pm tools/e32plat.pm
  		OS=>'WINS',
  	},
  	VC6=>{
-@@ -318,7 +320,7 @@
+@@ -314,11 +316,12 @@
+ #	get a list of modules
+ 	opendir DIR, $Path;
+ 	my @BSFs=grep s/^([^\.].*)\.BSF$/$1/, map { uc $_ } readdir DIR;
++	@BSFs = sort(@BSFs);
+ 	closedir DIR;
  
  	my $BSF;
  	foreach $BSF (@BSFs) {
@@ -3308,7 +3313,7 @@ diff -urN tools_orig/e32plat.pm tools/e32plat.pm
  #		check whether the assp is already defined
  		if (defined %{$Plat{$BSF}}) {
  			warn(
-@@ -344,6 +346,7 @@
+@@ -344,6 +347,7 @@
              }
              my $custom;
              while ($custom = <FILE>) {
@@ -3316,7 +3321,7 @@ diff -urN tools_orig/e32plat.pm tools/e32plat.pm
                  	#skip blank lines and comments
  			delete $Plat{$BSF};
                  	last unless ($custom =~ /^$|^\#/);
-@@ -435,7 +438,15 @@
+@@ -435,7 +439,15 @@
  
  #	get a list of modules
  	opendir DIR, $Path;
@@ -3333,7 +3338,7 @@ diff -urN tools_orig/e32plat.pm tools/e32plat.pm
  	closedir DIR;
  
  	my @ASSPs;
-@@ -447,7 +458,7 @@
+@@ -447,7 +459,7 @@
  
  			next;
  		}
@@ -3342,7 +3347,7 @@ diff -urN tools_orig/e32plat.pm tools/e32plat.pm
  	}
  
  #	open each module in turn, and add it to the array
-@@ -479,6 +490,8 @@
+@@ -479,6 +491,8 @@
  			if (/^\s*$/o) {
  				next;
  			}
@@ -3351,7 +3356,7 @@ diff -urN tools_orig/e32plat.pm tools/e32plat.pm
  #			get the key-value pair
  			unless (/^\s*(\w+)\s+(\w+)\s*$/o) {
  				push @Errors, "$File($.) : warning: syntax error - only key-value pairs allowed\n";
-@@ -527,7 +540,8 @@
+@@ -527,7 +541,8 @@
  
  sub Plat_GetL ($$$) { # takes Platform name, ref to plat hash, ref to bldmacrohash
  	my ($Candidate,$PlatHash_ref,$BldMacrosHash_ref)=@_;
@@ -3361,7 +3366,7 @@ diff -urN tools_orig/e32plat.pm tools/e32plat.pm
  
  # is platform in our list?
  	unless (defined $Plat{$Candidate}) {
-@@ -586,7 +600,7 @@
+@@ -586,7 +601,7 @@
  
  	$PlatHash{Compiler}='GCC32' unless $PlatHash{Compiler};
  	$PlatHash{OS}='EPOC32' unless $PlatHash{OS};
@@ -3370,7 +3375,7 @@ diff -urN tools_orig/e32plat.pm tools/e32plat.pm
  	$PlatHash{MakeCmd}='make' unless $PlatHash{MakeCmd};
  	$PlatHash{CPU}='MARM' unless $PlatHash{CPU};
  	$PlatHash{Single}=0 unless $PlatHash{Single};
-@@ -710,6 +724,8 @@
+@@ -710,6 +725,8 @@
  #	return the IDE associated with a "Real" platform if there is one
  	my ($Candidate, $AssocIDEs)=@_;
  
