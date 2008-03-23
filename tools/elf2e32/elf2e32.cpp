@@ -46,6 +46,9 @@
 #include <fstream>
 #include "deflate.h"
 
+#include <sys/types.h>
+#include <dirent.h>
+
 using namespace std;
 void DeflateCompress(char* bytes, TInt size, ostream& os);
 
@@ -184,6 +187,66 @@ int stricmp(const char* s1, const char* s2) {
 		if (c1 == '\0')
 			return 0;
 	}
+}
+
+bool findCaseInsensitive(char* path, char* fullpath = NULL) {
+	if (*path == '\0')
+		return true;
+	char* ptr = strchr(path, '/');
+	if (ptr == path) {
+		if (!fullpath) {
+			return findCaseInsensitive(path+1, path);
+		} else {
+			return findCaseInsensitive(path+1, fullpath);
+		}
+	}
+	int dirnamelen = path - fullpath;
+	char* dirname;
+	if (!fullpath) {
+		dirnamelen = 0;
+		dirname = strdup("./");
+		fullpath = path;
+	} else {
+		dirname = (char*) malloc(dirnamelen+1);
+		strncpy(dirname, fullpath, dirnamelen);
+		dirname[dirnamelen] = '\0';
+	}
+
+	if (!ptr)
+		ptr = path + strlen(path);
+	int filenamelen = ptr - path;
+	char* filename = (char*) malloc(filenamelen+1);
+	strncpy(filename, path, filenamelen);
+	filename[filenamelen] = '\0';
+
+	DIR* dir = opendir(dirname);
+	if (!dir) {
+		free(filename);
+		free(dirname);
+		return false;
+	}
+	struct dirent* entry;
+	bool found = false;
+	while ((entry = readdir(dir)) != NULL) {
+		if (!stricmp(filename, entry->d_name)) {
+			char* testPath = strdup(fullpath);
+			memcpy(testPath + dirnamelen, entry->d_name, filenamelen);
+			char* nextPath = testPath + dirnamelen + filenamelen;
+			if (*nextPath == '/')
+				nextPath++;
+			if (findCaseInsensitive(nextPath, testPath)) {
+				strcpy(path, testPath + dirnamelen);
+				found = true;
+			}
+			free(testPath);
+			if (found)
+				break;
+		}
+	}
+	closedir(dir);
+	free(filename);
+	free(dirname);
+	return found;
 }
 
 struct Capability {
@@ -421,6 +484,11 @@ void fixRelocation(uint32_t offset, FILE* out, const char* symbol, const char* l
 			*outptr++ = tolower(*inptr++);
 		*outptr++ = '\0';
 		fd = open(buffer, O_RDONLY);
+	}
+	if (fd < 0) {
+		// file still not found, do a case insensitive search
+		if (findCaseInsensitive(buffer))
+			fd = open(buffer, O_RDONLY);
 	}
 	if (fd < 0) {
 		printf("file not found %s\n", lib);
