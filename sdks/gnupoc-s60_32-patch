@@ -1494,7 +1494,7 @@ diff -urN tools_orig/checksource.pm tools/checksource.pm
  		if ($referenceDOSSlash =~ /$quotemetaExclusion$/i)
 diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
 --- tools_orig/cl_bpabi.pm	2008-03-23 01:59:09.000000000 +0200
-+++ tools/cl_bpabi.pm	2008-03-23 01:43:20.000000000 +0200
++++ tools/cl_bpabi.pm	2008-03-23 02:19:22.000000000 +0200
 @@ -4,7 +4,7 @@
  #
  
@@ -1685,15 +1685,29 @@ diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
  			);
  		}
  
-@@ -722,7 +706,7 @@
- 				&Generic_Quote("\$(EPOCLIB)\\LIB\\$ExportLibrary.lib"), " : ",
+@@ -719,17 +703,17 @@
+ 				"\n",
+ 				"# REAL TARGET - LIBRARY (.lib) \n",
+ 				"\n",
+-				&Generic_Quote("\$(EPOCLIB)\\LIB\\$ExportLibrary.lib"), " : ",
++				&Generic_Quote("\$(EPOCLIB)/lib/$ExportLibrary.lib"), " : ",
  				&Generic_Quote($DefFile), "\n",
- 					"\tdef2dll.bat --path=\$(EPOCLIB)\\LIB \\\n\t\t--bldpath=\$(EPOCBLD) \\\n\t\t--import=$ExportLibrary \\\n",
+-					"\tdef2dll.bat --path=\$(EPOCLIB)\\LIB \\\n\t\t--bldpath=\$(EPOCBLD) \\\n\t\t--import=$ExportLibrary \\\n",
 -					"\t\t--deffile=\"\$(EPOCBLD)\\$ExportLibrary.prep.def\" \\\n\t\t--linkAs=$LinkAs \\\n\t\t$InterWorking\n",
++					"\tdef2dll.bat --path=\$(EPOCLIB)/lib \\\n\t\t--bldpath=\$(EPOCBLD) \\\n\t\t--import=$ExportLibrary \\\n",
 +					"\t\t--deffile=\"\$(EPOCBLD)/$ExportLibrary.prep.def\" \\\n\t\t--linkAs=$LinkAs \\\n\t\t$InterWorking\n",
  					"\n",
  			);
  			if ($ExtraExportLibrary) {
+ 				&main::Output(
+ 					"\n",
+-					&Generic_Quote("\$(EPOCLIB)\\LIB\\$ExtraExportLibrary.lib"), " : ",
+-					&Generic_Quote("\$(EPOCLIB)\\LIB\\$ExportLibrary.lib"), "\n",
++					&Generic_Quote("\$(EPOCLIB)/lib/$ExtraExportLibrary.lib"), " : ",
++					&Generic_Quote("\$(EPOCLIB)/lib/$ExportLibrary.lib"), "\n",
+ 					"\tcopy \$< \$@\n"
+ 				);
+ 			}
 @@ -767,7 +751,7 @@
  	if ($DefFile and $BasicTrgType!~/^IMPLIB$/io) {
  # 	    call perl on the script here so make will die if there are errors
@@ -1742,7 +1756,7 @@ diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
  
          my @ImportLibList = ImportLibraryList(@LibList);
 -		PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCLIB\)\\\\LIB\\\\\$_\"\)", @ImportLibList);
-+		PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCLIB\)/lib/\\$_\"\)", @ImportLibList);
++		PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCLIB\)/lib/\$_\"\)", @ImportLibList);
  
 -         @depLibs = (@depLibs, DepLinkList("\&Generic_Quote\(\"\\\$\(EPOCLIB\)\\\\LIB\\\\\$_\"\)", @ImportLibList));
 +         @depLibs = (@depLibs, DepLinkList("\&Generic_Quote\(\"\\\$\(EPOCLIB\)/lib/\$_\"\)", @ImportLibList));
@@ -1757,15 +1771,18 @@ diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
  			}
  
  	unless ($ArmRT || ($BasicTrgType=~/^LIB$/o)) {
-@@ -948,7 +932,7 @@
+@@ -948,9 +932,9 @@
  			foreach (@RTLibList) {
  				&main::Output(
  					" \\\n\t",
 -					&Generic_Quote("\$(EPOCLIB)\\LIB\\$_")
 +					&Generic_Quote("\$(EPOCLIB)/lib/$_")
  				) unless ($_ =~ /$TargLib/i);
-  				push @depLibs, &Generic_Quote("\$(EPOCLIB)\\LIB\\$_") unless ($_ =~ /$TargLib/i);
+- 				push @depLibs, &Generic_Quote("\$(EPOCLIB)\\LIB\\$_") unless ($_ =~ /$TargLib/i);
++ 				push @depLibs, &Generic_Quote("\$(EPOCLIB)/lib/$_") unless ($_ =~ /$TargLib/i);
  			}
+ 	    }
+ 	}
 @@ -960,7 +944,7 @@
  		foreach (@OELibList) {
  			&main::Output(
