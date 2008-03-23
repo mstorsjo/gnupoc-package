@@ -363,8 +363,21 @@ int main(int argc, char *argv[]) {
 
 	FILE* out = fopen(outname, "wb");
 	if (!out) {
-		if (findCaseInsensitive(outname))
-			out = fopen(outname, "wb");
+		if (strrchr(outname, '/')) {
+			// Try to create the directory
+			char* buf = (char*) malloc(50 + strlen(outname));
+			sprintf(buf, "mkdir -p %s", outname);
+			char* ptr = strrchr(buf, '/');
+			*ptr = '\0';
+			system(buf);
+			free(buf);
+			// Retry opening
+			fopen(outname, "wb");
+		}
+		if (!out) {
+			if (findCaseInsensitive(outname))
+				out = fopen(outname, "wb");
+		}
 		if (!out) {
 			perror(outname);
 			return 1;
