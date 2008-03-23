@@ -81,11 +81,13 @@ bool findCaseInsensitive(char* path, char* fullpath = NULL) {
 			if (findCaseInsensitive(testPath + dirnamelen + filenamelen + 1, testPath)) {
 				strcpy(path, testPath + dirnamelen);
 				found = true;
-				break;
 			}
 			free(testPath);
+			if (found)
+				break;
 		}
 	}
+	closedir(dir);
 	free(filename);
 	free(dirname);
 	return found;
@@ -363,7 +365,11 @@ int main(int argc, char *argv[]) {
 
 	FILE* out = fopen(outname, "wb");
 	if (!out) {
-		if (strrchr(outname, '/')) {
+		if (!out) {
+			if (findCaseInsensitive(outname))
+				out = fopen(outname, "wb");
+		}
+		if (!out && strrchr(outname, '/')) {
 			// Try to create the directory
 			char* buf = (char*) malloc(50 + strlen(outname));
 			sprintf(buf, "mkdir -p %s", outname);
@@ -372,11 +378,7 @@ int main(int argc, char *argv[]) {
 			system(buf);
 			free(buf);
 			// Retry opening
-			fopen(outname, "wb");
-		}
-		if (!out) {
-			if (findCaseInsensitive(outname))
-				out = fopen(outname, "wb");
+			out = fopen(outname, "wb");
 		}
 		if (!out) {
 			perror(outname);
