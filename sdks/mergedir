@@ -6,6 +6,11 @@ sub mergedir($$) {
   my $src = shift;
   my $dest = shift;
 
+  if(! -e "$dest") {
+    rename("$src", "$dest") || die("Rename: $!\n");
+    return 1;
+  }
+
   opendir(IN, $src) || die("$src: $!\n");
   my @dir = readdir IN;
   closedir IN;
@@ -17,7 +22,7 @@ sub mergedir($$) {
       if(-e "$dest/$i") {
         mergedir("$src/$i", "$dest/$i");
       } else {
-	rename("$src/$i", "$dest/$i") || die("Rename: $!\n");
+        rename("$src/$i", "$dest/$i") || die("Rename: $!\n");
       }
     } else {
       rename("$src/$i", "$dest/$i") || die("Rename: $!\n");
@@ -28,4 +33,4 @@ sub mergedir($$) {
 }
 
 die("Usage: mergedir source target\n") if(@ARGV != 2);
-dodir($ARGV[0], $ARGV[1]);
+mergedir($ARGV[0], $ARGV[1]);
