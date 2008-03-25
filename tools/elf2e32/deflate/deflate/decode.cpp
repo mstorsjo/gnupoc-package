@@ -212,11 +212,16 @@ inline TUint reverse(TUint aVal)
 // This generates optimal ARM code (4 instructions)
 //
 	{
+	// Add other big-endian architectures here if needed
+#ifdef __ppc__
+	return aVal;
+#else
 	TUint v=(aVal<<16)|(aVal>>16);
 	v^=aVal;
 	v&=0xff00ffff;
 	aVal=(aVal>>8)|(aVal<<24);
 	return aVal^(v>>8);
+#endif
 	}
 
 TBitInput::TBitInput()
