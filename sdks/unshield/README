@@ -14,3 +14,9 @@ patch -p1 < ../unshield-patch
 make
 cp src/unshield ..
 
+
+Note that this version includes a custom patch to be able to handle the
+installation package for S60 3.2. This patch is not official, and is not
+regression tested against other installshield packages than the ones used
+by the S60 SDKs supported.
+
