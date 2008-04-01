@@ -32,12 +32,15 @@
 
 #include <openssl/evp.h>
 #include <openssl/err.h>
+#include <openssl/pem.h>
+#include <openssl/x509.h>
 #include "sisfield.h"
 #include "signutils.h"
 extern "C" {
 #include "crc.h"
 }
 #include <getopt.h>
+#include <sys/stat.h>
 
 #include "selfsigned.cer.h"
 #include "selfsigned.key.h"
@@ -95,6 +98,7 @@ int main(int argc, char *argv[]) {
 	SigType type = SigAuto;
 	bool verbose = false;
 	bool remove = false;
+	bool extract = false;
 	while ((ch = getopt(argc, argv, "?c:opsuv")) != -1) {
 		switch (ch) {
 		case 'c':
@@ -108,6 +112,7 @@ int main(int argc, char *argv[]) {
 		case 'o':
 			break;
 		case 'p':
+			extract = true;
 			break;
 		case 's':
 			break;
@@ -175,6 +180,45 @@ int main(int argc, char *argv[]) {
 	if (remove) {
 		SISField* field = controller->FindRemoveLastElement(SISFieldType::SISSignatureCertificateChain);
 		delete field;
+	} else if (extract) {
+		mkdir("Chain", 0755);
+		SISSignatureCertificateChain* signature;
+		int index = 1;
+		while ((signature = (SISSignatureCertificateChain*) controller->FindRemoveElement(SISFieldType::SISSignatureCertificateChain)) != NULL) {
+			SISCertificateChain* chain = (SISCertificateChain*) signature->FindElement(SISFieldType::SISCertificateChain);
+			SISBlob* blob = (SISBlob*) chain->FindElement(SISFieldType::SISBlob);
+			int length = blob->Length();
+			uint8_t* data = new uint8_t[length];
+			uint8_t* ptr = data;
+			blob->CopyFieldData(ptr);
+			delete signature;
+
+			char name[100];
+			sprintf(name, "Chain/cert%d.pem", index);
+			FILE* out = fopen(name, "w");
+
+			ptr = data;
+			uint8_t* end = data + length;
+			while (true) {
+				X509* cert = d2i_X509(NULL, &ptr, end - ptr);
+				if (!cert)
+					break;
+				PEM_write_X509(out, cert);
+
+				X509_OBJECT obj;
+				obj.type = X509_LU_X509;
+				obj.data.x509 = cert;
+				X509_OBJECT_free_contents(&obj);
+			}
+
+			fclose(out);
+			delete [] data;
+			index++;
+		}
+
+		delete contents;
+		cleanupSigning();
+		return 0;
 	} else {
 		SISDataIndex* dataIndex = (SISDataIndex*) controller->FindRemoveElement(SISFieldType::SISDataIndex);
 		const char* certData = selfsignedCer;
