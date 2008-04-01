@@ -197,10 +197,10 @@ int main(int argc, char *argv[]) {
 			sprintf(name, "Chain/cert%d.pem", index);
 			FILE* out = fopen(name, "w");
 
-			ptr = data;
-			uint8_t* end = data + length;
+			const uint8_t* end = data + length;
+			const uint8_t* constPtr = data;
 			while (true) {
-				X509* cert = d2i_X509(NULL, &ptr, end - ptr);
+				X509* cert = d2i_X509(NULL, &constPtr, end - constPtr);
 				if (!cert)
 					break;
 				PEM_write_X509(out, cert);
