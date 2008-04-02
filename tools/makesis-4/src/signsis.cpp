@@ -91,6 +91,13 @@ void showHelp(const char* argv0) {
 	printf("%s [-?] [-cd | -cr] [-o[-p]] [-s] [-u] [-v] input [output [certificate key [passphrase]]]\n", argv0);
 }
 
+void printTime(ASN1_TIME* time) {
+	BIO* bio = BIO_new(BIO_s_file());
+	BIO_set_fp(bio, stdout, BIO_NOCLOSE);
+	ASN1_TIME_print(bio, time);
+	BIO_free_all(bio);
+}
+
 int main(int argc, char *argv[]) {
 	initSigning();
 	const char* argv0 = argv[0];
@@ -99,6 +106,7 @@ int main(int argc, char *argv[]) {
 	bool verbose = false;
 	bool remove = false;
 	bool extract = false;
+	bool display = false;
 	while ((ch = getopt(argc, argv, "?c:opsuv")) != -1) {
 		switch (ch) {
 		case 'c':
@@ -110,6 +118,7 @@ int main(int argc, char *argv[]) {
 				fprintf(stderr, "Unknown algorithm\n");
 			break;
 		case 'o':
+			display = true;
 			break;
 		case 'p':
 			extract = true;
@@ -180,8 +189,9 @@ int main(int argc, char *argv[]) {
 	if (remove) {
 		SISField* field = controller->FindRemoveLastElement(SISFieldType::SISSignatureCertificateChain);
 		delete field;
-	} else if (extract) {
-		mkdir("Chain", 0755);
+	} else if (display) {
+		if (extract)
+			mkdir("Chain", 0755);
 		SISSignatureCertificateChain* signature;
 		int index = 1;
 		while ((signature = (SISSignatureCertificateChain*) controller->FindRemoveElement(SISFieldType::SISSignatureCertificateChain)) != NULL) {
@@ -195,9 +205,12 @@ int main(int argc, char *argv[]) {
 
 			char name[100];
 			sprintf(name, "Chain/cert%d.pem", index);
-			FILE* out = fopen(name, "w");
+			FILE* out = NULL;
+			if (extract)
+				out = fopen(name, "w");
 
 			const uint8_t* end = data + length;
+			ptr = data;
 			while (true) {
 #if OPENSSL_VERSION_NUMBER >= 0x000908000
 				X509* cert = d2i_X509(NULL, (const unsigned char**) &ptr, end - ptr);
@@ -206,7 +219,22 @@ int main(int argc, char *argv[]) {
 #endif
 				if (!cert)
 					break;
-				PEM_write_X509(out, cert);
+				if (out)
+					PEM_write_X509(out, cert);
+				else {
+					printf("Issued by: ");
+					X509_NAME_print_ex_fp(stdout, X509_get_issuer_name(cert), 0, XN_FLAG_ONELINE);
+					printf("\n");
+					printf("Issued to: ");
+					X509_NAME_print_ex_fp(stdout, X509_get_subject_name(cert), 0, XN_FLAG_ONELINE);
+					printf("\n");
+					printf("Valid from ");
+					printTime(X509_get_notBefore(cert));
+					printf(" to ");
+					printTime(X509_get_notAfter(cert));
+					printf("\n");
+					printf("\n");
+				}
 
 				X509_OBJECT obj;
 				obj.type = X509_LU_X509;
@@ -214,7 +242,8 @@ int main(int argc, char *argv[]) {
 				X509_OBJECT_free_contents(&obj);
 			}
 
-			fclose(out);
+			if (out)
+				fclose(out);
 			delete [] data;
 			index++;
 		}
