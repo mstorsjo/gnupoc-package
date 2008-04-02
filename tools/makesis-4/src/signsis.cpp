@@ -198,9 +198,12 @@ int main(int argc, char *argv[]) {
 			FILE* out = fopen(name, "w");
 
 			const uint8_t* end = data + length;
-			const uint8_t* constPtr = data;
 			while (true) {
-				X509* cert = d2i_X509(NULL, &constPtr, end - constPtr);
+#if OPENSSL_VERSION_NUMBER >= 0x000908000
+				X509* cert = d2i_X509(NULL, (const unsigned char**) &ptr, end - ptr);
+#else
+				X509* cert = d2i_X509(NULL, &ptr, end - ptr);
+#endif
 				if (!cert)
 					break;
 				PEM_write_X509(out, cert);
