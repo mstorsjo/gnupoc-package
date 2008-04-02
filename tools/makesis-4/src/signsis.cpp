@@ -98,6 +98,21 @@ void printTime(ASN1_TIME* time) {
 	BIO_free_all(bio);
 }
 
+void displayCert(X509* cert) {
+	printf("Issued by: ");
+	X509_NAME_print_ex_fp(stdout, X509_get_issuer_name(cert), 0, XN_FLAG_ONELINE);
+	printf("\n");
+	printf("Issued to: ");
+	X509_NAME_print_ex_fp(stdout, X509_get_subject_name(cert), 0, XN_FLAG_ONELINE);
+	printf("\n");
+	printf("Valid from ");
+	printTime(X509_get_notBefore(cert));
+	printf(" to ");
+	printTime(X509_get_notAfter(cert));
+	printf("\n");
+	printf("\n");
+}
+
 int main(int argc, char *argv[]) {
 	initSigning();
 	const char* argv0 = argv[0];
@@ -190,6 +205,7 @@ int main(int argc, char *argv[]) {
 		SISField* field = controller->FindRemoveLastElement(SISFieldType::SISSignatureCertificateChain);
 		delete field;
 	} else if (display) {
+		bool found = false;
 		if (extract)
 			mkdir("Chain", 0755);
 		SISSignatureCertificateChain* signature;
@@ -219,22 +235,13 @@ int main(int argc, char *argv[]) {
 #endif
 				if (!cert)
 					break;
+
+				found = true;
+
 				if (out)
 					PEM_write_X509(out, cert);
-				else {
-					printf("Issued by: ");
-					X509_NAME_print_ex_fp(stdout, X509_get_issuer_name(cert), 0, XN_FLAG_ONELINE);
-					printf("\n");
-					printf("Issued to: ");
-					X509_NAME_print_ex_fp(stdout, X509_get_subject_name(cert), 0, XN_FLAG_ONELINE);
-					printf("\n");
-					printf("Valid from ");
-					printTime(X509_get_notBefore(cert));
-					printf(" to ");
-					printTime(X509_get_notAfter(cert));
-					printf("\n");
-					printf("\n");
-				}
+				else
+					displayCert(cert);
 
 				X509_OBJECT obj;
 				obj.type = X509_LU_X509;
@@ -250,6 +257,9 @@ int main(int argc, char *argv[]) {
 
 		delete contents;
 		cleanupSigning();
+
+		if (!found)
+			printf("No signatures found\n");
 		return 0;
 	} else {
 		SISDataIndex* dataIndex = (SISDataIndex*) controller->FindRemoveElement(SISFieldType::SISDataIndex);
