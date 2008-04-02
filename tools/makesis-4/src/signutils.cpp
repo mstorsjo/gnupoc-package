@@ -95,7 +95,7 @@ char* loadTextFile(const char* name) {
 	return buffer;
 }
 
-SISSignature* makeSignature(SISField* controller, const char* keyData, const char* passphrase, SigType type) {
+SISSignature* makeSignature(SISField* controller, const char* keyData, const char* passphrase, SigType type, EVP_PKEY* publicKey) {
 	if (type == SigAuto) {
 		if (strstr(keyData, " DSA "))
 			type = SigDsa;
@@ -114,8 +114,9 @@ SISSignature* makeSignature(SISField* controller, const char* keyData, const cha
 	uint8_t* ptr = buffer;
 	controller->CopyFieldData(ptr);
 
-	EVP_MD_CTX ctx;
+	EVP_MD_CTX ctx, verify;
 	EVP_MD_CTX_init(&ctx);
+	EVP_MD_CTX_init(&verify);
 	const EVP_MD* md = NULL;
 	if (type == SigDsa)
 		md = EVP_dss1();
@@ -125,7 +126,15 @@ SISSignature* makeSignature(SISField* controller, const char* keyData, const cha
 		ERR_print_errors_fp(stderr);
 		throw SignOpenSSLErr;
 	}
+	if (EVP_VerifyInit(&verify, md) < 0) {
+		ERR_print_errors_fp(stderr);
+		throw SignOpenSSLErr;
+	}
 	if (EVP_SignUpdate(&ctx, buffer, controller->Length()) == 0) {
+		ERR_print_errors_fp(stderr);
+		throw SignOpenSSLErr;
+	}
+	if (EVP_VerifyUpdate(&verify, buffer, controller->Length()) == 0) {
 		ERR_print_errors_fp(stderr);
 		throw SignOpenSSLErr;
 	}
@@ -137,7 +146,18 @@ SISSignature* makeSignature(SISField* controller, const char* keyData, const cha
 		throw SignOpenSSLErr;
 	}
 	EVP_MD_CTX_cleanup(&ctx);
+	int ret = EVP_VerifyFinal(&verify, signature, siglen, publicKey);
+	if (ret < 0) {
+		ERR_print_errors_fp(stderr);
+		throw SignOpenSSLErr;
+	}
+	if (ret == 0) {
+		fprintf(stderr, "Could not verify signature with certificate\n");
+		throw SignBadKey;
+	}
+	EVP_MD_CTX_cleanup(&verify);
 	EVP_PKEY_free(key);
+
 
 	SISString* algorithm = NULL;
 	if (type == SigDsa)
@@ -225,7 +245,7 @@ SISCertificateChain* makeChain(const char* certData) {
 }
 */
 
-SISCertificateChain* makeChain(const char* certData) {
+SISCertificateChain* makeChain(const char* certData, EVP_PKEY** publicKey) {
 	BIO* in = BIO_new_mem_buf((void*) certData, -1);
 	BIO* out = BIO_new(BIO_s_mem());
 
@@ -241,6 +261,8 @@ SISCertificateChain* makeChain(const char* certData) {
 			ERR_print_errors_fp(stderr);
 			throw SignBadCert;
 		}
+		if (!*publicKey)
+			*publicKey = X509_PUBKEY_get(X509_get_X509_PUBKEY(cert));
 		i2d_X509_bio(out, cert);
 
 		X509_OBJECT obj;
@@ -263,10 +285,16 @@ SISCertificateChain* makeChain(const char* certData) {
 }
 
 SISSignatureCertificateChain* makeChain(SISField* controller, const char* certData, const char* keyData, const char* passphrase, SigType type) {
-	SISSignature* signature = makeSignature(controller, keyData, passphrase, type);
+	EVP_PKEY* publicKey = NULL;
+	SISCertificateChain* chain = makeChain(certData, &publicKey);
+	if (!publicKey) {
+		fprintf(stderr, "No public key found!\n");
+		throw SignBadCert;
+	}
+	SISSignature* signature = makeSignature(controller, keyData, passphrase, type, publicKey);
+	EVP_PKEY_free(publicKey);
 	SISArray* signatures = new SISArray(SISFieldType::SISSignature);
 	signatures->AddElement(signature);
-	SISCertificateChain* chain = makeChain(certData);
 	return new SISSignatureCertificateChain(signatures, chain);
 }
 
