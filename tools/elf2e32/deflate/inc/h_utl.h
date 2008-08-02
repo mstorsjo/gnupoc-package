@@ -7,6 +7,7 @@
 #define __H_UTL_H__
 //
 #include <stdio.h>
+#include <string.h>
 
 #ifdef __VC32__
  #ifdef __MSVCDOTNET__

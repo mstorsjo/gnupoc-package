@@ -6,7 +6,7 @@
 #ifndef __E32IMAGE_H__
 #define __E32IMAGE_H__
 
-#include <fstream.h>
+#include <fstream>
 #include <e32std.h>
 #include "pe_defs.h"
 #include "pe_file.h"
@@ -145,6 +145,6 @@ private:
 	TUint iConstOffset;
 	TUint iCrtOffset;
 	};
-ofstream &operator<<(ofstream &os, const E32ImageFile &aImage);
-ifstream &operator>>(ifstream &is, E32ImageFile &aImage);
+std::ofstream &operator<<(std::ofstream &os, const E32ImageFile &aImage);
+std::ifstream &operator>>(std::ifstream &is, E32ImageFile &aImage);
 #endif

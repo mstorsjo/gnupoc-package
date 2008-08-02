@@ -6,7 +6,7 @@
 #include <string.h>
 #include <e32image.h>
 #include <h_utl.h>
-#include <fstream.h>
+#include <fstream>
 #include "h_endian.h"
 
 //

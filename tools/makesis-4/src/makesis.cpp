@@ -11,6 +11,7 @@
 #include <wchar.h>
 #include <cstdio>
 #include <iostream>
+#include <stdlib.h>
 #include "utils.h"
 #include <tchar.h>
 #include "makesis.h"

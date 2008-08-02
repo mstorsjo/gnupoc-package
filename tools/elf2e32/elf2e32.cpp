@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdlib.h>
 #include <ctype.h>
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE

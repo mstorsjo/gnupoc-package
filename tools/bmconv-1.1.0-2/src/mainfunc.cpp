@@ -3,7 +3,7 @@
 // Copyright (c) 1997-2003 Symbian Ltd.  All rights reserved.
 //
 
-#include <iostream.h>
+#include <iostream>
 #include <toolsver.h>
 #include "bmconv.h"
 #include <sys/types.h>

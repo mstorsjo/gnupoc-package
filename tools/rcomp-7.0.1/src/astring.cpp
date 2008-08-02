@@ -3,7 +3,7 @@
 // Copyright (c) 1997-1999 Symbian Ltd.  All rights reserved.
 //
 
-#include <iostream.h>
+#include <iostream>
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
@@ -11,6 +11,7 @@
 #include "ctable.h"     // character code mapping classes
 #include "astring.h"
 
+using namespace std;
 
 extern Mapping_range CP1252_exceptions;
 // table of exceptions from CP1252 1:1 mapping with Unicode.

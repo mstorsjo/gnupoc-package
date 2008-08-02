@@ -154,7 +154,7 @@
 
 #include <assert.h>
 #include <ctype.h>
-#include <fstream.h>
+#include <fstream>
 #include "resource.h"
 #include "rcstack.h"
 #include "rcompl.hpp"

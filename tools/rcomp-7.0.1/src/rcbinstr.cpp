@@ -5,6 +5,7 @@
 
 #include <assert.h>
 #include <string.h>
+#include <stdlib.h>
 #include <astring.h>
 #include "rcbinstr.h"
 #include "tokens.h"

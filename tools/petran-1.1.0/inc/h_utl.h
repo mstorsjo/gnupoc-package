@@ -7,9 +7,9 @@
 #define __H_UTL_H__
 //
 #include <stdio.h>
-#include <iostream.h>
+#include <iostream>
 #include <sstream>
-#include <fstream.h>
+#include <fstream>
 #include <e32std.h>
 
 #define ALIGN4K(a) ((a+0xfff)&0xfffff000)

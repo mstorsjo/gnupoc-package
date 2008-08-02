@@ -6,9 +6,10 @@
 #ifndef __ASTRING_H__
 #define __ASTRING_H__
 
-#include <iostream.h>
+#include <iostream>
 #include "array.h"
 
+using namespace std;
 
 class RCBinaryStream;
 class NumericValue;

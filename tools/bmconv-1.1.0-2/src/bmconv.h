@@ -7,9 +7,11 @@
 #define __BMCONV_H__
 
 #include <string.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <stdlib.h>
+
+using namespace std;
 
 // As suggested by Gerardo Lamastra
 #pragma pack(1)

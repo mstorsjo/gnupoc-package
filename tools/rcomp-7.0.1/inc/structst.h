@@ -6,9 +6,11 @@
 #ifndef __STRUCTST_H__
 #define __STRUCTST_H__
 
-#include <iostream.h>
+#include <iostream>
 #include "stringar.h"
 #include "datatype.h"
+
+using namespace std;
 
 class ResourceItem;
 

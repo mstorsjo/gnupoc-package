@@ -3,7 +3,7 @@
 // Copyright (c) 1996-1999 Symbian Ltd.  All rights reserved.
 //
 
-#include <fstream.h>
+#include <fstream>
 #include <e32image.h>
 #include <h_utl.h>
 #include <sys/types.h>

@@ -10,7 +10,7 @@
 #pragma warning( disable : 4710 )	// function not inlined
 #endif
 
-#include <fstream.h>
+#include <fstream>
 #include "astring.h"
 #include "numval.h"
 #include "array.h"
