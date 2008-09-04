@@ -15,6 +15,7 @@
 #include "errorhan.h"
 #include "unicode_compressor.h"
 
+using namespace std;
 
 extern int verbose;
 extern LinkArray* pLinks;

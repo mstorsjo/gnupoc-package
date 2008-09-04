@@ -6,6 +6,8 @@
 #include "errorhan.h"
 #include "mem.h"
 
+using namespace std;
+
 int ErrorHandler::iLineNumber = 0;
 String ErrorHandler::iFileName;
 

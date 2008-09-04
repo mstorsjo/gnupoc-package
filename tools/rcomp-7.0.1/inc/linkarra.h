@@ -14,7 +14,7 @@ class LinkItem : public ArrayItem
 public:
 	LinkItem(ResourceDataStream& aStream,const String& aResourceName,const String& aFileName,int aLineNumber);
 	virtual void OverwriteLink(RCBinaryStream& os) const=0;
-	virtual ostream& StreamOut(ostream& os)=0;
+	virtual std::ostream& StreamOut(std::ostream& os)=0;
 public:
 	String iResourceName;	// Name of resource to which link points.
 	unsigned long iStreamPosition;
@@ -24,7 +24,7 @@ public:
 
 class LinkArray : public Array
 	{
-	friend ostream& operator<<(ostream& os,LinkArray& o);
+	friend std::ostream& operator<<(std::ostream& os,LinkArray& o);
 public:
 	LinkArray();
 	~LinkArray();
@@ -39,7 +39,7 @@ class WordLink : public LinkItem
 public:
 	WordLink(ResourceDataStream& aStream,const String& aResourceName,const String& aFileName,int aLineNumber);
 	virtual void OverwriteLink(RCBinaryStream& os) const;
-	virtual ostream& StreamOut(ostream& os);
+	virtual std::ostream& StreamOut(std::ostream& os);
 	static int NumberOfBytesOccupiesInStream();
 	};
 
@@ -48,7 +48,7 @@ class LongLink : public LinkItem
 public:
 	LongLink(ResourceDataStream& aStream,const String& aResourceName,const String& aFileName,int aLineNumber);
 	virtual void OverwriteLink(RCBinaryStream& os) const;
-	virtual ostream& StreamOut(ostream& os);
+	virtual std::ostream& StreamOut(std::ostream& os);
 	static int NumberOfBytesOccupiesInStream();
 	};
 

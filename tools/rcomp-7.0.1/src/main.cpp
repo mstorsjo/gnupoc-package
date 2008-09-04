@@ -23,6 +23,8 @@
 #include "main.h"
 #include "tokens.h"
 
+using namespace std;
+
 extern NameIdMap* pResourceNameIds;
 extern long CurrentId;
 

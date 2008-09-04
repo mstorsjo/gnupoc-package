@@ -24,7 +24,7 @@ public:
 	const String& GetName() const;
 	DataType GetElementType() const;
 	unsigned short GetSize() const;
-	friend ostream& operator<<(ostream& os,RCType& r);
+	friend std::ostream& operator<<(std::ostream& os,RCType& r);
 private:
 	DataType iElementType;
 	String iName;

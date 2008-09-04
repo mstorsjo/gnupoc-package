@@ -11,8 +11,6 @@
 #include "ctable.h"     // character code mapping classes
 #include "astring.h"
 
-using namespace std;
-
 extern Mapping_range CP1252_exceptions;
 // table of exceptions from CP1252 1:1 mapping with Unicode.
 
@@ -113,7 +111,7 @@ unsigned long String::Length() const
 	return iLength;
 	}
 
-ostream& operator<< ( ostream& os, const String & a)
+std::ostream& operator<< ( std::ostream& os, const String & a)
 	{
 	return ( os << ( ( a.iLength <= 0) ? "<empty>" : a.iRep) );
 	}

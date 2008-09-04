@@ -32,7 +32,7 @@ public:
 	unsigned long GetPosition();
 	void SetPosition(unsigned long NewPosition);
 private:
-	ofstream iOs;
+	std::ofstream iOs;
 	};
 
 class ResourceDataStream // this class knows about resources that contain compressed Unicode - i.e. that each run of alternating compressed-Unicode and other-stuff needs to be preceded by a 1-2 byte run-length

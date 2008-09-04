@@ -20,7 +20,7 @@ class ResourceItem;
 
 class ResourceItemArray : public Array, public StackItem, public ArrayItem
 	{
-	friend ostream & operator<< ( ostream & os, ResourceItemArray & o);
+	friend std::ostream & operator<< ( std::ostream & os, ResourceItemArray & o);
 public:
 	ResourceItemArray();
 	~ResourceItemArray();
@@ -35,7 +35,7 @@ private:
 	DataType iLenType;
 	};
 
-ostream & operator<< ( ostream & os, ResourceItemArray & o);
+std::ostream & operator<< ( std::ostream & os, ResourceItemArray & o);
 
 // ResourceItemArrayIterator
 
@@ -50,7 +50,7 @@ public:
 
 class ResourceItemArrayArray : public Array
 	{
-	friend ostream & operator<< ( ostream & os, ResourceItemArrayArray & o);
+	friend std::ostream & operator<< ( std::ostream & os, ResourceItemArrayArray & o);
 public:
 	ResourceItemArrayArray();
 	~ResourceItemArrayArray();
@@ -58,7 +58,7 @@ public:
 	void StreamOut(ResourceDataStream& aStream) const;
 	};
 
-ostream & operator<< ( ostream & os, ResourceItemArrayArray & o);
+std::ostream & operator<< ( std::ostream & os, ResourceItemArrayArray & o);
 
 // ResourceItemArrayArrayIterator
 
@@ -74,13 +74,13 @@ public:
 
 class ResourceHeader : public ArrayItem
 	{
-	friend ostream & operator<< ( ostream & os, ResourceHeader & o);
+	friend std::ostream & operator<< ( std::ostream & os, ResourceHeader & o);
 public:
 	ResourceHeader( String LabelToSet);
 	ResourceHeader();
 	~ResourceHeader();
 	void AddDefault();
-	void Write( ostream &os);
+	void Write( std::ostream &os);
 	void SetResourceId(NameIdMap& aMap, unsigned long aId, int aFormatAsHex);
 	void StreamOut(RCBinaryStream& aStream, int& aSizeOfLargestResourceWhenUncompressed);
 	void StreamOutDump(RCBinaryStream& aStream);
@@ -94,7 +94,7 @@ public:
 	bool iContainsCompressedUnicode;
 	};
 
-ostream & operator<< ( ostream & os, ResourceHeader & o);
+std::ostream & operator<< ( std::ostream & os, ResourceHeader & o);
 
 // ResourceItem
 
@@ -104,7 +104,7 @@ public:
 	virtual ResourceItemArray * GetRIA() = 0;
 	virtual void Set( const String & ValueToSet) = 0;
 	virtual void Set( const StringArray & ValuesToSet) = 0;
-	virtual ostream & StreamOut ( ostream & os) = 0;
+	virtual std::ostream & StreamOut ( std::ostream & os) = 0;
 	virtual void StreamOut(ResourceDataStream& aStream) const = 0;
 	virtual void AddDefault() = 0;
 	virtual void SetSRLink( unsigned long SRLinkToSet) = 0;	
@@ -127,8 +127,8 @@ public:
 	SimpleResourceItem(SimpleStructItem*);
 	void Set(const String& aValueToSet);
 	void Set(const StringArray& aValuesToSet);
-	virtual ostream& StreamOut(ostream& os);
-	friend ostream& operator<<(ostream& os,SimpleResourceItem & o);
+	virtual std::ostream& StreamOut(std::ostream& os);
+	friend std::ostream& operator<<(std::ostream& os,SimpleResourceItem & o);
 	virtual void StreamOut(ResourceDataStream& aStream) const;
 	virtual void AddDefault();
 	virtual void SetSRLink(unsigned long aSRLinkToSet);
@@ -142,19 +142,19 @@ private:
 	unsigned char iValueSet;
 	};
 
-ostream& operator<<(ostream& os,SimpleResourceItem & o);
+std::ostream& operator<<(std::ostream& os,SimpleResourceItem & o);
 
 // ArrayResourceItem
 
 class ArrayResourceItem : public ResourceItem
 	{
-	friend ostream& operator<<(ostream& os,ArrayResourceItem& aItem);
+	friend std::ostream& operator<<(std::ostream& os,ArrayResourceItem& aItem);
 public:
 	ArrayResourceItem(ArrayStructItem *);
 	~ArrayResourceItem();
 	void Set(const String& aValueToSet);
 	void Set(const StringArray& aValuesToSet);
-	ostream & StreamOut(ostream& os);
+	std::ostream & StreamOut(std::ostream& os);
 	virtual void StreamOut(ResourceDataStream& aStream) const;
 	virtual void AddDefault();
 	virtual void SetSRLink(unsigned long aSRLinkToSet);
@@ -166,7 +166,7 @@ private:
 	StringArray iValues;
 	};
 
-ostream& operator<<(ostream& os,ArrayResourceItem& aItem);
+std::ostream& operator<<(std::ostream& os,ArrayResourceItem& aItem);
 
 // StructTypeResourceItem
 
@@ -176,8 +176,8 @@ public:
 	StructTypeResourceItem(StructTypeStructItem*);
 	void Set(const String& ValueToSet);
 	void Set(const StringArray& ValuesToSet);
-	ostream& StreamOut(ostream& os);
-	friend ostream& operator<<(ostream& os,StructTypeResourceItem& o);
+	std::ostream& StreamOut(std::ostream& os);
+	friend std::ostream& operator<<(std::ostream& os,StructTypeResourceItem& o);
 	virtual void StreamOut(ResourceDataStream& aStream) const;
 	virtual void AddDefault();
 	virtual void SetSRLink(unsigned long aSRLinkToSet);
@@ -187,19 +187,19 @@ public:
 	ResourceItemArray iResourceItems;
 	};
 
-ostream& operator<<(ostream& os,StructTypeResourceItem& o);
+std::ostream& operator<<(std::ostream& os,StructTypeResourceItem& o);
 
 // StructArrayResourceItem
 
 class StructArrayResourceItem : public ResourceItem
 	{
-	friend ostream& operator<<(ostream& os,StructArrayResourceItem& aItem);
+	friend std::ostream& operator<<(std::ostream& os,StructArrayResourceItem& aItem);
 public:
 	StructArrayResourceItem(StructArrayStructItem*);
 	void Set(const String& ValueToSet);
 	void Set(const StringArray& ValuesToSet);
 	ResourceItemArray* GetRIA();
-	ostream& StreamOut(ostream& os);
+	std::ostream& StreamOut(std::ostream& os);
 	virtual void StreamOut(ResourceDataStream& aStream) const;
 	virtual void AddDefault();
 	virtual void SetSRLink(unsigned long SRLinkToSet);
@@ -209,6 +209,6 @@ public:
 	ResourceItemArray* iLastRIA;
 	};
 
-ostream& operator<<(ostream& os,StructArrayResourceItem& aItem);
+std::ostream& operator<<(std::ostream& os,StructArrayResourceItem& aItem);
 
 #endif

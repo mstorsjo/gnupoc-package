@@ -9,14 +9,12 @@
 #include <iostream>
 #include "array.h"
 
-using namespace std;
-
 class RCBinaryStream;
 class NumericValue;
 
 class String : public ArrayItem
 	{
-	friend ostream& operator<< ( ostream& os, const String & a);
+	friend std::ostream& operator<< ( std::ostream& os, const String & a);
 	friend class NumericValue;
 	friend class RCBinaryStream;
 public:

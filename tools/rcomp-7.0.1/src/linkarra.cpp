@@ -11,6 +11,8 @@
 #include "mem.h"
 #include "errorhan.h"
 #include "rcbinstr.h"
+
+using namespace std;
                 
 extern NameIdMap* pResourceNameIds;
 extern int verbose;

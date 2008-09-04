@@ -27,6 +27,8 @@
 #include "main.h"
 #include <stdarg.h>
 
+using namespace std;
+
 #if defined(__VC32__) && !defined(_DEBUG)
 #pragma warning( disable : 4702 )	// unreachable code
 #pragma warning( disable : 4102 )	// 'yyerrlabel' : unreferenced label

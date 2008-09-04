@@ -174,6 +174,8 @@
 #include "main.h"
 #include <stdarg.h>
 
+using namespace std;
+
 #if defined(__VC32__) && !defined(_DEBUG)
 #pragma warning( disable : 4702 )	// unreachable code
 #pragma warning( disable : 4102 )	// 'yyerrlabel' : unreferenced label
@@ -251,7 +253,7 @@ const String	Divider("*******************************************");
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 111 "../rcomp.y"
+#line 113 "../rcomp.y"
 {
 	char				Value[1024];
 	unsigned long 			Id;
@@ -263,7 +265,7 @@ typedef union YYSTYPE
 	long					NumInitialiser;
 }
 /* Line 187 of yacc.c.  */
-#line 267 "rcomp.cpp"
+#line 269 "rcomp.cpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -276,7 +278,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 280 "rcomp.cpp"
+#line 282 "rcomp.cpp"
 
 #ifdef short
 # undef short
@@ -610,19 +612,19 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   127,   127,   134,   135,   138,   139,   140,   141,   142,
-     143,   144,   151,   155,   160,   166,   174,   178,   181,   182,
-     183,   184,   187,   188,   193,   198,   214,   221,   236,   237,
-     238,   239,   243,   249,   253,   260,   264,   268,   269,   270,
-     271,   272,   273,   274,   277,   278,   296,   299,   304,   312,
-     323,   331,   332,   335,   340,   341,   347,   350,   359,   368,
-     369,   372,   373,   379,   382,   394,   403,   404,   405,   408,
-     412,   413,   414,   417,   422,   451,   457,   465,   469,   473,
-     483,   484,   485,   488,   493,   494,   497,   503,   517,   518,
-     532,   550,   551,   554,   563,   572,   575,   579,   580,   581,
-     582,   583,   584,   585,   588,   589,   600,   601,   604,   655,
-     660,   676,   700,   711,   720,   721,   724,   731,   741,   742,
-     752,   753
+       0,   129,   129,   136,   137,   140,   141,   142,   143,   144,
+     145,   146,   153,   157,   162,   168,   176,   180,   183,   184,
+     185,   186,   189,   190,   195,   200,   216,   223,   238,   239,
+     240,   241,   245,   251,   255,   262,   266,   270,   271,   272,
+     273,   274,   275,   276,   279,   280,   298,   301,   306,   314,
+     325,   333,   334,   337,   342,   343,   349,   352,   361,   370,
+     371,   374,   375,   381,   384,   396,   405,   406,   407,   410,
+     414,   415,   416,   419,   424,   453,   459,   467,   471,   475,
+     485,   486,   487,   490,   495,   496,   499,   505,   519,   520,
+     534,   552,   553,   556,   565,   574,   577,   581,   582,   583,
+     584,   585,   586,   587,   590,   591,   602,   603,   606,   657,
+     662,   678,   702,   713,   722,   723,   726,   733,   743,   744,
+     754,   755
 };
 #endif
 
@@ -1684,18 +1686,18 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 127 "../rcomp.y"
+#line 129 "../rcomp.y"
     {	if(verbose)	{	MOFF; cout << Divider << "\n" << Divider << endl; MON; }
 										}
     break;
 
   case 12:
-#line 152 "../rcomp.y"
+#line 154 "../rcomp.y"
     {	if(verbose) { MOFF; cout << Divider << "\n" << * pSH << Divider << endl; MON;}	}
     break;
 
   case 13:
-#line 155 "../rcomp.y"
+#line 157 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "struct_statement_start                     " << (yyvsp[(2) - (3)].Value) << endl; MON;}
 											pSH = new StructHeader((yyvsp[(2) - (3)].Value));
 											REGISTER_LINE;
@@ -1704,7 +1706,7 @@ yyreduce:
     break;
 
   case 14:
-#line 161 "../rcomp.y"
+#line 163 "../rcomp.y"
     {	if(verbose) {	RCTypeArray Types; MOFF;cout << "struct_statement_start                     " << (yyvsp[(2) - (4)].Value) << " " << Types.GetName((yyvsp[(3) - (4)].Id)) << endl; MON;}
 											pSH = new StructHeader((yyvsp[(2) - (4)].Value), (yyvsp[(3) - (4)].Id));
 											REGISTER_LINE;
@@ -1713,7 +1715,7 @@ yyreduce:
     break;
 
   case 15:
-#line 167 "../rcomp.y"
+#line 169 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "struct_statement_start                     " << (yyvsp[(2) - (4)].Value) << " (WORD)" << endl; MON;}
 											pSH = new StructHeader((yyvsp[(2) - (4)].Value), L_WORD);
 											REGISTER_LINE;
@@ -1722,7 +1724,7 @@ yyreduce:
     break;
 
   case 16:
-#line 174 "../rcomp.y"
+#line 176 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "struct_item_list                           Adding struct_item." << endl; MON;}
 											REGISTER_LINE;
 											pSH->iSIA.Add((yyvsp[(2) - (3)].pStructItem));
@@ -1730,12 +1732,12 @@ yyreduce:
     break;
 
   case 22:
-#line 187 "../rcomp.y"
+#line 189 "../rcomp.y"
     {	(yyval.pStructItem) = (yyvsp[(1) - (1)].pSimpleStructItem);}
     break;
 
   case 23:
-#line 189 "../rcomp.y"
+#line 191 "../rcomp.y"
     {	if(verbose) { MOFF;cout << "    Limit: " << (yyvsp[(3) - (4)].Value) << endl; MON;}
 											(yyvsp[(1) - (4)].pSimpleStructItem)->iLengthLimit = (yyvsp[(3) - (4)].Value);
 											(yyval.pStructItem) = (yyvsp[(1) - (4)].pSimpleStructItem);
@@ -1743,7 +1745,7 @@ yyreduce:
     break;
 
   case 24:
-#line 194 "../rcomp.y"
+#line 196 "../rcomp.y"
     {	if(verbose) { MOFF;cout << "    Default: " << (yyvsp[(3) - (3)].Value) << endl; MON;}
 											(yyvsp[(1) - (3)].pSimpleStructItem)->iDefault = (yyvsp[(3) - (3)].Value);
 											(yyval.pStructItem) = (yyvsp[(1) - (3)].pSimpleStructItem);
@@ -1751,7 +1753,7 @@ yyreduce:
     break;
 
   case 25:
-#line 199 "../rcomp.y"
+#line 201 "../rcomp.y"
     {	if(verbose) { MOFF;cout << "    Limit: " << (yyvsp[(3) - (6)].Value) << ", Default: " << (yyvsp[(6) - (6)].Value) << endl; MON;}
 											NumericValue Limit((yyvsp[(3) - (6)].Value), L_LONG);
 											if(String((yyvsp[(6) - (6)].Value)).ExportLength(TargetCharacterSet,SourceCharacterSet) > Limit.GetULong() )
@@ -1767,7 +1769,7 @@ yyreduce:
     break;
 
   case 26:
-#line 214 "../rcomp.y"
+#line 216 "../rcomp.y"
     {	if(verbose) 
 											{			   RCTypeArray Types;
 														   MOFF;cout << "simple_struct_item                         " << Types.GetName((yyvsp[(1) - (2)].Id)) << " " << (yyvsp[(2) - (2)].Value) << endl; MON;
@@ -1778,7 +1780,7 @@ yyreduce:
     break;
 
   case 27:
-#line 222 "../rcomp.y"
+#line 224 "../rcomp.y"
     {	if(verbose) 
 											{			   RCTypeArray Types;
 														   MOFF;cout << "simple_struct_item                         " << Types.GetName((yyvsp[(1) - (5)].Id)) << " " << (yyvsp[(5) - (5)].Value) << endl; MON;
@@ -1790,27 +1792,27 @@ yyreduce:
     break;
 
   case 28:
-#line 236 "../rcomp.y"
+#line 238 "../rcomp.y"
     {	(yyval.Id) = L_BYTE;}
     break;
 
   case 29:
-#line 237 "../rcomp.y"
+#line 239 "../rcomp.y"
     {	(yyval.Id) = L_WORD;}
     break;
 
   case 30:
-#line 238 "../rcomp.y"
+#line 240 "../rcomp.y"
     {	(yyval.Id) = L_LONG;}
     break;
 
   case 31:
-#line 239 "../rcomp.y"
+#line 241 "../rcomp.y"
     {	(yyval.Id) = L_DOUBLE;}
     break;
 
   case 32:
-#line 244 "../rcomp.y"
+#line 246 "../rcomp.y"
     { 
 	    (yyval.Id) = ( TargetCharacterSet == String::Unicode ) ? L_TEXT16: L_TEXT8;
 	    REGISTER_LINE;
@@ -1819,21 +1821,21 @@ yyreduce:
     break;
 
   case 33:
-#line 250 "../rcomp.y"
+#line 252 "../rcomp.y"
     {
 	    (yyval.Id) = ( TargetCharacterSet == String::Unicode ) ? L_LTEXT16: L_LTEXT8;
 	    }
     break;
 
   case 34:
-#line 254 "../rcomp.y"
+#line 256 "../rcomp.y"
     { 
 	    (yyval.Id) = ( TargetCharacterSet == String::Unicode ) ? L_BUF16: L_BUF8;
 	    }
     break;
 
   case 35:
-#line 260 "../rcomp.y"
+#line 262 "../rcomp.y"
     {	(yyval.Id) = L_TEXT8;
 											REGISTER_LINE;
 											ErrorHandler::OutputErrorLine("Warning: Deprecated use of zero-terminated TEXT8 - use LTEXT8 instead");
@@ -1841,7 +1843,7 @@ yyreduce:
     break;
 
   case 36:
-#line 264 "../rcomp.y"
+#line 266 "../rcomp.y"
     {	(yyval.Id) = L_TEXT16;
 											REGISTER_LINE;
 											ErrorHandler::OutputErrorLine("Warning: Deprecated use of zero-terminated TEXT16 - use LTEXT16 instead");
@@ -1849,47 +1851,47 @@ yyreduce:
     break;
 
   case 37:
-#line 268 "../rcomp.y"
+#line 270 "../rcomp.y"
     {	(yyval.Id) = L_LTEXT8;}
     break;
 
   case 38:
-#line 269 "../rcomp.y"
+#line 271 "../rcomp.y"
     {	(yyval.Id) = L_LTEXT16;}
     break;
 
   case 39:
-#line 270 "../rcomp.y"
+#line 272 "../rcomp.y"
     {	(yyval.Id) = L_BUF8;}
     break;
 
   case 40:
-#line 271 "../rcomp.y"
+#line 273 "../rcomp.y"
     {	(yyval.Id) = L_BUF16;}
     break;
 
   case 41:
-#line 272 "../rcomp.y"
+#line 274 "../rcomp.y"
     {	(yyval.Id) = L_LINK;}
     break;
 
   case 42:
-#line 273 "../rcomp.y"
+#line 275 "../rcomp.y"
     {	(yyval.Id) = L_LLINK;}
     break;
 
   case 43:
-#line 274 "../rcomp.y"
+#line 276 "../rcomp.y"
     {	(yyval.Id) = L_SRLINK;}
     break;
 
   case 44:
-#line 277 "../rcomp.y"
+#line 279 "../rcomp.y"
     {	(yyval.pStructItem) = (yyvsp[(1) - (1)].pArrayStructItem);}
     break;
 
   case 45:
-#line 279 "../rcomp.y"
+#line 281 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "array_struct_item                          with simple_initialiser_list" << endl;MON;}
 											(yyvsp[(1) - (5)].pArrayStructItem)->iDefaults = * (yyvsp[(4) - (5)].pStringArray);
 											if((yyvsp[(1) - (5)].pArrayStructItem)->iSize.Length() > 0)
@@ -1908,14 +1910,14 @@ yyreduce:
     break;
 
   case 46:
-#line 296 "../rcomp.y"
+#line 298 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "array_struct_item_base                     with no size" << endl;MON;}
 											(yyval.pArrayStructItem) =(yyvsp[(1) - (2)].pArrayStructItem);
 										}
     break;
 
   case 47:
-#line 300 "../rcomp.y"
+#line 302 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "array_struct_item_base                     with size " << (yyvsp[(2) - (3)].Value) << endl;MON;}
 											(yyvsp[(1) - (3)].pArrayStructItem)->iSize = (yyvsp[(2) - (3)].Value);
 											(yyval.pArrayStructItem) = (yyvsp[(1) - (3)].pArrayStructItem);
@@ -1923,7 +1925,7 @@ yyreduce:
     break;
 
   case 48:
-#line 305 "../rcomp.y"
+#line 307 "../rcomp.y"
     {	if(verbose) 
 												{		 	RCTypeArray Types;
 														 	MOFF;cout << "array_struct_item_base                     with LenType " << Types.GetName((yyvsp[(2) - (4)].Id)) << endl;MON;
@@ -1934,7 +1936,7 @@ yyreduce:
     break;
 
   case 49:
-#line 313 "../rcomp.y"
+#line 315 "../rcomp.y"
     {	if(verbose) 
 												{		 	RCTypeArray Types;
 														 	MOFF;cout << "array_struct_item_base                     with size " << (yyvsp[(4) - (5)].Value) << " and LenType " << Types.GetName((yyvsp[(2) - (5)].Id)) << endl;MON;
@@ -1946,7 +1948,7 @@ yyreduce:
     break;
 
   case 50:
-#line 323 "../rcomp.y"
+#line 325 "../rcomp.y"
     {	if(verbose) 
 												{		 	RCTypeArray Types; 
 														 	MOFF;cout << "array_struct_item_start                    " << Types.GetName((yyvsp[(1) - (3)].Id)) << " " << (yyvsp[(2) - (3)].Value) << endl;MON;
@@ -1956,50 +1958,50 @@ yyreduce:
     break;
 
   case 51:
-#line 331 "../rcomp.y"
+#line 333 "../rcomp.y"
     {	(yyval.Id) = L_BYTE;}
     break;
 
   case 52:
-#line 332 "../rcomp.y"
+#line 334 "../rcomp.y"
     {	(yyval.Id) = L_WORD;}
     break;
 
   case 53:
-#line 335 "../rcomp.y"
+#line 337 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "struct_type_struct_item                    " << (yyvsp[(2) - (2)].Value) << endl;MON;}
 											(yyval.pStructItem) = new StructTypeStructItem((yyvsp[(2) - (2)].Value));
 										}
     break;
 
   case 54:
-#line 340 "../rcomp.y"
+#line 342 "../rcomp.y"
     {	(yyval.pStructItem) = (yyvsp[(1) - (1)].pStructArrayStructItem);}
     break;
 
   case 55:
-#line 342 "../rcomp.y"
+#line 344 "../rcomp.y"
     {	if(verbose) {	RCTypeArray Types; MOFF;cout << "struct_array_struct_item                   - Setting Size to " << Types.GetName((yyvsp[(2) - (3)].Id)) << endl;MON;}
 											(yyvsp[(3) - (3)].pStructArrayStructItem)->iLenType = (yyvsp[(2) - (3)].Id); (yyval.pStructItem) = (yyvsp[(3) - (3)].pStructArrayStructItem);
 										}
     break;
 
   case 56:
-#line 347 "../rcomp.y"
+#line 349 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "struct_array_struct_item_base              " << (yyvsp[(2) - (4)].Value) << endl;MON;}
 											(yyval.pStructArrayStructItem) = new StructArrayStructItem((yyvsp[(2) - (4)].Value));
 										}
     break;
 
   case 57:
-#line 351 "../rcomp.y"
+#line 353 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "struct_array_struct_item_base              " << (yyvsp[(2) - (5)].Value) << " " << (yyvsp[(4) - (5)].Value) << endl;MON;}
 											(yyval.pStructArrayStructItem) = new StructArrayStructItem((yyvsp[(2) - (5)].Value), (yyvsp[(4) - (5)].Value));
 										}
     break;
 
   case 58:
-#line 360 "../rcomp.y"
+#line 362 "../rcomp.y"
     {	
 	    pResourceHeader->AddDefault();
 	    CurrentId+=CurrentIdStep;
@@ -2011,17 +2013,17 @@ yyreduce:
     break;
 
   case 59:
-#line 368 "../rcomp.y"
+#line 370 "../rcomp.y"
     {	uid2Set = true; uid2 = (yyvsp[(2) - (2)].NumInitialiser); }
     break;
 
   case 60:
-#line 369 "../rcomp.y"
+#line 371 "../rcomp.y"
     {	uid3Set = true; uid3 = (yyvsp[(2) - (2)].NumInitialiser); }
     break;
 
   case 62:
-#line 374 "../rcomp.y"
+#line 376 "../rcomp.y"
     {	
 	    if(verbose) { MOFF;cout << "resource_statement_start                   LOCAL" << endl;MON;}
 		    assert(pResourceHeader != NULL);
@@ -2030,7 +2032,7 @@ yyreduce:
     break;
 
   case 64:
-#line 382 "../rcomp.y"
+#line 384 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "resource_statement_start_names             " << (yyvsp[(2) - (3)].Value) << " " << (yyvsp[(3) - (3)].Value) << endl;MON;}
 											assert(pResourceHeader == NULL);
 											pResourceHeader = new ResourceHeader((yyvsp[(3) - (3)].Value));
@@ -2046,7 +2048,7 @@ yyreduce:
     break;
 
   case 65:
-#line 394 "../rcomp.y"
+#line 396 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "resource_statement_start_names             " << (yyvsp[(2) - (2)].Value) << " <Resource not named>" << endl;MON;}
 											assert(pResourceHeader == NULL);
 											pResourceHeader = new ResourceHeader;
@@ -2057,17 +2059,17 @@ yyreduce:
     break;
 
   case 66:
-#line 403 "../rcomp.y"
+#line 405 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "resource_item_list" << endl;MON;}}
     break;
 
   case 67:
-#line 404 "../rcomp.y"
+#line 406 "../rcomp.y"
     {	yyerrok; yyclearin; }
     break;
 
   case 69:
-#line 408 "../rcomp.y"
+#line 410 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "resource_item                              " << (yyvsp[(1) - (3)].Value) << " " << (yyvsp[(3) - (3)].Value) << endl;MON;}
 											REGISTER_LINE;/****************************************************************/
 											pCurrentRIA->Set((yyvsp[(1) - (3)].Value), (yyvsp[(3) - (3)].Value));
@@ -2075,7 +2077,7 @@ yyreduce:
     break;
 
   case 73:
-#line 418 "../rcomp.y"
+#line 420 "../rcomp.y"
     {	
 	    if (verbose) 
 		{ MOFF;cout << "resource_simple_array_item                 " << (yyvsp[(1) - (4)].Value) << endl;MON;} 
@@ -2083,7 +2085,7 @@ yyreduce:
     break;
 
   case 74:
-#line 423 "../rcomp.y"
+#line 425 "../rcomp.y"
     {	
 	    if (verbose) 
 		{ MOFF;cout << "resource_simple_array_item                 " << (yyvsp[(1) - (5)].Value) << " with simple_initialiser_list" << endl;MON;}
@@ -2094,14 +2096,14 @@ yyreduce:
     break;
 
   case 75:
-#line 452 "../rcomp.y"
+#line 454 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "struct_resource_item" << endl;MON;}
 											pCurrentRIA = pG->RIAStack.Pop();
 										}
     break;
 
   case 76:
-#line 457 "../rcomp.y"
+#line 459 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "struct_resource_item_start                 " << (yyvsp[(1) - (4)].Value) << " " << (yyvsp[(3) - (4)].Value) << endl;MON;}
 											REGISTER_LINE;
 											pCurrentRIA->Set((yyvsp[(1) - (4)].Value), (yyvsp[(3) - (4)].Value));
@@ -2111,19 +2113,19 @@ yyreduce:
     break;
 
   case 77:
-#line 466 "../rcomp.y"
+#line 468 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "struct_array_resource_item" << endl;MON;}
 											pG->SRIStack.Pop();
 										}
     break;
 
   case 78:
-#line 470 "../rcomp.y"
+#line 472 "../rcomp.y"
     {	pG->SRIStack.Pop();}
     break;
 
   case 79:
-#line 473 "../rcomp.y"
+#line 475 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "struct_array_resource_item_start           " << (yyvsp[(1) - (5)].Value) << " " << (yyvsp[(4) - (5)].Value) << endl;MON;}
 											ResourceItem * p = pCurrentRIA->Find((yyvsp[(1) - (5)].Value));
 											pG->SRIStack.Push(p);
@@ -2135,21 +2137,21 @@ yyreduce:
     break;
 
   case 83:
-#line 488 "../rcomp.y"
+#line 490 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "struct_array_resource_item_list_top        " << endl;MON;}
 											pCurrentRIA = pG->RIAStack.Pop();
 										}
     break;
 
   case 86:
-#line 498 "../rcomp.y"
+#line 500 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "struct_array_resource_item_list_item       " << endl;MON;}
 											pCurrentRIA = pG->RIAStack.Pop();
 										}
     break;
 
   case 87:
-#line 503 "../rcomp.y"
+#line 505 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "struct_array_resource_item_list_item_start " << (yyvsp[(1) - (2)].Value) << endl;MON;}
 											ResourceItem * p = pG->SRIStack.Peek();
 											REGISTER_LINE;
@@ -2160,7 +2162,7 @@ yyreduce:
     break;
 
   case 89:
-#line 519 "../rcomp.y"
+#line 521 "../rcomp.y"
     { 
 	    // convert literal to unsigned long value of 1st character
 	    String s((yyvsp[(1) - (1)].Value));
@@ -2177,7 +2179,7 @@ yyreduce:
     break;
 
   case 90:
-#line 533 "../rcomp.y"
+#line 535 "../rcomp.y"
     {
 	    if (pG->EnumValues.IsStored((yyvsp[(1) - (1)].Value)))
 			{
@@ -2198,7 +2200,7 @@ yyreduce:
     break;
 
   case 93:
-#line 555 "../rcomp.y"
+#line 557 "../rcomp.y"
     {
 	    if(verbose) 
 		{	
@@ -2210,7 +2212,7 @@ yyreduce:
     break;
 
   case 94:
-#line 564 "../rcomp.y"
+#line 566 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "simple_initialiser_list                    - part of list " << (yyvsp[(3) - (3)].Value) << endl;MON;}
 											assert((yyvsp[(1) - (3)].pStringArray) != NULL);
 											(yyvsp[(1) - (3)].pStringArray)->Add(new String((yyvsp[(3) - (3)].Value) ) );
@@ -2219,12 +2221,12 @@ yyreduce:
     break;
 
   case 95:
-#line 572 "../rcomp.y"
+#line 574 "../rcomp.y"
     {	String s(NumericValue::ltoa((yyvsp[(1) - (1)].NumInitialiser)) ); strcpy((yyval.Value), s.GetBuffer() ); }
     break;
 
   case 96:
-#line 575 "../rcomp.y"
+#line 577 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "Converting number " << (yyvsp[(1) - (1)].Value) << endl;MON;}
 											REGISTER_LINE;
 											NumericValue v((yyvsp[(1) - (1)].Value), L_LONG); (yyval.NumInitialiser) = v.GetLong();
@@ -2232,42 +2234,42 @@ yyreduce:
     break;
 
   case 97:
-#line 579 "../rcomp.y"
+#line 581 "../rcomp.y"
     {	(yyval.NumInitialiser) = (yyvsp[(1) - (3)].NumInitialiser) + (yyvsp[(3) - (3)].NumInitialiser);	}
     break;
 
   case 98:
-#line 580 "../rcomp.y"
+#line 582 "../rcomp.y"
     {	(yyval.NumInitialiser) = (yyvsp[(1) - (3)].NumInitialiser) - (yyvsp[(3) - (3)].NumInitialiser);	}
     break;
 
   case 99:
-#line 581 "../rcomp.y"
+#line 583 "../rcomp.y"
     {	(yyval.NumInitialiser) = (yyvsp[(1) - (3)].NumInitialiser) * (yyvsp[(3) - (3)].NumInitialiser);	}
     break;
 
   case 100:
-#line 582 "../rcomp.y"
+#line 584 "../rcomp.y"
     {	(yyval.NumInitialiser) = (yyvsp[(1) - (3)].NumInitialiser) / (yyvsp[(3) - (3)].NumInitialiser);	}
     break;
 
   case 101:
-#line 583 "../rcomp.y"
+#line 585 "../rcomp.y"
     {	(yyval.NumInitialiser) = (yyvsp[(1) - (3)].NumInitialiser) | (yyvsp[(3) - (3)].NumInitialiser);	}
     break;
 
   case 102:
-#line 584 "../rcomp.y"
+#line 586 "../rcomp.y"
     {	(yyval.NumInitialiser) = - (yyvsp[(2) - (2)].NumInitialiser);		}
     break;
 
   case 103:
-#line 585 "../rcomp.y"
+#line 587 "../rcomp.y"
     {	(yyval.NumInitialiser) = (yyvsp[(2) - (3)].NumInitialiser);		}
     break;
 
   case 105:
-#line 589 "../rcomp.y"
+#line 591 "../rcomp.y"
     {
 	    if (strlen((yyval.Value))+strlen((yyvsp[(2) - (2)].Value)) > sizeof((yyval.Value))-1)
 		{
@@ -2280,7 +2282,7 @@ yyreduce:
     break;
 
   case 108:
-#line 605 "../rcomp.y"
+#line 607 "../rcomp.y"
     {	
 	    REGISTER_LINE;
 	    if((yyvsp[(2) - (3)].NumInitialiser) < 0 || ((yyvsp[(2) - (3)].NumInitialiser) > 255 && TargetCharacterSet != String::Unicode))
@@ -2327,7 +2329,7 @@ yyreduce:
     break;
 
   case 109:
-#line 656 "../rcomp.y"
+#line 658 "../rcomp.y"
     {
 	    REGISTER_LINE;
 	    SetIdFromName((yyvsp[(2) - (2)].Value));
@@ -2335,7 +2337,7 @@ yyreduce:
     break;
 
   case 110:
-#line 661 "../rcomp.y"
+#line 663 "../rcomp.y"
     {
 	    REGISTER_LINE;
 	    SetIdFromName((yyvsp[(2) - (2)].Value));
@@ -2343,7 +2345,7 @@ yyreduce:
     break;
 
   case 111:
-#line 676 "../rcomp.y"
+#line 678 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "character_set_statement                    " << (yyvsp[(2) - (2)].Value) << endl;MON;}
 											REGISTER_LINE;
 											SourceCharacterSet = CharacterSetID((yyvsp[(2) - (2)].Value));
@@ -2363,7 +2365,7 @@ yyreduce:
     break;
 
   case 112:
-#line 700 "../rcomp.y"
+#line 702 "../rcomp.y"
     {	if(verbose) {	RCTypeArray Types;
 															MOFF;cout << "offset_statement                           " << (yyvsp[(2) - (2)].Value) << endl;MON; }
 											REGISTER_LINE;
@@ -2372,14 +2374,14 @@ yyreduce:
     break;
 
   case 113:
-#line 711 "../rcomp.y"
+#line 713 "../rcomp.y"
     {	if(verbose) {	MOFF;cout << "system_statement" << endl;MON;}
 											CurrentIdStep=-1;
 										}
     break;
 
   case 116:
-#line 725 "../rcomp.y"
+#line 727 "../rcomp.y"
     {	
 	    if(verbose) 
 		{ MOFF;cout << "enum_statement" << endl;MON;} 
@@ -2389,7 +2391,7 @@ yyreduce:
     break;
 
   case 117:
-#line 732 "../rcomp.y"
+#line 734 "../rcomp.y"
     {	
 	    if(verbose) 
 		{ MOFF;cout << "enum_statement" << endl;MON;} 
@@ -2399,12 +2401,12 @@ yyreduce:
     break;
 
   case 118:
-#line 741 "../rcomp.y"
+#line 743 "../rcomp.y"
     {	pG->EnumValues.Add((yyvsp[(1) - (1)].Value), CurrentEnumValue++);}
     break;
 
   case 119:
-#line 743 "../rcomp.y"
+#line 745 "../rcomp.y"
     {	
 	    CurrentEnumValue = atol((yyvsp[(3) - (3)].Value));
 	    pG->EnumValues.Add((yyvsp[(1) - (3)].Value), CurrentEnumValue);
@@ -2413,18 +2415,18 @@ yyreduce:
     break;
 
   case 120:
-#line 752 "../rcomp.y"
+#line 754 "../rcomp.y"
     {}
     break;
 
   case 121:
-#line 753 "../rcomp.y"
+#line 755 "../rcomp.y"
     {}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 2428 "rcomp.cpp"
+#line 2430 "rcomp.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2638,7 +2640,7 @@ yyreturn:
 }
 
 
-#line 757 "../rcomp.y"
+#line 759 "../rcomp.y"
 
 
 // Function section

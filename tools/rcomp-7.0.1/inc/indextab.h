@@ -11,7 +11,7 @@
 
 class IndexTableItem : public ArrayItem
 	{
-	friend ostream& operator<<(ostream & os,const IndexTableItem& o);
+	friend std::ostream& operator<<(std::ostream & os,const IndexTableItem& o);
 	friend RCBinaryStream& operator<<(RCBinaryStream & os,const IndexTableItem& o);
 public:
 	IndexTableItem(ResourceHeader* aResource);
@@ -25,7 +25,7 @@ public:
 
 class IndexTable : public Array
 	{
-	friend ostream& operator<<(ostream& os,const IndexTable& o);
+	friend std::ostream& operator<<(std::ostream& os,const IndexTable& o);
 	friend RCBinaryStream& operator<<(RCBinaryStream& os,const IndexTable& o);
 public:
 	IndexTable();

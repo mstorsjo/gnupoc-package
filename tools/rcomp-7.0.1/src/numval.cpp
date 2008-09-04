@@ -20,6 +20,8 @@
 #include "errorhan.h"
 #include "rcbinstr.h"
 
+using namespace std;
+
 #if defined(__VC32__)
 #pragma warning( disable : 4702 )	// unreachable code
 #endif

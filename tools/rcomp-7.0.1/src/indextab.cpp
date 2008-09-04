@@ -8,6 +8,8 @@
 #include "errorhan.h"
 #include "indextab.h"
 
+using namespace std;
+
 #if __GNUC__ >= 3
 #include <sstream>
 #define hex std::hex

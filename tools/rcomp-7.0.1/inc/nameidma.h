@@ -10,7 +10,7 @@
 
 class NameIdItem : public ArrayItem
 	{
-	friend ostream& operator<<(ostream & os, NameIdItem & o);
+	friend std::ostream& operator<<(std::ostream & os, NameIdItem & o);
 public:
 	NameIdItem(String aNameToSet,unsigned long aIdToSet);
 public:
@@ -20,7 +20,7 @@ public:
 
 class NameIdMap : public Array
 	{
-	friend ostream& operator<<(ostream & os,NameIdMap& aMap);
+	friend std::ostream& operator<<(std::ostream & os,NameIdMap& aMap);
 public:
 	NameIdMap();
 	~NameIdMap();

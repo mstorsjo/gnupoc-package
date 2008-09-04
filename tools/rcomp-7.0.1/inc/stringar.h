@@ -11,7 +11,7 @@
 
 class StringArray : public Array
 	{
-	friend ostream& operator<<(ostream & os, StringArray & s);
+	friend std::ostream& operator<<(std::ostream & os, StringArray & s);
 	friend RCBinaryStream& operator<<(RCBinaryStream & os, StringArray & s);
 public:
 	StringArray();

@@ -13,6 +13,8 @@
 #include "numval.h"
 #include "datatype.h"
 
+using namespace std;
+
 extern long CurrentId;
 extern RCTypeArray gTypes;
 

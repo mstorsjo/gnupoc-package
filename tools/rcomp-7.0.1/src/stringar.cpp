@@ -5,6 +5,8 @@
 
 #include "stringar.h"
 
+using namespace std;
+
 // StringArray
 
 StringArray::StringArray()
