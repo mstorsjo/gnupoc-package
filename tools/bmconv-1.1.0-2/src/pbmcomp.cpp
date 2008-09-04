@@ -8,6 +8,8 @@
 #include <ctype.h>
 #include <sys/stat.h>
 
+using namespace std;
+
 extern TRgb* color256Palette;
 extern char* color256InversePalette;
 

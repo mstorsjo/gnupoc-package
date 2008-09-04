@@ -5,6 +5,8 @@
 
 #include "bmconv.h"
 
+using namespace std;
+
 
 BitmapLoader::BitmapLoader():
 	iNumBmpColors(0),

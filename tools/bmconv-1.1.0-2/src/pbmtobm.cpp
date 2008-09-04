@@ -6,6 +6,8 @@
 #include "bmconv.h"
 #include <stdio.h>
 
+using namespace std;
+
 EpocLoader::EpocLoader():
 	iPbmBits(NULL)
 	{}

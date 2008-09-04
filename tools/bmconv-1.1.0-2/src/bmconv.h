@@ -11,8 +11,6 @@
 #include <fstream>
 #include <stdlib.h>
 
-using namespace std;
-
 // As suggested by Gerardo Lamastra
 #pragma pack(1)
 
@@ -224,7 +222,7 @@ private:
 	int HexToInt(char aNibble);
 	static void CopyTail(void* aDst, void* aSrc, int aFullSize, int aSkipped);
 private:
-	fstream iDestFile;
+	std::fstream iDestFile;
 	char** iSourcefilenames;
 	SEpocBitmapHeader** iPbmSources;
 	int iNumSources;
@@ -264,8 +262,8 @@ private:
 	int LoadFile(char* aFilename,int aIndex);
 	int LoadRom(char* aFilename,int aIndex);
 	TRgb GetPixel(int aXCoord,int aYCoord);
-	int DoLoadFile(fstream& aFile);
-	int DoLoadRom(fstream& aFile);
+	int DoLoadFile(std::fstream& aFile);
+	int DoLoadRom(std::fstream& aFile);
 	int ExpandByteRLEData(char* aDest,int aDestSize,char* aSrce,int aSrceSize);
 	int ExpandTwelveBitRLEData(char* aDest,int aDestSizeInBytes,char* aSrce,int aSrceSizeInBytes);
 	int ExpandSixteenBitRLEData(char* aDest,int aDestSizeInBytes,char* aSrce,int aSrceSizeInBytes);

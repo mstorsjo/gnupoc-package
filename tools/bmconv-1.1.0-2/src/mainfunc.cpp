@@ -10,9 +10,11 @@
 #include <sys/stat.h>
 #include <stdio.h>
 
+using namespace std;
+
 const int KMaxArguments = 512;
 
-char* ErrorMessage(int aErrorNumber)
+const char* ErrorMessage(int aErrorNumber)
 	{
 	switch(aErrorNumber)
 		{
