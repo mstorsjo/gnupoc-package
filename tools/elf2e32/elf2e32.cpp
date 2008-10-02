@@ -1416,8 +1416,10 @@ int main(int argc, char *argv[]) {
 		{ "paged", 0, NULL, 0 },
 		{ "unpaged", 0, NULL, 0 },
 		{ "defaultpaged", 0, NULL, 0 },
+		{ "excludeunwantedexports", 0, NULL, 0 },
 		{ "customdlltarget", 0, NULL, 0 },
 		{ "namedlookup", 0, NULL, 0 },
+		{ "debuggable", 0, NULL, 0 },
 		{ NULL, 0, NULL, 0 }
 	};
 
