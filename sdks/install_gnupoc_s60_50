@@ -1,0 +1,84 @@
+#!/bin/sh
+
+if test $# != 2 -o $0 != "./install_gnupoc_s60_50"; then
+  echo "Usage: ./install_gnupoc_s60_50 <path-to-sdk-zip> <target-dir>"
+  echo " e.g.: ./install_gnupoc_s60_50 S60_5th_Edition_SDK_v0_9_en.zip ~/symbian-sdks/s60_50"
+  exit 1
+fi
+
+SRC=$1
+DEST=`echo $2 | sed s:/\$::`
+
+mkdir -p $DEST
+
+export PATH=unshield:$PATH
+
+while read a
+do
+  echo "$a"
+  sh -c "$a"
+  if test $? != 0; then
+    echo "Unexpected error: aborting."
+    exit 1
+  fi
+done << __END
+
+### Unzip & Copy selected files
+mkdir -p _e
+unzip -qn $SRC -d _e
+
+unshield -g CPP_API x _e/data2.cab
+./mergedir CPP_API/epoc32 $DEST/epoc32
+rmdir CPP_API
+
+unshield -g CPP_Toolchain x _e/data2.cab
+./mergedir CPP_Toolchain/epoc32 $DEST/epoc32
+rmdir CPP_Toolchain
+
+#unshield -g CPP_documentation x _e/data2.cab
+#mv CPP_documentation $DEST/series60doc
+
+unshield -g Common_toolchain x _e/data2.cab
+./mergedir Common_toolchain/epoc32 $DEST/epoc32
+rmdir Common_toolchain
+
+unshield -g Emulator x _e/data2.cab
+./mergedir Emulator/epoc32 $DEST/epoc32
+rmdir Emulator
+
+unshield -g Doc_required x _e/data2.cab
+mv Doc_required/* $DEST
+rmdir Doc_required
+
+unshield -g Cpp_Examples x _e/data2.cab
+mv Cpp_Examples $DEST/s60cppexamples
+
+unshield -g Symbian_Examples x _e/data2.cab
+mv Symbian_Examples $DEST/examples
+
+unshield -g S60_tools x _e/data2.cab
+mv S60_tools $DEST/s60tools
+
+### Fixing
+./lowercase $DEST/epoc32/tools
+./lowercase $DEST/epoc32/include
+./lowercase $DEST/epoc32/release
+./lowercase $DEST/epoc32/data
+./fixinclude $DEST/epoc32/include
+./lowercase $DEST/s60cppexamples
+./fixinclude $DEST/s60cppexamples
+./fixexamples $DEST/s60cppexamples
+./lowercase $DEST/examples
+./fixinclude $DEST/examples
+./fixexamples $DEST/examples
+for i in \`find $DEST/epoc32/tools -name \\\*.pl -or -name \\\*.pm\`; do ./dos2unix \$i; done
+cp -pR $DEST/epoc32/tools $DEST/epoc32/tools_orig
+cat gnupoc-s60_50-patch | (cd $DEST/epoc32; patch -p0 )
+find $DEST/epoc32/tools -name \\\*.orig -exec rm {} \\\\;
+cd $DEST/epoc32/tools; chmod a+x \*.pl bldmake abld makmake bmconv rcomp makesis epoc eshell petran pfsdump setupcomms elf2e32 mifconv makekeys signsis extmake
+
+rm -rf _e
+
+__END
+
+exit 0
