@@ -36,7 +36,7 @@ cd csl-build/binutils-csl-arm-2005q1 && $MAKE install
 for i in \`find $DEST/bin -name \*.dSYM\`; do mv \$i \`echo \$i | sed s/.dSYM//\`; done
 cd csl-build && tar -jxvf gcc-csl-arm-2005Q1C.tar.bz2
 cd csl-build/gcc-csl-arm && ./configure --target=arm-none-symbianelf --enable-languages=c,c++ --prefix=$DEST
-cd csl-build/gcc-csl-arm && PATH=$DEST/bin:$PATH SHELL=/bin/sh $MAKE
+cd csl-build/gcc-csl-arm && PATH=$DEST/bin:$PATH SHELL=/bin/sh DEFAULT_LINKER=$DEST/bin/arm-none-symbianelf-ld $MAKE
 cd csl-build/gcc-csl-arm && PATH=$DEST/bin:$PATH $MAKE install
 rm -rf csl-build
 
