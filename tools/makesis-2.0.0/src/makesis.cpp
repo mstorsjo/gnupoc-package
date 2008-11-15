@@ -14,6 +14,7 @@
 #include "utils.h"
 #include <tchar.h>
 #include "makesis.h"
+#include <stdlib.h>
 
 // ===========================================================================
 // CONSTANTS
