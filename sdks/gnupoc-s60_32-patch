@@ -1494,7 +1494,7 @@ diff -urN tools_orig/checksource.pm tools/checksource.pm
  		if ($referenceDOSSlash =~ /$quotemetaExclusion$/i)
 diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
 --- tools_orig/cl_bpabi.pm	2008-03-23 01:59:09.000000000 +0200
-+++ tools/cl_bpabi.pm	2008-03-23 02:19:22.000000000 +0200
++++ tools/cl_bpabi.pm	2008-11-24 23:03:10.000000000 +0200
 @@ -4,7 +4,7 @@
  #
  
@@ -1731,15 +1731,18 @@ diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
  			);
  		}
  	}
-@@ -911,7 +895,7 @@
+@@ -911,9 +895,9 @@
  	if ($BasicTrgType=~/^DLL$/o) { # Add the DLL stub library
  		&main::Output(
  			" \\\n\t",
 -			&Generic_Quote("\$(EPOCSTATLINK$Bld)\\EDLLSTUB.lib")
 +			&Generic_Quote("\$(EPOCSTATLINK$Bld)/edllstub.lib")
  		);
-  		push @depLibs, &Generic_Quote("\$(EPOCSTATLINK$Bld)\\EDLLSTUB.lib");
+- 		push @depLibs, &Generic_Quote("\$(EPOCSTATLINK$Bld)\\EDLLSTUB.lib");
++ 		push @depLibs, &Generic_Quote("\$(EPOCSTATLINK$Bld)/edllstub.lib");
  	}
+ 
+         my $StaticRTLib = "usrt2_2" ;
 @@ -923,22 +907,22 @@
  		unshift @StatLibList, "$StaticRTLib\.lib" unless ($Trg =~ /(U|K)SRT/i || ($BasicTrgType=~/^LIB$/o));
  
@@ -1783,15 +1786,18 @@ diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
  			}
  	    }
  	}
-@@ -960,7 +944,7 @@
+@@ -960,9 +944,9 @@
  		foreach (@OELibList) {
  			&main::Output(
  				" \\\n\t",
 -				&Generic_Quote("\$(EPOCSTATLINK$Bld)\\$_"),
 +				&Generic_Quote("\$(EPOCSTATLINK$Bld)/$_"),
  			);
-  			push @depLibs, &Generic_Quote("\$(EPOCSTATLINK$Bld)\\$_");
+- 			push @depLibs, &Generic_Quote("\$(EPOCSTATLINK$Bld)\\$_");
++ 			push @depLibs, &Generic_Quote("\$(EPOCSTATLINK$Bld)/$_");
  		}
+ 	}
+ 	PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\$_\"\)", @ToolChainLibList);
 @@ -994,7 +978,7 @@
  		"VTBLEXPORTS$Bld="
  	);
@@ -2108,7 +2114,7 @@ diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
  			"\n"
  			);
  # rule to translate the preprocessed source
-@@ -1789,40 +1776,40 @@
+@@ -1789,41 +1776,41 @@
  			if ($tranasm)
  			{
  		&main::Output(
@@ -2159,11 +2165,13 @@ diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
  			"\n",
 -			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc\_.lis"), " : ",
 -			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc\_.cpp"), "\n",
+-			"\t\$(CC$Bld) $LangOptions ", "\$(ASSEMBLER_LISTING_OPTION) ","\$(INCLUDE_OPTION)"," \$(call absolutePaths,$ChopSrcPath \$(INCDIR) \$(OUTPUT_OPTION) \$\@ \$(EPOCBLD$Bld)\\$BaseSrc\_.cpp)\n",
 +			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc\_.lis"), " : ",
 +			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc\_.cpp"), "\n",
- 			"\t\$(CC$Bld) $LangOptions ", "\$(ASSEMBLER_LISTING_OPTION) ","\$(INCLUDE_OPTION)"," \$(call absolutePaths,$ChopSrcPath \$(INCDIR) \$(OUTPUT_OPTION) \$\@ \$(EPOCBLD$Bld)\\$BaseSrc\_.cpp)\n",
++			"\t\$(CC$Bld) $LangOptions ", "\$(ASSEMBLER_LISTING_OPTION) ","\$(INCLUDE_OPTION)"," \$(call absolutePaths,$ChopSrcPath \$(INCDIR) \$(OUTPUT_OPTION) \$\@ \$(EPOCBLD$Bld)/$BaseSrc\_.cpp)\n",
  			"\n"
  			);
+ 			}
 @@ -1832,38 +1819,38 @@
  		#If Function call logging is enabled, add call to function call logger
  		if ($Function_Call_Logger)	{
