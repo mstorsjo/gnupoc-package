@@ -1503,7 +1503,7 @@ diff -urN tools_orig/checksource.pm tools/checksource.pm
  		if ($referenceDOSSlash =~ /$quotemetaExclusion$/i)
 diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
 --- tools_orig/cl_bpabi.pm	2008-10-02 23:09:13.000000000 +0300
-+++ tools/cl_bpabi.pm	2008-10-03 00:58:03.000000000 +0300
++++ tools/cl_bpabi.pm	2008-11-25 11:15:12.000000000 +0200
 @@ -4,7 +4,7 @@
  #
  
@@ -2099,7 +2099,7 @@ diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
  			"\n"
  			);
  # rule to translate the preprocessed source
-@@ -1904,40 +1891,40 @@
+@@ -1904,41 +1891,41 @@
  			if ($tranasm)
  			{
  		&main::Output(
@@ -2150,11 +2150,13 @@ diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
  			"\n",
 -			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc\_.lis"), " : ",
 -			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc\_.cpp"), "\n",
+-			"\t\$(CC$Bld) $LangOptions ", "\$(ASSEMBLER_LISTING_OPTION) ","\$(INCLUDE_OPTION)"," \$(call absolutePaths,$ChopSrcPath \$(INCDIR) \$(OUTPUT_OPTION) \$\@ \$(EPOCBLD$Bld)\\$BaseSrc\_.cpp)\n",
 +			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc\_.lis"), " : ",
 +			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc\_.cpp"), "\n",
- 			"\t\$(CC$Bld) $LangOptions ", "\$(ASSEMBLER_LISTING_OPTION) ","\$(INCLUDE_OPTION)"," \$(call absolutePaths,$ChopSrcPath \$(INCDIR) \$(OUTPUT_OPTION) \$\@ \$(EPOCBLD$Bld)\\$BaseSrc\_.cpp)\n",
++			"\t\$(CC$Bld) $LangOptions ", "\$(ASSEMBLER_LISTING_OPTION) ","\$(INCLUDE_OPTION)"," \$(call absolutePaths,$ChopSrcPath \$(INCDIR) \$(OUTPUT_OPTION) \$\@ \$(EPOCBLD$Bld)/$BaseSrc\_.cpp)\n",
  			"\n"
  			);
+ 			}
 @@ -1947,38 +1934,38 @@
  		#If Function call logging is enabled, add call to function call logger
  		if ($Function_Call_Logger)	{
@@ -2233,6 +2235,15 @@ diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
  			"\n"
  			);
  			# Compiler wrapper support starts...
+@@ -2013,7 +2000,7 @@
+ 					"COMPWRAP$Bld$BaseSrc : ",
+ 					&Generic_Quote("$SrcPath$Src"), "\n",
+ 					"\t\@echo Analysing $Src\n",
+-					"\t\$(COMPWRAP) \$(CC$Bld) $lfboption $LangOptions ", "\$(INCLUDE_OPTION)"," \$(call absolutePaths,$ChopSrcPath \$(INCDIR) \$(OUTPUT_OPTION) \$\@ $ChopSrcPath\\$Src)\n",
++					"\t\$(COMPWRAP) \$(CC$Bld) $lfboption $LangOptions ", "\$(INCLUDE_OPTION)"," \$(call absolutePaths,$ChopSrcPath \$(INCDIR) \$(OUTPUT_OPTION) \$\@ $ChopSrcPath/$Src)\n",
+ 					"\n"
+ 				);
+ 			}
 @@ -2028,7 +2015,7 @@
  	my $BaseSrc=&main::BaseSrc;
  	my $Bld=&main::Bld;
@@ -2313,6 +2324,15 @@ diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
  			"\n"
  			);
  	}
+@@ -2494,7 +2481,7 @@
+ 			my $LibDir = Armutl_ArmLibDir();
+ 			if (@StaticLibList) {
+ 				foreach my $lib (@StaticLibList) {
+-					push @LibList, ("$LibDir\\$lib");
++					push @LibList, ("$LibDir/$lib");
+ 				}
+ 			}
+ 		}
 diff -urN tools_orig/cl_codewarrior.pm tools/cl_codewarrior.pm
 --- tools_orig/cl_codewarrior.pm	2008-10-02 23:09:13.000000000 +0300
 +++ tools/cl_codewarrior.pm	2008-10-02 23:12:41.000000000 +0300
