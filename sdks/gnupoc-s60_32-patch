@@ -1494,7 +1494,7 @@ diff -urN tools_orig/checksource.pm tools/checksource.pm
  		if ($referenceDOSSlash =~ /$quotemetaExclusion$/i)
 diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
 --- tools_orig/cl_bpabi.pm	2008-03-23 01:59:09.000000000 +0200
-+++ tools/cl_bpabi.pm	2008-11-24 23:03:10.000000000 +0200
++++ tools/cl_bpabi.pm	2008-11-25 11:18:26.000000000 +0200
 @@ -4,7 +4,7 @@
  #
  
@@ -2358,6 +2358,15 @@ diff -urN tools_orig/cl_bpabi.pm tools/cl_bpabi.pm
  
  	return $libpath[0];
  }
+@@ -2264,7 +2249,7 @@
+ 			my $LibDir = Armutl_ArmLibDir();
+ 			if (@StaticLibList) {
+ 				foreach my $lib (@StaticLibList) {
+-					push @LibList, ("$LibDir\\$lib");
++					push @LibList, ("$LibDir/$lib");
+ 				}
+ 			}
+ 		}
 @@ -2303,7 +2288,7 @@
  	if($Plat eq "GCCE" || $CustomizedGCCEPlat)
  	{
