@@ -3965,6 +3965,18 @@ diff -urN tools_orig/extmake tools/extmake
 +
 +wine make $*
 +
+diff -urN tools_orig/featurevariantparser.pm tools/featurevariantparser.pm
+--- tools_orig/featurevariantparser.pm	2008-10-02 23:09:14.000000000 +0300
++++ tools/featurevariantparser.pm	2008-11-27 02:02:45.000000000 +0200
+@@ -37,7 +37,7 @@
+ my $childNodeStatus;
+ my $varianthrh;
+ 
+-my $defaultDir = "$ENV{EPOCROOT}epoc32\\tools\\variant";
++my $defaultDir = "$ENV{EPOCROOT}epoc32/tools/variant";
+ 
+ my $dir;
+ my $fullpath;
 diff -urN tools_orig/fixupsym.pl tools/fixupsym.pl
 --- tools_orig/fixupsym.pl	2008-10-02 23:09:14.000000000 +0300
 +++ tools/fixupsym.pl	2008-10-02 23:12:41.000000000 +0300
