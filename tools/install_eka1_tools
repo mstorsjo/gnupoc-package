@@ -38,6 +38,7 @@ cd make-3.81 && ./configure && $MAKE && cp make $DEST/bin/extmake
 g++ mifconv.cpp -o $DEST/bin/mifconv
 ln -sf $TRUE $DEST/bin/rem
 cp del $DEST/bin
+cp copy $DEST/bin
 
 
 __END

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cp `echo $* | sed 's/\\\\/\//g'`

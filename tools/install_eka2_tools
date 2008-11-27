@@ -36,6 +36,7 @@ cd elf2e32 && $MAKE -f Makefile.local-libelf libelf.a elf2e32 && cp elf2e32 $DES
 g++ mifconv.cpp -o $DEST/bin/mifconv
 ln -sf $TRUE $DEST/bin/rem
 cp del $DEST/bin
+cp copy $DEST/bin
 
 __END
 
