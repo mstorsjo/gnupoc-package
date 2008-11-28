@@ -1,0 +1,7 @@
+#!/bin/sh
+
+. paths.sh
+
+TOOL=`basename $0`
+exec $TOOL.pl "$@"
+

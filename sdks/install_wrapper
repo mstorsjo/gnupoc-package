@@ -10,7 +10,7 @@ DEST=`echo $1 | sed s:/\$::`
 
 mkdir -p $DEST
 
-cp sign.sh wrapper.sh $DEST
+cp sign.sh wrapper.sh paths.sh cshlpcmp $DEST
 cd $DEST
 for i in abld bldmake bmconv epoc eshell makekeys makesis makmake mifconv rcomp signsis ; do
 	ln -s wrapper.sh $i
