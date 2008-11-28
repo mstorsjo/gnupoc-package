@@ -33,6 +33,7 @@ tar -jxvf $SRC
 patch -p0 < gcc-539.patch
 mkdir obj-thumb
 cd obj-thumb; sh ../src/configure --prefix=$DEST --target=thumb-epoc-pe; 
+cd obj-thumb; if [ "`uname -m`" = "x86_64" ]; then sed -i"" s/-O2// Makefile; fi
 cd obj-thumb; $MAKE all-binutils all-gas all-ld all-gcc
 cd obj-thumb; $MAKE install-binutils install-gas install-ld install-gcc
 rm -rf obj-thumb
