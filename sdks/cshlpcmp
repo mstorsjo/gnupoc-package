@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. paths.sh
+. gnupoc-common.sh
 
 TOOL=`basename $0`
 exec $TOOL.pl "$@"

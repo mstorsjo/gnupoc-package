@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. paths.sh
+. gnupoc-common.sh
 
 TOOL=`basename $0`
 if [ "`which $TOOL`" != "$0" ] && [ -x "`which $TOOL`" ]; then
