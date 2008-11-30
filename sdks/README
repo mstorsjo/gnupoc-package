@@ -68,6 +68,19 @@ MWSym2LibraryFiles variables in the unix environment, since the perl build
 scripts need them for determining the compiler version.
 
 
+
+The tools for compiling context-sensitive help require wine. Additionally,
+they need the wrapper scripts to be installed as described above.
+
+One of the tools run through wine spawns a wine console. On wine versions
+prior to 0.9.46, the default is a curses-based console, while the default
+on later versions is an x11 based console window. In wine version 1.1.3,
+the console correctly falls back to curses if unable to create a separate
+console window. In practice, this means that this tool requires a working
+x server, when using wine versions 0.9.46 up to 1.1.2.
+
+
+
 Usage
 -----
 
