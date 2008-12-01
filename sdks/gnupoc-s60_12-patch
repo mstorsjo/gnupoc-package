@@ -1,7 +1,7 @@
 Index: e32env.pm
 ===================================================================
 --- e32env.pm	(.../tags/orig)	(revision 3329)
-+++ e32env.pm	(.../trunk)	(revision 3464)
++++ e32env.pm	(.../trunk)	(revision 3477)
 @@ -6,7 +6,7 @@
  # Contains information for makmake and associated e32tools perl programs
  # within the Epoc32 Environment
@@ -54,7 +54,7 @@ Index: e32env.pm
 Index: prepfile.pm
 ===================================================================
 --- prepfile.pm	(.../tags/orig)	(revision 3329)
-+++ prepfile.pm	(.../trunk)	(revision 3464)
++++ prepfile.pm	(.../trunk)	(revision 3477)
 @@ -7,7 +7,7 @@
  # module for preprocessing makmake-style project files
  
@@ -131,7 +131,7 @@ Index: prepfile.pm
 Index: petran
 ===================================================================
 --- petran	(.../tags/orig)	(revision 0)
-+++ petran	(.../trunk)	(revision 3464)
++++ petran	(.../trunk)	(revision 3477)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -151,7 +151,7 @@ Index: petran
 Index: winutl.pm
 ===================================================================
 --- winutl.pm	(.../tags/orig)	(revision 3329)
-+++ winutl.pm	(.../trunk)	(revision 3464)
++++ winutl.pm	(.../trunk)	(revision 3477)
 @@ -6,7 +6,7 @@
  
  # this package does various ancillary things for windows modules
@@ -191,7 +191,7 @@ Index: winutl.pm
 Index: genbldinf.pl
 ===================================================================
 --- genbldinf.pl	(.../tags/orig)	(revision 0)
-+++ genbldinf.pl	(.../trunk)	(revision 3464)
++++ genbldinf.pl	(.../trunk)	(revision 3477)
 @@ -0,0 +1,38 @@
 +#!/usr/bin/perl -w
 +#
@@ -234,7 +234,7 @@ Index: genbldinf.pl
 Index: makmake
 ===================================================================
 --- makmake	(.../tags/orig)	(revision 0)
-+++ makmake	(.../trunk)	(revision 3464)
++++ makmake	(.../trunk)	(revision 3477)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -251,7 +251,7 @@ Index: makmake
 Index: epocrc.pl
 ===================================================================
 --- epocrc.pl	(.../tags/orig)	(revision 3329)
-+++ epocrc.pl	(.../trunk)	(revision 3464)
++++ epocrc.pl	(.../trunk)	(revision 3477)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -336,7 +336,7 @@ Index: epocrc.pl
 Index: eshell.pl
 ===================================================================
 --- eshell.pl	(.../tags/orig)	(revision 3329)
-+++ eshell.pl	(.../trunk)	(revision 3464)
++++ eshell.pl	(.../trunk)	(revision 3477)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  #
@@ -378,7 +378,7 @@ Index: eshell.pl
 Index: fixupsym.pl
 ===================================================================
 --- fixupsym.pl	(.../tags/orig)	(revision 3329)
-+++ fixupsym.pl	(.../trunk)	(revision 3464)
++++ fixupsym.pl	(.../trunk)	(revision 3477)
 @@ -340,7 +340,7 @@
    {
  	my $build;
@@ -391,7 +391,7 @@ Index: fixupsym.pl
 Index: bldmake
 ===================================================================
 --- bldmake	(.../tags/orig)	(revision 0)
-+++ bldmake	(.../trunk)	(revision 3464)
++++ bldmake	(.../trunk)	(revision 3477)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -408,7 +408,7 @@ Index: bldmake
 Index: checkgcc.pm
 ===================================================================
 --- checkgcc.pm	(.../tags/orig)	(revision 3329)
-+++ checkgcc.pm	(.../trunk)	(revision 3464)
++++ checkgcc.pm	(.../trunk)	(revision 3477)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -444,7 +444,7 @@ Index: checkgcc.pm
 Index: rtf2ptml
 ===================================================================
 --- rtf2ptml	(.../tags/orig)	(revision 0)
-+++ rtf2ptml	(.../trunk)	(revision 3464)
++++ rtf2ptml	(.../trunk)	(revision 3477)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -464,7 +464,7 @@ Index: rtf2ptml
 Index: makmake.pl
 ===================================================================
 --- makmake.pl	(.../tags/orig)	(revision 3329)
-+++ makmake.pl	(.../trunk)	(revision 3464)
++++ makmake.pl	(.../trunk)	(revision 3477)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -840,7 +840,7 @@ Index: makmake.pl
 Index: epoc
 ===================================================================
 --- epoc	(.../tags/orig)	(revision 0)
-+++ epoc	(.../trunk)	(revision 3464)
++++ epoc	(.../trunk)	(revision 3477)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -857,7 +857,7 @@ Index: epoc
 Index: ide_vc6.pm
 ===================================================================
 --- ide_vc6.pm	(.../tags/orig)	(revision 3329)
-+++ ide_vc6.pm	(.../trunk)	(revision 3464)
++++ ide_vc6.pm	(.../trunk)	(revision 3477)
 @@ -882,7 +882,8 @@
  			foreach (@ChopRTMSysIncPaths) {
  				$SupText.=" -I \"$_\"";
@@ -871,7 +871,7 @@ Index: ide_vc6.pm
 Index: aiftool
 ===================================================================
 --- aiftool	(.../tags/orig)	(revision 0)
-+++ aiftool	(.../trunk)	(revision 3464)
++++ aiftool	(.../trunk)	(revision 3477)
 @@ -0,0 +1,74 @@
 +#! /bin/bash
 +#
@@ -950,7 +950,7 @@ Index: aiftool
 Index: mmp.pm
 ===================================================================
 --- mmp.pm	(.../tags/orig)	(revision 3329)
-+++ mmp.pm	(.../trunk)	(revision 3464)
++++ mmp.pm	(.../trunk)	(revision 3477)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -1626,7 +1626,7 @@ Index: mmp.pm
 Index: setupcomms.pl
 ===================================================================
 --- setupcomms.pl	(.../tags/orig)	(revision 3329)
-+++ setupcomms.pl	(.../trunk)	(revision 3464)
++++ setupcomms.pl	(.../trunk)	(revision 3477)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  #
@@ -1669,7 +1669,7 @@ Index: setupcomms.pl
 Index: maksym.pl
 ===================================================================
 --- maksym.pl	(.../tags/orig)	(revision 3329)
-+++ maksym.pl	(.../trunk)	(revision 3464)
++++ maksym.pl	(.../trunk)	(revision 3477)
 @@ -253,7 +253,7 @@
    {
  	my $build;
@@ -1682,7 +1682,7 @@ Index: maksym.pl
 Index: makesis
 ===================================================================
 --- makesis	(.../tags/orig)	(revision 0)
-+++ makesis	(.../trunk)	(revision 3464)
++++ makesis	(.../trunk)	(revision 3477)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -1702,7 +1702,7 @@ Index: makesis
 Index: defutl.pm
 ===================================================================
 --- defutl.pm	(.../tags/orig)	(revision 3329)
-+++ defutl.pm	(.../trunk)	(revision 3464)
++++ defutl.pm	(.../trunk)	(revision 3477)
 @@ -8,7 +8,7 @@
  # General Def file utilities
  #---------------------------
@@ -1715,7 +1715,7 @@ Index: defutl.pm
 Index: efreeze.pl
 ===================================================================
 --- efreeze.pl	(.../tags/orig)	(revision 3329)
-+++ efreeze.pl	(.../trunk)	(revision 3464)
++++ efreeze.pl	(.../trunk)	(revision 3477)
 @@ -13,12 +13,11 @@
  BEGIN {
  # check user has a version of perl that will cope and use DEFMAKE as specified by the system path
@@ -1749,7 +1749,7 @@ Index: efreeze.pl
 Index: epoc.pl
 ===================================================================
 --- epoc.pl	(.../tags/orig)	(revision 3329)
-+++ epoc.pl	(.../trunk)	(revision 3464)
++++ epoc.pl	(.../trunk)	(revision 3477)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  #
@@ -1802,7 +1802,7 @@ Index: epoc.pl
 Index: makedef.pl
 ===================================================================
 --- makedef.pl	(.../tags/orig)	(revision 3329)
-+++ makedef.pl	(.../trunk)	(revision 3464)
++++ makedef.pl	(.../trunk)	(revision 3477)
 @@ -13,12 +13,11 @@
  BEGIN {
  # check user has a version of perl that will cope and use MAKEDEF as specified by the system path
@@ -1844,7 +1844,7 @@ Index: makedef.pl
 Index: genutl.pm
 ===================================================================
 --- genutl.pm	(.../tags/orig)	(revision 3329)
-+++ genutl.pm	(.../trunk)	(revision 3464)
++++ genutl.pm	(.../trunk)	(revision 3477)
 @@ -6,7 +6,7 @@
  
  # Contains utility subroutines for MAKMAKE and associated scripts
@@ -1854,10 +1854,26 @@ Index: genutl.pm
  
  require Exporter;
  @ISA=qw(Exporter);
+Index: cshlpcmp/perl/csptmlfl.pm
+===================================================================
+--- cshlpcmp/perl/csptmlfl.pm	(.../tags/orig)	(revision 3329)
++++ cshlpcmp/perl/csptmlfl.pm	(.../trunk)	(revision 3477)
+@@ -1569,9 +1569,10 @@
+ 	#make the fileName 
+ 	if ( ($archive !~ /[\\\/]$/) && ($archive ne "") )
+ 		{
+-		$archive = $archive."\\";
++		$archive = $archive."\/";
+ 		}
+ 	my $fileName=$archive.$name;
++	$fileName =~ s/\\/\//g;
+ 
+ 	#check that the mbm graphic file exists and is not zero size
+ 	if(! -s $self->_iGraphicsDir.$fileName.".mbm")
 Index: cshlpcmp/perl/parastyle.pm
 ===================================================================
 --- cshlpcmp/perl/parastyle.pm	(.../tags/orig)	(revision 3329)
-+++ cshlpcmp/perl/parastyle.pm	(.../trunk)	(revision 3464)
++++ cshlpcmp/perl/parastyle.pm	(.../trunk)	(revision 3477)
 @@ -17,7 +17,7 @@
  
  use devtools;
@@ -1870,8 +1886,16 @@ Index: cshlpcmp/perl/parastyle.pm
 Index: cshlpcmp/perl/projfile.pm
 ===================================================================
 --- cshlpcmp/perl/projfile.pm	(.../tags/orig)	(revision 3329)
-+++ cshlpcmp/perl/projfile.pm	(.../trunk)	(revision 3464)
-@@ -335,6 +335,7 @@
++++ cshlpcmp/perl/projfile.pm	(.../trunk)	(revision 3477)
+@@ -42,6 +42,7 @@
+ 
+ 	#get the current working directory
+ 	my $cwd = cwd();
++	$cwd =~ s/([^\/])$/$1\//; # append a slash if one isn't found
+ 	
+ 	my $self  = {};
+ 
+@@ -335,6 +336,7 @@
  	{
  	my $self = shift;
  	my($aProjectFile)=@_;
@@ -1879,7 +1903,42 @@ Index: cshlpcmp/perl/projfile.pm
  
  	#get a new xml parsing object
  	my $parser = new XML::DOM::Parser;
-@@ -678,13 +679,13 @@
+@@ -512,6 +514,7 @@
+ 					$text = "";
+ 					}
+ 				my $path = $self->_RelateToDir($projectDir, $text);
++				$path =~ s/\\/\//g;
+ 
+ 				if($tagName eq "input")
+ 					{
+@@ -534,7 +537,7 @@
+ 							  substr($self->_iOutputDir(), 0, index($self->_iOutputDir(),':')+1);
+ 							}
+ 						$nullFile = $nullFile."\\nul";
+-						open(NULL,">>$nullFile") or $self->_iLog->LogDie("The output directory '".$self->_iOutputDir."' is on a drive that doesn't exist, so cannot be created.");
++#						open(NULL,">>$nullFile") or $self->_iLog->LogDie("The output directory '".$self->_iOutputDir."' is on a drive that doesn't exist, so cannot be created.");
+ 
+ 						mkpath($self->_iOutputDir);
+ 						}
+@@ -568,7 +571,7 @@
+ 							$nullFile = substr($self->_iWorkingDir(),0,index($self->_iWorkingDir(),':')+1);
+ 							}
+ 						$nullFile = $nullFile."\\nul";
+-						open(NULL,">>$nullFile") or $self->_iLog->LogDie("The working directory '".$self->_iWorkingDir."' is on a drive that doesn't exist, so cannot be created.");
++#						open(NULL,">>$nullFile") or $self->_iLog->LogDie("The working directory '".$self->_iWorkingDir."' is on a drive that doesn't exist, so cannot be created.");
+ 
+ 						mkpath($self->_iWorkingDir);
+ 						}
+@@ -618,7 +621,7 @@
+ 
+ 	if ($path =~ /[^\\\/]$/)
+ 		{
+-		$path = $path."\\";
++		$path = $path."\/";
+ 		}
+ 	
+ 	return $path;
+@@ -678,13 +681,13 @@
  		$path = $path.$aPath; # Move to the new path
  		}
  
@@ -1900,7 +1959,7 @@ Index: cshlpcmp/perl/projfile.pm
 Index: cshlpcmp/perl/cshlpfl.pm
 ===================================================================
 --- cshlpcmp/perl/cshlpfl.pm	(.../tags/orig)	(revision 3329)
-+++ cshlpcmp/perl/cshlpfl.pm	(.../trunk)	(revision 3464)
++++ cshlpcmp/perl/cshlpfl.pm	(.../trunk)	(revision 3477)
 @@ -137,10 +137,15 @@
  	my $self = shift;
  
@@ -1918,10 +1977,30 @@ Index: cshlpcmp/perl/cshlpfl.pm
  	my $return=system($command);
  
  	#check if cshlpwtr managed to run
+Index: cshlpcmp/perl/rtffile.pm
+===================================================================
+--- cshlpcmp/perl/rtffile.pm	(.../tags/orig)	(revision 3329)
++++ cshlpcmp/perl/rtffile.pm	(.../trunk)	(revision 3477)
+@@ -106,12 +106,13 @@
+     my($rtfFile)=ExtractFileNameNoExt($self->_iRtfFile);
+ 
+     # call the rtf2ptml application to convert the rtf files to ptml
+-    $inputDir =~ s/([~\\\/])$/$1\//;
+-    $outputDir =~ s/([~\\\/])$/$1\//;
++    $inputDir =~ s/([^\\\/])$/$1\//;
++    $outputDir =~ s/([^\\\/])$/$1\//;
+     my($command)="rtf2ptml \"-id".$inputDir."\" \"-od".$outputDir."\" \"-ox.ptml.xml\" \"-dtd".$self->_GetDTDUrl()."\" \"-xsl".$self->_GetXSLUrl()."\" \"".$rtfFile."\"";
+ 
+     $self->_iLog->Log($command."\n");
+ 
++    $command =~ s/\\/\\\\/g;
+     my $return=system($command);
+ 
+     #check if rtf2ptml managed to run
 Index: cshlpcmp/perl/custfile.pm
 ===================================================================
 --- cshlpcmp/perl/custfile.pm	(.../tags/orig)	(revision 3329)
-+++ cshlpcmp/perl/custfile.pm	(.../trunk)	(revision 3464)
++++ cshlpcmp/perl/custfile.pm	(.../trunk)	(revision 3477)
 @@ -1055,6 +1055,7 @@
  	my $self=shift;
  
@@ -1938,10 +2017,30 @@ Index: cshlpcmp/perl/custfile.pm
  
  	#create the graphic tag
  	my $element = $self->_iCsHlpDom->createElement("graphic");
+Index: cshlpcmp/perl/asptmlfl.pm
+===================================================================
+--- cshlpcmp/perl/asptmlfl.pm	(.../tags/orig)	(revision 3329)
++++ cshlpcmp/perl/asptmlfl.pm	(.../trunk)	(revision 3477)
+@@ -1303,9 +1303,13 @@
+ 							#make a copy of the graphic node
+ 							my $graphicNodeCopy = $graphicNode->cloneNode(1);
+ 							
++							my $epoc = $epocFileName;
++							my $html = $htmlFileName;
++							$epoc =~ s/\//\\/g;
++							$html =~ s/\//\\/g;
+ 							$graphicNodeCopy->removeAttribute("filename");
+-							$graphicNodeCopy->setAttribute("epocfilename",$epocFileName);
+-							$graphicNodeCopy->setAttribute("htmlfilename",$htmlFileName);
++							$graphicNodeCopy->setAttribute("epocfilename",$epoc);
++							$graphicNodeCopy->setAttribute("htmlfilename",$html);
+ 							
+ 							#store this mbm graphic
+ 							$self->_iMbmList->AddItem($epocFileName,$graphicNodeCopy);
 Index: output.pm
 ===================================================================
 --- output.pm	(.../tags/orig)	(revision 3329)
-+++ output.pm	(.../trunk)	(revision 3464)
++++ output.pm	(.../trunk)	(revision 3477)
 @@ -6,7 +6,7 @@
  
  # Text formatting module
@@ -1974,7 +2073,7 @@ Index: output.pm
 Index: abld.pl
 ===================================================================
 --- abld.pl	(.../tags/orig)	(revision 3329)
-+++ abld.pl	(.../trunk)	(revision 3464)
++++ abld.pl	(.../trunk)	(revision 3477)
 @@ -1,18 +1,19 @@
 +#!/usr/bin/perl -w
 +#
@@ -2244,7 +2343,7 @@ Index: abld.pl
 Index: pfsdump
 ===================================================================
 --- pfsdump	(.../tags/orig)	(revision 0)
-+++ pfsdump	(.../trunk)	(revision 3464)
++++ pfsdump	(.../trunk)	(revision 3477)
 @@ -0,0 +1,17 @@
 +#!/bin/sh
 +#
@@ -2266,7 +2365,7 @@ Index: pfsdump
 Index: rcomp
 ===================================================================
 --- rcomp	(.../tags/orig)	(revision 0)
-+++ rcomp	(.../trunk)	(revision 3464)
++++ rcomp	(.../trunk)	(revision 3477)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -2286,7 +2385,7 @@ Index: rcomp
 Index: cl_gcc.pm
 ===================================================================
 --- cl_gcc.pm	(.../tags/orig)	(revision 3329)
-+++ cl_gcc.pm	(.../trunk)	(revision 3464)
++++ cl_gcc.pm	(.../trunk)	(revision 3477)
 @@ -1,13 +1,17 @@
 +#!/usr/bin/perl -w
 +#
@@ -3535,7 +3634,7 @@ Index: cl_gcc.pm
 Index: e32tpver.pm
 ===================================================================
 --- e32tpver.pm	(.../tags/orig)	(revision 3329)
-+++ e32tpver.pm	(.../trunk)	(revision 3464)
++++ e32tpver.pm	(.../trunk)	(revision 3477)
 @@ -6,7 +6,7 @@
  
  # Returns the version number for E32TOOLP - update for each release
@@ -3548,7 +3647,7 @@ Index: e32tpver.pm
 Index: perllib/xml/dom.pm
 ===================================================================
 --- perllib/xml/dom.pm	(.../tags/orig)	(revision 3329)
-+++ perllib/xml/dom.pm	(.../trunk)	(revision 3464)
++++ perllib/xml/dom.pm	(.../trunk)	(revision 3477)
 @@ -50,7 +50,7 @@
  	     %DefaultEntities %DecodeDefaultEntity
  	   );
@@ -3561,7 +3660,7 @@ Index: perllib/xml/dom.pm
 Index: perllib/args.pm
 ===================================================================
 --- perllib/args.pm	(.../tags/orig)	(revision 3329)
-+++ perllib/args.pm	(.../trunk)	(revision 3464)
++++ perllib/args.pm	(.../trunk)	(revision 3477)
 @@ -684,7 +684,7 @@
  		}
  
@@ -3574,7 +3673,7 @@ Index: perllib/args.pm
 Index: perllib/params.pm
 ===================================================================
 --- perllib/params.pm	(.../tags/orig)	(revision 3329)
-+++ perllib/params.pm	(.../trunk)	(revision 3464)
++++ perllib/params.pm	(.../trunk)	(revision 3477)
 @@ -50,7 +50,7 @@
      bless $self, $class;
  
@@ -3663,7 +3762,7 @@ Index: perllib/params.pm
 Index: pathutl.pm
 ===================================================================
 --- pathutl.pm	(.../tags/orig)	(revision 3329)
-+++ pathutl.pm	(.../trunk)	(revision 3464)
++++ pathutl.pm	(.../trunk)	(revision 3477)
 @@ -1,6 +1,6 @@
  # PATHUTL.PM
  #
@@ -3916,7 +4015,7 @@ Index: pathutl.pm
 Index: memtrace.pl
 ===================================================================
 --- memtrace.pl	(.../tags/orig)	(revision 3329)
-+++ memtrace.pl	(.../trunk)	(revision 3464)
++++ memtrace.pl	(.../trunk)	(revision 3477)
 @@ -226,7 +226,7 @@
  	{
  	my $build;
@@ -3929,7 +4028,7 @@ Index: memtrace.pl
 Index: trgtype.pm
 ===================================================================
 --- trgtype.pm	(.../tags/orig)	(revision 3329)
-+++ trgtype.pm	(.../trunk)	(revision 3464)
++++ trgtype.pm	(.../trunk)	(revision 3477)
 @@ -10,7 +10,7 @@
  # Look at the existing types for an appropriate example
  #
@@ -4028,7 +4127,7 @@ Index: trgtype.pm
 Index: epocaif.pl
 ===================================================================
 --- epocaif.pl	(.../tags/orig)	(revision 3329)
-+++ epocaif.pl	(.../trunk)	(revision 3464)
++++ epocaif.pl	(.../trunk)	(revision 3477)
 @@ -18,22 +18,19 @@
  	require 5.005_03;
  # establish the path to the Perl binaries
@@ -4194,7 +4293,7 @@ Index: epocaif.pl
 Index: makhelp.pm
 ===================================================================
 --- makhelp.pm	(.../tags/orig)	(revision 3329)
-+++ makhelp.pm	(.../trunk)	(revision 3464)
++++ makhelp.pm	(.../trunk)	(revision 3477)
 @@ -4,7 +4,7 @@
  #
  
@@ -4234,7 +4333,7 @@ Index: makhelp.pm
 Index: bldmake.pl
 ===================================================================
 --- bldmake.pl	(.../tags/orig)	(revision 3329)
-+++ bldmake.pl	(.../trunk)	(revision 3464)
++++ bldmake.pl	(.../trunk)	(revision 3477)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -5230,7 +5329,7 @@ Index: bldmake.pl
 Index: eshell
 ===================================================================
 --- eshell	(.../tags/orig)	(revision 0)
-+++ eshell	(.../trunk)	(revision 3464)
++++ eshell	(.../trunk)	(revision 3477)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -5247,7 +5346,7 @@ Index: eshell
 Index: cshlpcmp.pl
 ===================================================================
 --- cshlpcmp.pl	(.../tags/orig)	(revision 3329)
-+++ cshlpcmp.pl	(.../trunk)	(revision 3464)
++++ cshlpcmp.pl	(.../trunk)	(revision 3477)
 @@ -1,4 +1,4 @@
 -#!perl
 +#!/usr/bin/perl
@@ -5282,10 +5381,35 @@ Index: cshlpcmp.pl
  
  # global reference to the commandline parameters
  $main::params=undef;
+@@ -94,7 +94,9 @@
+ 
+     my $projectFile = New CProjFile;
+ 
+-    $projectFile->Parse($main::params->ParamItem("projectfile")->Value());
++    my $file = $main::params->ParamItem("projectfile")->Value();
++    $file =~ s/\\/\//g;
++    $projectFile->Parse($file);
+ 
+     #create the converter object
+     my $converter = New CConverter($projectFile);
+@@ -134,9 +136,11 @@
+     $main::params = $args->ParseCommandLine(\@ARGV);
+ 
+     # if a log file was requested
+-    if($main::params->Exists("logFile"))
++    if($main::params->Exists("logfile"))
+ 		{
+-		my $log = New CLog($main::params->ParamItem("logFile")->Value());
++		my $logfile = $main::params->ParamItem("logfile")->Value();
++		$logfile =~ s/\\/\//g;
++		my $log = New CLog($logfile);
+ 		}
+ 
+ 	my $log = New CLog(); # So we can error in this function
 Index: bmconv
 ===================================================================
 --- bmconv	(.../tags/orig)	(revision 0)
-+++ bmconv	(.../trunk)	(revision 3464)
++++ bmconv	(.../trunk)	(revision 3477)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -5305,7 +5429,7 @@ Index: bmconv
 Index: e32plat.pm
 ===================================================================
 --- e32plat.pm	(.../tags/orig)	(revision 3329)
-+++ e32plat.pm	(.../trunk)	(revision 3464)
++++ e32plat.pm	(.../trunk)	(revision 3477)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -5508,7 +5632,7 @@ Index: e32plat.pm
 Index: cl_win.pm
 ===================================================================
 --- cl_win.pm	(.../tags/orig)	(revision 3329)
-+++ cl_win.pm	(.../trunk)	(revision 3464)
++++ cl_win.pm	(.../trunk)	(revision 3477)
 @@ -2,10 +2,12 @@
  #
  # Copyright (c) 1997-1999 Symbian Ltd.  All rights reserved.
@@ -6732,7 +6856,7 @@ Index: cl_win.pm
 Index: cjpeg
 ===================================================================
 --- cjpeg	(.../tags/orig)	(revision 0)
-+++ cjpeg	(.../trunk)	(revision 3464)
++++ cjpeg	(.../trunk)	(revision 3477)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -6752,7 +6876,7 @@ Index: cjpeg
 Index: modload.pm
 ===================================================================
 --- modload.pm	(.../tags/orig)	(revision 3329)
-+++ modload.pm	(.../trunk)	(revision 3464)
++++ modload.pm	(.../trunk)	(revision 3477)
 @@ -7,7 +7,7 @@
  # Runtime module-loading routine for loading e32tools modules into 'main' module
  
@@ -6794,7 +6918,7 @@ Index: modload.pm
 Index: makdeps.pm
 ===================================================================
 --- makdeps.pm	(.../tags/orig)	(revision 3329)
-+++ makdeps.pm	(.../trunk)	(revision 3464)
++++ makdeps.pm	(.../trunk)	(revision 3477)
 @@ -1,13 +1,13 @@
  # MAKDEPS.PM
  #
@@ -6911,7 +7035,7 @@ Index: makdeps.pm
 Index: setupcomms
 ===================================================================
 --- setupcomms	(.../tags/orig)	(revision 0)
-+++ setupcomms	(.../trunk)	(revision 3464)
++++ setupcomms	(.../trunk)	(revision 3477)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -6928,7 +7052,7 @@ Index: setupcomms
 Index: abld
 ===================================================================
 --- abld	(.../tags/orig)	(revision 0)
-+++ abld	(.../trunk)	(revision 3464)
++++ abld	(.../trunk)	(revision 3477)
 @@ -0,0 +1,19 @@
 +#!/bin/sh
 +#
@@ -6952,7 +7076,7 @@ Index: abld
 Index: hpsym.pl
 ===================================================================
 --- hpsym.pl	(.../tags/orig)	(revision 3329)
-+++ hpsym.pl	(.../trunk)	(revision 3464)
++++ hpsym.pl	(.../trunk)	(revision 3477)
 @@ -163,7 +163,7 @@
    {
  	my $build;
