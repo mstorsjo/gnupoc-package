@@ -1,6 +1,6 @@
 Index: cl_generic.pm
 ===================================================================
---- cl_generic.pm	(.../tags/orig)	(revision 3444)
+--- cl_generic.pm	(.../tags/orig)	(revision 3416)
 +++ cl_generic.pm	(.../trunk)	(revision 3444)
 @@ -29,8 +29,8 @@
  
@@ -182,7 +182,7 @@ Index: cl_generic.pm
  	my @systemIncludes = &main::Path_Chop(&main::Path_AbsToWork(&main::ResourceSysIncPaths));
 Index: e32env.pm
 ===================================================================
---- e32env.pm	(.../tags/orig)	(revision 3444)
+--- e32env.pm	(.../tags/orig)	(revision 3416)
 +++ e32env.pm	(.../trunk)	(revision 3444)
 @@ -6,7 +6,7 @@
  # Contains information for makmake and associated e32tools perl programs
@@ -248,7 +248,7 @@ Index: e32env.pm
  }
 Index: winutl.pm
 ===================================================================
---- winutl.pm	(.../tags/orig)	(revision 3444)
+--- winutl.pm	(.../tags/orig)	(revision 3416)
 +++ winutl.pm	(.../trunk)	(revision 3444)
 @@ -7,7 +7,7 @@
  
@@ -346,7 +346,7 @@ Index: genbldinf.pl
 +system ("cat $BLDINF");
 Index: cl_codewarrior.pm
 ===================================================================
---- cl_codewarrior.pm	(.../tags/orig)	(revision 3444)
+--- cl_codewarrior.pm	(.../tags/orig)	(revision 3416)
 +++ cl_codewarrior.pm	(.../trunk)	(revision 3444)
 @@ -4,7 +4,7 @@
  #
@@ -954,7 +954,7 @@ Index: cl_codewarrior.pm
  				"\n"
 Index: eshell.pl
 ===================================================================
---- eshell.pl	(.../tags/orig)	(revision 3444)
+--- eshell.pl	(.../tags/orig)	(revision 3416)
 +++ eshell.pl	(.../trunk)	(revision 3444)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
@@ -1013,7 +1013,7 @@ Index: bldmake
 +perl -S bldmake.pl "$@"
 Index: lockit_info.pm
 ===================================================================
---- lockit_info.pm	(.../tags/orig)	(revision 3444)
+--- lockit_info.pm	(.../tags/orig)	(revision 3416)
 +++ lockit_info.pm	(.../trunk)	(revision 3444)
 @@ -22,7 +22,7 @@
  	Close_InfoFile
@@ -1202,7 +1202,7 @@ Index: lockit_info.pm
  	my %loggedFiles;
 Index: makmake.pl
 ===================================================================
---- makmake.pl	(.../tags/orig)	(revision 3444)
+--- makmake.pl	(.../tags/orig)	(revision 3416)
 +++ makmake.pl	(.../trunk)	(revision 3444)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
@@ -1568,7 +1568,7 @@ Index: makmake.pl
  }
 Index: epocmbm.pl
 ===================================================================
---- epocmbm.pl	(.../tags/orig)	(revision 3444)
+--- epocmbm.pl	(.../tags/orig)	(revision 3416)
 +++ epocmbm.pl	(.../trunk)	(revision 3444)
 @@ -14,7 +14,7 @@
  BEGIN {
@@ -1596,7 +1596,7 @@ Index: epocmbm.pl
  		print "* BMCONV failed\n";
 Index: mmp.pm
 ===================================================================
---- mmp.pm	(.../tags/orig)	(revision 3444)
+--- mmp.pm	(.../tags/orig)	(revision 3416)
 +++ mmp.pm	(.../trunk)	(revision 3444)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
@@ -2559,7 +2559,7 @@ Index: mmp.pm
  		unless ($Def{Base}) {
 Index: maksym.pl
 ===================================================================
---- maksym.pl	(.../tags/orig)	(revision 3444)
+--- maksym.pl	(.../tags/orig)	(revision 3416)
 +++ maksym.pl	(.../trunk)	(revision 3444)
 @@ -354,7 +354,7 @@
  {
@@ -2572,7 +2572,7 @@ Index: maksym.pl
      &usage;
 Index: wrappermakefile.pm
 ===================================================================
---- wrappermakefile.pm	(.../tags/orig)	(revision 3444)
+--- wrappermakefile.pm	(.../tags/orig)	(revision 3416)
 +++ wrappermakefile.pm	(.../trunk)	(revision 3444)
 @@ -11,7 +11,7 @@
  	GenerateWrapper
@@ -2612,7 +2612,7 @@ Index: makesis
 +wine $ROOT/$PGM.exe $*
 Index: efreeze.pl
 ===================================================================
---- efreeze.pl	(.../tags/orig)	(revision 3444)
+--- efreeze.pl	(.../tags/orig)	(revision 3416)
 +++ efreeze.pl	(.../trunk)	(revision 3444)
 @@ -19,14 +19,13 @@
  	require 5.005_03;
@@ -2635,7 +2635,7 @@ Index: efreeze.pl
  # THE MAIN PROGRAM SECTION
 Index: epoc.pl
 ===================================================================
---- epoc.pl	(.../tags/orig)	(revision 3444)
+--- epoc.pl	(.../tags/orig)	(revision 3416)
 +++ epoc.pl	(.../trunk)	(revision 3444)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
@@ -2688,7 +2688,7 @@ Index: epoc.pl
      return $epocroot;
 Index: genutl.pm
 ===================================================================
---- genutl.pm	(.../tags/orig)	(revision 3444)
+--- genutl.pm	(.../tags/orig)	(revision 3416)
 +++ genutl.pm	(.../trunk)	(revision 3444)
 @@ -6,7 +6,7 @@
  
@@ -2723,7 +2723,7 @@ Index: pfsdump
 +wine $ROOT/$PGM.exe $*
 Index: ide_cw.pm
 ===================================================================
---- ide_cw.pm	(.../tags/orig)	(revision 3444)
+--- ide_cw.pm	(.../tags/orig)	(revision 3416)
 +++ ide_cw.pm	(.../trunk)	(revision 3444)
 @@ -1261,7 +1261,7 @@
  		$UidText.=")\n";
@@ -2736,7 +2736,7 @@ Index: ide_cw.pm
  
 Index: cl_bpabi.pm
 ===================================================================
---- cl_bpabi.pm	(.../tags/orig)	(revision 3444)
+--- cl_bpabi.pm	(.../tags/orig)	(revision 3416)
 +++ cl_bpabi.pm	(.../trunk)	(revision 3444)
 @@ -4,7 +4,7 @@
  #
@@ -3621,7 +3621,7 @@ Index: cl_bpabi.pm
  	{
 Index: featurevariantparser.pm
 ===================================================================
---- featurevariantparser.pm	(.../tags/orig)	(revision 3444)
+--- featurevariantparser.pm	(.../tags/orig)	(revision 3416)
 +++ featurevariantparser.pm	(.../trunk)	(revision 3444)
 @@ -38,7 +38,7 @@
  
@@ -3634,7 +3634,7 @@ Index: featurevariantparser.pm
  my $fullpath;
 Index: trgtype.pm
 ===================================================================
---- trgtype.pm	(.../tags/orig)	(revision 3444)
+--- trgtype.pm	(.../tags/orig)	(revision 3416)
 +++ trgtype.pm	(.../trunk)	(revision 3444)
 @@ -10,7 +10,7 @@
  # Look at the existing types for an appropriate example
@@ -3791,7 +3791,7 @@ Index: elf2e32
 +wine $ROOT/$PGM.exe $*
 Index: bldmake.pl
 ===================================================================
---- bldmake.pl	(.../tags/orig)	(revision 3444)
+--- bldmake.pl	(.../tags/orig)	(revision 3416)
 +++ bldmake.pl	(.../trunk)	(revision 3444)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
@@ -4578,7 +4578,7 @@ Index: bmconv
 +wine $ROOT/$PGM.exe $*
 Index: e32plat.pm
 ===================================================================
---- e32plat.pm	(.../tags/orig)	(revision 3444)
+--- e32plat.pm	(.../tags/orig)	(revision 3416)
 +++ e32plat.pm	(.../trunk)	(revision 3444)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
@@ -4707,7 +4707,7 @@ Index: e32plat.pm
  	}
 Index: modload.pm
 ===================================================================
---- modload.pm	(.../tags/orig)	(revision 3444)
+--- modload.pm	(.../tags/orig)	(revision 3416)
 +++ modload.pm	(.../trunk)	(revision 3444)
 @@ -7,7 +7,7 @@
  # Runtime module-loading routine for loading e32tools modules into 'main' module
@@ -4749,7 +4749,7 @@ Index: modload.pm
  }
 Index: hpsym.pl
 ===================================================================
---- hpsym.pl	(.../tags/orig)	(revision 3444)
+--- hpsym.pl	(.../tags/orig)	(revision 3416)
 +++ hpsym.pl	(.../trunk)	(revision 3444)
 @@ -161,7 +161,7 @@
    {
@@ -4762,7 +4762,7 @@ Index: hpsym.pl
  	  &E32tpver, ")\n";
 Index: prepdef.pl
 ===================================================================
---- prepdef.pl	(.../tags/orig)	(revision 3444)
+--- prepdef.pl	(.../tags/orig)	(revision 3416)
 +++ prepdef.pl	(.../trunk)	(revision 3444)
 @@ -14,14 +14,13 @@
  	require 5.005_03;
@@ -4785,7 +4785,7 @@ Index: prepdef.pl
  # THE MAIN PROGRAM SECTION
 Index: compilation_config/gcce.mk
 ===================================================================
---- compilation_config/gcce.mk	(.../tags/orig)	(revision 3444)
+--- compilation_config/gcce.mk	(.../tags/orig)	(revision 3416)
 +++ compilation_config/gcce.mk	(.../trunk)	(revision 3444)
 @@ -145,7 +145,7 @@
  #---------------------
@@ -4807,7 +4807,7 @@ Index: compilation_config/gcce.mk
  FC_LOGGER_INCLUDE_OPTION=-I
 Index: prepfile.pm
 ===================================================================
---- prepfile.pm	(.../tags/orig)	(revision 3444)
+--- prepfile.pm	(.../tags/orig)	(revision 3416)
 +++ prepfile.pm	(.../trunk)	(revision 3444)
 @@ -7,7 +7,7 @@
  # module for preprocessing makmake-style project files
@@ -4920,7 +4920,7 @@ Index: makmake
 +perl -S makmake.pl "$@"
 Index: armutl.pm
 ===================================================================
---- armutl.pm	(.../tags/orig)	(revision 3444)
+--- armutl.pm	(.../tags/orig)	(revision 3416)
 +++ armutl.pm	(.../trunk)	(revision 3444)
 @@ -6,7 +6,7 @@
  
@@ -4942,7 +4942,7 @@ Index: armutl.pm
  		chomp @lines;
 Index: epocrc.pl
 ===================================================================
---- epocrc.pl	(.../tags/orig)	(revision 3444)
+--- epocrc.pl	(.../tags/orig)	(revision 3416)
 +++ epocrc.pl	(.../trunk)	(revision 3444)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
@@ -4978,7 +4978,7 @@ Index: epocrc.pl
  	if ($arg =~ /^-l(.*)$/)
 Index: fixupsym.pl
 ===================================================================
---- fixupsym.pl	(.../tags/orig)	(revision 3444)
+--- fixupsym.pl	(.../tags/orig)	(revision 3416)
 +++ fixupsym.pl	(.../trunk)	(revision 3444)
 @@ -406,7 +406,7 @@
    {
@@ -4991,7 +4991,7 @@ Index: fixupsym.pl
  	  &E32tpver, ")\n";
 Index: checkgcc.pm
 ===================================================================
---- checkgcc.pm	(.../tags/orig)	(revision 3444)
+--- checkgcc.pm	(.../tags/orig)	(revision 3416)
 +++ checkgcc.pm	(.../trunk)	(revision 3444)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
@@ -5073,7 +5073,7 @@ Index: epoc
 +perl -S epoc.pl "$@"
 Index: cl_tools.pm
 ===================================================================
---- cl_tools.pm	(.../tags/orig)	(revision 3444)
+--- cl_tools.pm	(.../tags/orig)	(revision 3416)
 +++ cl_tools.pm	(.../trunk)	(revision 3444)
 @@ -243,7 +243,7 @@
  		"\n",
@@ -5165,7 +5165,7 @@ Index: aiftool
 +# EOF - aiftool
 Index: checksource.pl
 ===================================================================
---- checksource.pl	(.../tags/orig)	(revision 3444)
+--- checksource.pl	(.../tags/orig)	(revision 3416)
 +++ checksource.pl	(.../trunk)	(revision 3444)
 @@ -9,10 +9,10 @@
  use Cwd;
@@ -5183,7 +5183,7 @@ Index: checksource.pl
  
 Index: checksource.pm
 ===================================================================
---- checksource.pm	(.../tags/orig)	(revision 3444)
+--- checksource.pm	(.../tags/orig)	(revision 3416)
 +++ checksource.pm	(.../trunk)	(revision 3444)
 @@ -6,7 +6,7 @@
  # Routines involved in checking that source matches various filename policy constraints
@@ -5345,7 +5345,7 @@ Index: checksource.pm
  		if ($referenceDOSSlash =~ /$quotemetaExclusion$/i)
 Index: bpabiutl.pm
 ===================================================================
---- bpabiutl.pm	(.../tags/orig)	(revision 3444)
+--- bpabiutl.pm	(.../tags/orig)	(revision 3416)
 +++ bpabiutl.pm	(.../trunk)	(revision 3444)
 @@ -6,7 +6,7 @@
  
@@ -5456,7 +5456,7 @@ Index: signsis
 +wine $ROOT/$PGM.exe $*
 Index: defutl.pm
 ===================================================================
---- defutl.pm	(.../tags/orig)	(revision 3444)
+--- defutl.pm	(.../tags/orig)	(revision 3416)
 +++ defutl.pm	(.../trunk)	(revision 3444)
 @@ -8,7 +8,7 @@
  # General Def file utilities
@@ -5469,7 +5469,7 @@ Index: defutl.pm
  @ISA=qw(Exporter);
 Index: preprocessor.pm
 ===================================================================
---- preprocessor.pm	(.../tags/orig)	(revision 3444)
+--- preprocessor.pm	(.../tags/orig)	(revision 3416)
 +++ preprocessor.pm	(.../trunk)	(revision 3444)
 @@ -7,7 +7,7 @@
  # Used to allow us to access and manipulate other pre processors
@@ -5498,7 +5498,7 @@ Index: preprocessor.pm
 +1;
 Index: makedef.pl
 ===================================================================
---- makedef.pl	(.../tags/orig)	(revision 3444)
+--- makedef.pl	(.../tags/orig)	(revision 3416)
 +++ makedef.pl	(.../trunk)	(revision 3444)
 @@ -21,13 +21,12 @@
  BEGIN {
@@ -5543,7 +5543,7 @@ Index: makedef.pl
  				$Comment = $1;
 Index: output.pm
 ===================================================================
---- output.pm	(.../tags/orig)	(revision 3444)
+--- output.pm	(.../tags/orig)	(revision 3416)
 +++ output.pm	(.../trunk)	(revision 3444)
 @@ -6,7 +6,7 @@
  
@@ -5576,7 +5576,7 @@ Index: output.pm
  
 Index: abld.pl
 ===================================================================
---- abld.pl	(.../tags/orig)	(revision 3444)
+--- abld.pl	(.../tags/orig)	(revision 3416)
 +++ abld.pl	(.../trunk)	(revision 3444)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
@@ -5873,7 +5873,7 @@ Index: rcomp
 +wine $ROOT/$PGM.exe $*
 Index: e32tpver.pm
 ===================================================================
---- e32tpver.pm	(.../tags/orig)	(revision 3444)
+--- e32tpver.pm	(.../tags/orig)	(revision 3416)
 +++ e32tpver.pm	(.../trunk)	(revision 3444)
 @@ -6,7 +6,7 @@
  
@@ -5886,7 +5886,7 @@ Index: e32tpver.pm
  @EXPORT=qw(
 Index: pathutl.pm
 ===================================================================
---- pathutl.pm	(.../tags/orig)	(revision 3444)
+--- pathutl.pm	(.../tags/orig)	(revision 3416)
 +++ pathutl.pm	(.../trunk)	(revision 3444)
 @@ -9,7 +9,7 @@
  #	Distinguish paths from filepaths by assuming paths end with "\"
@@ -6180,7 +6180,7 @@ Index: pathutl.pm
  
 Index: memtrace.pl
 ===================================================================
---- memtrace.pl	(.../tags/orig)	(revision 3444)
+--- memtrace.pl	(.../tags/orig)	(revision 3416)
 +++ memtrace.pl	(.../trunk)	(revision 3444)
 @@ -237,7 +237,7 @@
  	{
@@ -6193,7 +6193,7 @@ Index: memtrace.pl
  	&usage;
 Index: epocaif.pl
 ===================================================================
---- epocaif.pl	(.../tags/orig)	(revision 3444)
+--- epocaif.pl	(.../tags/orig)	(revision 3416)
 +++ epocaif.pl	(.../trunk)	(revision 3444)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
@@ -6440,7 +6440,7 @@ Index: epocaif.pl
  		$curdrive="";
 Index: e32variant.pm
 ===================================================================
---- e32variant.pm	(.../tags/orig)	(revision 3444)
+--- e32variant.pm	(.../tags/orig)	(revision 3416)
 +++ e32variant.pm	(.../trunk)	(revision 3444)
 @@ -2,7 +2,7 @@
  #
@@ -6529,7 +6529,7 @@ Index: e32variant.pm
  }
 Index: makhelp.pm
 ===================================================================
---- makhelp.pm	(.../tags/orig)	(revision 3444)
+--- makhelp.pm	(.../tags/orig)	(revision 3416)
 +++ makhelp.pm	(.../trunk)	(revision 3444)
 @@ -4,7 +4,7 @@
  #
@@ -6586,7 +6586,7 @@ Index: setupcomms
 +perl -S setupcomms.pl "$@"
 Index: makdeps.pm
 ===================================================================
---- makdeps.pm	(.../tags/orig)	(revision 3444)
+--- makdeps.pm	(.../tags/orig)	(revision 3416)
 +++ makdeps.pm	(.../trunk)	(revision 3444)
 @@ -7,7 +7,7 @@
  # Module which wraps the dependency information provided the preprocessor when invoked with certain switches
