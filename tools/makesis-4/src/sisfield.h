@@ -282,7 +282,8 @@ public:
 		return NULL;
 	}
 	SISField* FindRemoveLastElement(uint32_t aType) {
-		for (uint32_t i = iNumElements-1; i >= 0; i--) {
+		// Signed, otherwise the loop won't ever terminate
+		for (int32_t i = iNumElements-1; i >= 0; i--) {
 			if (iElements[i]->Id() == aType) {
 				SISField* field = iElements[i];
 				for (uint32_t j = i; j < iNumElements-1; j++)
