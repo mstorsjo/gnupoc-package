@@ -203,6 +203,8 @@ int main(int argc, char *argv[]) {
 
 	if (remove) {
 		SISField* field = controller->FindRemoveLastElement(SISFieldType::SISSignatureCertificateChain);
+		if (!field)
+			fprintf(stderr, "Input SIS file not signed\n");
 		delete field;
 	} else if (display) {
 		bool found = false;
