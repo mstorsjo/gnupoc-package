@@ -1,0 +1,50 @@
+#!/bin/sh
+
+##
+# 2009 by PSI Transcom GmbH - GPL V2
+# Michael Willigens <mwilligens@psi.de>
+##
+
+PLUGINFILE="S60_3rd_Ed_SDK_FP1_API_Plug-In_Pack_v2_5.zip"
+
+USAGE(){
+  echo "Usage: ./install_gnupoc_s60_31_plugins <path-to-sdk-plugin-zip> <target-dir>"
+  echo " e.g.: ./install_gnupoc_s60_31_plugins $PLUGINFILE ~/symbian-sdks/s60_31"
+  exit 1
+}
+if test $# != 2 -o $0 != "./install_gnupoc_s60_31_plugins"; then
+  USAGE
+fi
+
+SRC=$1
+DEST=`echo $2 | sed s:/\$::`
+
+if test ! -e $DEST -o ! -e $SRC; then
+  USAGE
+fi
+
+# delete existing tmp stuff
+rm -rf /tmp/install_gnupoc
+
+# unzip plugins
+unzip -q $SRC -d /tmp/install_gnupoc
+
+# unzip any contained zip file to own directory
+for ZIPFILE in /tmp/install_gnupoc/*; do
+ if test -n "`echo ${ZIPFILE} | grep -i \.zip$`"; then
+  unzip -q "${ZIPFILE}" -d /tmp/install_gnupoc/current_zipfile
+
+  FOOBAR=`find /tmp/install_gnupoc/current_zipfile | grep -i -m 1 "epoc32"`
+  if test -d "$FOOBAR" && test "$FOOBAR" != ""; then
+   ./lowercase "$FOOBAR"
+   FOOBAR=`find /tmp/install_gnupoc/current_zipfile | grep -i -m 1 "epoc32"`	# if FOOBAR has changed due to lowecase switching
+   ./fixinclude "$FOOBAR/include"
+   cp -r "$FOOBAR" $DEST
+  fi
+
+  rm -rf /tmp/install_gnupoc/current_zipfile
+ fi
+done
+
+# delete tmp stuff
+rm -rf /tmp/install_gnupoc
