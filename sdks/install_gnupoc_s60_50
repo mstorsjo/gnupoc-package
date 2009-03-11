@@ -2,7 +2,7 @@
 
 if test $# != 2 -o $0 != "./install_gnupoc_s60_50"; then
   echo "Usage: ./install_gnupoc_s60_50 <path-to-sdk-zip> <target-dir>"
-  echo " e.g.: ./install_gnupoc_s60_50 S60_5th_Edition_SDK_v0_9_en.zip ~/symbian-sdks/s60_50"
+  echo " e.g.: ./install_gnupoc_s60_50 S60_5th_Edition_SDK_v1_0_en.zip ~/symbian-sdks/s60_50"
   exit 1
 fi
 
@@ -54,7 +54,10 @@ unshield -g Cpp_Examples x _e/data2.cab
 mv Cpp_Examples $DEST/s60cppexamples
 
 unshield -g Symbian_Examples x _e/data2.cab
-mv Symbian_Examples $DEST/examples
+if [ -d Symbian_Examples ] ; then mv Symbian_Examples $DEST/examples; fi
+
+unshield -g Symbian x _e/data2.cab
+if [ -d Symbian ] ; then mv Symbian $DEST/examples; fi
 
 unshield -g S60_tools x _e/data2.cab
 mv S60_tools $DEST/s60tools
