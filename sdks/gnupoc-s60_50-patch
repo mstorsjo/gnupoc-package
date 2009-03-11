@@ -1,7 +1,7 @@
 Index: cl_generic.pm
 ===================================================================
---- cl_generic.pm	(.../tags/orig)	(revision 3425)
-+++ cl_generic.pm	(.../trunk)	(revision 3596)
+--- cl_generic.pm	(.../tags/orig)	(revision 3605)
++++ cl_generic.pm	(.../trunk)	(revision 3606)
 @@ -31,8 +31,8 @@
  
  use File::Basename;
@@ -182,8 +182,8 @@ Index: cl_generic.pm
  	my @systemIncludes = &main::Path_Chop(&main::Path_AbsToWork(&main::ResourceSysIncPaths));
 Index: e32env.pm
 ===================================================================
---- e32env.pm	(.../tags/orig)	(revision 3425)
-+++ e32env.pm	(.../trunk)	(revision 3596)
+--- e32env.pm	(.../tags/orig)	(revision 3605)
++++ e32env.pm	(.../trunk)	(revision 3606)
 @@ -6,7 +6,7 @@
  # Contains information for makmake and associated e32tools perl programs
  # within the Epoc32 Environment
@@ -251,8 +251,8 @@ Index: e32env.pm
  }
 Index: winutl.pm
 ===================================================================
---- winutl.pm	(.../tags/orig)	(revision 3425)
-+++ winutl.pm	(.../trunk)	(revision 3596)
+--- winutl.pm	(.../tags/orig)	(revision 3605)
++++ winutl.pm	(.../trunk)	(revision 3606)
 @@ -7,7 +7,7 @@
  
  # this package does various ancillary things for windows modules
@@ -298,7 +298,7 @@ Index: winutl.pm
 Index: extmake
 ===================================================================
 --- extmake	(.../tags/orig)	(revision 0)
-+++ extmake	(.../trunk)	(revision 3596)
++++ extmake	(.../trunk)	(revision 3606)
 @@ -0,0 +1,4 @@
 +#!/bin/sh
 +
@@ -307,7 +307,7 @@ Index: extmake
 Index: genbldinf.pl
 ===================================================================
 --- genbldinf.pl	(.../tags/orig)	(revision 0)
-+++ genbldinf.pl	(.../trunk)	(revision 3596)
++++ genbldinf.pl	(.../trunk)	(revision 3606)
 @@ -0,0 +1,38 @@
 +#!/usr/bin/perl -w
 +#
@@ -349,8 +349,8 @@ Index: genbldinf.pl
 +system ("cat $BLDINF");
 Index: cl_codewarrior.pm
 ===================================================================
---- cl_codewarrior.pm	(.../tags/orig)	(revision 3425)
-+++ cl_codewarrior.pm	(.../trunk)	(revision 3596)
+--- cl_codewarrior.pm	(.../tags/orig)	(revision 3605)
++++ cl_codewarrior.pm	(.../trunk)	(revision 3606)
 @@ -4,7 +4,7 @@
  #
  
@@ -957,8 +957,8 @@ Index: cl_codewarrior.pm
  				"\n"
 Index: eshell.pl
 ===================================================================
---- eshell.pl	(.../tags/orig)	(revision 3425)
-+++ eshell.pl	(.../trunk)	(revision 3596)
+--- eshell.pl	(.../tags/orig)	(revision 3605)
++++ eshell.pl	(.../trunk)	(revision 3606)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  #
@@ -1000,7 +1000,7 @@ Index: eshell.pl
 Index: bldmake
 ===================================================================
 --- bldmake	(.../tags/orig)	(revision 0)
-+++ bldmake	(.../trunk)	(revision 3596)
++++ bldmake	(.../trunk)	(revision 3606)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -1016,8 +1016,8 @@ Index: bldmake
 +perl -S bldmake.pl "$@"
 Index: lockit_info.pm
 ===================================================================
---- lockit_info.pm	(.../tags/orig)	(revision 3425)
-+++ lockit_info.pm	(.../trunk)	(revision 3596)
+--- lockit_info.pm	(.../tags/orig)	(revision 3605)
++++ lockit_info.pm	(.../trunk)	(revision 3606)
 @@ -22,7 +22,7 @@
  	Close_InfoFile
  );
@@ -1205,8 +1205,8 @@ Index: lockit_info.pm
  	my %loggedFiles;
 Index: makmake.pl
 ===================================================================
---- makmake.pl	(.../tags/orig)	(revision 3425)
-+++ makmake.pl	(.../trunk)	(revision 3596)
+--- makmake.pl	(.../tags/orig)	(revision 3605)
++++ makmake.pl	(.../trunk)	(revision 3606)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -1269,7 +1269,7 @@ Index: makmake.pl
  	}
  	
  	if ($Options{debug}) {
-@@ -253,10 +254,10 @@
+@@ -254,10 +255,10 @@
  	# set up the makefile filepath - need to do this before loading the platform module
  	# because UID source file will be added and set up in the makefile path under WINS
  	if ($Options{d}) {
@@ -1282,7 +1282,7 @@ Index: makmake.pl
  	}
  }
  
-@@ -453,8 +454,8 @@
+@@ -454,8 +455,8 @@
  	$MAKEFILE =~ s/\.$FeatureVariantInfo{NAME}$/\.default/;
  
  	# If the default makefile doesn't exist it will need to be created in which case we need the platform makefile name
@@ -1293,7 +1293,7 @@ Index: makmake.pl
  	my $plat_target = 'MAKEFILE' . &Path_Split('Base',$MMPFILE);
  
  	# Pattern match any target whatsoever with a prerequisite on the default makefile
-@@ -521,11 +522,11 @@
+@@ -522,11 +523,11 @@
      
      ## Add default system include info for TOOLS2
      if ($PlatArg eq 'TOOLS2') {    	
@@ -1307,7 +1307,7 @@ Index: makmake.pl
  		push @SysIncPaths, $inc;
  	}
  
-@@ -543,7 +544,7 @@
+@@ -544,7 +545,7 @@
  	# Load the Dependency Generator
  	eval { &Load_ModuleL('MAKDEPS'); };
  	die $@ if $@;
@@ -1316,7 +1316,7 @@ Index: makmake.pl
  	die $@ if $@;
  	if ($Options{v}) {
  		&Deps_SetVerbose;
-@@ -601,7 +602,8 @@
+@@ -602,7 +603,8 @@
  		if ($Options{v}) {
  			print "Resource: \"$$CurResourceRef{Trg}\"\n";
  		}
@@ -1326,7 +1326,7 @@ Index: makmake.pl
  		die $@ if $@;
  		&PMResrcBld if defined &PMResrcBld;
  		undef @CurDepList;
-@@ -619,11 +621,9 @@
+@@ -620,11 +622,9 @@
  
  # Add tools-relative include path to sys includes, to allow for shared include\aiftool.rh
  	use FindBin;
@@ -1340,7 +1340,7 @@ Index: makmake.pl
  	&Deps_SetSysIncPaths(@ResourceSysIncPaths);
  
  	my $LoopAifRef;
-@@ -790,16 +790,16 @@
+@@ -791,16 +791,16 @@
  				}
  #				$RomFileType='primary[MAGIC]' if $Trg eq 'EKERN.EXE';
  #				$RomFileType='secondary[MAGIC]' if $Trg eq 'EFILE.EXE';
@@ -1360,7 +1360,7 @@ Index: makmake.pl
  #				}
  				my $RomFile=$LinkAsBase;
  				if ($$ref{File}) {
-@@ -822,7 +822,7 @@
+@@ -823,7 +823,7 @@
  				
  				$ABIDir = '##KMAIN##' if ($KHash1{lc $TrgType{Name}});
  				$ABIDir = '##KMAIN##' if ($KHash2{lc $RomFileType});
@@ -1369,7 +1369,7 @@ Index: makmake.pl
  				my $IbyTextTo="$RomPath$RomFile";
  				my $Spaces= 60>length($IbyTextFrom) ? 60-length($IbyTextFrom) : 1; 
  #				&Output("\t\@echo \"", $IbyTextFrom, ' 'x$Spaces, "$IbyTextTo $RomDecorations\"\n");
-@@ -832,7 +832,7 @@
+@@ -833,7 +833,7 @@
  				my $ABIDir = '##MAIN##';
  				$ABIDir = '##KMAIN##' if ($KHash1{lc $TrgType{Name}});
  				my $RomFileType='data';
@@ -1378,7 +1378,7 @@ Index: makmake.pl
  				if ($$ref{Path}) {
  					$RomPath=$$ref{Path};
  				}
-@@ -841,7 +841,7 @@
+@@ -842,7 +842,7 @@
  					$RomFile=$$ref{File};
  				}
  				my $RomDecorations='attrib=r';
@@ -1387,7 +1387,7 @@ Index: makmake.pl
  				my $IbyTextTo="$RomPath$RomFile";
  				my $Spaces= 60>length($IbyTextFrom) ? 60-length($IbyTextFrom) : 1; 
  #				&Output("\t\@echo \"", $IbyTextFrom, ' 'x$Spaces, "$IbyTextTo $RomDecorations\"\n");
-@@ -912,7 +912,7 @@
+@@ -913,7 +913,7 @@
      # set package to ignore warnings about missing .def file. 
      &Mmp_SetIgnoreMissingDef;
      
@@ -1396,7 +1396,7 @@ Index: makmake.pl
  	return $@ if $@;
  	my %EABIDef=%{&Mmp_Def};
  	
-@@ -950,7 +950,7 @@
+@@ -951,7 +951,7 @@
  	&Mmp_SetIgnoreMissingDef;
  	}
  
@@ -1405,7 +1405,7 @@ Index: makmake.pl
  	return $@ if $@;
  
  	%WarningLevel=&Mmp_WarningLevel;
-@@ -1025,15 +1025,14 @@
+@@ -1026,15 +1026,14 @@
  	undef %Path;
  
  #	set up ASSP link path - this is the path where the target looks for ASSP-specific import libraries
@@ -1424,7 +1424,7 @@ Index: makmake.pl
  }
  
  sub InitLinkPaths() {
-@@ -1045,34 +1044,34 @@
+@@ -1046,34 +1045,34 @@
  	my $UnderlyingABI=$ABI;
  	$UnderlyingABI=&PMUnderlyingABI($ABI) if defined &PMUnderlyingABI;
  
@@ -1468,7 +1468,7 @@ Index: makmake.pl
  	}
  	else {
  		$Path{Rel}=$Path{StatLink}; # static libraries can't #define the __SINGLE__ macro
-@@ -1147,10 +1146,10 @@
+@@ -1148,10 +1147,10 @@
  	if ($CurBld) {
  #regression hack
  		if ($Plat{OS} eq 'EPOC32') {
@@ -1481,7 +1481,7 @@ Index: makmake.pl
  		}
  #regression hack end
  	}
-@@ -1211,7 +1210,7 @@
+@@ -1212,7 +1211,7 @@
  	my $Path=$Path{"Bld"};
  	if ($CurBld) {
  		$Path.=$FeatureVariantInfo{$CurBld."_LABEL"}."\\" if (%FeatureVariantInfo && !$FeatureVariantInfo{INVARIANT} && $FeatureVariantInfo{$CurBld."_LABEL"});
@@ -1490,7 +1490,7 @@ Index: makmake.pl
  	}
  	$Path;
  }
-@@ -1228,7 +1227,7 @@
+@@ -1229,7 +1228,7 @@
  	$DataLinkAddress;
  }
  sub DataPath () {
@@ -1499,7 +1499,7 @@ Index: makmake.pl
  }
  sub DebugLibList () {
  	@DebugLibList;
-@@ -1257,22 +1256,22 @@
+@@ -1258,22 +1257,22 @@
  	sort @DocList;
  }
  sub EPOCPath () {
@@ -1528,7 +1528,7 @@ Index: makmake.pl
  }
  sub Exports () {
  	@{$TrgType{Exports}{$Plat{"DefFile"}}};
-@@ -1301,13 +1300,13 @@
+@@ -1302,13 +1301,13 @@
  	if ($CurBld) {
  #regression hack
  		if (($Plat{DefFile} eq 'EABI') || ($Plat{OS} eq 'TOOLS2')) {
@@ -1545,7 +1545,7 @@ Index: makmake.pl
  		}
  #regression hack end
  	}
-@@ -1331,13 +1330,13 @@
+@@ -1332,13 +1331,13 @@
  	if ($CurBld) {
  #regression hack
  		if ($Plat{DefFile} eq 'EABI') {
@@ -1562,7 +1562,7 @@ Index: makmake.pl
  		}
  #regression hack end
  	}
-@@ -1395,7 +1394,7 @@
+@@ -1396,7 +1395,7 @@
  sub RelPath () {
  	my $Path=$Path{Rel};
  	if ($CurBld) {
@@ -1571,7 +1571,7 @@ Index: makmake.pl
  	}
  	$Path;
  }
-@@ -1413,7 +1412,7 @@
+@@ -1414,7 +1413,7 @@
  	@StdIncPaths=();
  	my $Path;
  	foreach $Path (@_) {
@@ -1580,7 +1580,7 @@ Index: makmake.pl
  		push @StdIncPaths, $Path;	# only place drive letters may appear, up to modules to handle
  	}
  }
-@@ -1440,7 +1439,8 @@
+@@ -1441,7 +1440,8 @@
  sub StatLinkPath () {
  	my $Path=$Path{StatLink};
  	if ($CurBld) {
@@ -1592,8 +1592,8 @@ Index: makmake.pl
  }
 Index: epocmbm.pl
 ===================================================================
---- epocmbm.pl	(.../tags/orig)	(revision 3425)
-+++ epocmbm.pl	(.../trunk)	(revision 3596)
+--- epocmbm.pl	(.../tags/orig)	(revision 3605)
++++ epocmbm.pl	(.../trunk)	(revision 3606)
 @@ -14,7 +14,7 @@
  BEGIN {
  	require 5.005_03;		# check user has a version of perl that will cope
@@ -1620,8 +1620,8 @@ Index: epocmbm.pl
  		print "* BMCONV failed\n";
 Index: mmp.pm
 ===================================================================
---- mmp.pm	(.../tags/orig)	(revision 3425)
-+++ mmp.pm	(.../trunk)	(revision 3596)
+--- mmp.pm	(.../tags/orig)	(revision 3605)
++++ mmp.pm	(.../trunk)	(revision 3606)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -1672,7 +1672,7 @@ Index: mmp.pm
  use Cwd;
  
  my %ProcessPriorityNames = (
-@@ -327,12 +329,10 @@
+@@ -328,12 +330,10 @@
  	}
  
  	my $current = cwd;
@@ -1686,7 +1686,7 @@ Index: mmp.pm
  	push @checkSourceUserIncludePaths, "\.";
  	push @checkSourceUserIncludePaths, $current;
  	my @checkSourceSystemIncludePaths = ();
-@@ -367,7 +367,7 @@
+@@ -368,7 +368,7 @@
  	my ($CurSrcPath, $MmpMacro, $Line);
  	$CurSrcPath=$MmpPath;
  
@@ -1695,7 +1695,7 @@ Index: mmp.pm
  	@{$DocHash{$MmpPath}}=(&Path_Split('File', $MMPFILE));
  	$CheckDoc{$MMPFILE}='zero - specified by default';
  
-@@ -403,7 +403,7 @@
+@@ -404,7 +404,7 @@
  		my $mainElement = $_;
  		
  		if ($PlatTxtSwitch) {
@@ -1704,7 +1704,7 @@ Index: mmp.pm
  				$PlatTxtSwitch=0;
  				next LINE;
  			}
-@@ -411,7 +411,7 @@
+@@ -412,7 +412,7 @@
  			next LINE;
  		}
  		if ($OtherPlatSwitch) {
@@ -1713,7 +1713,7 @@ Index: mmp.pm
  				$OtherPlatSwitch=0;
  				next LINE;
  			}
-@@ -419,15 +419,15 @@
+@@ -420,15 +420,15 @@
  		}
  		# ----------- handle body of START BITMAP ... END -------------
  		if (%CurBitMap) {
@@ -1732,7 +1732,7 @@ Index: mmp.pm
  						push @MmpDie, "$CurFile($LineNum) : BITMAP color depth \"$_\" - unexpected format\n";
  					}
  				}
-@@ -436,8 +436,8 @@
+@@ -437,8 +437,8 @@
  					CheckSource_MetaData(%CheckSourceMMPMetaData, $CurFile, "BITMAP SOURCE", $_, $LineNum, $CheckSource_PhysicalCheck, $CurBitMapSrcPath);
  					$_ = &Path_Norm($_);
  					
@@ -1742,7 +1742,7 @@ Index: mmp.pm
  					push @{$CurBitMap{Source}}, { # sources must be kept in order
  						Src=>$bitmap,
  						ClDepth=>shift @ClDepths	# take next color depth from the list
-@@ -448,29 +448,30 @@
+@@ -449,29 +449,30 @@
  				}
  				next LINE;
  			}
@@ -1777,7 +1777,7 @@ Index: mmp.pm
  				if ($CurBitMap{Hdr}) {
  					push @MmpWarn, "$CurFile($LineNum) : Bitmap HEADER already specified at line $CurBitMap{Hdr}\n";
  					next LINE;
-@@ -483,7 +484,7 @@
+@@ -484,7 +485,7 @@
  			}
  
  
@@ -1786,7 +1786,7 @@ Index: mmp.pm
  				if ($CurBitMap{TrgPath}) {
  					push @MmpWarn, "$CurFile($LineNum) : Bitmap TARGETPATH already specified\n";
  					next LINE;
-@@ -492,12 +493,13 @@
+@@ -493,12 +494,13 @@
  					push @MmpDie, "$CurFile($LineNum) : No path specified with Bitmap keyword TARGETPATH\n";
  					next LINE;
  				}
@@ -1803,7 +1803,7 @@ Index: mmp.pm
  				if (@$Line) {
  					push @MmpWarn, "$CurFile($LineNum) : Too many arguments for Bitmap keyword TARGETPATH\n";
  				}
-@@ -508,7 +510,7 @@
+@@ -509,7 +511,7 @@
  		
  		# ----------- handle body of START RESOURCE ... END -------------
  		if (%CurResource) {
@@ -1812,7 +1812,7 @@ Index: mmp.pm
  				$CurResource{SrcPath}=$CurSrcPath;
  				my %Resource=%CurResource;
  				undef %CurResource;
-@@ -516,7 +518,7 @@
+@@ -517,7 +519,7 @@
  				undef %ResourceCheckLang;
  				next LINE;
  			}
@@ -1821,7 +1821,7 @@ Index: mmp.pm
  				if ($CurResource{Hdr}) {
  					push @MmpWarn, "$CurFile($LineNum) : Resource HEADER already specified at line $CurResource{Hdr}\n";
  					next LINE;
-@@ -531,7 +533,7 @@
+@@ -532,7 +534,7 @@
  				}
  				next LINE;
  			}
@@ -1830,7 +1830,7 @@ Index: mmp.pm
  				if ($CurResource{Hdronly}) {
  					push @MmpWarn, "$CurFile($LineNum) : Resource HEADERONLY already specified at line $CurResource{Hdr}\n";
  					next LINE;
-@@ -547,7 +549,7 @@
+@@ -548,7 +550,7 @@
  				next LINE;
  			}
  
@@ -1839,7 +1839,7 @@ Index: mmp.pm
  				if (@$Line) {
  					my $Candidate;
  					foreach $Candidate (@$Line) {
-@@ -555,7 +557,7 @@
+@@ -556,7 +558,7 @@
  							push @MmpWarn, "$CurFile($LineNum) : Duplicate Language \"$Candidate\" at line $ResourceCheckLang{$Candidate}\n";
  							next; 
  						}
@@ -1848,7 +1848,7 @@ Index: mmp.pm
  						$ResourceCheckLang{$Candidate}="$CurFile($LineNum)";
  					}
  					next LINE;
-@@ -563,7 +565,7 @@
+@@ -564,7 +566,7 @@
  				push @MmpWarn, "$CurFile($LineNum) : No Languages specified for keyword LANG\n";
  				next LINE;
  			}
@@ -1857,7 +1857,7 @@ Index: mmp.pm
  				if ($CurResource{BaseTrg}) {
  					push @MmpWarn, "$CurFile($LineNum) : Resource TARGET already specified\n";
  					next LINE;
-@@ -582,7 +584,7 @@
+@@ -583,7 +585,7 @@
  				}
  				next LINE;
  			}
@@ -1866,7 +1866,7 @@ Index: mmp.pm
  				if ($CurResource{TrgPath}) {
  					push @MmpWarn, "$CurFile($LineNum) : Resource TARGETPATH already specified\n";
  					next LINE;
-@@ -591,18 +593,19 @@
+@@ -592,18 +594,19 @@
  					push @MmpDie, "$CurFile($LineNum) : No path specified with Resource keyword TARGETPATH\n";
  					next LINE;
  				}
@@ -1890,7 +1890,7 @@ Index: mmp.pm
  				if (@$Line) {
  					if (scalar @$Line>2) {
  						push @MmpWarn, "$CurFile($LineNum) : Can't specify more than 2 Uids\n";
-@@ -645,13 +648,13 @@
+@@ -646,13 +649,13 @@
  		# ----------- handle body of START STRINGTABLE ... END -------------
  		if(%CurStringTable)
  		{	
@@ -1906,7 +1906,7 @@ Index: mmp.pm
  				if (scalar @$Line != 1) {
  					push @MmpDie, "$CurFile($LineNum) : Wrong number of arguments for EXPORTPATH\n";
  				} 
-@@ -659,7 +662,8 @@
+@@ -660,7 +663,8 @@
  					push @MmpDie, "$CurFile($LineNum) : Redefinition of EXPORTPATH\n";
  				}
  				else {
@@ -1916,7 +1916,7 @@ Index: mmp.pm
  					$CurStringTable{ExportPath} = $src;
  
  					CheckSource_MetaData(%CheckSourceMMPMetaData, $CurFile, "STRINGTABLE EXPORTPATH", $CurStringTable{ExportPath}, $LineNum);
-@@ -672,7 +676,7 @@
+@@ -673,7 +677,7 @@
  				}
  				next LINE;
  			}
@@ -1925,7 +1925,7 @@ Index: mmp.pm
  				if ($CurStringTable{Hdronly}) {
  					push @MmpWarn, "$CurFile($LineNum) : Stringtable HEADERONLY already specified\n";
  					next LINE;
-@@ -685,7 +689,7 @@
+@@ -686,7 +690,7 @@
  			}
  		}
  		# ----------- handle top-level MMP file -------------------	
@@ -1934,7 +1934,7 @@ Index: mmp.pm
  			unless ($_=uc shift @$Line) {
  				push @MmpWarn, "$CurFile($LineNum) : No Argument specified for START block\n";
  				next LINE;
-@@ -696,11 +700,12 @@
+@@ -697,11 +701,12 @@
  					next LINE;
  				}
  			}
@@ -1948,7 +1948,7 @@ Index: mmp.pm
  				if (@$Line) {
  					push @MmpWarn, "$CurFile($LineNum) : Too many arguments for START BITMAP clause\n";
  				}
-@@ -709,12 +714,13 @@
+@@ -710,12 +715,13 @@
  				$CurBitMap{Trg} = &Path_Norm($CurBitMap{Trg});
  				next LINE;
  			}
@@ -1964,7 +1964,7 @@ Index: mmp.pm
  					CheckSource_MetaData(%CheckSourceMMPMetaData, $CurFile, "START RESOURCE", $src, $LineNum, $CheckSource_PhysicalCheck, $CurSrcPath);
  					$src = &Path_Norm($src);
  				    
-@@ -724,16 +730,17 @@
+@@ -725,16 +731,17 @@
  				
  				next LINE;
  			}
@@ -1986,7 +1986,7 @@ Index: mmp.pm
  					$CurStringTable{BaseTrg}=&Path_Split('Base',$Candidate);
  					my $path=&Path_Split('Path',$Candidate);
  					if($path){
-@@ -751,15 +758,18 @@
+@@ -752,15 +759,18 @@
  			next LINE;
  		}
  
@@ -2007,7 +2007,7 @@ Index: mmp.pm
  			$Data{Source}=&Path_MakeAbs($CurFile, "$dir$file");
  			unless (-e "$Data{Source}") {
  				push @MmpWarn, "$CurFile($LineNum) : AIF source \"$Data{Source}\" not found\n";
-@@ -781,7 +791,8 @@
+@@ -782,7 +792,8 @@
  			}
  			@ClDepths = (@ClDepths) x @bitmaps;	# make a sufficiently long list of color depths
  			foreach $file (@bitmaps) {
@@ -2017,7 +2017,7 @@ Index: mmp.pm
  					$file = &Path_MakeAbs($CurFile, "$dir$file");
  				}
  				push @{$Data{BitMaps}}, { # sources must be kept in order
-@@ -794,21 +805,21 @@
+@@ -795,21 +806,21 @@
  			}
  			next LINE;
  		}
@@ -2042,7 +2042,7 @@ Index: mmp.pm
  			if (@$Line) {
  				my $Candidate;
  				foreach $Candidate (@$Line) {
-@@ -831,7 +842,7 @@
+@@ -832,7 +843,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Libraries specified for keyword ASSPLIBRARY\n";
  			next LINE;
  		}
@@ -2051,7 +2051,7 @@ Index: mmp.pm
  			if (defined($Capability)) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine CAPABILITY\n";
  				next LINE;
-@@ -882,7 +893,7 @@
+@@ -883,7 +894,7 @@
  			}
  			next LINE;
  		}
@@ -2060,7 +2060,7 @@ Index: mmp.pm
  			if (@$Line) {
  				my $Candidate;
  				foreach $Candidate (@$Line) {
-@@ -905,7 +916,7 @@
+@@ -906,7 +917,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Libraries specified for keyword DEBUGLIBRARY\n";
  			next LINE;
  		}
@@ -2069,7 +2069,7 @@ Index: mmp.pm
  			if ($CheckDef) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine DEFFILE\n";
  				next LINE;
-@@ -915,6 +926,7 @@
+@@ -916,6 +927,7 @@
  				push @MmpWarn, "$CurFile($LineNum) : No file specified for keyword DEFFILE\n";
  				next LINE;
  			}
@@ -2077,7 +2077,7 @@ Index: mmp.pm
  
  			$Def{CheckSource_MMPEntry} = $_;		
  			$Def{CheckSource_LineNumber} = $LineNum;
-@@ -935,10 +947,11 @@
+@@ -936,10 +948,11 @@
  			}
  			next LINE;
  		}
@@ -2090,7 +2090,7 @@ Index: mmp.pm
  					CheckSource_MetaData(%CheckSourceMMPMetaData, $CurFile, $mainElement, $Candidate, $LineNum, $CheckSource_PhysicalCheck, $CurSrcPath);
  					$Candidate = &Path_Norm($Candidate);
  					
-@@ -958,28 +971,28 @@
+@@ -959,28 +972,28 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Files specified for keyword DOCUMENT\n";
  			next LINE;
  		}
@@ -2123,7 +2123,7 @@ Index: mmp.pm
  			if (@$Line) { 
  				my $temp=&main::Genutl_AnyToHex(shift @$Line);
  				if (defined $temp) {
-@@ -991,14 +1004,14 @@
+@@ -992,14 +1005,14 @@
  			push @MmpWarn, "$CurFile($LineNum) : No data link address specified for keyword $_\n";
  			next LINE;
  		}
@@ -2140,7 +2140,7 @@ Index: mmp.pm
  			if (@$Line) {
  				my $tempMin=&main::Genutl_AnyToHex(shift @$Line);
  				if (defined $tempMin) {
-@@ -1021,7 +1034,7 @@
+@@ -1022,7 +1035,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No minimum heap size specified for keyword $_\n";
  			next LINE;
  		}
@@ -2149,7 +2149,7 @@ Index: mmp.pm
  			if ($ProcessPriority) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine EPOCPROCESSPRIORITY\n";
  				next LINE;
-@@ -1037,7 +1050,7 @@
+@@ -1038,7 +1051,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Priority specified for keyword EPOCPROCESSPRIORITY\n";
  			next LINE;
  		}
@@ -2158,7 +2158,7 @@ Index: mmp.pm
  			if (@$Line) {
  				my $temp=&main::Genutl_AnyToHex(shift @$Line);
  				if (defined $temp) {
-@@ -1050,7 +1063,7 @@
+@@ -1051,7 +1064,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No stack size specified for keyword STACKSIZE\n";
  			next LINE;
  		}
@@ -2167,7 +2167,7 @@ Index: mmp.pm
  			if (@$Line) {
  				push @MmpWarn, "$CurFile($LineNum) : Keyword $_ takes no arguments\n";
  			}
-@@ -1058,7 +1071,7 @@
+@@ -1059,7 +1072,7 @@
              $CompressTargetMethod=NOCOMPRESSIONMETHOD; # means 'use default'
  			next LINE;
  		}
@@ -2176,7 +2176,7 @@ Index: mmp.pm
  			if (@$Line) {
  				push @MmpWarn, "$CurFile($LineNum) : Keyword $_ takes no arguments\n";
  			}
-@@ -1066,7 +1079,7 @@
+@@ -1067,7 +1080,7 @@
              $CompressTargetMethod=NOCOMPRESSIONMETHOD;
  			next LINE;
  		}
@@ -2185,7 +2185,7 @@ Index: mmp.pm
  			if (@$Line) {
  				push @MmpWarn, "$CurFile($LineNum) : Keyword $_ takes no arguments\n";
  			}
-@@ -1074,7 +1087,7 @@
+@@ -1075,7 +1088,7 @@
  			$CompressTargetMethod=INFLATECOMPRESSIONMETHOD;
  			next LINE;
  		}
@@ -2194,7 +2194,7 @@ Index: mmp.pm
  			if (@$Line) {
  				push @MmpWarn, "$CurFile($LineNum) : Keyword $_ takes no arguments\n";
  			}
-@@ -1082,14 +1095,14 @@
+@@ -1083,14 +1096,14 @@
  			$CompressTargetMethod=BYTEPAIRCOMPRESSIONMETHOD;
  			next LINE;
  		}
@@ -2211,7 +2211,7 @@ Index: mmp.pm
  			if ($FirstLib) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine FIRSTLIB\n";
  				next LINE;
-@@ -1103,7 +1116,7 @@
+@@ -1104,7 +1117,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : Nothing specified for keyword FIRSTLIB\n";
  			next LINE;
  		}
@@ -2220,7 +2220,7 @@ Index: mmp.pm
  			if (@$Line) {
  				my $Candidate;
  				foreach $Candidate (@$Line) {
-@@ -1111,7 +1124,7 @@
+@@ -1112,7 +1125,7 @@
  						push @MmpWarn, "$CurFile($LineNum) : Duplicate Language \"$Candidate\" at line $CheckLang{$Candidate}\n";
  						next; 
  					}
@@ -2229,7 +2229,7 @@ Index: mmp.pm
  					$CheckLang{$Candidate}="$CurFile($LineNum)";
  				}
  				next LINE;
-@@ -1119,7 +1132,7 @@
+@@ -1120,7 +1133,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Languages specified for keyword LANG\n";
  			next LINE;
  		}
@@ -2238,7 +2238,7 @@ Index: mmp.pm
  			if (@$Line) {
  				my $Candidate;
  				foreach $Candidate (@$Line) {
-@@ -1143,7 +1156,7 @@
+@@ -1144,7 +1157,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Libraries specified for keyword LIBRARY\n";
  			next LINE;
  		}
@@ -2247,7 +2247,7 @@ Index: mmp.pm
  			if ($LinkAs) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine LINKAS\n";
  				next LINE;
-@@ -1154,7 +1167,7 @@
+@@ -1155,7 +1168,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No name specified for keyword LINKAS\n";
  			next LINE;
  		}
@@ -2256,7 +2256,7 @@ Index: mmp.pm
  			if ($NoExportLibrary) {
  				push @MmpDie, "$CurFile($LineNum) : Can't specify both EXPORTLIBRARY and NOEXPORTLIBRARY\n";
  				next LINE;
-@@ -1172,7 +1185,7 @@
+@@ -1173,7 +1186,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No name specified for keyword EXPORTLIBRARY\n";
  			next LINE;
  		}
@@ -2265,7 +2265,7 @@ Index: mmp.pm
  			if ($ExportLibrary) {
  				push @MmpDie, "$CurFile($LineNum) : Can't specify both EXPORTLIBRARY and NOEXPORTLIBRARY\n";
  				next LINE;
-@@ -1180,13 +1193,13 @@
+@@ -1181,13 +1194,13 @@
  			$NoExportLibrary = 1;
  			next LINE;
  		}
@@ -2281,7 +2281,7 @@ Index: mmp.pm
  					}
  					push @Macros, $Candidate;
  					$CheckMacro{$Candidate}="$CurFile($LineNum)";
-@@ -1195,7 +1208,7 @@
+@@ -1196,7 +1209,7 @@
  			}
  			next LINE; 
  		}
@@ -2290,7 +2290,7 @@ Index: mmp.pm
  			if ($NoStrictDef) {
  				push @MmpWarn, "$CurFile($LineNum) : NOSTRICTDEF already set\n";
  				next LINE;
-@@ -1206,7 +1219,7 @@
+@@ -1207,7 +1220,7 @@
  			$NoStrictDef=1;
  			next LINE;
  		}
@@ -2299,7 +2299,7 @@ Index: mmp.pm
  			if ($CheckRamTargets) {
  				push @MmpWarn, "$CurFile($LineNum) : RAM targets already specified at line $CheckRamTargets\n";
  				next LINE;
-@@ -1230,10 +1243,11 @@
+@@ -1231,10 +1244,11 @@
  			}
  			next LINE;
  		}
@@ -2312,7 +2312,7 @@ Index: mmp.pm
  					CheckSource_MetaData(%CheckSourceMMPMetaData, $CurFile, $mainElement, $Candidate, $LineNum, $CheckSource_PhysicalCheck, $CurSrcPath);
  					$Candidate = &Path_Norm($Candidate);
  					
-@@ -1261,7 +1275,7 @@
+@@ -1262,7 +1276,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Resources specified for keyword RESOURCE\n";
  			next LINE; 
  		}
@@ -2321,7 +2321,7 @@ Index: mmp.pm
  			if ($CheckRomTargets) {
  				push @MmpWarn, "$CurFile($LineNum) : ROM targets already specified at line $CheckRomTargets\n";
  				next LINE;
-@@ -1286,14 +1300,15 @@
+@@ -1287,14 +1301,15 @@
  			}
  			next LINE;
  		}
@@ -2339,7 +2339,7 @@ Index: mmp.pm
  					$CurSource{BaseTrg}=&Path_Split('Base',$Candidate);
  					my $path=&Path_Split('Path',$Candidate);
  					if($path){
-@@ -1314,12 +1329,13 @@
+@@ -1315,12 +1330,13 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Sources specified for keyword SOURCE\n";
  			next LINE; 
  		}
@@ -2355,7 +2355,7 @@ Index: mmp.pm
  				$CurSrcPath=&Path_MakeEAbs($EPOCPath,$CurFile,$CurSrcPath);
  				if (-d &Path_Chop($CurSrcPath)) {
  					next LINE;
-@@ -1330,7 +1346,7 @@
+@@ -1331,7 +1347,7 @@
  			push @MmpDie, "$CurFile($LineNum) : No Source Path specified for keyword SOURCEPATH\n";
  			next LINE;
  		}
@@ -2364,7 +2364,7 @@ Index: mmp.pm
  			if (@$Line) {
  				my $Candidate;
  				foreach $Candidate (@$Line) {
-@@ -1350,7 +1366,7 @@
+@@ -1351,7 +1367,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Libraries specified for keyword STATICLIBRARY\n";
  			next LINE;
  		}
@@ -2373,7 +2373,7 @@ Index: mmp.pm
  			if ($MmpFlag{StrictDepend}) {
  				push @MmpWarn, "$CurFile($LineNum) : STRICTDEPEND already set\n";
  				next LINE;
-@@ -1361,14 +1377,15 @@
+@@ -1362,14 +1378,15 @@
  			$MmpFlag{StrictDepend}=1;
  			next LINE;
  		}
@@ -2391,7 +2391,7 @@ Index: mmp.pm
  					$Candidate=&Path_MakeEAbs($EPOCPath,$CurFile,$Candidate);
  					if ($CheckSysInc{$Candidate}) {
  						push @MmpWarn, "$CurFile($LineNum) : Duplicate SYSTEMINCLUDE path $Candidate at line $CheckSysInc{$Candidate}\n";
-@@ -1386,10 +1403,11 @@
+@@ -1387,10 +1404,11 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Paths specified for keyword SYSTEMINCLUDE\n";
  			next LINE;
  		}
@@ -2404,7 +2404,7 @@ Index: mmp.pm
  					CheckSource_MetaData(%CheckSourceMMPMetaData, $CurFile, $mainElement, $Candidate, $LineNum, $CheckSource_PhysicalCheck, $CurSrcPath);
  					$Candidate = &Path_Norm($Candidate);
  					
-@@ -1405,7 +1423,7 @@
+@@ -1406,7 +1424,7 @@
  					$CurResource{BaseTrg}=&Path_Split('Base',$Candidate);
  					$CurResource{Source}=$source;
  					$CurResource{Hdr}="$CurFile($LineNum)";
@@ -2413,7 +2413,7 @@ Index: mmp.pm
  					my %Resource=%CurResource;
  					undef %CurResource;
  					push @ResourceStruct, \%Resource;
-@@ -1418,7 +1436,7 @@
+@@ -1419,7 +1437,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Resources specified for keyword SYSTEMRESOURCE\n";
  			next LINE; 
  		}
@@ -2422,7 +2422,7 @@ Index: mmp.pm
  			if ($Trg) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine TARGET\n";
  				next LINE;
-@@ -1431,7 +1449,7 @@
+@@ -1432,7 +1450,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Target specified for keyword TARGET\n";
  			next LINE;
  		}
@@ -2431,7 +2431,7 @@ Index: mmp.pm
  			if ($TrgPath) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine TARGETPATH\n";
  				next LINE;
-@@ -1440,19 +1458,20 @@
+@@ -1441,19 +1459,20 @@
  				push @MmpWarn, "$CurFile($LineNum) : No Path specified for keyword TARGETPATH\n";
  				next LINE;
  			}
@@ -2456,7 +2456,7 @@ Index: mmp.pm
  			if ($TrgType) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine TARGETTYPE\n";
  				next LINE;
-@@ -1467,7 +1486,7 @@
+@@ -1468,7 +1487,7 @@
  			}
  			next LINE;
  		}
@@ -2465,7 +2465,7 @@ Index: mmp.pm
  			if (@$Line) {
  				foreach (@$Line) {
  					if ($#UidList>=1) {
-@@ -1487,7 +1506,7 @@
+@@ -1488,7 +1507,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Uids specified for keyword UID\n";
  			next LINE;
  		}
@@ -2474,7 +2474,7 @@ Index: mmp.pm
  			if ($SecureId) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine SECUREID\n";
  				next LINE;
-@@ -1506,7 +1525,7 @@
+@@ -1507,7 +1526,7 @@
  			push @MmpWarn, "$CurFile($LineNum) : Missing argument for keyword SECUREID\n";
  			next LINE;
  		}
@@ -2483,7 +2483,7 @@ Index: mmp.pm
  			if (defined($VendorId)) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine VENDORID\n";
  				next LINE;
-@@ -1525,14 +1544,15 @@
+@@ -1526,14 +1545,15 @@
  			push @MmpWarn, "$CurFile($LineNum) : Missing argument for keyword VENDORID\n";
  			next LINE;
  		}
@@ -2501,7 +2501,7 @@ Index: mmp.pm
  					$Candidate=&Path_MakeEAbs($EPOCPath,$CurFile,$Candidate);
  					if ($CheckUserInc{$Candidate}) {
  						push @MmpWarn, "$CurFile($LineNum) : Duplicate USERINCLUDE path \"$Candidate\" at line $CheckUserInc{$Candidate}\n";
-@@ -1550,14 +1570,14 @@
+@@ -1551,14 +1571,14 @@
  			push @MmpWarn, "$CurFile($LineNum) : No Paths specified for keyword USERINCLUDE\n";
  			next LINE;
  		}
@@ -2518,7 +2518,7 @@ Index: mmp.pm
  			if (%Version) {
  				push @MmpDie, "$CurFile($LineNum) : Attempt to redefine VERSION\n";
  				next LINE;
-@@ -1646,21 +1666,21 @@
+@@ -1647,28 +1667,28 @@
  			push @MmpWarn, "$CurFile($LineNum) : ARMFPU must specify either SOFTVFP or VFPV2 as an argument\n";
  			next LINE;
  		}
@@ -2534,9 +2534,17 @@ Index: mmp.pm
  			$PagingTargetMode = UNPAGED;
  			next LINE;
  			}
+-		if( /^DEBUGGABLE_UDEBONLY$/o) {
++		if( /^DEBUGGABLE_UDEBONLY$/oi) {
+ 			$IsDebuggable = DEBUGGABLE_UDEBONLY;
+ 			next LINE;
+ 			}
 -		if( /^DEBUGGABLE$/o) {
 +		if( /^DEBUGGABLE$/oi) {
- 			$IsDebuggable = DEBUGGABLE;
+ 			if ($IsDebuggable != DEBUGGABLE_UDEBONLY)
+ 			{
+ 				$IsDebuggable = DEBUGGABLE;
+ 			}
  			next LINE;
  			}
 -		if( /^FEATUREVARIANT$/o) {
@@ -2544,7 +2552,7 @@ Index: mmp.pm
  			push @MmpDie, "$CurFile($LineNum) : FEATUREVARIANT specified multiple times" if ($FeatureVariant);
  			$FeatureVariant = 1;
  			next LINE;
-@@ -1756,7 +1776,7 @@
+@@ -1764,7 +1784,7 @@
  	}
  
  	# check for languages
@@ -2553,7 +2561,7 @@ Index: mmp.pm
  
    if (&main::EPOCSecurePlatform() && !defined($Capability) &&
      (($TrgType{Basic} eq "DLL") || (uc($TrgType) eq "EXEXP")))
-@@ -1946,7 +1966,7 @@
+@@ -1954,7 +1974,7 @@
  #	Get the EPOC entrypoint static library
  	unless ($FirstLib) {
  		unless ($TrgType{FirstLib}) {
@@ -2562,7 +2570,7 @@ Index: mmp.pm
  		}
  		else {
  			$FirstLib=$TrgType{FirstLib};
-@@ -1993,7 +2013,7 @@
+@@ -2001,7 +2021,7 @@
  	# apply the default .DEF filename, and
  	# check as far as possible that the project is frozen
  	if (($TrgType{NeedDeffile} or $CheckDef)) {
@@ -2571,7 +2579,7 @@ Index: mmp.pm
  			my $augment;
  			if ($ASSPExports) {
  			    if ($$Plat_ref{DefFile} =~ /^\s*EABI\s*/i ) {
-@@ -2008,10 +2028,11 @@
+@@ -2016,10 +2036,11 @@
  					$augment = lc("B$$Plat_ref{DefFile}");
  			    }
  			}
@@ -2588,8 +2596,8 @@ Index: mmp.pm
  		unless ($Def{Base}) {
 Index: maksym.pl
 ===================================================================
---- maksym.pl	(.../tags/orig)	(revision 3425)
-+++ maksym.pl	(.../trunk)	(revision 3596)
+--- maksym.pl	(.../tags/orig)	(revision 3605)
++++ maksym.pl	(.../trunk)	(revision 3606)
 @@ -353,7 +353,7 @@
  {
      my $build;
@@ -2601,8 +2609,8 @@ Index: maksym.pl
      &usage;
 Index: wrappermakefile.pm
 ===================================================================
---- wrappermakefile.pm	(.../tags/orig)	(revision 3425)
-+++ wrappermakefile.pm	(.../trunk)	(revision 3596)
+--- wrappermakefile.pm	(.../tags/orig)	(revision 3605)
++++ wrappermakefile.pm	(.../trunk)	(revision 3606)
 @@ -11,7 +11,7 @@
  	GenerateWrapper
  );
@@ -2615,7 +2623,7 @@ Index: wrappermakefile.pm
 Index: makesis
 ===================================================================
 --- makesis	(.../tags/orig)	(revision 0)
-+++ makesis	(.../trunk)	(revision 3596)
++++ makesis	(.../trunk)	(revision 3606)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -2634,8 +2642,8 @@ Index: makesis
 +wine $ROOT/$PGM.exe "$@"
 Index: efreeze.pl
 ===================================================================
---- efreeze.pl	(.../tags/orig)	(revision 3425)
-+++ efreeze.pl	(.../trunk)	(revision 3596)
+--- efreeze.pl	(.../tags/orig)	(revision 3605)
++++ efreeze.pl	(.../trunk)	(revision 3606)
 @@ -27,9 +27,9 @@
  }
  
@@ -2651,8 +2659,8 @@ Index: efreeze.pl
  # THE MAIN PROGRAM SECTION
 Index: epoc.pl
 ===================================================================
---- epoc.pl	(.../tags/orig)	(revision 3425)
-+++ epoc.pl	(.../trunk)	(revision 3596)
+--- epoc.pl	(.../tags/orig)	(revision 3605)
++++ epoc.pl	(.../trunk)	(revision 3606)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  #
@@ -2704,8 +2712,8 @@ Index: epoc.pl
      return $epocroot;
 Index: genutl.pm
 ===================================================================
---- genutl.pm	(.../tags/orig)	(revision 3425)
-+++ genutl.pm	(.../trunk)	(revision 3596)
+--- genutl.pm	(.../tags/orig)	(revision 3605)
++++ genutl.pm	(.../trunk)	(revision 3606)
 @@ -6,7 +6,7 @@
  
  # Contains utility subroutines for MAKMAKE and associated scripts
@@ -2718,7 +2726,7 @@ Index: genutl.pm
 Index: pfsdump
 ===================================================================
 --- pfsdump	(.../tags/orig)	(revision 0)
-+++ pfsdump	(.../trunk)	(revision 3596)
++++ pfsdump	(.../trunk)	(revision 3606)
 @@ -0,0 +1,17 @@
 +#!/bin/sh
 +#
@@ -2739,8 +2747,8 @@ Index: pfsdump
 +wine $ROOT/$PGM.exe "$@"
 Index: ide_cw.pm
 ===================================================================
---- ide_cw.pm	(.../tags/orig)	(revision 3425)
-+++ ide_cw.pm	(.../trunk)	(revision 3596)
+--- ide_cw.pm	(.../tags/orig)	(revision 3605)
++++ ide_cw.pm	(.../trunk)	(revision 3606)
 @@ -1480,7 +1480,7 @@
  		$UidText.=")\n";
  		$UidText.="#pragma data_seg()\n";
@@ -2752,8 +2760,8 @@ Index: ide_cw.pm
  
 Index: cl_bpabi.pm
 ===================================================================
---- cl_bpabi.pm	(.../tags/orig)	(revision 3425)
-+++ cl_bpabi.pm	(.../trunk)	(revision 3596)
+--- cl_bpabi.pm	(.../tags/orig)	(revision 3605)
++++ cl_bpabi.pm	(.../trunk)	(revision 3606)
 @@ -4,7 +4,7 @@
  #
  
@@ -2792,7 +2800,7 @@ Index: cl_bpabi.pm
  
  use constant NOCOMPRESSIONMETHOD => 0;
  use constant INFLATECOMPRESSIONMETHOD => 1;
-@@ -144,7 +144,7 @@
+@@ -145,7 +145,7 @@
  # shouldn't be linked against itself or other runtime libs
  	$ArmRT = &IsTargetRT;
  	my @AsmFileList = &GetToolChainAsmFileList;
@@ -2801,7 +2809,7 @@ Index: cl_bpabi.pm
  }
  
  my $preinclude;
-@@ -162,13 +162,13 @@
+@@ -163,13 +163,13 @@
  	my $DefFile=&main::DefFile;
  	my $EPOCPath=&main::EPOCPath;
  	my $LinkAs=&main::LinkAs;
@@ -2818,7 +2826,7 @@ Index: cl_bpabi.pm
  	&main::SetStatLinkPath($myStatLinkPath);
  
  	my $VariantFile=&ChangeSlash(&main::VariantFile);
-@@ -216,23 +216,6 @@
+@@ -217,23 +217,6 @@
  	&Generic_Header(0,$Makecmd, 1);	# define standard things using absolute paths and request that a make function
  									# is provided to provide optional conversion of absolute paths to Unix slashes
  
@@ -2842,7 +2850,7 @@ Index: cl_bpabi.pm
  	if ($BasicTrgType=~/^(DLL|EXE)/o)
  	{
  
-@@ -250,12 +233,12 @@
+@@ -251,12 +234,12 @@
  		&main::Output("ifdef LINKER_SYMBOLS_MAP_OPTION\n");
  		foreach (@BldList)
  			{
@@ -2857,7 +2865,7 @@ Index: cl_bpabi.pm
  			}
  		&main::Output("endif\n");
  
-@@ -647,7 +630,7 @@
+@@ -648,7 +631,7 @@
  		if ($BasicTrgType !~ /IMPLIB/io) {
  			&main::Output (
  				" \\\n\t",
@@ -2866,7 +2874,7 @@ Index: cl_bpabi.pm
  			);
  		}
  
-@@ -683,13 +666,13 @@
+@@ -684,13 +667,13 @@
  			if (-e $DefFile) { # effectively "if project frozen ..."
  				if ($Plat =~ /^ARMV5$/) {
  					&main::Output(
@@ -2883,7 +2891,7 @@ Index: cl_bpabi.pm
  					);
  				}
  			}
-@@ -703,32 +686,34 @@
+@@ -704,32 +687,34 @@
  		} else {
  			&main::Output(
  				"\n",
@@ -2927,7 +2935,7 @@ Index: cl_bpabi.pm
  			);
  		}
  
-@@ -742,18 +727,18 @@
+@@ -743,18 +728,18 @@
  				"\n",
  				"# REAL TARGET - LIBRARY (.lib) \n",
  				"\n",
@@ -2952,7 +2960,7 @@ Index: cl_bpabi.pm
  				);
  			}
  		}
-@@ -790,7 +775,7 @@
+@@ -791,7 +776,7 @@
  	if ($DefFile and $BasicTrgType!~/^IMPLIB$/io) {
  # 	    call perl on the script here so make will die if there are errors
  #           - this doesn't happen if calling perl in a batch file
@@ -2961,7 +2969,7 @@ Index: cl_bpabi.pm
  	}
  	&main::Output(
  		"\n",
-@@ -798,11 +783,11 @@
+@@ -799,11 +784,11 @@
  	);
  	if ($DefFile and !$NoExportLibrary) {
  		&main::Output(
@@ -2975,7 +2983,7 @@ Index: cl_bpabi.pm
  			);
  		}
  	}
-@@ -979,9 +964,9 @@
+@@ -980,9 +965,9 @@
  	if ($BasicTrgType=~/^DLL$/o) { # Add the DLL stub library
  		&main::Output(
  			" \\\n\t",
@@ -2987,7 +2995,7 @@ Index: cl_bpabi.pm
  	}
          
  		my $StaticRTLib = "usrt2_2" ;
-@@ -992,15 +977,15 @@
+@@ -993,15 +978,15 @@
  
          my $Plat =  uc(&main::Plat);
          &main::Output(" \\\n\t",getConfigVariable('VIA_FILE_PREFIX'));
@@ -3007,7 +3015,7 @@ Index: cl_bpabi.pm
          
  		if ($TrgType=~/^STDEXE$/o || $TrgType=~/^STDDLL$/o) {
  			$NamedSymLkup = 1;
-@@ -1009,8 +994,8 @@
+@@ -1010,8 +995,8 @@
    			if(not (grep /^libc.dso$/i, @LibList)){
    					push @OEImportLibraryList, "libc.dso";
    			}
@@ -3018,7 +3026,7 @@ Index: cl_bpabi.pm
  			}
  
  	unless ($ArmRT || ($BasicTrgType=~/^LIB$/o)) {
-@@ -1020,9 +1005,9 @@
+@@ -1021,9 +1006,9 @@
  			foreach (@RTLibList) {
  				&main::Output(
  					" \\\n\t",
@@ -3030,7 +3038,7 @@ Index: cl_bpabi.pm
  			}
  	    }
  	}
-@@ -1032,9 +1017,9 @@
+@@ -1033,9 +1018,9 @@
  		foreach (@OELibList) {
  			&main::Output(
  				" \\\n\t",
@@ -3042,7 +3050,7 @@ Index: cl_bpabi.pm
  		}
  	}
  	PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\$_\"\)", @ToolChainLibList);
-@@ -1067,7 +1052,7 @@
+@@ -1068,7 +1053,7 @@
  		"VTBLEXPORTS$Bld="
  	);
          my $vtobj = quotemeta("(VtblExports.o)");
@@ -3051,7 +3059,7 @@ Index: cl_bpabi.pm
  	&main::Output(
  		"\n",
  		"\n"
-@@ -1085,7 +1070,7 @@
+@@ -1086,7 +1071,7 @@
  
  	        &main::Output(
  		        " \\\n\t",
@@ -3060,7 +3068,7 @@ Index: cl_bpabi.pm
  		      );
  
  			$objectFiles .= &main::BldPath.$BaseSrc.".o ";
-@@ -1106,7 +1091,7 @@
+@@ -1107,7 +1092,7 @@
  		if((-e $DefFile) && (!&main::ExportUnfrozen))
  		{
  			&main::Output(
@@ -3069,7 +3077,7 @@ Index: cl_bpabi.pm
  				"\n"
  			);
  		}
-@@ -1128,7 +1113,7 @@
+@@ -1129,7 +1114,7 @@
  	&main::CreateExtraFile($objectsViaFile, $objectFiles);
  	 	 
  		   &main::Output(
@@ -3078,7 +3086,7 @@ Index: cl_bpabi.pm
  		     " : \$(OBJECTS$Bld) \$(LIBS". $Bld . "DEPS)"
              );
  
-@@ -1139,7 +1124,7 @@
+@@ -1140,7 +1125,7 @@
  	}
  #	if ($BasicTrgType=~/^(EXE|DLL)$/o) {
  #		&main::Output(
@@ -3087,7 +3095,7 @@ Index: cl_bpabi.pm
  #		);
  #	}
  #	&main::Output(
-@@ -1157,7 +1142,7 @@
+@@ -1158,7 +1143,7 @@
  #       get rid of any -symbols produced .map file
          if ($BasicTrgType=~/^(DLL|EXE)/o) {
  	        &main::Output(
@@ -3096,7 +3104,7 @@ Index: cl_bpabi.pm
  		);
  		}
  
-@@ -1245,7 +1230,7 @@
+@@ -1246,7 +1231,7 @@
  	            }
  
  	            &main::Output(
@@ -3105,7 +3113,7 @@ Index: cl_bpabi.pm
  					"$ObjFile",
  					" \\\n"
  				);
-@@ -1257,14 +1242,14 @@
+@@ -1258,14 +1243,14 @@
  			    }
  
  			    &main::Output(
@@ -3122,7 +3130,7 @@ Index: cl_bpabi.pm
  #				"\t\t\$(OBJECTS$Bld) \\\n"
  			);
  
-@@ -1297,18 +1282,18 @@
+@@ -1298,18 +1283,18 @@
  	        if(&main::DebugSwitchUsed() ){
  				if(&main::SymbolicDebugEnabled() ) {
  				&main::Output(
@@ -3144,7 +3152,7 @@ Index: cl_bpabi.pm
  			);
  		}
  
-@@ -1435,20 +1420,22 @@
+@@ -1444,20 +1429,22 @@
  		if ($BasicTrgType=~/^DLL$/o || $TrgType=~/^EXEXP$/o || $TrgType=~/^EXEDLL$/o) {
  			if (-e $DefFile) {
  				&main::Output(
@@ -3170,7 +3178,7 @@ Index: cl_bpabi.pm
  				);
  				if(&main::ExportUnfrozen) {
  					&main::Output( ' --unfrozen ');
-@@ -1456,7 +1443,7 @@
+@@ -1465,7 +1452,7 @@
  			}
  		#the input elf file - as the last arg
  		&main::Output(
@@ -3179,7 +3187,7 @@ Index: cl_bpabi.pm
  			" --linkas=$LinkAs"
  			);
  		if (&main::CompressTarget)
-@@ -1492,7 +1479,7 @@
+@@ -1501,7 +1488,7 @@
  		}
  
  		&main::Output(
@@ -3188,7 +3196,7 @@ Index: cl_bpabi.pm
   		);
  
  		if($BasicTrgType=~/^DLL/ && $TrgType!~/^DLL/){
-@@ -1529,7 +1516,7 @@
+@@ -1538,7 +1525,7 @@
  	        &main::Output(
  			"\t\$(AR) ",
  				" \$(ARCHIVER_CREATE_OPTION) ",
@@ -3197,7 +3205,7 @@ Index: cl_bpabi.pm
  			);
  		# Pass in the command file if the command file option is passed in
  		if($viaoption) {
-@@ -1554,7 +1541,7 @@
+@@ -1563,7 +1550,7 @@
  
  	if ($BasicTrgType=~/^DLL$/o || $TrgType=~/^EXEXP$/o || $TrgType=~/^EXEDLL$/o) {
  		&main::Output(
@@ -3206,7 +3214,7 @@ Index: cl_bpabi.pm
  			);
  		if  (&main::ExportUnfrozen) {
  		    my $Plat =  uc(&main::Plat);
-@@ -1562,19 +1549,19 @@
+@@ -1571,19 +1558,19 @@
  		    {
  		    	&main::Output(
  				"\tdef2dll.bat --path=\$(EPOCBLD$Bld) \\\n\t\t--bldpath=\$(EPOCBLD) \\\n\t\t--export=$ExportLibrary \\\n\t\t--import=$ExportLibrary\\\n",
@@ -3231,7 +3239,7 @@ Index: cl_bpabi.pm
  			    	"\n"
  				);
  		    	}
-@@ -1582,15 +1569,15 @@
+@@ -1591,15 +1578,15 @@
  
  		    &main::Output(
  			          "\n",
@@ -3251,7 +3259,7 @@ Index: cl_bpabi.pm
  				  "\n"
  				 ) if ($ExtraExportLibrary);
  
-@@ -1600,17 +1587,17 @@
+@@ -1609,17 +1596,17 @@
  	if($IsCustomDll eq 1)
  	{
  		&main::Output(
@@ -3274,7 +3282,7 @@ Index: cl_bpabi.pm
  		);
  	}
  
-@@ -1741,16 +1728,16 @@
+@@ -1750,16 +1737,16 @@
  		if ($tranasm)
  		{
  			&main::Output(
@@ -3295,7 +3303,7 @@ Index: cl_bpabi.pm
  		);
  	}
  	&main::Output(
-@@ -1799,17 +1786,17 @@
+@@ -1808,17 +1795,17 @@
  	if ($tranasm)
  	{
  		&main::Output(
@@ -3317,7 +3325,7 @@ Index: cl_bpabi.pm
  	);
  
  	my $prefix_file=getConfigVariable('PREFIXFILE');
-@@ -1839,7 +1826,7 @@
+@@ -1848,7 +1835,7 @@
  {
      my $curdrive="";
      my ($arg) = @_;
@@ -3326,7 +3334,7 @@ Index: cl_bpabi.pm
  
  		$curdrive=$1 if (cwd =~ /^(.:)/);
      return "\"$curdrive$arg\"";
-@@ -1869,7 +1856,7 @@
+@@ -1878,7 +1865,7 @@
  	my $ABI=&main::ABI;
  	my $BaseSrc=&main::BaseSrc;
  	my $Bld=&main::Bld;
@@ -3335,7 +3343,7 @@ Index: cl_bpabi.pm
  	my $SrcPath=&main::SrcPath;
  	my $BaseTrg=&main::BaseTrg;
  	my $BldPath = &main::BldPath;
-@@ -1893,10 +1880,10 @@
+@@ -1902,10 +1889,10 @@
  	if ($AsmFilep || $Ext =~ /cia/i) {
  		&main::Output(
  # compile the translated, preprocessed source
@@ -3349,7 +3357,7 @@ Index: cl_bpabi.pm
  			"\n"
  			);
  # rule to translate the preprocessed source
-@@ -1904,41 +1891,41 @@
+@@ -1913,41 +1900,41 @@
  			if ($tranasm)
  			{
  		&main::Output(
@@ -3407,7 +3415,7 @@ Index: cl_bpabi.pm
  			"\n"
  			);
  			}
-@@ -1947,38 +1934,38 @@
+@@ -1956,38 +1943,38 @@
  		#If Function call logging is enabled, add call to function call logger
  		if ($Function_Call_Logger)	{
  			&main::Output(
@@ -3454,7 +3462,7 @@ Index: cl_bpabi.pm
  				"\n",
  				"\t\@echo $BaseSrc.int.cpp\n",
  				"\t\$(FCLOGGER$Bld) $lfboption \\\n" ,
-@@ -1986,24 +1973,24 @@
+@@ -1995,24 +1982,24 @@
  			    "\t$logger_preinclude \\\n ",
  				"\t\$(INCDIR_FCLOGGER) \\\n" ,
  				"\t$Dictionary_File_Name $BldPath$BaseTrg.txt \\\n" ,
@@ -3485,7 +3493,7 @@ Index: cl_bpabi.pm
  			"\n"
  			);
  			# Compiler wrapper support starts...
-@@ -2013,7 +2000,7 @@
+@@ -2022,7 +2009,7 @@
  					"COMPWRAP$Bld$BaseSrc : ",
  					&Generic_Quote("$SrcPath$Src"), "\n",
  					"\t\@echo Analysing $Src\n",
@@ -3494,7 +3502,7 @@ Index: cl_bpabi.pm
  					"\n"
  				);
  			}
-@@ -2028,7 +2015,7 @@
+@@ -2037,7 +2024,7 @@
  	my $BaseSrc=&main::BaseSrc;
  	my $Bld=&main::Bld;
          my $KeyFile = &main::Src;
@@ -3503,7 +3511,7 @@ Index: cl_bpabi.pm
  	my $SrcPath=&main::SrcPath;
  	my $Ext = &main::Path_Split('Ext', $Src);
  #	my $LangOptions = &main::SelectLangOptions($Ext);
-@@ -2047,12 +2034,12 @@
+@@ -2056,12 +2043,12 @@
  # compile the translated, preprocessed source
  		       &main::Output( "OBJECTS$MFVarN = ");
  		       foreach my $obj (@{$CompilationGroups{$KeyFile}{Objects}}) {
@@ -3518,7 +3526,7 @@ Index: cl_bpabi.pm
  		       }
         		       &main::Output( "\n\n");
  		       &main::Output( "\$(OBJECTS$MFVarN) : \$(SOURCES$MFVarN) \n");
-@@ -2067,21 +2054,21 @@
+@@ -2076,21 +2063,21 @@
  		}
  		&main::Output(
  # rule to translate the preprocessed source
@@ -3549,7 +3557,7 @@ Index: cl_bpabi.pm
  			"\n"
  			);
  	} else {
-@@ -2093,7 +2080,7 @@
+@@ -2102,7 +2089,7 @@
  #                      compile the source
  		       &main::Output( "OBJECTS$MFVarN = ");
  		       foreach my $obj (@{$CompilationGroups{$KeyFile}{Objects}}) {
@@ -3558,7 +3566,7 @@ Index: cl_bpabi.pm
  		       }
         		       &main::Output( "\n\n");
  		       &main::Output( "SOURCES$MFVarN = ");
-@@ -2113,12 +2100,12 @@
+@@ -2122,12 +2109,12 @@
  		}
  #		generate an assembly listing target too
  		&main::Output(
@@ -3574,7 +3582,7 @@ Index: cl_bpabi.pm
  			"\n"
  			);
  	}
-@@ -2494,7 +2481,7 @@
+@@ -2503,7 +2490,7 @@
  			my $LibDir = Armutl_ArmLibDir();
  			if (@StaticLibList) {
  				foreach my $lib (@StaticLibList) {
@@ -3585,8 +3593,8 @@ Index: cl_bpabi.pm
  		}
 Index: featurevariantparser.pm
 ===================================================================
---- featurevariantparser.pm	(.../tags/orig)	(revision 3425)
-+++ featurevariantparser.pm	(.../trunk)	(revision 3596)
+--- featurevariantparser.pm	(.../tags/orig)	(revision 3605)
++++ featurevariantparser.pm	(.../trunk)	(revision 3606)
 @@ -37,7 +37,7 @@
  my $childNodeStatus;
  my $varianthrh;
@@ -3598,8 +3606,8 @@ Index: featurevariantparser.pm
  my $fullpath;
 Index: trgtype.pm
 ===================================================================
---- trgtype.pm	(.../tags/orig)	(revision 3425)
-+++ trgtype.pm	(.../trunk)	(revision 3596)
+--- trgtype.pm	(.../tags/orig)	(revision 3605)
++++ trgtype.pm	(.../trunk)	(revision 3606)
 @@ -10,7 +10,7 @@
  # Look at the existing types for an appropriate example
  #
@@ -3736,7 +3744,7 @@ Index: trgtype.pm
 Index: elf2e32
 ===================================================================
 --- elf2e32	(.../tags/orig)	(revision 0)
-+++ elf2e32	(.../trunk)	(revision 3596)
++++ elf2e32	(.../trunk)	(revision 3606)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -3755,8 +3763,8 @@ Index: elf2e32
 +wine $ROOT/$PGM.exe "$@"
 Index: bldmake.pl
 ===================================================================
---- bldmake.pl	(.../tags/orig)	(revision 3425)
-+++ bldmake.pl	(.../trunk)	(revision 3596)
+--- bldmake.pl	(.../tags/orig)	(revision 3605)
++++ bldmake.pl	(.../trunk)	(revision 3606)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -4505,7 +4513,7 @@ Index: bldmake.pl
 Index: eshell
 ===================================================================
 --- eshell	(.../tags/orig)	(revision 0)
-+++ eshell	(.../trunk)	(revision 3596)
++++ eshell	(.../trunk)	(revision 3606)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -4522,7 +4530,7 @@ Index: eshell
 Index: bmconv
 ===================================================================
 --- bmconv	(.../tags/orig)	(revision 0)
-+++ bmconv	(.../trunk)	(revision 3596)
++++ bmconv	(.../trunk)	(revision 3606)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -4541,8 +4549,8 @@ Index: bmconv
 +wine $ROOT/$PGM.exe "$@"
 Index: e32plat.pm
 ===================================================================
---- e32plat.pm	(.../tags/orig)	(revision 3425)
-+++ e32plat.pm	(.../trunk)	(revision 3596)
+--- e32plat.pm	(.../tags/orig)	(revision 3605)
++++ e32plat.pm	(.../trunk)	(revision 3606)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -4668,8 +4676,8 @@ Index: e32plat.pm
  	}
 Index: modload.pm
 ===================================================================
---- modload.pm	(.../tags/orig)	(revision 3425)
-+++ modload.pm	(.../trunk)	(revision 3596)
+--- modload.pm	(.../tags/orig)	(revision 3605)
++++ modload.pm	(.../trunk)	(revision 3606)
 @@ -7,7 +7,7 @@
  # Runtime module-loading routine for loading e32tools modules into 'main' module
  
@@ -4710,8 +4718,8 @@ Index: modload.pm
  }
 Index: hpsym.pl
 ===================================================================
---- hpsym.pl	(.../tags/orig)	(revision 3425)
-+++ hpsym.pl	(.../trunk)	(revision 3596)
+--- hpsym.pl	(.../tags/orig)	(revision 3605)
++++ hpsym.pl	(.../trunk)	(revision 3606)
 @@ -161,7 +161,7 @@
    {
  	my $build;
@@ -4723,8 +4731,8 @@ Index: hpsym.pl
  	  &E32tpver, ")\n";
 Index: prepdef.pl
 ===================================================================
---- prepdef.pl	(.../tags/orig)	(revision 3425)
-+++ prepdef.pl	(.../trunk)	(revision 3596)
+--- prepdef.pl	(.../tags/orig)	(revision 3605)
++++ prepdef.pl	(.../trunk)	(revision 3606)
 @@ -23,9 +23,9 @@
  }
  
@@ -4740,8 +4748,8 @@ Index: prepdef.pl
  # THE MAIN PROGRAM SECTION
 Index: compilation_config/extractvars.make
 ===================================================================
---- compilation_config/extractvars.make	(.../tags/orig)	(revision 3425)
-+++ compilation_config/extractvars.make	(.../trunk)	(revision 3596)
+--- compilation_config/extractvars.make	(.../tags/orig)	(revision 3605)
++++ compilation_config/extractvars.make	(.../trunk)	(revision 3606)
 @@ -17,6 +17,7 @@
  	echo VERSION=$(VERSION)
  	echo VERSION_INFO=$(VERSION_INFO)
@@ -4752,8 +4760,8 @@ Index: compilation_config/extractvars.make
  	echo FC_LOGGER_GENERATED_C_FILE_NAME=$(FC_LOGGER_GENERATED_C_FILE_NAME)
 Index: compilation_config/gcce.mk
 ===================================================================
---- compilation_config/gcce.mk	(.../tags/orig)	(revision 3425)
-+++ compilation_config/gcce.mk	(.../trunk)	(revision 3596)
+--- compilation_config/gcce.mk	(.../tags/orig)	(revision 3605)
++++ compilation_config/gcce.mk	(.../trunk)	(revision 3606)
 @@ -162,7 +162,7 @@
  #---------------------
  
@@ -4792,8 +4800,8 @@ Index: compilation_config/gcce.mk
 +#----------------------------------
 Index: prepfile.pm
 ===================================================================
---- prepfile.pm	(.../tags/orig)	(revision 3425)
-+++ prepfile.pm	(.../trunk)	(revision 3596)
+--- prepfile.pm	(.../tags/orig)	(revision 3605)
++++ prepfile.pm	(.../trunk)	(revision 3606)
 @@ -7,7 +7,7 @@
  # module for preprocessing makmake-style project files
  
@@ -4872,7 +4880,7 @@ Index: prepfile.pm
 Index: petran
 ===================================================================
 --- petran	(.../tags/orig)	(revision 0)
-+++ petran	(.../trunk)	(revision 3596)
++++ petran	(.../trunk)	(revision 3606)
 @@ -0,0 +1,12 @@
 +#! /bin/bash
 +#
@@ -4889,7 +4897,7 @@ Index: petran
 Index: makmake
 ===================================================================
 --- makmake	(.../tags/orig)	(revision 0)
-+++ makmake	(.../trunk)	(revision 3596)
++++ makmake	(.../trunk)	(revision 3606)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -4905,8 +4913,8 @@ Index: makmake
 +perl -S makmake.pl "$@"
 Index: armutl.pm
 ===================================================================
---- armutl.pm	(.../tags/orig)	(revision 3425)
-+++ armutl.pm	(.../trunk)	(revision 3596)
+--- armutl.pm	(.../tags/orig)	(revision 3605)
++++ armutl.pm	(.../trunk)	(revision 3606)
 @@ -6,7 +6,7 @@
  
  # this package does various ancillary things for armedg modules
@@ -4927,8 +4935,8 @@ Index: armutl.pm
  		chomp @lines;
 Index: epocrc.pl
 ===================================================================
---- epocrc.pl	(.../tags/orig)	(revision 3425)
-+++ epocrc.pl	(.../trunk)	(revision 3596)
+--- epocrc.pl	(.../tags/orig)	(revision 3605)
++++ epocrc.pl	(.../trunk)	(revision 3606)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -4963,8 +4971,8 @@ Index: epocrc.pl
  	if ($arg =~ /^-l(.*)$/)
 Index: fixupsym.pl
 ===================================================================
---- fixupsym.pl	(.../tags/orig)	(revision 3425)
-+++ fixupsym.pl	(.../trunk)	(revision 3596)
+--- fixupsym.pl	(.../tags/orig)	(revision 3605)
++++ fixupsym.pl	(.../trunk)	(revision 3606)
 @@ -406,7 +406,7 @@
    {
  	my $build;
@@ -4976,8 +4984,8 @@ Index: fixupsym.pl
  	  &E32tpver, ")\n";
 Index: checkgcc.pm
 ===================================================================
---- checkgcc.pm	(.../tags/orig)	(revision 3425)
-+++ checkgcc.pm	(.../trunk)	(revision 3596)
+--- checkgcc.pm	(.../tags/orig)	(revision 3605)
++++ checkgcc.pm	(.../trunk)	(revision 3606)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -5022,7 +5030,7 @@ Index: checkgcc.pm
 Index: makekeys
 ===================================================================
 --- makekeys	(.../tags/orig)	(revision 0)
-+++ makekeys	(.../trunk)	(revision 3596)
++++ makekeys	(.../trunk)	(revision 3606)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -5042,7 +5050,7 @@ Index: makekeys
 Index: rtf2ptml
 ===================================================================
 --- rtf2ptml	(.../tags/orig)	(revision 0)
-+++ rtf2ptml	(.../trunk)	(revision 3596)
++++ rtf2ptml	(.../trunk)	(revision 3606)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -5062,7 +5070,7 @@ Index: rtf2ptml
 Index: epoc
 ===================================================================
 --- epoc	(.../tags/orig)	(revision 0)
-+++ epoc	(.../trunk)	(revision 3596)
++++ epoc	(.../trunk)	(revision 3606)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -5078,8 +5086,8 @@ Index: epoc
 +perl -S epoc.pl "$@"
 Index: cl_tools.pm
 ===================================================================
---- cl_tools.pm	(.../tags/orig)	(revision 3425)
-+++ cl_tools.pm	(.../trunk)	(revision 3596)
+--- cl_tools.pm	(.../tags/orig)	(revision 3605)
++++ cl_tools.pm	(.../trunk)	(revision 3606)
 @@ -243,7 +243,7 @@
  		"\n",
  		"CLEANLIBRARY :\n"
@@ -5092,7 +5100,7 @@ Index: cl_tools.pm
 Index: aiftool
 ===================================================================
 --- aiftool	(.../tags/orig)	(revision 0)
-+++ aiftool	(.../trunk)	(revision 3596)
++++ aiftool	(.../trunk)	(revision 3606)
 @@ -0,0 +1,74 @@
 +#! /bin/bash
 +#
@@ -5170,8 +5178,8 @@ Index: aiftool
 +# EOF - aiftool
 Index: checksource.pl
 ===================================================================
---- checksource.pl	(.../tags/orig)	(revision 3425)
-+++ checksource.pl	(.../trunk)	(revision 3596)
+--- checksource.pl	(.../tags/orig)	(revision 3605)
++++ checksource.pl	(.../trunk)	(revision 3606)
 @@ -9,10 +9,10 @@
  use Cwd;
  use Getopt::Long qw(:config posix_default);		#permits "+" in arguments, rather than as an option identifier
@@ -5188,8 +5196,8 @@ Index: checksource.pl
  
 Index: checksource.pm
 ===================================================================
---- checksource.pm	(.../tags/orig)	(revision 3425)
-+++ checksource.pm	(.../trunk)	(revision 3596)
+--- checksource.pm	(.../tags/orig)	(revision 3605)
++++ checksource.pm	(.../trunk)	(revision 3606)
 @@ -6,7 +6,7 @@
  # Routines involved in checking that source matches various filename policy constraints
  
@@ -5351,8 +5359,8 @@ Index: checksource.pm
  		if ($referenceDOSSlash =~ /$quotemetaExclusion$/i)
 Index: bpabiutl.pm
 ===================================================================
---- bpabiutl.pm	(.../tags/orig)	(revision 3425)
-+++ bpabiutl.pm	(.../trunk)	(revision 3596)
+--- bpabiutl.pm	(.../tags/orig)	(revision 3605)
++++ bpabiutl.pm	(.../trunk)	(revision 3606)
 @@ -6,7 +6,7 @@
  
  # This package  does various ancillary things for BPABI (Base Platform ABI) platforms
@@ -5443,7 +5451,7 @@ Index: bpabiutl.pm
 Index: signsis
 ===================================================================
 --- signsis	(.../tags/orig)	(revision 0)
-+++ signsis	(.../trunk)	(revision 3596)
++++ signsis	(.../trunk)	(revision 3606)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -5462,8 +5470,8 @@ Index: signsis
 +wine $ROOT/$PGM.exe "$@"
 Index: defutl.pm
 ===================================================================
---- defutl.pm	(.../tags/orig)	(revision 3425)
-+++ defutl.pm	(.../trunk)	(revision 3596)
+--- defutl.pm	(.../tags/orig)	(revision 3605)
++++ defutl.pm	(.../trunk)	(revision 3606)
 @@ -8,7 +8,7 @@
  # General Def file utilities
  #---------------------------
@@ -5475,8 +5483,8 @@ Index: defutl.pm
  @ISA=qw(Exporter);
 Index: preprocessor.pm
 ===================================================================
---- preprocessor.pm	(.../tags/orig)	(revision 3425)
-+++ preprocessor.pm	(.../trunk)	(revision 3596)
+--- preprocessor.pm	(.../tags/orig)	(revision 3605)
++++ preprocessor.pm	(.../trunk)	(revision 3606)
 @@ -7,7 +7,7 @@
  # Used to allow us to access and manipulate other pre processors
  #
@@ -5504,8 +5512,8 @@ Index: preprocessor.pm
 +1;
 Index: makedef.pl
 ===================================================================
---- makedef.pl	(.../tags/orig)	(revision 3425)
-+++ makedef.pl	(.../trunk)	(revision 3596)
+--- makedef.pl	(.../tags/orig)	(revision 3605)
++++ makedef.pl	(.../trunk)	(revision 3606)
 @@ -29,9 +29,9 @@
  }
  use lib $PerlBinPath;
@@ -5545,8 +5553,8 @@ Index: makedef.pl
  				$Comment = $1;
 Index: cshlpcmp/perl/csptmlfl.pm
 ===================================================================
---- cshlpcmp/perl/csptmlfl.pm	(.../tags/orig)	(revision 3425)
-+++ cshlpcmp/perl/csptmlfl.pm	(.../trunk)	(revision 3596)
+--- cshlpcmp/perl/csptmlfl.pm	(.../tags/orig)	(revision 3605)
++++ cshlpcmp/perl/csptmlfl.pm	(.../trunk)	(revision 3606)
 @@ -1569,9 +1569,10 @@
  	#make the fileName 
  	if ( ($archive !~ /[\\\/]$/) && ($archive ne "") )
@@ -5561,8 +5569,8 @@ Index: cshlpcmp/perl/csptmlfl.pm
  	if(! -s $self->_iGraphicsDir.$fileName.".mbm")
 Index: cshlpcmp/perl/parastyle.pm
 ===================================================================
---- cshlpcmp/perl/parastyle.pm	(.../tags/orig)	(revision 3425)
-+++ cshlpcmp/perl/parastyle.pm	(.../trunk)	(revision 3596)
+--- cshlpcmp/perl/parastyle.pm	(.../tags/orig)	(revision 3605)
++++ cshlpcmp/perl/parastyle.pm	(.../trunk)	(revision 3606)
 @@ -17,7 +17,7 @@
  
  use devtools;
@@ -5574,8 +5582,8 @@ Index: cshlpcmp/perl/parastyle.pm
  #
 Index: cshlpcmp/perl/projfile.pm
 ===================================================================
---- cshlpcmp/perl/projfile.pm	(.../tags/orig)	(revision 3425)
-+++ cshlpcmp/perl/projfile.pm	(.../trunk)	(revision 3596)
+--- cshlpcmp/perl/projfile.pm	(.../tags/orig)	(revision 3605)
++++ cshlpcmp/perl/projfile.pm	(.../trunk)	(revision 3606)
 @@ -42,6 +42,7 @@
  
  	#get the current working directory
@@ -5671,8 +5679,8 @@ Index: cshlpcmp/perl/projfile.pm
  	return $path;
 Index: cshlpcmp/perl/cshlpfl.pm
 ===================================================================
---- cshlpcmp/perl/cshlpfl.pm	(.../tags/orig)	(revision 3425)
-+++ cshlpcmp/perl/cshlpfl.pm	(.../trunk)	(revision 3596)
+--- cshlpcmp/perl/cshlpfl.pm	(.../tags/orig)	(revision 3605)
++++ cshlpcmp/perl/cshlpfl.pm	(.../trunk)	(revision 3606)
 @@ -137,10 +137,15 @@
  	my $self = shift;
  
@@ -5692,8 +5700,8 @@ Index: cshlpcmp/perl/cshlpfl.pm
  	#check if cshlpwtr managed to run
 Index: cshlpcmp/perl/rtffile.pm
 ===================================================================
---- cshlpcmp/perl/rtffile.pm	(.../tags/orig)	(revision 3425)
-+++ cshlpcmp/perl/rtffile.pm	(.../trunk)	(revision 3596)
+--- cshlpcmp/perl/rtffile.pm	(.../tags/orig)	(revision 3605)
++++ cshlpcmp/perl/rtffile.pm	(.../trunk)	(revision 3606)
 @@ -106,12 +106,13 @@
      my($rtfFile)=ExtractFileNameNoExt($self->_iRtfFile);
  
@@ -5712,8 +5720,8 @@ Index: cshlpcmp/perl/rtffile.pm
      #check if rtf2ptml managed to run
 Index: cshlpcmp/perl/custfile.pm
 ===================================================================
---- cshlpcmp/perl/custfile.pm	(.../tags/orig)	(revision 3425)
-+++ cshlpcmp/perl/custfile.pm	(.../trunk)	(revision 3596)
+--- cshlpcmp/perl/custfile.pm	(.../tags/orig)	(revision 3605)
++++ cshlpcmp/perl/custfile.pm	(.../trunk)	(revision 3606)
 @@ -1055,6 +1055,7 @@
  	my $self=shift;
  
@@ -5732,8 +5740,8 @@ Index: cshlpcmp/perl/custfile.pm
  	my $element = $self->_iCsHlpDom->createElement("graphic");
 Index: cshlpcmp/perl/asptmlfl.pm
 ===================================================================
---- cshlpcmp/perl/asptmlfl.pm	(.../tags/orig)	(revision 3425)
-+++ cshlpcmp/perl/asptmlfl.pm	(.../trunk)	(revision 3596)
+--- cshlpcmp/perl/asptmlfl.pm	(.../tags/orig)	(revision 3605)
++++ cshlpcmp/perl/asptmlfl.pm	(.../trunk)	(revision 3606)
 @@ -1338,9 +1338,13 @@
  							#make a copy of the graphic node
  							my $graphicNodeCopy = $graphicNode->cloneNode(1);
@@ -5752,8 +5760,8 @@ Index: cshlpcmp/perl/asptmlfl.pm
  							$self->_iMbmList->AddItem($epocFileName,$graphicNodeCopy);
 Index: output.pm
 ===================================================================
---- output.pm	(.../tags/orig)	(revision 3425)
-+++ output.pm	(.../trunk)	(revision 3596)
+--- output.pm	(.../tags/orig)	(revision 3605)
++++ output.pm	(.../trunk)	(revision 3606)
 @@ -6,7 +6,7 @@
  
  # Text formatting module
@@ -5785,8 +5793,8 @@ Index: output.pm
  
 Index: abld.pl
 ===================================================================
---- abld.pl	(.../tags/orig)	(revision 3425)
-+++ abld.pl	(.../trunk)	(revision 3596)
+--- abld.pl	(.../tags/orig)	(revision 3605)
++++ abld.pl	(.../trunk)	(revision 3606)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -6072,7 +6080,7 @@ Index: abld.pl
 Index: rcomp
 ===================================================================
 --- rcomp	(.../tags/orig)	(revision 0)
-+++ rcomp	(.../trunk)	(revision 3596)
++++ rcomp	(.../trunk)	(revision 3606)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -6091,8 +6099,8 @@ Index: rcomp
 +wine $ROOT/$PGM.exe "$@"
 Index: e32tpver.pm
 ===================================================================
---- e32tpver.pm	(.../tags/orig)	(revision 3425)
-+++ e32tpver.pm	(.../trunk)	(revision 3596)
+--- e32tpver.pm	(.../tags/orig)	(revision 3605)
++++ e32tpver.pm	(.../trunk)	(revision 3606)
 @@ -6,7 +6,7 @@
  
  # Returns the version number for E32TOOLP - update for each release
@@ -6104,8 +6112,8 @@ Index: e32tpver.pm
  @EXPORT=qw(
 Index: perllib/xml/dom.pm
 ===================================================================
---- perllib/xml/dom.pm	(.../tags/orig)	(revision 3425)
-+++ perllib/xml/dom.pm	(.../trunk)	(revision 3596)
+--- perllib/xml/dom.pm	(.../tags/orig)	(revision 3605)
++++ perllib/xml/dom.pm	(.../trunk)	(revision 3606)
 @@ -50,7 +50,7 @@
  	     %DefaultEntities %DecodeDefaultEntity
  	   );
@@ -6137,8 +6145,8 @@ Index: perllib/xml/dom.pm
  # e.g. should not replace &#nn; &#xAF; and &abc;
 Index: perllib/args.pm
 ===================================================================
---- perllib/args.pm	(.../tags/orig)	(revision 3425)
-+++ perllib/args.pm	(.../trunk)	(revision 3596)
+--- perllib/args.pm	(.../tags/orig)	(revision 3605)
++++ perllib/args.pm	(.../trunk)	(revision 3606)
 @@ -685,7 +685,7 @@
  		}
  
@@ -6150,8 +6158,8 @@ Index: perllib/args.pm
  ################################################################################
 Index: perllib/devtools.pm
 ===================================================================
---- perllib/devtools.pm	(.../tags/orig)	(revision 3425)
-+++ perllib/devtools.pm	(.../trunk)	(revision 3596)
+--- perllib/devtools.pm	(.../tags/orig)	(revision 3605)
++++ perllib/devtools.pm	(.../trunk)	(revision 3606)
 @@ -251,7 +251,7 @@
  	{
  	my($fileName)=@_;
@@ -6172,8 +6180,8 @@ Index: perllib/devtools.pm
  	return $path;
 Index: perllib/params.pm
 ===================================================================
---- perllib/params.pm	(.../tags/orig)	(revision 3425)
-+++ perllib/params.pm	(.../trunk)	(revision 3596)
+--- perllib/params.pm	(.../tags/orig)	(revision 3605)
++++ perllib/params.pm	(.../trunk)	(revision 3606)
 @@ -51,7 +51,7 @@
      bless $self, $class;
  
@@ -6261,8 +6269,8 @@ Index: perllib/params.pm
      $self->_iLog->Log("Default value is ".$obj1->DefaultValue());
 Index: pathutl.pm
 ===================================================================
---- pathutl.pm	(.../tags/orig)	(revision 3425)
-+++ pathutl.pm	(.../trunk)	(revision 3596)
+--- pathutl.pm	(.../tags/orig)	(revision 3605)
++++ pathutl.pm	(.../trunk)	(revision 3606)
 @@ -9,7 +9,7 @@
  #	Distinguish paths from filepaths by assuming paths end with "\"
  #	therefore ensure this is the case for all paths coming into programs using this module
@@ -6555,8 +6563,8 @@ Index: pathutl.pm
  
 Index: memtrace.pl
 ===================================================================
---- memtrace.pl	(.../tags/orig)	(revision 3425)
-+++ memtrace.pl	(.../trunk)	(revision 3596)
+--- memtrace.pl	(.../tags/orig)	(revision 3605)
++++ memtrace.pl	(.../trunk)	(revision 3606)
 @@ -237,7 +237,7 @@
  	{
  	my $build;
@@ -6568,8 +6576,8 @@ Index: memtrace.pl
  	&usage;
 Index: epocaif.pl
 ===================================================================
---- epocaif.pl	(.../tags/orig)	(revision 3425)
-+++ epocaif.pl	(.../trunk)	(revision 3596)
+--- epocaif.pl	(.../tags/orig)	(revision 3605)
++++ epocaif.pl	(.../trunk)	(revision 3606)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -6815,8 +6823,8 @@ Index: epocaif.pl
  		$curdrive="";
 Index: e32variant.pm
 ===================================================================
---- e32variant.pm	(.../tags/orig)	(revision 3425)
-+++ e32variant.pm	(.../trunk)	(revision 3596)
+--- e32variant.pm	(.../tags/orig)	(revision 3605)
++++ e32variant.pm	(.../trunk)	(revision 3606)
 @@ -2,7 +2,7 @@
  #
  # Copyright (c) 2004-2006 Symbian Software Ltd.  All rights reserved.
@@ -6904,8 +6912,8 @@ Index: e32variant.pm
  }
 Index: makhelp.pm
 ===================================================================
---- makhelp.pm	(.../tags/orig)	(revision 3425)
-+++ makhelp.pm	(.../trunk)	(revision 3596)
+--- makhelp.pm	(.../tags/orig)	(revision 3605)
++++ makhelp.pm	(.../trunk)	(revision 3606)
 @@ -4,7 +4,7 @@
  #
  
@@ -6944,8 +6952,8 @@ Index: makhelp.pm
  EPOCALLOWDLLDATA
 Index: cshlpcmp.pl
 ===================================================================
---- cshlpcmp.pl	(.../tags/orig)	(revision 3425)
-+++ cshlpcmp.pl	(.../trunk)	(revision 3596)
+--- cshlpcmp.pl	(.../tags/orig)	(revision 3605)
++++ cshlpcmp.pl	(.../trunk)	(revision 3606)
 @@ -1,4 +1,4 @@
 -#!perl
 +#!/usr/bin/perl
@@ -7008,7 +7016,7 @@ Index: cshlpcmp.pl
 Index: cjpeg
 ===================================================================
 --- cjpeg	(.../tags/orig)	(revision 0)
-+++ cjpeg	(.../trunk)	(revision 3596)
++++ cjpeg	(.../trunk)	(revision 3606)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -7027,8 +7035,8 @@ Index: cjpeg
 +wine $ROOT/$PGM.exe "$@"
 Index: makdeps.pm
 ===================================================================
---- makdeps.pm	(.../tags/orig)	(revision 3425)
-+++ makdeps.pm	(.../trunk)	(revision 3596)
+--- makdeps.pm	(.../tags/orig)	(revision 3605)
++++ makdeps.pm	(.../trunk)	(revision 3606)
 @@ -7,7 +7,7 @@
  # Module which wraps the dependency information provided the preprocessor when invoked with certain switches
  # so that dependency information rather than preprocessing information is produced.
@@ -7149,7 +7157,7 @@ Index: makdeps.pm
 Index: setupcomms
 ===================================================================
 --- setupcomms	(.../tags/orig)	(revision 0)
-+++ setupcomms	(.../trunk)	(revision 3596)
++++ setupcomms	(.../trunk)	(revision 3606)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -7166,7 +7174,7 @@ Index: setupcomms
 Index: mifconv
 ===================================================================
 --- mifconv	(.../tags/orig)	(revision 0)
-+++ mifconv	(.../trunk)	(revision 3596)
++++ mifconv	(.../trunk)	(revision 3606)
 @@ -0,0 +1,20 @@
 +#!/bin/sh
 +#
@@ -7191,7 +7199,7 @@ Index: mifconv
 Index: abld
 ===================================================================
 --- abld	(.../tags/orig)	(revision 0)
-+++ abld	(.../trunk)	(revision 3596)
++++ abld	(.../trunk)	(revision 3606)
 @@ -0,0 +1,19 @@
 +#!/bin/sh
 +#
