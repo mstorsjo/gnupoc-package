@@ -2,12 +2,19 @@
 
 use strict;
 
+sub renameWrap($$) {
+  my $src = shift;
+  my $dest = shift;
+  rename($src, $dest) && return 1;
+  return system("mv \"$src\" \"$dest\"") == 0;
+}
+
 sub mergedir($$) {
   my $src = shift;
   my $dest = shift;
 
   if(! -e "$dest") {
-    rename("$src", "$dest") || die("Rename: $!\n");
+    renameWrap("$src", "$dest") || die("Rename: $!\n");
     return 1;
   }
 
@@ -22,10 +29,10 @@ sub mergedir($$) {
       if(-e "$dest/$i") {
         mergedir("$src/$i", "$dest/$i");
       } else {
-        rename("$src/$i", "$dest/$i") || die("Rename: $!\n");
+        renameWrap("$src/$i", "$dest/$i") || die("Rename: $!\n");
       }
     } else {
-      rename("$src/$i", "$dest/$i") || die("Rename: $!\n");
+      renameWrap("$src/$i", "$dest/$i") || die("Rename: $!\n");
     }
   }
   rmdir($src);
