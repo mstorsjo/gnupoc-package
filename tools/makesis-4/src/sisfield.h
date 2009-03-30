@@ -199,6 +199,10 @@ public:
 			uint32_t type = ReadUint32(aBuffer, aLength);
 			uint32_t length = ReadUint32(aBuffer, aLength);
 			SISField* field = NewObject(type);
+			if (!field) {
+				fprintf(stderr, "Bad input SIS file\n");
+				throw SISFieldBadSourceFile;
+			}
 			field->Load(aBuffer, length);
 			length += (4 - (length & 3)) & 3;
 			aBuffer += length;

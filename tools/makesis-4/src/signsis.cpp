@@ -67,6 +67,9 @@ SISContents* loadSISFile(const char* name, uint8_t* header) {
 	} catch (int err) {
 		fprintf(stderr, "Caught exception %d in loading embedded SIS file %s\n", err, name);
 		exit(1);
+	} catch (SISFieldError err) {
+		fprintf(stderr, "Caught exception %d in loading embedded SIS file %s\n", err, name);
+		exit(1);
 	}
 	delete [] buffer;
 
