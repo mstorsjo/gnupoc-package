@@ -22,7 +22,7 @@ do
   echo "$a"
   sh -c "$a"
   if test $? != 0; then
-    echo "Unexcpected error: aborting."
+    echo "Unexpected error: aborting."
     exit 1
   fi
 done << __END
