@@ -939,7 +939,7 @@ public:
 
 
 	void writeDso(const char* filename, const char* soname) {
-		char* sep = strrchr(filename, '/');
+		const char* sep = strrchr(filename, '/');
 		const char* basename = filename;
 		if (sep)
 			basename = sep + 1;
