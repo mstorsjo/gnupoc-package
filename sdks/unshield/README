@@ -7,8 +7,8 @@ unshield doesn't work).
 
 To compile it from source:
 
-tar -zxvf unshield-0.5.tar.gz
-cd unshield-0.5
+tar -zxvf unshield-0.6.tar.gz
+cd unshield-0.6
 patch -p1 < ../unshield-patch
 ./configure --enable-shared=no
 make

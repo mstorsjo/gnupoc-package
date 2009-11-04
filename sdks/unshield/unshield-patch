@@ -1,6 +1,6 @@
-diff -urN unshield-0.5-orig/lib/libunshield.c unshield-0.5/lib/libunshield.c
---- unshield-0.5-orig/lib/libunshield.c	2004-08-24 09:10:27.000000000 +0300
-+++ unshield-0.5/lib/libunshield.c	2008-11-16 01:44:36.000000000 +0200
+diff -urN unshield-0.6-orig/lib/libunshield.c unshield-0.6/lib/libunshield.c
+--- unshield-0.6-orig/lib/libunshield.c	2004-08-24 09:10:27.000000000 +0300
++++ unshield-0.6/lib/libunshield.c	2009-11-04 14:27:56.000000000 +0200
 @@ -271,6 +271,9 @@
        
        header->major_version = (header->common.version >> 12) & 0xf;
@@ -11,14 +11,3 @@ diff -urN unshield-0.5-orig/lib/libunshield.c unshield-0.5/lib/libunshield.c
  #if 0
        if (header->major_version < 5)
          header->major_version = 5;
-diff -urN unshield-0.5-orig/src/unshield.c unshield-0.5/src/unshield.c
---- unshield-0.5-orig/src/unshield.c	2005-07-08 17:08:37.000000000 +0300
-+++ unshield-0.5/src/unshield.c	2008-11-16 02:02:37.000000000 +0200
-@@ -1,6 +1,6 @@
- /* $Id: unshield.c,v 1.20 2005/07/08 14:08:37 twogood Exp $ */
- #define _BSD_SOURCE 1
--#define _POSIX_C_SOURCE 2
-+/* #define _POSIX_C_SOURCE 2 */
- #include "../lib/libunshield.h"
- #include <ctype.h>
- #include <locale.h>
