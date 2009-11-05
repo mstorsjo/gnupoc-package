@@ -1841,19 +1841,6 @@ Index: makedef.pl
  		$LineNum++;
  		if (/^\s+(\?\S+)(\s+\((.*)\))?$/o) {
  			$Ordinal++;
-Index: genutl.pm
-===================================================================
---- genutl.pm	(.../tags/orig)	(revision 3329)
-+++ genutl.pm	(.../trunk)	(revision 3587)
-@@ -6,7 +6,7 @@
- 
- # Contains utility subroutines for MAKMAKE and associated scripts
- 
--package Genutl;
-+package genutl;
- 
- require Exporter;
- @ISA=qw(Exporter);
 Index: cshlpcmp/perl/csptmlfl.pm
 ===================================================================
 --- cshlpcmp/perl/csptmlfl.pm	(.../tags/orig)	(revision 3329)
@@ -2037,6 +2024,19 @@ Index: cshlpcmp/perl/asptmlfl.pm
  							
  							#store this mbm graphic
  							$self->_iMbmList->AddItem($epocFileName,$graphicNodeCopy);
+Index: genutl.pm
+===================================================================
+--- genutl.pm	(.../tags/orig)	(revision 3329)
++++ genutl.pm	(.../trunk)	(revision 3587)
+@@ -6,7 +6,7 @@
+ 
+ # Contains utility subroutines for MAKMAKE and associated scripts
+ 
+-package Genutl;
++package genutl;
+ 
+ require Exporter;
+ @ISA=qw(Exporter);
 Index: output.pm
 ===================================================================
 --- output.pm	(.../tags/orig)	(revision 3329)
@@ -2382,6 +2382,19 @@ Index: rcomp
 +echo "executing $PGM.exe"
 +ROOT=$EPOCROOT/epoc32/tools
 +wine $ROOT/$PGM.exe "$@"
+Index: e32tpver.pm
+===================================================================
+--- e32tpver.pm	(.../tags/orig)	(revision 3329)
++++ e32tpver.pm	(.../trunk)	(revision 3587)
+@@ -6,7 +6,7 @@
+ 
+ # Returns the version number for E32TOOLP - update for each release
+ 
+-package E32tpver;
++package e32tpver;
+ require Exporter;
+ @ISA=qw(Exporter);
+ @EXPORT=qw(
 Index: cl_gcc.pm
 ===================================================================
 --- cl_gcc.pm	(.../tags/orig)	(revision 3329)
@@ -3631,19 +3644,6 @@ Index: cl_gcc.pm
  		"\n"
  	);
  }
-Index: e32tpver.pm
-===================================================================
---- e32tpver.pm	(.../tags/orig)	(revision 3329)
-+++ e32tpver.pm	(.../trunk)	(revision 3587)
-@@ -6,7 +6,7 @@
- 
- # Returns the version number for E32TOOLP - update for each release
- 
--package E32tpver;
-+package e32tpver;
- require Exporter;
- @ISA=qw(Exporter);
- @EXPORT=qw(
 Index: perllib/xml/dom.pm
 ===================================================================
 --- perllib/xml/dom.pm	(.../tags/orig)	(revision 3329)

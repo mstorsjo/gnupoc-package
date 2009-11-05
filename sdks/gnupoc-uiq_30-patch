@@ -2858,19 +2858,6 @@ Index: makesis
 +echo "executing $PGM.exe"
 +ROOT=$EPOCROOT/epoc32/tools
 +wine $ROOT/$PGM.exe "$@"
-Index: defutl.pm
-===================================================================
---- defutl.pm	(.../tags/orig)	(revision 3431)
-+++ defutl.pm	(.../trunk)	(revision 3597)
-@@ -8,7 +8,7 @@
- # General Def file utilities
- #---------------------------
- 
--package Defutl;
-+package defutl;
- 
- require Exporter;
- @ISA=qw(Exporter);
 Index: cnvtool.pl
 ===================================================================
 --- cnvtool.pl	(.../tags/orig)	(revision 3431)
@@ -2884,6 +2871,19 @@ Index: cnvtool.pl
  	if (!$omitReplacementForUnconvertibleUnicodeCharacters)
  		{
  		print($fileHandle "_LIT8(KLit8ReplacementForUnconvertibleUnicodeCharacters, \"".&hexadecimalify($replacementForUnconvertibleUnicodeCharacters)."\");\n\n");
+Index: defutl.pm
+===================================================================
+--- defutl.pm	(.../tags/orig)	(revision 3431)
++++ defutl.pm	(.../trunk)	(revision 3597)
+@@ -8,7 +8,7 @@
+ # General Def file utilities
+ #---------------------------
+ 
+-package Defutl;
++package defutl;
+ 
+ require Exporter;
+ @ISA=qw(Exporter);
 Index: efreeze.pl
 ===================================================================
 --- efreeze.pl	(.../tags/orig)	(revision 3431)

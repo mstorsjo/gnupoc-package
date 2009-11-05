@@ -2639,19 +2639,6 @@ Index: makedef.pl
  				$LineNum++;
  				next if ($Line !~ /^\s+(.+)$/o);
  				$Comment = $1;
-Index: genutl.pm
-===================================================================
---- genutl.pm	(.../tags/orig)	(revision 3357)
-+++ genutl.pm	(.../trunk)	(revision 3590)
-@@ -6,7 +6,7 @@
- 
- # Contains utility subroutines for MAKMAKE and associated scripts
- 
--package Genutl;
-+package genutl;
- 
- require Exporter;
- @ISA=qw(Exporter);
 Index: cshlpcmp/perl/csptmlfl.pm
 ===================================================================
 --- cshlpcmp/perl/csptmlfl.pm	(.../tags/orig)	(revision 3357)
@@ -2859,6 +2846,19 @@ Index: cshlpcmp/perl/asptmlfl.pm
  							
  							#store this mbm graphic
  							$self->_iMbmList->AddItem($epocFileName,$graphicNodeCopy);
+Index: genutl.pm
+===================================================================
+--- genutl.pm	(.../tags/orig)	(revision 3357)
++++ genutl.pm	(.../trunk)	(revision 3590)
+@@ -6,7 +6,7 @@
+ 
+ # Contains utility subroutines for MAKMAKE and associated scripts
+ 
+-package Genutl;
++package genutl;
+ 
+ require Exporter;
+ @ISA=qw(Exporter);
 Index: output.pm
 ===================================================================
 --- output.pm	(.../tags/orig)	(revision 3357)
