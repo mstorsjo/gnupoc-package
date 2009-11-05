@@ -1,7 +1,33 @@
+Index: getexports
+===================================================================
+--- getexports	(.../tags/orig)	(revision 0)
++++ getexports	(.../trunk)	(revision 3817)
+@@ -0,0 +1,15 @@
++#!/bin/sh
++#
++# getexports - bash frontend for getexports.exe, part of GnuPoc project
++#
++# (c) 2001-2006 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++PGM=`basename $0`
++echo "executing $PGM.exe"
++ROOT=$EPOCROOT/epoc32/tools
++wine $ROOT/$PGM.exe "$@"
+
+Property changes on: getexports
+___________________________________________________________________
+Added: svn:executable
+   + *
+
 Index: cl_generic.pm
 ===================================================================
---- cl_generic.pm	(.../tags/orig)	(revision 3605)
-+++ cl_generic.pm	(.../trunk)	(revision 3606)
+--- cl_generic.pm	(.../tags/orig)	(revision 3815)
++++ cl_generic.pm	(.../trunk)	(revision 3817)
 @@ -31,8 +31,8 @@
  
  use File::Basename;
@@ -182,8 +208,8 @@ Index: cl_generic.pm
  	my @systemIncludes = &main::Path_Chop(&main::Path_AbsToWork(&main::ResourceSysIncPaths));
 Index: e32env.pm
 ===================================================================
---- e32env.pm	(.../tags/orig)	(revision 3605)
-+++ e32env.pm	(.../trunk)	(revision 3606)
+--- e32env.pm	(.../tags/orig)	(revision 3815)
++++ e32env.pm	(.../trunk)	(revision 3817)
 @@ -6,7 +6,7 @@
  # Contains information for makmake and associated e32tools perl programs
  # within the Epoc32 Environment
@@ -251,8 +277,8 @@ Index: e32env.pm
  }
 Index: winutl.pm
 ===================================================================
---- winutl.pm	(.../tags/orig)	(revision 3605)
-+++ winutl.pm	(.../trunk)	(revision 3606)
+--- winutl.pm	(.../tags/orig)	(revision 3815)
++++ winutl.pm	(.../trunk)	(revision 3817)
 @@ -7,7 +7,7 @@
  
  # this package does various ancillary things for windows modules
@@ -298,7 +324,7 @@ Index: winutl.pm
 Index: extmake
 ===================================================================
 --- extmake	(.../tags/orig)	(revision 0)
-+++ extmake	(.../trunk)	(revision 3606)
++++ extmake	(.../trunk)	(revision 3817)
 @@ -0,0 +1,4 @@
 +#!/bin/sh
 +
@@ -307,7 +333,7 @@ Index: extmake
 Index: genbldinf.pl
 ===================================================================
 --- genbldinf.pl	(.../tags/orig)	(revision 0)
-+++ genbldinf.pl	(.../trunk)	(revision 3606)
++++ genbldinf.pl	(.../trunk)	(revision 3817)
 @@ -0,0 +1,38 @@
 +#!/usr/bin/perl -w
 +#
@@ -347,10 +373,778 @@ Index: genbldinf.pl
 +
 +print "creating $BLDINF with:\n";
 +system ("cat $BLDINF");
+Index: cl_arm.pm
+===================================================================
+--- cl_arm.pm	(.../tags/orig)	(revision 3815)
++++ cl_arm.pm	(.../trunk)	(revision 3817)
+@@ -4,7 +4,7 @@
+ #
+ 
+ 
+-package Cl_arm;
++package cl_arm;
+ 
+ my $ToolPrefix='';
+ my %PlatOpt=(
+@@ -60,10 +60,10 @@
+ );
+ 
+ use Cwd;
+-use Armutl;
++use armutl;
+ use cl_generic;
+-use E32env;
+-use Genutl;
++use e32env;
++use genutl;
+ 
+ use constant NOCOMPRESSIONMETHOD => 0;
+ use constant INFLATECOMPRESSIONMETHOD => 1;
+@@ -130,7 +130,7 @@
+ 	@ArmLibList = &Armutl_ArmLibList;
+ 	$ArmRT = &Armutl_ArmRT;
+ 	my @AsmFileList = &Armutl_AsmFileList;
+-	foreach (@AsmFileList) { $AsmFiles{ucfirst lc $_} = 1; }
++	foreach (@AsmFileList) { $AsmFiles{$_} = 1; }
+ }
+ 
+ sub SysTrg () {
+@@ -365,7 +365,7 @@
+ 	my $DefFile=&main::DefFile;
+ 	my $EPOCPath=&main::EPOCPath;
+ 	my $LinkAs=&main::LinkAs;
+-	my $LibPath=&main::LibPath.'LIB\\';
++	my $LibPath=&main::LibPath.'lib/';
+ 	my @MacroList=&main::MacroList();
+ 	push @MacroList, "__SUPPORT_CPP_EXCEPTIONS__";
+ 
+@@ -463,16 +463,14 @@
+ 	if ($Makecmd eq "nmake") {
+ 		&main::Output(
+ 			"\n",
+-			"PATH=",&main::Path_Drive,$EPOCPath,"gcc\\bin;\$(PATH)\n",
++			"PATH=",&main::Path_Drive,$EPOCPath,"gcc/bin;\$(PATH)\n",
+ 			"\n"
+ 		);
+ 	}
+ 	else {
+ 		&main::Output(
+ 			"\n",
+-			"# must set both PATH and Path to make it work correctly\n",
+-			"Path:=",&main::Path_Drive,$EPOCPath,"gcc\\bin;\$(Path)\n",
+-			"PATH:=\$(Path)\n",
++			"PATH:=",&main::Path_Drive,$EPOCPath,"gcc/bin:\$(PATH)\n",
+ 			"\n"
+ 		);
+ 	}
+@@ -629,7 +627,7 @@
+ 		if ($BasicTrgType !~ /IMPLIB/io) {
+ 			&main::Output (
+ 				" \\\n\t",
+-				&Generic_Quote("\$(EPOCTRG$_)\\".&main::Trg($_))
++				&Generic_Quote("\$(EPOCTRG$_)/".&main::Trg($_))
+ 			);
+ 		}
+ 
+@@ -664,12 +662,12 @@
+ 		unless (&main::ExportUnfrozen) {
+ 			if (-e $DefFile) { # effectively "if project frozen ..."
+ 				&main::Output(
+-					" ", &Generic_Quote("\$(EPOCLIB)\\LIB\\$PrimaryExportLibrary.lib"),
++					" ", &Generic_Quote("\$(EPOCLIB)/lib/$PrimaryExportLibrary.lib"),
+ 				);
+ 				# if elf2e32.exe(postlinker) exists, then generate .dso along with .lib
+ 				if ($IsExistELF2E32EXE) {
+ 					&main::Output(
+-						" ", &Generic_Quote("\$(EPOCLIB)\\LIB\\$PrimaryExportLibrary.dso"), "\n"
++						" ", &Generic_Quote("\$(EPOCLIB)/lib/$PrimaryExportLibrary.dso"), "\n"
+ 					);
+ 				}
+ 				else {
+@@ -686,49 +684,49 @@
+ 		} else {
+ 			&main::Output(
+ 				"\n",
+-				"\t\@echo Not attempting to create \"\$(EPOCLIB)\\LIB\\$PrimaryExportLibrary.lib\"\n",
++				"\t\@echo Not attempting to create \"\$(EPOCLIB)/lib/$PrimaryExportLibrary.lib\"\n",
+ 				"\t\@echo from frozen .DEF file, since EXPORTUNFROZEN specified.\n"
+ 			);
+ 		}
+ 
+ 		my $theDefFile = $DefFile;
+-		$theDefFile = "\$(EPOCBLD)\\$BaseTrg.def" unless (-e $DefFile);
++		$theDefFile = "\$(EPOCBLD)/$BaseTrg.def" unless (-e $DefFile);
+ 		&main::Output(
+ 			"\n",
+ 			"\n",
+ 			"# REAL TARGET - LIBRARY\n",
+ 			"\n",
+-			&Generic_Quote("\$(EPOCLIB)\\LIB\\$ExportLibrary.lib"), " : ",
++			&Generic_Quote("\$(EPOCLIB)/lib/$ExportLibrary.lib"), " : ",
+ 			&Generic_Quote($DefFile), "\n",
+-				"\tperl -S prepdef.pl ", &Generic_Quote($DefFile), " \"\$(EPOCBLD)\\$ExportLibrary.prep.def\"\n",
+-				"\tdef2dll.bat --path=\$(EPOCLIB)\\LIB \\\n\t\t--bldpath=\$(EPOCBLD) \\\n\t\t--import=$ExportLibrary \\\n",
+-			"\t\t--deffile=\"\$(EPOCBLD)\\$ExportLibrary.prep.def\" \\\n\t\t--linkAs=$LinkAs \\\n\t\t$InterWorking\n",
++				"\tperl -S prepdef.pl ", &Generic_Quote($DefFile), " \"\$(EPOCBLD)/$ExportLibrary.prep.def\"\n",
++				"\tdef2dll --path=\$(EPOCLIB)/lib \\\n\t\t--bldpath=\$(EPOCBLD) \\\n\t\t--import=$ExportLibrary \\\n",
++			"\t\t--deffile=\"\$(EPOCBLD)/$ExportLibrary.prep.def\" \\\n\t\t--linkAs=$LinkAs \\\n\t\t$InterWorking\n",
+ 			"\n",
+ 		 );
+ 		if ($ExtraExportLibrary) {
+ 			&main::Output(
+ 				"\n",
+-				&Generic_Quote("\$(EPOCLIB)\\LIB\\$ExtraExportLibrary.lib"), " : ",
+-				&Generic_Quote("\$(EPOCLIB)\\LIB\\$ExportLibrary.lib"), "\n",
+-				"\tcopy \"\$<\" \"\$@\"\n"
++				&Generic_Quote("\$(EPOCLIB)/lib/$ExtraExportLibrary.lib"), " : ",
++				&Generic_Quote("\$(EPOCLIB)/lib/$ExportLibrary.lib"), "\n",
++				"\tcp \"\$<\" \"\$@\"\n"
+ 			);
+ 		}
+ 		#if elf2e32.exe(postlinker) exists, then generate .dso(which will be used by ABIV2 platforms)
+ 		if ($IsExistELF2E32EXE) {
+ 			&main::Output(
+ 				"\n",
+-				&Generic_Quote("\$(EPOCLIB)\\LIB\\$ExportLibrary.dso"), " : ",
++				&Generic_Quote("\$(EPOCLIB)/lib/$ExportLibrary.dso"), " : ",
+ 				&Generic_Quote($DefFile), "\n",
+-					"\telf2e32 --definput=\"\$(EPOCBLD)\\$ExportLibrary.prep.def\" --dso=",
+-					&Generic_Quote("\$(EPOCLIB)\\LIB\\$ExportLibrary.dso"),
++					"\telf2e32 --definput=\"\$(EPOCBLD)/$ExportLibrary.prep.def\" --dso=",
++					&Generic_Quote("\$(EPOCLIB)/lib/$ExportLibrary.dso"),
+ 					" --linkas=$LinkAs\n"
+ 			);
+ 			if ($ExtraExportLibrary) {
+ 				&main::Output(
+ 					"\n",
+-					&Generic_Quote("\$(EPOCLIB)\\LIB\\$ExtraExportLibrary.dso"), " : ",
+-					&Generic_Quote("\$(EPOCLIB)\\LIB\\$ExportLibrary.dso"), "\n",
+-					"\tcopy \"\$<\" \"\$@\"\n"
++					&Generic_Quote("\$(EPOCLIB)/lib/$ExtraExportLibrary.dso"), " : ",
++					&Generic_Quote("\$(EPOCLIB)/lib/$ExportLibrary.dso"), "\n",
++					"\tcp \"\$<\" \"\$@\"\n"
+ 				);
+ 			}		
+ 		}		
+@@ -765,7 +763,7 @@
+ 	if ($DefFile and $BasicTrgType!~/^IMPLIB$/io) {
+ # 	    call perl on the script here so make will die if there are errors 
+ #           - this doesn't happen if calling perl in a batch file
+-	    &main::Output( "\tperl -S efreeze.pl \$(EFREEZE_ALLOW_REMOVE) \"$DefFile\" \"\$(EPOCBLD)\\$ExportLibrary.def\" \n" );
++	    &main::Output( "\tperl -S efreeze.pl \$(EFREEZE_ALLOW_REMOVE) \"$DefFile\" \"\$(EPOCBLD)/$ExportLibrary.def\" \n" );
+ 	}
+ 	&main::Output(
+ 		"\n",
+@@ -773,11 +771,11 @@
+ 	);
+ 	if ($DefFile and !$NoExportLibrary) {
+ 		&main::Output(
+-			"\t-\$(ERASE) \"\$(EPOCLIB)\\LIB\\$ExportLibrary.lib\"\n"
++			"\t-\$(ERASE) \"\$(EPOCLIB)/lib/$ExportLibrary.lib\"\n"
+ 		);
+ 		if ($ExtraExportLibrary) {
+ 			&main::Output(
+-				"\t-\$(ERASE) \"\$(EPOCLIB)\\LIB\\$ExtraExportLibrary.lib\"\n"
++				"\t-\$(ERASE) \"\$(EPOCLIB)/lib/$ExtraExportLibrary.lib\"\n"
+ 			);
+ 		}
+ 	}
+@@ -1013,33 +1011,33 @@
+ 			# Temporary Workaround for RVCT2.1 static libs problem with RVCT2.2 builds
+ 			&main::Output(
+ 				" \\\n\t",
+-				&Generic_Quote("\$(EPOCSTATLINK$Bld)\\EDLLSTUB$RVCTVersion.lib")
++				&Generic_Quote("\$(EPOCSTATLINK$Bld)/edllstub$RVCTVersion.lib")
+ 			);
+ 		}
+ 		else {
+ 			&main::Output(
+ 				" \\\n\t",
+-				&Generic_Quote("\$(EPOCSTATLINK$Bld)\\EDLLSTUB.lib")
++				&Generic_Quote("\$(EPOCSTATLINK$Bld)/edllstub.lib")
+ 			);
+ 		}
+ 	}
+ 	    
+-        PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCSTATLINK$Bld\)\\\\\$_\"\)", @StatLibList);
+-        PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCLIB\)\\\\LIB\\\\\$_\"\)", @LibList);
++        PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCSTATLINK$Bld\)/\$_\"\)", @StatLibList);
++        PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCLIB\)/lib/\$_\"\)", @LibList);
+ 
+ 		#OE Import Libraries 
+ 		if ( $TrgType=~/^STDEXE$/o || $TrgType=~/^STDDLL$/o ) 
+ 		{
+-			PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCLIB\)\\\\LIB\\\\\$_\"\)", @oe_import_library_list);
++			PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCLIB\)/lib/\$_\"\)", @oe_import_library_list);
+ 		}
+ 
+ 		#OE Glue Code
+ 		if ($TrgType=~/^STDEXE$/o) {
+ 			if (&main::IsWideCharMain()) {
+-				PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCLIB\)\\\\$Bld\\\\\$_\"\)", @oe_exe_libs_wchar);
++				PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCLIB\)/$Bld/\$_\"\)", @oe_exe_libs_wchar);
+ 			}
+ 			else {
+-				PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCLIB\)\\\\$Bld\\\\\$_\"\)", @oe_exe_libs);
++				PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCLIB\)/$Bld/\$_\"\)", @oe_exe_libs);
+ 			}
+ 		}
+ 
+@@ -1048,7 +1046,7 @@
+         $StaticRTLib = "ksrt${RVCTVersion}" if ($SystemTrg);
+         &main::Output(
+ 	        " \\\n\t",
+-		&Generic_Quote("\$(EPOCSTATLINK$Bld)\\$StaticRTLib\.lib")
++		&Generic_Quote("\$(EPOCSTATLINK$Bld)/$StaticRTLib\.lib")
+ 		) unless ($Trg =~ /(U|K)SRT/i || ($BasicTrgType=~/^LIB$/o));
+ 
+ 	unless ($ArmRT || ($BasicTrgType=~/^LIB$/o)) {
+@@ -1058,7 +1056,7 @@
+ 			foreach (@RTLibList) {
+ 				&main::Output(
+ 					" \\\n\t",
+-					&Generic_Quote("\$(EPOCLIB)\\LIB\\$_")
++					&Generic_Quote("\$(EPOCLIB)/lib/$_")
+ 				) unless ($_ =~ /$TargLib/i);
+ 			}
+ 	    }
+@@ -1079,8 +1077,8 @@
+ 	&main::Output(
+ 		"VTBLEXPORTS$Bld="
+ 	);
+-        my $vtobj = quotemeta("(VtblExports.o)");
+-        PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCLIB\)\\\\LIB\\\\\$_$vtobj\"\)", @LibList);
++        my $vtobj = quotemeta("\\(VtblExports.o\\)");
++        PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCLIB\)/lib/\$_$vtobj\"\)", @LibList);
+ 	&main::Output(
+ 		"\n",
+ 		"\n"
+@@ -1094,7 +1092,7 @@
+ 	if ( defined( $ENV{LOCAL_BUILD_PATH} ) )  {
+ 		$replacement = 	$ENV{"LOCAL_BUILD_PATH"};
+ 		my $epocroot=$ENV{"EPOCROOT"};
+-		my $match = "\Q${epocroot}\EEPOC32\\\\BUILD";
++		my $match = "\Q${epocroot}\Eepoc32/build";
+ 		$bldPath =~ s/${match}/${replacement}/;
+ 	}
+ #	Must add StringTable obj files first to preserve Evalid results consistency.
+@@ -1114,7 +1112,7 @@
+ 
+ 	        &main::Output(
+ 		        " \\\n\t",
+-			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc.o")
++			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc.o")
+ 		      );
+ 
+ #	Only add if not already added from @StringTables
+@@ -1140,13 +1138,13 @@
+ 
+         if ($BasicTrgType=~/^LIB$/o) {
+ 	        &main::Output(
+-		      &Generic_Quote("\$(EPOCTRG$Bld)\\$Trg"),
++		      &Generic_Quote("\$(EPOCTRG$Bld)/$Trg"),
+ 		      " : \$(OBJECTS$Bld)"
+ 		);
+         } else {
+ 	        &main::Output(
+-		      &Generic_Quote("\$(EPOCTRG$Bld)\\$Trg"), " : ",
+-		      &Generic_Quote("\$(EPOCBLD$Bld)\\$BaseTrg.in")
++		      &Generic_Quote("\$(EPOCTRG$Bld)/$Trg"), " : ",
++		      &Generic_Quote("\$(EPOCBLD$Bld)/$BaseTrg.in")
+ 	        );
+         }
+ 
+@@ -1157,7 +1155,7 @@
+ 	}
+ 	if ($BasicTrgType=~/^(EXE|DLL)$/o) {
+ 		&main::Output(
+-			" ", &Generic_Quote("\$(EPOCSTATLINK$Bld)\\$FirstLib")
++			" ", &Generic_Quote("\$(EPOCSTATLINK$Bld)/$FirstLib")
+ 		);
+ 	}
+ 	&main::Output(
+@@ -1167,23 +1165,23 @@
+ #	generate an export object from the ordered .DEF file
+         if ($BasicTrgType=~/^DLL$/o || $TrgType=~/^EXEXP$/o || $TrgType=~/^EXEDLL$/o) {
+ #       	make the .exp file a dependency for targets that have exports		
+-		&main::Output(" ", &Generic_Quote("\$(EPOCBLD$Bld)\\$ExportLibrary.exp"), "\n");
++		&main::Output(" ", &Generic_Quote("\$(EPOCBLD$Bld)/$ExportLibrary.exp"), "\n");
+ 		if (&main::ExportUnfrozen) {
+ 		    &main::Output(
+-			"\tdef2dll.bat --path=\$(EPOCBLD$Bld) \\\n\t\t--bldpath=\$(EPOCBLD) \\\n\t\t--export=$ExportLibrary \\\n\t\t--import=$ExportLibrary\\\n",
+-			"\t\t--deffile=\$(EPOCBLD$Bld)\\$ExportLibrary.def \\\n\t\t--linkAs=$LinkAs \\\n\t\t$InterWorking $symNameLkupOpt\n",
++			"\tdef2dll --path=\$(EPOCBLD$Bld) \\\n\t\t--bldpath=\$(EPOCBLD) \\\n\t\t--export=$ExportLibrary \\\n\t\t--import=$ExportLibrary\\\n",
++			"\t\t--deffile=\$(EPOCBLD$Bld)/$ExportLibrary.def \\\n\t\t--linkAs=$LinkAs \\\n\t\t$InterWorking $symNameLkupOpt\n",
+ 		    );
+ 		    &main::Output(
+ 		        "\n",
+-		        "\tcopy ", " \"\$(EPOCBLD$Bld)\\$ExportLibrary.lib\" ",
+-		        "\"\$(EPOCLIB)\\LIB\\$ExportLibrary.lib\"",
++		        "\tcp ", " \"\$(EPOCBLD$Bld)/$ExportLibrary.lib\" ",
++		        "\"\$(EPOCLIB)/lib/$ExportLibrary.lib\"",
+ 		        "\n"
+ 		    );
+ 		    if ($ExtraExportLibrary) {
+ 			&main::Output(
+ 			    "\n",
+-			    "\tcopy \"\$(EPOCLIB)\\LIB\\$ExportLibrary.lib\" ",
+-			    "\"\$(EPOCLIB)\\LIB\\$ExtraExportLibrary.lib\"",
++			    "\tcp \"\$(EPOCLIB)/lib/$ExportLibrary.lib\" ",
++			    "\"\$(EPOCLIB)/lib/$ExtraExportLibrary.lib\"",
+ 			    "\n"
+ 			);
+ 		    }			    
+@@ -1191,14 +1189,14 @@
+ 		    if ($IsExistELF2E32EXE) {
+ 			    &main::Output(
+ 				    "\n",
+-				    "\telf2e32 --definput=\"\$(EPOCBLD$Bld)\\$ExportLibrary.def\" --dso=",
+-				    "\$(EPOCLIB)\\LIB\\$ExportLibrary.dso --linkas=$LinkAs\n"
++				    "\telf2e32 --definput=\"\$(EPOCBLD$Bld)/$ExportLibrary.def\" --dso=",
++				    "\$(EPOCLIB)/lib/$ExportLibrary.dso --linkas=$LinkAs\n"
+ 			    );
+ 			    if ($ExtraExportLibrary) {
+ 				    &main::Output(
+ 					    "\n",
+-					    "\tcopy \"\$(EPOCLIB)\\LIB\\$ExportLibrary.dso\" ",
+-					    "\"\$(EPOCLIB)\\LIB\\$ExtraExportLibrary.dso\"",
++					    "\tcp \"\$(EPOCLIB)/lib/$ExportLibrary.dso\" ",
++					    "\"\$(EPOCLIB)/lib/$ExtraExportLibrary.dso\"",
+ 					    "\n"
+ 				    );
+ 			    }		
+@@ -1206,7 +1204,7 @@
+ 	        }
+ 	} elsif($NamedSymLkup){
+ #		For an EXE, generate the .exp to accomodate 0th ordinal
+-		&main::Output(" ", &Generic_Quote("\$(EPOCBLD$Bld)\\$ExportLibrary.exp"), "\n");
++		&main::Output(" ", &Generic_Quote("\$(EPOCBLD$Bld)/$ExportLibrary.exp"), "\n");
+ 	}
+ 	else {
+ 	    &main::Output("\n");
+@@ -1215,7 +1213,7 @@
+ #       get rid of any -symbols produced .map file
+         if ($BasicTrgType=~/^(DLL|EXE)/o) {
+ 	        &main::Output(
+-			"\t-\$(ERASE) \"\$(EPOCTRG$Bld)\\$Trg.map\" \n"
++			"\t-\$(ERASE) \"\$(EPOCTRG$Bld)/$Trg.map\" \n"
+ 		);	
+ 	}
+ #		Generate the dependency info - This is required to put the libraries in the same order
+@@ -1224,7 +1222,7 @@
+ 			&main::Output(
+ 			"\tperl -S deputil.pl $InterWorking --path=\$(EPOCBLD$Bld) \\\n",
+ 			 "\t\t--out=$ExportLibrary \\\n",
+-			 "\t\t--libpath=\$(EPOCLIB)\\LIB \\\n",
++			 "\t\t--libpath=\$(EPOCLIB)/lib \\\n",
+ 			 "\t\t\$(LIBS$Bld)\n",
+ 			);
+ 		}
+@@ -1270,8 +1268,8 @@
+ 		            $ObjFile = "V_ENTRY_.o";
+ 	            }
+ 	            &main::Output(
+-				    "\t\t${oP}entry _E32Dll \$(EPOCSTATLINK$Bld)\\$FirstLib($ObjFile) \\\n",
+-				    "\t\t\$(EPOCBLD$Bld)\\$ExportLibrary.exp \\\n"
++				    "\t\t${oP}entry _E32Dll \$(EPOCSTATLINK$Bld)/$FirstLib\\($ObjFile\\) \\\n",
++				    "\t\t\$(EPOCBLD$Bld)/$ExportLibrary.exp \\\n"
+ 				);
+ 	        } elsif ($BasicTrgType=~/^EXE$/o || $TrgType=~/^EXEXP$/o) {
+ 			    # get the right object file for the entry point
+@@ -1286,36 +1284,36 @@
+ 					} 
+ 				} 
+ 			    
+-			    &main::Output( "\t\t${oP}entry _E32Startup \$(EPOCSTATLINK$Bld)\\$FirstLib($ObjFile) \\\n" );
++			    &main::Output( "\t\t${oP}entry _E32Startup \$(EPOCSTATLINK$Bld)/$FirstLib\\($ObjFile\\) \\\n" );
+ 			    if ($TrgType=~/^EXEXP$/o || $TrgType=~/^EXEDLL$/o || $NamedSymLkup) {
+-					&main::Output( "\t\t\$(EPOCBLD$Bld)\\$ExportLibrary.exp \\\n" );
++					&main::Output( "\t\t\$(EPOCBLD$Bld)/$ExportLibrary.exp \\\n" );
+ 			    }
+ 			}
+ 			if($NamedSymLkup) {
+ 				&main::Output(
+-				"\t\t--edit \"\$(EPOCBLD$Bld)\\$ExportLibrary.dep\" \\\n"
++				"\t\t--edit \"\$(EPOCBLD$Bld)/$ExportLibrary.dep\" \\\n"
+ 				);
+ 			}
+ 	        &main::Output(
+-		        "\t\t-o \"\$(EPOCBLD$Bld)\\$Trg\" \\\n",
+-		        "\t\t${oP}symbols ${oP}list \"\$(EPOCTRG$Bld)\\$Trg.map\" \\\n",
+-				"\t\t\$(EPOCBLD$Bld)\\$BaseTrg.in \\\n"
++		        "\t\t-o \"\$(EPOCBLD$Bld)/$Trg\" \\\n",
++		        "\t\t${oP}symbols ${oP}list \"\$(EPOCTRG$Bld)/$Trg.map\" \\\n",
++				"\t\t\$(EPOCBLD$Bld)/$BaseTrg.in \\\n"
+ 			);
+ 	        &main::Output(
+-		        "\t\t\$(LIBS$Bld) \\\n",
++		        "\t\t\$(addsuffix ',\$(addprefix ',\$(LIBS$Bld))) \\\n",
+ 				"\t\t\$(VTBLEXPORTS$Bld) \$(USERLDFLAGS) \n"
+ 			);
+ 
+ 	        if(&main::DebugSwitchUsed() ){
+ 				if(&main::SymbolicDebugEnabled() ) {
+ 				&main::Output(
+-					"\tcopy \"\$(EPOCBLD$Bld)\\$Trg\" \"\$(EPOCTRG$Bld)\\$FeatureVariantBaseTrg.sym\"\n"
++					"\tcp \"\$(EPOCBLD$Bld)/$Trg\" \"\$(EPOCTRG$Bld)/$FeatureVariantBaseTrg.sym\"\n"
+ 					);
+ 				}
+ 			}
+ 	        elsif ($Bld=~/^UDEB$/o) {
+ 	               &main::Output(
+-			       "\tcopy \"\$(EPOCBLD$Bld)\\$Trg\" \"\$(EPOCTRG$Bld)\\$FeatureVariantBaseTrg.sym\"\n"
++			       "\tcp \"\$(EPOCBLD$Bld)/$Trg\" \"\$(EPOCTRG$Bld)/$FeatureVariantBaseTrg.sym\"\n"
+ 		       );
+ 	        }
+ 		
+@@ -1440,7 +1438,7 @@
+ 			"\\\n\t\t"
+ 		);
+ 		&main::Output(
+-			" \"\$(EPOCBLD$Bld)\\$Trg\""
++			" \"\$(EPOCBLD$Bld)/$Trg\""
+ 		);
+ 		&main::Output(
+ 			"\\\n\t\t"
+@@ -1455,7 +1453,7 @@
+          }
+          elsif ($BasicTrgType=~/^LIB$/o) {
+ 	        &main::Output(
+-		        "\tarmar ${oP}create \$(EPOCSTATLINK$Bld)\\$Trg ${oP}via $objectsViaFile\n"
++		        "\tarmar ${oP}create \$(EPOCSTATLINK$Bld)/$Trg ${oP}via $objectsViaFile\n"
+ 		);
+          }
+ 
+@@ -1467,7 +1465,7 @@
+     #------------
+ 	 
+     &main::Output(
+-		&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseTrg.in"), ": \$(OBJECTS$Bld)\n",
++		&Generic_Quote("\$(EPOCBLD$Bld)/$BaseTrg.in"), ": \$(OBJECTS$Bld)\n",
+  	    "\t$Link $linkerDebugOpt ${oP}partial \\\n",
+ 	    "\t\t-o \$\@ \\\n",
+ 	    "\t\t${oP}via $objectsViaFile\n\n",
+@@ -1480,7 +1478,7 @@
+ 	    # TARGET *.EXP
+ 	    #------------
+ 	    &main::Output(
+-		    &Generic_Quote("\$(EPOCBLD$Bld)\\$ExportLibrary.exp"), ": \$(EPOCBLD$Bld)\\$BaseTrg.in"
++		    &Generic_Quote("\$(EPOCBLD$Bld)/$ExportLibrary.exp"), ": \$(EPOCBLD$Bld)/$BaseTrg.in"
+ 	    );
+ 
+ # if project is frozen, makedef (and hence the .exp file) are dependent upon it
+@@ -1491,9 +1489,9 @@
+ 		}
+ 
+ 	    &main::Output(
+-		"\n\tperl -S elf2inf.pl -o \$(EPOCBLD$Bld)\\$ExportLibrary.inf \\\n", 
++		"\n\tperl -S elf2inf.pl -o \$(EPOCBLD$Bld)/$ExportLibrary.inf \\\n", 
+ 		"\t\t\$\<",
+-		"\n\tperl -S makedef.pl $AbsentSubst -Inf \$(EPOCBLD$Bld)\\$ExportLibrary.inf \\\n"
++		"\n\tperl -S makedef.pl $AbsentSubst -Inf \$(EPOCBLD$Bld)/$ExportLibrary.inf \\\n"
+ 	    );
+     	if (!$DefFile || $NoExportLibrary) {    			
+     		&main::Output( "\t\t-ignore_unfrozen_noncallable \\\n" );
+@@ -1523,12 +1521,12 @@
+ 		    $Num++;
+ 	    }
+ 	    
+-	    my $theDefFile = "\$(EPOCBLD$Bld)\\$ExportLibrary.def";
++	    my $theDefFile = "\$(EPOCBLD$Bld)/$ExportLibrary.def";
+ 	    $theDefFile = $DefFile if (-e $DefFile && !&main::ExportUnfrozen);
+ 	    &main::Output(
+-		"\t\t\"\$(EPOCBLD$Bld)\\$ExportLibrary.def\"\n",
+-		"\tcopy \"\$(EPOCBLD$Bld)\\$ExportLibrary.def\" \"\$(EPOCBLD)\\$ExportLibrary.def\"\n",
+-		"\tdef2dll.bat $AbsentSubst \\\n\t\t--path=\$(EPOCBLD$Bld) \\\n\t\t--bldpath=\$(EPOCBLD) \\\n\t\t--export=$ExportLibrary \\\n",
++		"\t\t\"\$(EPOCBLD$Bld)/$ExportLibrary.def\"\n",
++		"\tcp \"\$(EPOCBLD$Bld)/$ExportLibrary.def\" \"\$(EPOCBLD)/$ExportLibrary.def\"\n",
++		"\tdef2dll $AbsentSubst \\\n\t\t--path=\$(EPOCBLD$Bld) \\\n\t\t--bldpath=\$(EPOCBLD) \\\n\t\t--export=$ExportLibrary \\\n",
+ 		"\t\t--deffile=$theDefFile \\\n\t\t--linkAs=$LinkAs \\\n\t\t$InterWorking $symNameLkupOpt\n"
+ 	    );
+     }
+@@ -1657,12 +1655,12 @@
+ 
+ 	foreach (@BldList) {
+ 		&main::Output(
+-			&Generic_Quote("\$(EPOCBLD$_)\\$BaseSrc.pre"), " ",
+-			&Generic_Quote("\$(EPOCBLD$_)\\$BaseObj.cpp"), " ",
++			&Generic_Quote("\$(EPOCBLD$_)/$BaseSrc.pre"), " ",
++			&Generic_Quote("\$(EPOCBLD$_)/$BaseObj.cpp"), " ",
+ 		) if $cia;
+ 		&main::Output(
+-			&Generic_Quote("\$(EPOCBLD$_)\\$BaseSrc.lis"), " ",
+-			&Generic_Quote("\$(EPOCBLD$_)\\$BaseObj.o"), " \\\n",
++			&Generic_Quote("\$(EPOCBLD$_)/$BaseSrc.lis"), " ",
++			&Generic_Quote("\$(EPOCBLD$_)/$BaseObj.o"), " \\\n",
+ 		);
+ 	}
+ 	&main::Output(
+@@ -1691,12 +1689,12 @@
+ 	}
+ 
+ 	&main::Output(
+-		&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc.pre"), " ",
+-		&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseObj.cpp"), " ",
++		&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc.pre"), " ",
++		&Generic_Quote("\$(EPOCBLD$Bld)/$BaseObj.cpp"), " ",
+ 	) if $cia;
+ 	&main::Output(
+-		&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc.lis"), " ",
+-		&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseObj.o"), " :",
++		&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc.lis"), " ",
++		&Generic_Quote("\$(EPOCBLD$Bld)/$BaseObj.o"), " :",
+ 	);
+         PrintList("\' \\\n\t\'\.\&Generic_Quote\(\$_\)", @DepList);
+ 	&main::Output(
+@@ -1723,12 +1721,12 @@
+ { 
+     my $IncPath = &main::EPOCIncPath;
+     
+-    return quoted_path(&Generic_Quote("$IncPath"."RVCT${RVCTVersion}\\RVCT${RVCTVersion}.H"));
++    return quoted_path(&Generic_Quote("$IncPath"."rvct${RVCTVersion}/rvct${RVCTVersion}.h"));
+ }
+ 
+ 
+-my $preinclude =   "--preinclude \$(EPOCINC)\\RVCT${RVCTVersion}\\RVCT${RVCTVersion}.h";
+-my $edg_preinclude = "-I \$(EPOCINC)\\RVCT${RVCTVersion} --preinclude edg_rvct${RVCTVersion}.h";
++my $preinclude =   "--preinclude \$(EPOCINC)/rvct${RVCTVersion}/rvct${RVCTVersion}.h";
++my $edg_preinclude = "-I \$(EPOCINC)/rvct${RVCTVersion} --preinclude edg_rvct${RVCTVersion}.h";
+ 
+ sub SelectLangOptions {
+ 	my ($Ext) = @_;
+@@ -1772,18 +1770,18 @@
+ 	my $ABI=&main::ABI;
+ 	my $BaseSrc=&main::BaseSrc;
+ 	my $Bld=&main::Bld;
+-	my $Src=lc &main::Src;	
++	my $Src=&main::Src;	
+ 	my $SrcPath=&main::Path_Chop(&main::SrcPath);
+ 	my $Ext = &main::Path_Split('Ext', $Src);	
+ 	my $BaseTrg=&main::BaseTrg;
+ 	my $BldPath = &main::BldPath;
+-	$Src = ucfirst $Src if ($Ext !~ /\.(cpp|c)$/);		
++	$Src = $Src if ($Ext !~ /\.(cpp|c)$/);		
+ 	my $LangOptions = &SelectLangOptions($Ext);
+ 	# support for auto 'translated' ASM 
+ 	my $AsmFilep = $AsmFiles{$Src};
+ 
+ 	# Logger Ouput filename 
+-	my $Logger_Output = lc ($BaseSrc) . ".int.cpp"; 
++	my $Logger_Output = ($BaseSrc) . ".int.cpp"; 
+ 	
+ 	my $lfboption = LinkerFeedBackOption();
+ 
+@@ -1793,77 +1791,77 @@
+ 	if ($AsmFilep || $Ext =~ /cia/i) {
+ 		&main::Output(
+ # compile the translated, preprocessed source
+-			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc\_.o"), " : ",
+-			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc\_.cpp"), "\n",
++			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc\_.o"), " : ",
++			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc\_.cpp"), "\n",
+ 			"\t\@echo $Src\n",
+-			"\t\$(ARMCC$Bld) $lfboption$LangOptions -J $SrcPath \$(INCDIR) -o \$\@ \$(EPOCBLD$Bld)\\$BaseSrc\_.cpp\n",
++			"\t\$(ARMCC$Bld) $lfboption$LangOptions -J $SrcPath \$(INCDIR) -o \$\@ \$(EPOCBLD$Bld)/$BaseSrc\_.cpp\n",
+ 			"\n",
+ # rule to translate the preprocessed source
+-			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc\_.cpp"), " : ",
+-			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc.pre"), "\n",
+-			"\ttranasm.bat -n -s -o=\$\@ \$(EPOCBLD$Bld)\\$BaseSrc.pre\n",
++			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc\_.cpp"), " : ",
++			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc.pre"), "\n",
++			"\ttranasm -n -s -o=\$\@ \$(EPOCBLD$Bld)/$BaseSrc.pre\n",
+ 			"\n",
+ # rule to preprocess the source
+-			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc.pre"), " : ",
+-			&Generic_Quote("$SrcPath\\$Src"), "\n",
+-			"\t\$(ARMCC$Bld) -E $preinclude $LangOptions -J $SrcPath \$(INCDIR) $SrcPath\\$Src -o \$\@ \n",
++			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc.pre"), " : ",
++			&Generic_Quote("$SrcPath/$Src"), "\n",
++			"\t\$(ARMCC$Bld) -E $preinclude $LangOptions -J $SrcPath \$(INCDIR) $SrcPath/$Src -o \$\@ \n",
+ # generate an assembly listing target too
+-			"LISTING$Bld$BaseSrc\_ : ", &Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc\_.lis"), "\n",
+-			"\t", &Generic_CopyAction("$SrcPath\\$BaseSrc\_.$ABI.lst"),
++			"LISTING$Bld$BaseSrc\_ : ", &Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc\_.lis"), "\n",
++			"\t", &Generic_CopyAction("$SrcPath/$BaseSrc\_.$ABI.lst"),
+ 			"\n",
+-			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc\_.lis"), " : ",
+-			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc\_.cpp"), "\n",
+-			"\t\$(ARMCC$Bld) $LangOptions -S -J $SrcPath \$(INCDIR) -o \$\@ \$(EPOCBLD$Bld)\\$BaseSrc\_.cpp\n",
++			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc\_.lis"), " : ",
++			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc\_.cpp"), "\n",
++			"\t\$(ARMCC$Bld) $LangOptions -S -J $SrcPath \$(INCDIR) -o \$\@ \$(EPOCBLD$Bld)/$BaseSrc\_.cpp\n",
+ 			"\n"
+ 			);
+ 	} else {
+ 		#If Function Call logging is enabled, add call to function call logger
+ 		if ($Function_Call_Logger) {
+ 			&main::Output(
+-				&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc.o"),
++				&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc.o"),
+ 				" : ",
+-				&Generic_Quote("\$(EPOCBLD$Bld)\\$Logger_Output"),
++				&Generic_Quote("\$(EPOCBLD$Bld)/$Logger_Output"),
+ 				"\n",
+ 				"\t\@echo $Logger_Output\n",
+-				"\t\$(ARMCC$Bld) $lfboption$LangOptions -J $SrcPath \$(INCDIR) -o \$\@ \$(EPOCBLD$Bld)\\$Logger_Output\n",
++				"\t\$(ARMCC$Bld) $lfboption$LangOptions -J $SrcPath \$(INCDIR) -o \$\@ \$(EPOCBLD$Bld)/$Logger_Output\n",
+ 				"\n",
+ # generate an assembly listing target too
+-				"LISTING$Bld$BaseSrc : ", &Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc.lis"), "\n",
+-				"\t", &Generic_CopyAction("$SrcPath\\$BaseSrc.$ABI.lst"),
++				"LISTING$Bld$BaseSrc : ", &Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc.lis"), "\n",
++				"\t", &Generic_CopyAction("$SrcPath/$BaseSrc.$ABI.lst"),
+ 				"\n",
+-				&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc.lis"), " : ",
+-				&Generic_Quote("$SrcPath\\$Logger_Output"), "\n",
+-				"\t\$(ARMCC$Bld) $LangOptions -S -J $SrcPath \$(INCDIR) -o \$\@ \$(EPOCBLD$Bld)\\$Logger_Output \n",
++				&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc.lis"), " : ",
++				&Generic_Quote("$SrcPath/$Logger_Output"), "\n",
++				"\t\$(ARMCC$Bld) $LangOptions -S -J $SrcPath \$(INCDIR) -o \$\@ \$(EPOCBLD$Bld)/$Logger_Output \n",
+ 				"\n"
+ 			);
+ 
+ 			#Call to Function Call Logger
+ 			&main::Output(
+-				&Generic_Quote("\$(EPOCBLD$Bld)\\$Logger_Output"), " : ",
+-				&Generic_Quote("$SrcPath\\$Src"),
++				&Generic_Quote("\$(EPOCBLD$Bld)/$Logger_Output"), " : ",
++				&Generic_Quote("$SrcPath/$Src"),
+ 				"\n",
+ 				"\t \@echo $Logger_Output\n",
+ 				"\t \$(FCLOGGER$Bld) $lfboption$edg_preinclude \\\n",
+ 			    "\t -I $SrcPath  \\\n",
+ 				"\t \$(INCDIR_FCLOGGER) $FC_Logger_Option \\\n",
+-			    "\t --gen_c_file_name \$\@ $SrcPath\\$Src\n",
++			    "\t --gen_c_file_name \$\@ $SrcPath/$Src\n",
+ 				"\n\n",
+ 			);
+ 		}
+ 		else {			
+ 			&main::Output(
+-				&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc.o"), " : ",
+-				&Generic_Quote("$SrcPath\\$Src"), "\n",
++				&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc.o"), " : ",
++				&Generic_Quote("$SrcPath/$Src"), "\n",
+ 				"\t\@echo $Src\n",
+-				"\t\$(ARMCC$Bld) $lfboption$LangOptions -J $SrcPath \$(INCDIR) -o \$\@ $SrcPath\\$Src\n",
++				"\t\$(ARMCC$Bld) $lfboption$LangOptions -J $SrcPath \$(INCDIR) -o \$\@ $SrcPath/$Src\n",
+ 				"\n",
+ # generate an assembly listing target too
+-			"LISTING$Bld$BaseSrc : ", &Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc.lis"), "\n",
+-			"\t", &Generic_CopyAction("$SrcPath\\$BaseSrc.$ABI.lst"),
++			"LISTING$Bld$BaseSrc : ", &Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc.lis"), "\n",
++			"\t", &Generic_CopyAction("$SrcPath/$BaseSrc.$ABI.lst"),
+ 			"\n",
+-			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc.lis"), " : ",
+-			&Generic_Quote("$SrcPath\\$Src"), "\n",
+-			"\t\$(ARMCC$Bld) $LangOptions -S -J $SrcPath \$(INCDIR) -o \$\@ $SrcPath\\$Src \n",
++			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc.lis"), " : ",
++			&Generic_Quote("$SrcPath/$Src"), "\n",
++			"\t\$(ARMCC$Bld) $LangOptions -S -J $SrcPath \$(INCDIR) -o \$\@ $SrcPath/$Src \n",
+ 			"\n"
+ 			);
+ 			#Compiler wrapper support starts
+@@ -1872,9 +1870,9 @@
+ 				my $Platcmpwrap=&main::Plat;
+ 				&main::Output(
+ 					"COMPWRAP$Bld$BaseSrc : ",
+-					&Generic_Quote("$SrcPath\\$Src"), "\n",
++					&Generic_Quote("$SrcPath/$Src"), "\n",
+ 					"\t\@echo Analysing $Src\n",
+-					"\t\$(COMPWRAP) \$(ARMCC$Bld) $LangOptions -S -J $SrcPath \$(INCDIR) -o \$\@ $SrcPath\\$Src \n",
++					"\t\$(COMPWRAP) \$(ARMCC$Bld) $LangOptions -S -J $SrcPath \$(INCDIR) -o \$\@ $SrcPath/$Src \n",
+ 					"\n"
+ 				);
+ 			}
+@@ -1890,7 +1888,7 @@
+ 	my $BaseSrc=&main::BaseSrc;
+ 	my $Bld=&main::Bld;
+         my $KeyFile = &main::Src;
+-	my $Src=ucfirst lc $KeyFile;
++	my $Src=$KeyFile;
+ 	my $SrcPath=&main::Path_Chop(&main::SrcPath);
+ 	my $Ext = &main::Path_Split('Ext', $Src);
+ 	my $LangOptions = &SelectLangOptions($Ext);
+@@ -1907,12 +1905,12 @@
+ # compile the translated, preprocessed source
+ 		       &main::Output( "OBJECTS$MFVarN = ");
+ 		       foreach my $obj (@{$CompilationGroups{$KeyFile}{Objects}}) {
+-			       &main::Output( &Generic_Quote("\\\n\t\$(EPOCBLD$Bld)\\$obj"), " "); 
++			       &main::Output( &Generic_Quote("\\\n\t\$(EPOCBLD$Bld)/$obj"), " "); 
+ 		       }
+        		       &main::Output( "\n\n");
+ 		       &main::Output( "SOURCES$MFVarN = ");
+ 		       foreach my $src (@{$CompilationGroups{$KeyFile}{Sources}}) {
+-			       &main::Output( &Generic_Quote("\\\n\t\$(EPOCBLD$Bld)\\$src", " "));
++			       &main::Output( &Generic_Quote("\\\n\t\$(EPOCBLD$Bld)/$src", " "));
+ 		       }
+        		       &main::Output( "\n\n");
+ 		       &main::Output( "\$(OBJECTS$MFVarN) : \$(SOURCES$MFVarN) \n");
+@@ -1927,21 +1925,21 @@
+ 		}
+ 		&main::Output(
+ # rule to translate the preprocessed source
+-			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc\_.cpp"), " : ",
+-			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc.pre"), "\n",
+-			"\ttranasm.bat -n -s -o=\$\@ \$(EPOCBLD$Bld)\\$BaseSrc.pre\n",
++			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc\_.cpp"), " : ",
++			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc.pre"), "\n",
++			"\ttranasm -n -s -o=\$\@ \$(EPOCBLD$Bld)/$BaseSrc.pre\n",
+ 			"\n",
+ # rule to preprocess the source
+-			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc.pre"), " : ",
+-			&Generic_Quote("$SrcPath\\$Src"), "\n",
+-			"\t\$(ARMCC$Bld) -E $preinclude $LangOptions -J $SrcPath \$(INCDIR) $SrcPath\\$Src -o \$\@ \n",
++			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc.pre"), " : ",
++			&Generic_Quote("$SrcPath/$Src"), "\n",
++			"\t\$(ARMCC$Bld) -E $preinclude $LangOptions -J $SrcPath \$(INCDIR) $SrcPath/$Src -o \$\@ \n",
+ # generate an assembly listing target too
+-			"LISTING$Bld$BaseSrc\_ : ", &Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc\_.lis"), "\n",
+-			"\t", &Generic_CopyAction("$SrcPath\\$BaseSrc\_.$ABI.lst"),
++			"LISTING$Bld$BaseSrc\_ : ", &Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc\_.lis"), "\n",
++			"\t", &Generic_CopyAction("$SrcPath/$BaseSrc\_.$ABI.lst"),
+ 			"\n",
+-			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc\_.lis"), " : ",
+-			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc\_.cpp"), "\n",
+-			"\t\$(ARMCC$Bld) $LangOptions -S -J $SrcPath \$(INCDIR) -o \$\@ \$(EPOCBLD$Bld)\\$BaseSrc\_.cpp\n",
++			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc\_.lis"), " : ",
++			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc\_.cpp"), "\n",
++			"\t\$(ARMCC$Bld) $LangOptions -S -J $SrcPath \$(INCDIR) -o \$\@ \$(EPOCBLD$Bld)/$BaseSrc\_.cpp\n",
+ 			"\n"
+ 			);
+ 	} else {
+@@ -1953,7 +1951,7 @@
+ #                      compile the source
+ 		       &main::Output( "OBJECTS$MFVarN = ");
+ 		       foreach my $obj (@{$CompilationGroups{$KeyFile}{Objects}}) {
+-			       &main::Output( &Generic_Quote("\\\n\t\$(EPOCBLD$Bld)\\$obj"), " "); 
++			       &main::Output( &Generic_Quote("\\\n\t\$(EPOCBLD$Bld)/$obj"), " "); 
+ 		       }
+        		       &main::Output( "\n\n");
+ 		       &main::Output( "SOURCES$MFVarN = ");
+@@ -1973,12 +1971,12 @@
+ 		}
+ #		generate an assembly listing target too
+ 		&main::Output(
+-			"LISTING$Bld$BaseSrc : ", &Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc.lis"), "\n",
+-			"\t", &Generic_CopyAction("$SrcPath\\$BaseSrc.$ABI.lst"),
++			"LISTING$Bld$BaseSrc : ", &Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc.lis"), "\n",
++			"\t", &Generic_CopyAction("$SrcPath/$BaseSrc.$ABI.lst"),
+ 			"\n",
+-			&Generic_Quote("\$(EPOCBLD$Bld)\\$BaseSrc.lis"), " : ",
+-			&Generic_Quote("$SrcPath\\$Src"), "\n",
+-			"\t\$(ARMCC$Bld) $LangOptions -S -J $SrcPath \$(INCDIR) -o \$\@ $SrcPath\\$Src \n",
++			&Generic_Quote("\$(EPOCBLD$Bld)/$BaseSrc.lis"), " : ",
++			&Generic_Quote("$SrcPath/$Src"), "\n",
++			"\t\$(ARMCC$Bld) $LangOptions -S -J $SrcPath \$(INCDIR) -o \$\@ $SrcPath/$Src \n",
+ 			"\n"
+ 			);
+ 	}
 Index: cl_codewarrior.pm
 ===================================================================
---- cl_codewarrior.pm	(.../tags/orig)	(revision 3605)
-+++ cl_codewarrior.pm	(.../trunk)	(revision 3606)
+--- cl_codewarrior.pm	(.../tags/orig)	(revision 3815)
++++ cl_codewarrior.pm	(.../trunk)	(revision 3817)
 @@ -4,7 +4,7 @@
  #
  
@@ -957,8 +1751,8 @@ Index: cl_codewarrior.pm
  				"\n"
 Index: eshell.pl
 ===================================================================
---- eshell.pl	(.../tags/orig)	(revision 3605)
-+++ eshell.pl	(.../trunk)	(revision 3606)
+--- eshell.pl	(.../tags/orig)	(revision 3815)
++++ eshell.pl	(.../trunk)	(revision 3817)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  #
@@ -1000,7 +1794,7 @@ Index: eshell.pl
 Index: bldmake
 ===================================================================
 --- bldmake	(.../tags/orig)	(revision 0)
-+++ bldmake	(.../trunk)	(revision 3606)
++++ bldmake	(.../trunk)	(revision 3817)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -1016,8 +1810,8 @@ Index: bldmake
 +perl -S bldmake.pl "$@"
 Index: lockit_info.pm
 ===================================================================
---- lockit_info.pm	(.../tags/orig)	(revision 3605)
-+++ lockit_info.pm	(.../trunk)	(revision 3606)
+--- lockit_info.pm	(.../tags/orig)	(revision 3815)
++++ lockit_info.pm	(.../trunk)	(revision 3817)
 @@ -22,7 +22,7 @@
  	Close_InfoFile
  );
@@ -1205,8 +1999,8 @@ Index: lockit_info.pm
  	my %loggedFiles;
 Index: makmake.pl
 ===================================================================
---- makmake.pl	(.../tags/orig)	(revision 3605)
-+++ makmake.pl	(.../trunk)	(revision 3606)
+--- makmake.pl	(.../tags/orig)	(revision 3815)
++++ makmake.pl	(.../trunk)	(revision 3817)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -1251,7 +2045,7 @@ Index: makmake.pl
  		die $@ if $@;
  	}
  
-@@ -135,7 +136,7 @@
+@@ -135,17 +136,17 @@
  	$MMPFILE=pop @ARGV;
  	die "ERROR: Can't specify MMP file on a different drive\n" if $MMPFILE=~/^\w:\\/o;
  	if ($MMPFILE!~/.MMP$/io) {
@@ -1260,7 +2054,10 @@ Index: makmake.pl
  	}
  	$MMPFILE=&Path_AbsToWork($MMPFILE);
  
-@@ -145,7 +146,7 @@
+-	eval { &Load_ModuleL('Mmp'); };
++	eval { &Load_ModuleL('mmp'); };
+ 	die $@ if $@;
+ 	if ($Options{v}) {
  		&Mmp_SetVerbose;
  	}
  	if ($Options{d}) {
@@ -1282,6 +2079,15 @@ Index: makmake.pl
  	}
  }
  
+@@ -438,7 +439,7 @@
+ 
+ # Special handling for non-default invariant makefiles without FEATUREVARIANT in the MMP file
+ # In this situation the default variant makefle is just included into the variant makefile
+-if (${%{&Mmp_TrgType}}{Basic} =~ /^(EXEDLL|EXE|DLL|LIB)$/ && %FeatureVariantInfo && $FeatureVariantInfo{INVARIANT} && $FeatureVariantInfo{NAME} !~ /^default$/i)
++if (${&Mmp_TrgType}{Basic} =~ /^(EXEDLL|EXE|DLL|LIB)$/ && %FeatureVariantInfo && defined $FeatureVariantInfo{INVARIANT} && $FeatureVariantInfo{INVARIANT} && $FeatureVariantInfo{NAME} !~ /^default$/i)
+ 	{
+ 	# Make sure the path exists
+ 	eval { &Path_MakePathL($MAKEFILE); };
 @@ -454,8 +455,8 @@
  	$MAKEFILE =~ s/\.$FeatureVariantInfo{NAME}$/\.default/;
  
@@ -1592,8 +2398,8 @@ Index: makmake.pl
  }
 Index: epocmbm.pl
 ===================================================================
---- epocmbm.pl	(.../tags/orig)	(revision 3605)
-+++ epocmbm.pl	(.../trunk)	(revision 3606)
+--- epocmbm.pl	(.../tags/orig)	(revision 3815)
++++ epocmbm.pl	(.../trunk)	(revision 3817)
 @@ -14,7 +14,7 @@
  BEGIN {
  	require 5.005_03;		# check user has a version of perl that will cope
@@ -1620,8 +2426,8 @@ Index: epocmbm.pl
  		print "* BMCONV failed\n";
 Index: mmp.pm
 ===================================================================
---- mmp.pm	(.../tags/orig)	(revision 3605)
-+++ mmp.pm	(.../trunk)	(revision 3606)
+--- mmp.pm	(.../tags/orig)	(revision 3815)
++++ mmp.pm	(.../trunk)	(revision 3817)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -2596,8 +3402,8 @@ Index: mmp.pm
  		unless ($Def{Base}) {
 Index: maksym.pl
 ===================================================================
---- maksym.pl	(.../tags/orig)	(revision 3605)
-+++ maksym.pl	(.../trunk)	(revision 3606)
+--- maksym.pl	(.../tags/orig)	(revision 3815)
++++ maksym.pl	(.../trunk)	(revision 3817)
 @@ -353,7 +353,7 @@
  {
      my $build;
@@ -2609,8 +3415,8 @@ Index: maksym.pl
      &usage;
 Index: wrappermakefile.pm
 ===================================================================
---- wrappermakefile.pm	(.../tags/orig)	(revision 3605)
-+++ wrappermakefile.pm	(.../trunk)	(revision 3606)
+--- wrappermakefile.pm	(.../tags/orig)	(revision 3815)
++++ wrappermakefile.pm	(.../trunk)	(revision 3817)
 @@ -11,7 +11,7 @@
  	GenerateWrapper
  );
@@ -2620,10 +3426,36 @@ Index: wrappermakefile.pm
  
  my (@ExtensionUsedBefore);
  my $ExtTemplatesPath="$ENV{EPOCROOT}epoc32/tools/makefile_templates/";
+Index: genstubs
+===================================================================
+--- genstubs	(.../tags/orig)	(revision 0)
++++ genstubs	(.../trunk)	(revision 3817)
+@@ -0,0 +1,15 @@
++#!/bin/sh
++#
++# genstubs - bash frontend for genstubs.exe, part of GnuPoc project
++#
++# (c) 2001-2006 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++PGM=`basename $0`
++echo "executing $PGM.exe"
++ROOT=$EPOCROOT/epoc32/tools
++wine $ROOT/$PGM.exe "$@"
+
+Property changes on: genstubs
+___________________________________________________________________
+Added: svn:executable
+   + *
+
 Index: makesis
 ===================================================================
 --- makesis	(.../tags/orig)	(revision 0)
-+++ makesis	(.../trunk)	(revision 3606)
++++ makesis	(.../trunk)	(revision 3817)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -2642,8 +3474,8 @@ Index: makesis
 +wine $ROOT/$PGM.exe "$@"
 Index: efreeze.pl
 ===================================================================
---- efreeze.pl	(.../tags/orig)	(revision 3605)
-+++ efreeze.pl	(.../trunk)	(revision 3606)
+--- efreeze.pl	(.../tags/orig)	(revision 3815)
++++ efreeze.pl	(.../trunk)	(revision 3817)
 @@ -27,9 +27,9 @@
  }
  
@@ -2659,8 +3491,8 @@ Index: efreeze.pl
  # THE MAIN PROGRAM SECTION
 Index: epoc.pl
 ===================================================================
---- epoc.pl	(.../tags/orig)	(revision 3605)
-+++ epoc.pl	(.../trunk)	(revision 3606)
+--- epoc.pl	(.../tags/orig)	(revision 3815)
++++ epoc.pl	(.../trunk)	(revision 3817)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  #
@@ -2712,8 +3544,8 @@ Index: epoc.pl
      return $epocroot;
 Index: genutl.pm
 ===================================================================
---- genutl.pm	(.../tags/orig)	(revision 3605)
-+++ genutl.pm	(.../trunk)	(revision 3606)
+--- genutl.pm	(.../tags/orig)	(revision 3815)
++++ genutl.pm	(.../trunk)	(revision 3817)
 @@ -6,7 +6,7 @@
  
  # Contains utility subroutines for MAKMAKE and associated scripts
@@ -2726,7 +3558,7 @@ Index: genutl.pm
 Index: pfsdump
 ===================================================================
 --- pfsdump	(.../tags/orig)	(revision 0)
-+++ pfsdump	(.../trunk)	(revision 3606)
++++ pfsdump	(.../trunk)	(revision 3817)
 @@ -0,0 +1,17 @@
 +#!/bin/sh
 +#
@@ -2747,8 +3579,8 @@ Index: pfsdump
 +wine $ROOT/$PGM.exe "$@"
 Index: ide_cw.pm
 ===================================================================
---- ide_cw.pm	(.../tags/orig)	(revision 3605)
-+++ ide_cw.pm	(.../trunk)	(revision 3606)
+--- ide_cw.pm	(.../tags/orig)	(revision 3815)
++++ ide_cw.pm	(.../trunk)	(revision 3817)
 @@ -1480,7 +1480,7 @@
  		$UidText.=")\n";
  		$UidText.="#pragma data_seg()\n";
@@ -2760,8 +3592,8 @@ Index: ide_cw.pm
  
 Index: cl_bpabi.pm
 ===================================================================
---- cl_bpabi.pm	(.../tags/orig)	(revision 3605)
-+++ cl_bpabi.pm	(.../trunk)	(revision 3606)
+--- cl_bpabi.pm	(.../tags/orig)	(revision 3815)
++++ cl_bpabi.pm	(.../trunk)	(revision 3817)
 @@ -4,7 +4,7 @@
  #
  
@@ -2944,7 +3776,7 @@ Index: cl_bpabi.pm
  				&Generic_Quote($DefFile), "\n",
 -					"\tdef2dll.bat --path=\$(EPOCLIB)\\LIB \\\n\t\t--bldpath=\$(EPOCBLD) \\\n\t\t--import=$ExportLibrary \\\n",
 -					"\t\t--deffile=\"\$(EPOCBLD)\\$ExportLibrary.prep.def\" \\\n\t\t--linkAs=$LinkAs \\\n\t\t$InterWorking\n",
-+					"\tdef2dll.bat --path=\$(EPOCLIB)/lib \\\n\t\t--bldpath=\$(EPOCBLD) \\\n\t\t--import=$ExportLibrary \\\n",
++					"\tdef2dll --path=\$(EPOCLIB)/lib \\\n\t\t--bldpath=\$(EPOCBLD) \\\n\t\t--import=$ExportLibrary \\\n",
 +					"\t\t--deffile=\"\$(EPOCBLD)/$ExportLibrary.prep.def\" \\\n\t\t--linkAs=$LinkAs \\\n\t\t$InterWorking\n",
  					"\n",
  			);
@@ -3205,7 +4037,7 @@ Index: cl_bpabi.pm
  			);
  		# Pass in the command file if the command file option is passed in
  		if($viaoption) {
-@@ -1563,7 +1550,7 @@
+@@ -1563,27 +1550,27 @@
  
  	if ($BasicTrgType=~/^DLL$/o || $TrgType=~/^EXEXP$/o || $TrgType=~/^EXEDLL$/o) {
  		&main::Output(
@@ -3214,11 +4046,12 @@ Index: cl_bpabi.pm
  			);
  		if  (&main::ExportUnfrozen) {
  		    my $Plat =  uc(&main::Plat);
-@@ -1571,19 +1558,19 @@
+ 		    if ($Plat =~ /^ARMV5$/)
  		    {
  		    	&main::Output(
- 				"\tdef2dll.bat --path=\$(EPOCBLD$Bld) \\\n\t\t--bldpath=\$(EPOCBLD) \\\n\t\t--export=$ExportLibrary \\\n\t\t--import=$ExportLibrary\\\n",
+-				"\tdef2dll.bat --path=\$(EPOCBLD$Bld) \\\n\t\t--bldpath=\$(EPOCBLD) \\\n\t\t--export=$ExportLibrary \\\n\t\t--import=$ExportLibrary\\\n",
 -				"\t\t--deffile=\$(EPOCBLD)\\$ExportLibrary.def \\\n\t\t--linkAs=$LinkAs \\\n\t\t$InterWorking\n"
++				"\tdef2dll --path=\$(EPOCBLD$Bld) \\\n\t\t--bldpath=\$(EPOCBLD) \\\n\t\t--export=$ExportLibrary \\\n\t\t--import=$ExportLibrary\\\n",
 +				"\t\t--deffile=\$(EPOCBLD)/$ExportLibrary.def \\\n\t\t--linkAs=$LinkAs \\\n\t\t$InterWorking\n"
  		    	);
  		    	&main::Output(
@@ -3593,8 +4426,8 @@ Index: cl_bpabi.pm
  		}
 Index: featurevariantparser.pm
 ===================================================================
---- featurevariantparser.pm	(.../tags/orig)	(revision 3605)
-+++ featurevariantparser.pm	(.../trunk)	(revision 3606)
+--- featurevariantparser.pm	(.../tags/orig)	(revision 3815)
++++ featurevariantparser.pm	(.../trunk)	(revision 3817)
 @@ -37,7 +37,7 @@
  my $childNodeStatus;
  my $varianthrh;
@@ -3606,8 +4439,8 @@ Index: featurevariantparser.pm
  my $fullpath;
 Index: trgtype.pm
 ===================================================================
---- trgtype.pm	(.../tags/orig)	(revision 3605)
-+++ trgtype.pm	(.../trunk)	(revision 3606)
+--- trgtype.pm	(.../tags/orig)	(revision 3815)
++++ trgtype.pm	(.../trunk)	(revision 3817)
 @@ -10,7 +10,7 @@
  # Look at the existing types for an appropriate example
  #
@@ -3741,10 +4574,140 @@ Index: trgtype.pm
  	}
  
  	unless ($TrgHash{UID2}) {
+Index: def2dll.bat
+===================================================================
+--- def2dll.bat	(.../tags/orig)	(revision 3815)
++++ def2dll.bat	(.../trunk)	(revision 3817)
+@@ -1,5 +1,3 @@
+-@goto invoke
+-
+ #!perl
+ #line 5
+ 
+@@ -20,13 +18,12 @@
+ 	require 5.005_03;
+ # establish the path to the Perl libraries: currently the same directory as this script
+ 	$PerlLibPath = $FindBin::Bin;	# X:/epoc32/tools
+-	$PerlLibPath =~ s/\//\\/g;	# X:\epoc32\tools
+-	$PerlLibPath .= "\\";
++	$PerlLibPath .= "/";
+ }
+ 
+ use lib $PerlLibPath;
+-use Defutl;
+-use Armutl;
++use defutl;
++use armutl;
+ 
+ my %opts = ();
+ 
+@@ -96,7 +93,7 @@
+         print "\t--linkas=<file>     		: linkas to file name specified\n";
+         print "\t--inter                 	: enables interworking on ARM and THUMB\n";
+         print "\t--export=<file>			: export to filename\n";
+-        print "\t--sym_name_lkup         	: symbol name ordinal number lookupç\n";
++        print "\t--sym_name_lkup         	: symbol name ordinal number lookup\n";
+         print "\n";
+         exit 1;
+ }
+@@ -141,8 +138,8 @@
+     my $numkeys = keys %symbolIndexMap;
+     my $failed = 0;
+ 
+-    open EXPFILE, ">$path\\$expFile.s" or
+-		die "Error: can't create $path\\$expFile.s\n";
++    open EXPFILE, ">$path/$expFile.s" or
++		die "Error: can't create $path/$expFile.s\n";
+ 
+     print EXPFILE "\tEXPORT __DLL_Export_Table__\n\n";
+     print EXPFILE "\tEXPORT |DLL\#\#ExportTable|\n\n";
+@@ -197,9 +194,9 @@
+     print EXPFILE "\tEND";
+     close EXPFILE;
+ 
+-    $failed = system "armasm $floatingpointmodel $interworking -o $path\\$expFile.exp $path\\$expFile.s";
+-    unlink ("$path\\$expFile.s") unless $failed;
+-    die "Error: cant create $path\\$expFile.exp\n" if $failed;
++    $failed = system "armasm $floatingpointmodel $interworking -o $path/$expFile.exp $path/$expFile.s";
++    unlink ("$path/$expFile.s") unless $failed;
++    die "Error: cant create $path/$expFile.exp\n" if $failed;
+ }
+ 
+ my %DataSymbols = ();
+@@ -209,8 +206,8 @@
+     my ($bldpath, $dllName) = @_;
+     my $FileName = "VtblExports";
+ 
+-    open VTBLFILE, ">$bldpath\\$FileName.s" or
+-		die "Error: can't create $bldpath\\$FileName.s\n";
++    open VTBLFILE, ">$bldpath/$FileName.s" or
++		die "Error: can't create $bldpath/$FileName.s\n";
+ 
+     print VTBLFILE "\tAREA |.directive|, NOALLOC, READONLY, ALIGN=2\n";
+     printf VTBLFILE "\tDCB \"\#\<SYMEDIT\>\#\\n\"\n";
+@@ -226,17 +223,17 @@
+     print VTBLFILE "\tEND";
+     close VTBLFILE;
+ 
+-    my $failed = system "armasm $floatingpointmodel $interworking -o $bldpath\\$FileName.o $bldpath\\$FileName.s";
+-    unlink ("$bldpath\\$FileName.s");
+-    die "Error: cant create $bldpath\\$FileName.o\n" if $failed;
+-    push @objectFiles, "$bldpath\\$FileName.o";
++    my $failed = system "armasm $floatingpointmodel $interworking -o $bldpath/$FileName.o $bldpath/$FileName.s";
++    unlink ("$bldpath/$FileName.s");
++    die "Error: cant create $bldpath/$FileName.o\n" if $failed;
++    push @objectFiles, "$bldpath/$FileName.o";
+ }
+ 
+ sub genLibFile ($$$$)
+ {
+     my ($path, $bldpath, $libFile, $dllName) = @_;
+-    my $tempFileName = "$bldpath\\$compName";
+-    my $viaFileName = sprintf("$bldpath\\_t%x_via_.txt", time);
++    my $tempFileName = "$bldpath/$compName";
++    my $viaFileName = sprintf("$bldpath/_t%x_via_.txt", time);
+     my $keyz = keys %symbolIndexMap;
+     my $failed = 0;
+     my $key;
+@@ -265,7 +262,7 @@
+     open VIAFILE, ">$viaFileName" or
+ 		die "Error: can't create VIA fie $viaFileName\n";
+ 
+-    print VIAFILE "${oP}create \"$path\\$libFile\"\n";
++    print VIAFILE "${oP}create \"$path/$libFile\"\n";
+     my $objectFile;
+     foreach $objectFile (@objectFiles) {
+ 		print VIAFILE "\"$objectFile\"\n";
+@@ -275,24 +272,6 @@
+     $failed = system( "armar ${oP}via $viaFileName");
+     push @objectFiles, $viaFileName;
+     unlink @objectFiles;
+-    die "Error: can't create $path\\$libFile\n" if $failed;
++    die "Error: can't create $path/$libFile\n" if $failed;
+ }
+ 
+-__END__
+-
+-# Tell emacs that this is a perl script even 'though it has a .bat extension
+-# Local Variables:
+-# mode:perl
+-# tab-width:4
+-# End:
+-
+-:invoke
+-@perl -x -S def2dll.bat %*
+-
+-
+-
+-
+-
+-
+-
+-
 Index: elf2e32
 ===================================================================
 --- elf2e32	(.../tags/orig)	(revision 0)
-+++ elf2e32	(.../trunk)	(revision 3606)
++++ elf2e32	(.../trunk)	(revision 3817)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -3763,8 +4726,8 @@ Index: elf2e32
 +wine $ROOT/$PGM.exe "$@"
 Index: bldmake.pl
 ===================================================================
---- bldmake.pl	(.../tags/orig)	(revision 3605)
-+++ bldmake.pl	(.../trunk)	(revision 3606)
+--- bldmake.pl	(.../tags/orig)	(revision 3815)
++++ bldmake.pl	(.../trunk)	(revision 3817)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -4513,7 +5476,7 @@ Index: bldmake.pl
 Index: eshell
 ===================================================================
 --- eshell	(.../tags/orig)	(revision 0)
-+++ eshell	(.../trunk)	(revision 3606)
++++ eshell	(.../trunk)	(revision 3817)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -4530,7 +5493,7 @@ Index: eshell
 Index: bmconv
 ===================================================================
 --- bmconv	(.../tags/orig)	(revision 0)
-+++ bmconv	(.../trunk)	(revision 3606)
++++ bmconv	(.../trunk)	(revision 3817)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -4549,8 +5512,8 @@ Index: bmconv
 +wine $ROOT/$PGM.exe "$@"
 Index: e32plat.pm
 ===================================================================
---- e32plat.pm	(.../tags/orig)	(revision 3605)
-+++ e32plat.pm	(.../trunk)	(revision 3606)
+--- e32plat.pm	(.../tags/orig)	(revision 3815)
++++ e32plat.pm	(.../trunk)	(revision 3817)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -4590,6 +5553,33 @@ Index: e32plat.pm
  		OS=>'WINS',
  	},
  	VC6=>{
+@@ -226,7 +228,7 @@
+ 		ASSP=>'MARM',
+ 		ASSPABI=>'',
+ 		Generic=>1,
+-		MakeMod=>'Cl_arm',
++		MakeMod=>'cl_arm',
+ 		Compiler=>'ARMCC',
+ 		DefFile=>'EABI',
+ 		EABI=>1,
+@@ -236,7 +238,7 @@
+ 		ASSP=>'MARM',
+ 		ASSPABI=>'',
+ 		Generic=>1,
+-		MakeMod=>'Cl_arm',
++		MakeMod=>'cl_arm',
+ 		Compiler=>'ARMCC',
+ 		DefFile=>'EABI',
+ 		EABI=>1,
+@@ -248,7 +250,7 @@
+ 		ASSP=>'MARM',
+ 		ASSPABI=>'',
+ 		Generic=>1,
+-		MakeMod=>'Cl_arm',
++		MakeMod=>'cl_arm',
+ 		Compiler=>'ARMCC',
+ 		DefFile=>'EABI',
+ 		EABI=>1,
 @@ -346,7 +348,7 @@
  
  sub Plat_Root($) {
@@ -4676,8 +5666,8 @@ Index: e32plat.pm
  	}
 Index: modload.pm
 ===================================================================
---- modload.pm	(.../tags/orig)	(revision 3605)
-+++ modload.pm	(.../trunk)	(revision 3606)
+--- modload.pm	(.../tags/orig)	(revision 3815)
++++ modload.pm	(.../trunk)	(revision 3817)
 @@ -7,7 +7,7 @@
  # Runtime module-loading routine for loading e32tools modules into 'main' module
  
@@ -4718,8 +5708,8 @@ Index: modload.pm
  }
 Index: hpsym.pl
 ===================================================================
---- hpsym.pl	(.../tags/orig)	(revision 3605)
-+++ hpsym.pl	(.../trunk)	(revision 3606)
+--- hpsym.pl	(.../tags/orig)	(revision 3815)
++++ hpsym.pl	(.../trunk)	(revision 3817)
 @@ -161,7 +161,7 @@
    {
  	my $build;
@@ -4729,10 +5719,25 @@ Index: hpsym.pl
  	print "\nhpsym - Produce symbolic info in \"HP GPA Symbol File Format\"" .
  	  " suitable for use\n        with a HP logic analyser (Build ",
  	  &E32tpver, ")\n";
+Index: def2dll
+===================================================================
+--- def2dll	(.../tags/orig)	(revision 0)
++++ def2dll	(.../trunk)	(revision 3817)
+@@ -0,0 +1,4 @@
++#!/bin/sh
++DIR=`dirname $0`
++TOOL=`basename $0`
++perl $DIR/$TOOL.bat "$@"
+
+Property changes on: def2dll
+___________________________________________________________________
+Added: svn:executable
+   + *
+
 Index: prepdef.pl
 ===================================================================
---- prepdef.pl	(.../tags/orig)	(revision 3605)
-+++ prepdef.pl	(.../trunk)	(revision 3606)
+--- prepdef.pl	(.../tags/orig)	(revision 3815)
++++ prepdef.pl	(.../trunk)	(revision 3817)
 @@ -23,9 +23,9 @@
  }
  
@@ -4748,8 +5753,8 @@ Index: prepdef.pl
  # THE MAIN PROGRAM SECTION
 Index: compilation_config/extractvars.make
 ===================================================================
---- compilation_config/extractvars.make	(.../tags/orig)	(revision 3605)
-+++ compilation_config/extractvars.make	(.../trunk)	(revision 3606)
+--- compilation_config/extractvars.make	(.../tags/orig)	(revision 3815)
++++ compilation_config/extractvars.make	(.../trunk)	(revision 3817)
 @@ -17,6 +17,7 @@
  	echo VERSION=$(VERSION)
  	echo VERSION_INFO=$(VERSION_INFO)
@@ -4760,8 +5765,8 @@ Index: compilation_config/extractvars.make
  	echo FC_LOGGER_GENERATED_C_FILE_NAME=$(FC_LOGGER_GENERATED_C_FILE_NAME)
 Index: compilation_config/gcce.mk
 ===================================================================
---- compilation_config/gcce.mk	(.../tags/orig)	(revision 3605)
-+++ compilation_config/gcce.mk	(.../trunk)	(revision 3606)
+--- compilation_config/gcce.mk	(.../tags/orig)	(revision 3815)
++++ compilation_config/gcce.mk	(.../trunk)	(revision 3817)
 @@ -162,7 +162,7 @@
  #---------------------
  
@@ -4800,8 +5805,8 @@ Index: compilation_config/gcce.mk
 +#----------------------------------
 Index: prepfile.pm
 ===================================================================
---- prepfile.pm	(.../tags/orig)	(revision 3605)
-+++ prepfile.pm	(.../trunk)	(revision 3606)
+--- prepfile.pm	(.../tags/orig)	(revision 3815)
++++ prepfile.pm	(.../trunk)	(revision 3817)
 @@ -7,7 +7,7 @@
  # module for preprocessing makmake-style project files
  
@@ -4880,7 +5885,7 @@ Index: prepfile.pm
 Index: petran
 ===================================================================
 --- petran	(.../tags/orig)	(revision 0)
-+++ petran	(.../trunk)	(revision 3606)
++++ petran	(.../trunk)	(revision 3817)
 @@ -0,0 +1,12 @@
 +#! /bin/bash
 +#
@@ -4897,7 +5902,7 @@ Index: petran
 Index: makmake
 ===================================================================
 --- makmake	(.../tags/orig)	(revision 0)
-+++ makmake	(.../trunk)	(revision 3606)
++++ makmake	(.../trunk)	(revision 3817)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -4913,8 +5918,8 @@ Index: makmake
 +perl -S makmake.pl "$@"
 Index: armutl.pm
 ===================================================================
---- armutl.pm	(.../tags/orig)	(revision 3605)
-+++ armutl.pm	(.../trunk)	(revision 3606)
+--- armutl.pm	(.../tags/orig)	(revision 3815)
++++ armutl.pm	(.../trunk)	(revision 3817)
 @@ -6,7 +6,7 @@
  
  # this package does various ancillary things for armedg modules
@@ -4935,8 +5940,8 @@ Index: armutl.pm
  		chomp @lines;
 Index: epocrc.pl
 ===================================================================
---- epocrc.pl	(.../tags/orig)	(revision 3605)
-+++ epocrc.pl	(.../trunk)	(revision 3606)
+--- epocrc.pl	(.../tags/orig)	(revision 3815)
++++ epocrc.pl	(.../trunk)	(revision 3817)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -4969,10 +5974,36 @@ Index: epocrc.pl
  		next;
  		}
  	if ($arg =~ /^-l(.*)$/)
+Index: elftran
+===================================================================
+--- elftran	(.../tags/orig)	(revision 0)
++++ elftran	(.../trunk)	(revision 3817)
+@@ -0,0 +1,15 @@
++#!/bin/sh
++#
++# elftran - bash frontend for elftran.exe, part of GnuPoc project
++#
++# (c) 2001-2006 Alfred E. Heggestad
++#
++#    This program is free software; you can redistribute it and/or modify
++#    it under the terms of the GNU General Public License version 2 as
++#    published by the Free Software Foundation.
++#
++
++PGM=`basename $0`
++echo "executing $PGM.exe"
++ROOT=$EPOCROOT/epoc32/tools
++wine $ROOT/$PGM.exe "$@"
+
+Property changes on: elftran
+___________________________________________________________________
+Added: svn:executable
+   + *
+
 Index: fixupsym.pl
 ===================================================================
---- fixupsym.pl	(.../tags/orig)	(revision 3605)
-+++ fixupsym.pl	(.../trunk)	(revision 3606)
+--- fixupsym.pl	(.../tags/orig)	(revision 3815)
++++ fixupsym.pl	(.../trunk)	(revision 3817)
 @@ -406,7 +406,7 @@
    {
  	my $build;
@@ -4984,8 +6015,8 @@ Index: fixupsym.pl
  	  &E32tpver, ")\n";
 Index: checkgcc.pm
 ===================================================================
---- checkgcc.pm	(.../tags/orig)	(revision 3605)
-+++ checkgcc.pm	(.../trunk)	(revision 3606)
+--- checkgcc.pm	(.../tags/orig)	(revision 3815)
++++ checkgcc.pm	(.../trunk)	(revision 3817)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -5030,7 +6061,7 @@ Index: checkgcc.pm
 Index: makekeys
 ===================================================================
 --- makekeys	(.../tags/orig)	(revision 0)
-+++ makekeys	(.../trunk)	(revision 3606)
++++ makekeys	(.../trunk)	(revision 3817)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -5050,7 +6081,7 @@ Index: makekeys
 Index: rtf2ptml
 ===================================================================
 --- rtf2ptml	(.../tags/orig)	(revision 0)
-+++ rtf2ptml	(.../trunk)	(revision 3606)
++++ rtf2ptml	(.../trunk)	(revision 3817)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -5070,7 +6101,7 @@ Index: rtf2ptml
 Index: epoc
 ===================================================================
 --- epoc	(.../tags/orig)	(revision 0)
-+++ epoc	(.../trunk)	(revision 3606)
++++ epoc	(.../trunk)	(revision 3817)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -5086,8 +6117,8 @@ Index: epoc
 +perl -S epoc.pl "$@"
 Index: cl_tools.pm
 ===================================================================
---- cl_tools.pm	(.../tags/orig)	(revision 3605)
-+++ cl_tools.pm	(.../trunk)	(revision 3606)
+--- cl_tools.pm	(.../tags/orig)	(revision 3815)
++++ cl_tools.pm	(.../trunk)	(revision 3817)
 @@ -243,7 +243,7 @@
  		"\n",
  		"CLEANLIBRARY :\n"
@@ -5100,7 +6131,7 @@ Index: cl_tools.pm
 Index: aiftool
 ===================================================================
 --- aiftool	(.../tags/orig)	(revision 0)
-+++ aiftool	(.../trunk)	(revision 3606)
++++ aiftool	(.../trunk)	(revision 3817)
 @@ -0,0 +1,74 @@
 +#! /bin/bash
 +#
@@ -5178,8 +6209,8 @@ Index: aiftool
 +# EOF - aiftool
 Index: checksource.pl
 ===================================================================
---- checksource.pl	(.../tags/orig)	(revision 3605)
-+++ checksource.pl	(.../trunk)	(revision 3606)
+--- checksource.pl	(.../tags/orig)	(revision 3815)
++++ checksource.pl	(.../trunk)	(revision 3817)
 @@ -9,10 +9,10 @@
  use Cwd;
  use Getopt::Long qw(:config posix_default);		#permits "+" in arguments, rather than as an option identifier
@@ -5196,8 +6227,8 @@ Index: checksource.pl
  
 Index: checksource.pm
 ===================================================================
---- checksource.pm	(.../tags/orig)	(revision 3605)
-+++ checksource.pm	(.../trunk)	(revision 3606)
+--- checksource.pm	(.../tags/orig)	(revision 3815)
++++ checksource.pm	(.../trunk)	(revision 3817)
 @@ -6,7 +6,7 @@
  # Routines involved in checking that source matches various filename policy constraints
  
@@ -5359,8 +6390,8 @@ Index: checksource.pm
  		if ($referenceDOSSlash =~ /$quotemetaExclusion$/i)
 Index: bpabiutl.pm
 ===================================================================
---- bpabiutl.pm	(.../tags/orig)	(revision 3605)
-+++ bpabiutl.pm	(.../trunk)	(revision 3606)
+--- bpabiutl.pm	(.../tags/orig)	(revision 3815)
++++ bpabiutl.pm	(.../trunk)	(revision 3817)
 @@ -6,7 +6,7 @@
  
  # This package  does various ancillary things for BPABI (Base Platform ABI) platforms
@@ -5451,7 +6482,7 @@ Index: bpabiutl.pm
 Index: signsis
 ===================================================================
 --- signsis	(.../tags/orig)	(revision 0)
-+++ signsis	(.../trunk)	(revision 3606)
++++ signsis	(.../trunk)	(revision 3817)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -5470,8 +6501,8 @@ Index: signsis
 +wine $ROOT/$PGM.exe "$@"
 Index: defutl.pm
 ===================================================================
---- defutl.pm	(.../tags/orig)	(revision 3605)
-+++ defutl.pm	(.../trunk)	(revision 3606)
+--- defutl.pm	(.../tags/orig)	(revision 3815)
++++ defutl.pm	(.../trunk)	(revision 3817)
 @@ -8,7 +8,7 @@
  # General Def file utilities
  #---------------------------
@@ -5483,8 +6514,8 @@ Index: defutl.pm
  @ISA=qw(Exporter);
 Index: preprocessor.pm
 ===================================================================
---- preprocessor.pm	(.../tags/orig)	(revision 3605)
-+++ preprocessor.pm	(.../trunk)	(revision 3606)
+--- preprocessor.pm	(.../tags/orig)	(revision 3815)
++++ preprocessor.pm	(.../trunk)	(revision 3817)
 @@ -7,7 +7,7 @@
  # Used to allow us to access and manipulate other pre processors
  #
@@ -5510,10 +6541,25 @@ Index: preprocessor.pm
 -1;
 \ No newline at end of file
 +1;
+Index: tranasm
+===================================================================
+--- tranasm	(.../tags/orig)	(revision 0)
++++ tranasm	(.../trunk)	(revision 3817)
+@@ -0,0 +1,4 @@
++#!/bin/sh
++DIR=`dirname $0`
++TOOL=`basename $0`
++perl $DIR/$TOOL.pl "$@"
+
+Property changes on: tranasm
+___________________________________________________________________
+Added: svn:executable
+   + *
+
 Index: makedef.pl
 ===================================================================
---- makedef.pl	(.../tags/orig)	(revision 3605)
-+++ makedef.pl	(.../trunk)	(revision 3606)
+--- makedef.pl	(.../tags/orig)	(revision 3815)
++++ makedef.pl	(.../trunk)	(revision 3817)
 @@ -29,9 +29,9 @@
  }
  use lib $PerlBinPath;
@@ -5553,8 +6599,8 @@ Index: makedef.pl
  				$Comment = $1;
 Index: cshlpcmp/perl/csptmlfl.pm
 ===================================================================
---- cshlpcmp/perl/csptmlfl.pm	(.../tags/orig)	(revision 3605)
-+++ cshlpcmp/perl/csptmlfl.pm	(.../trunk)	(revision 3606)
+--- cshlpcmp/perl/csptmlfl.pm	(.../tags/orig)	(revision 3815)
++++ cshlpcmp/perl/csptmlfl.pm	(.../trunk)	(revision 3817)
 @@ -1569,9 +1569,10 @@
  	#make the fileName 
  	if ( ($archive !~ /[\\\/]$/) && ($archive ne "") )
@@ -5569,8 +6615,8 @@ Index: cshlpcmp/perl/csptmlfl.pm
  	if(! -s $self->_iGraphicsDir.$fileName.".mbm")
 Index: cshlpcmp/perl/parastyle.pm
 ===================================================================
---- cshlpcmp/perl/parastyle.pm	(.../tags/orig)	(revision 3605)
-+++ cshlpcmp/perl/parastyle.pm	(.../trunk)	(revision 3606)
+--- cshlpcmp/perl/parastyle.pm	(.../tags/orig)	(revision 3815)
++++ cshlpcmp/perl/parastyle.pm	(.../trunk)	(revision 3817)
 @@ -17,7 +17,7 @@
  
  use devtools;
@@ -5582,8 +6628,8 @@ Index: cshlpcmp/perl/parastyle.pm
  #
 Index: cshlpcmp/perl/projfile.pm
 ===================================================================
---- cshlpcmp/perl/projfile.pm	(.../tags/orig)	(revision 3605)
-+++ cshlpcmp/perl/projfile.pm	(.../trunk)	(revision 3606)
+--- cshlpcmp/perl/projfile.pm	(.../tags/orig)	(revision 3815)
++++ cshlpcmp/perl/projfile.pm	(.../trunk)	(revision 3817)
 @@ -42,6 +42,7 @@
  
  	#get the current working directory
@@ -5679,8 +6725,8 @@ Index: cshlpcmp/perl/projfile.pm
  	return $path;
 Index: cshlpcmp/perl/cshlpfl.pm
 ===================================================================
---- cshlpcmp/perl/cshlpfl.pm	(.../tags/orig)	(revision 3605)
-+++ cshlpcmp/perl/cshlpfl.pm	(.../trunk)	(revision 3606)
+--- cshlpcmp/perl/cshlpfl.pm	(.../tags/orig)	(revision 3815)
++++ cshlpcmp/perl/cshlpfl.pm	(.../trunk)	(revision 3817)
 @@ -137,10 +137,15 @@
  	my $self = shift;
  
@@ -5700,8 +6746,8 @@ Index: cshlpcmp/perl/cshlpfl.pm
  	#check if cshlpwtr managed to run
 Index: cshlpcmp/perl/rtffile.pm
 ===================================================================
---- cshlpcmp/perl/rtffile.pm	(.../tags/orig)	(revision 3605)
-+++ cshlpcmp/perl/rtffile.pm	(.../trunk)	(revision 3606)
+--- cshlpcmp/perl/rtffile.pm	(.../tags/orig)	(revision 3815)
++++ cshlpcmp/perl/rtffile.pm	(.../trunk)	(revision 3817)
 @@ -106,12 +106,13 @@
      my($rtfFile)=ExtractFileNameNoExt($self->_iRtfFile);
  
@@ -5720,8 +6766,8 @@ Index: cshlpcmp/perl/rtffile.pm
      #check if rtf2ptml managed to run
 Index: cshlpcmp/perl/custfile.pm
 ===================================================================
---- cshlpcmp/perl/custfile.pm	(.../tags/orig)	(revision 3605)
-+++ cshlpcmp/perl/custfile.pm	(.../trunk)	(revision 3606)
+--- cshlpcmp/perl/custfile.pm	(.../tags/orig)	(revision 3815)
++++ cshlpcmp/perl/custfile.pm	(.../trunk)	(revision 3817)
 @@ -1055,6 +1055,7 @@
  	my $self=shift;
  
@@ -5740,8 +6786,8 @@ Index: cshlpcmp/perl/custfile.pm
  	my $element = $self->_iCsHlpDom->createElement("graphic");
 Index: cshlpcmp/perl/asptmlfl.pm
 ===================================================================
---- cshlpcmp/perl/asptmlfl.pm	(.../tags/orig)	(revision 3605)
-+++ cshlpcmp/perl/asptmlfl.pm	(.../trunk)	(revision 3606)
+--- cshlpcmp/perl/asptmlfl.pm	(.../tags/orig)	(revision 3815)
++++ cshlpcmp/perl/asptmlfl.pm	(.../trunk)	(revision 3817)
 @@ -1338,9 +1338,13 @@
  							#make a copy of the graphic node
  							my $graphicNodeCopy = $graphicNode->cloneNode(1);
@@ -5760,8 +6806,8 @@ Index: cshlpcmp/perl/asptmlfl.pm
  							$self->_iMbmList->AddItem($epocFileName,$graphicNodeCopy);
 Index: output.pm
 ===================================================================
---- output.pm	(.../tags/orig)	(revision 3605)
-+++ output.pm	(.../trunk)	(revision 3606)
+--- output.pm	(.../tags/orig)	(revision 3815)
++++ output.pm	(.../trunk)	(revision 3817)
 @@ -6,7 +6,7 @@
  
  # Text formatting module
@@ -5793,8 +6839,8 @@ Index: output.pm
  
 Index: abld.pl
 ===================================================================
---- abld.pl	(.../tags/orig)	(revision 3605)
-+++ abld.pl	(.../trunk)	(revision 3606)
+--- abld.pl	(.../tags/orig)	(revision 3815)
++++ abld.pl	(.../trunk)	(revision 3817)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -6080,7 +7126,7 @@ Index: abld.pl
 Index: rcomp
 ===================================================================
 --- rcomp	(.../tags/orig)	(revision 0)
-+++ rcomp	(.../trunk)	(revision 3606)
++++ rcomp	(.../trunk)	(revision 3817)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -6099,8 +7145,8 @@ Index: rcomp
 +wine $ROOT/$PGM.exe "$@"
 Index: e32tpver.pm
 ===================================================================
---- e32tpver.pm	(.../tags/orig)	(revision 3605)
-+++ e32tpver.pm	(.../trunk)	(revision 3606)
+--- e32tpver.pm	(.../tags/orig)	(revision 3815)
++++ e32tpver.pm	(.../trunk)	(revision 3817)
 @@ -6,7 +6,7 @@
  
  # Returns the version number for E32TOOLP - update for each release
@@ -6112,8 +7158,8 @@ Index: e32tpver.pm
  @EXPORT=qw(
 Index: perllib/xml/dom.pm
 ===================================================================
---- perllib/xml/dom.pm	(.../tags/orig)	(revision 3605)
-+++ perllib/xml/dom.pm	(.../trunk)	(revision 3606)
+--- perllib/xml/dom.pm	(.../tags/orig)	(revision 3815)
++++ perllib/xml/dom.pm	(.../trunk)	(revision 3817)
 @@ -50,7 +50,7 @@
  	     %DefaultEntities %DecodeDefaultEntity
  	   );
@@ -6145,8 +7191,8 @@ Index: perllib/xml/dom.pm
  # e.g. should not replace &#nn; &#xAF; and &abc;
 Index: perllib/args.pm
 ===================================================================
---- perllib/args.pm	(.../tags/orig)	(revision 3605)
-+++ perllib/args.pm	(.../trunk)	(revision 3606)
+--- perllib/args.pm	(.../tags/orig)	(revision 3815)
++++ perllib/args.pm	(.../trunk)	(revision 3817)
 @@ -685,7 +685,7 @@
  		}
  
@@ -6158,8 +7204,8 @@ Index: perllib/args.pm
  ################################################################################
 Index: perllib/devtools.pm
 ===================================================================
---- perllib/devtools.pm	(.../tags/orig)	(revision 3605)
-+++ perllib/devtools.pm	(.../trunk)	(revision 3606)
+--- perllib/devtools.pm	(.../tags/orig)	(revision 3815)
++++ perllib/devtools.pm	(.../trunk)	(revision 3817)
 @@ -251,7 +251,7 @@
  	{
  	my($fileName)=@_;
@@ -6180,8 +7226,8 @@ Index: perllib/devtools.pm
  	return $path;
 Index: perllib/params.pm
 ===================================================================
---- perllib/params.pm	(.../tags/orig)	(revision 3605)
-+++ perllib/params.pm	(.../trunk)	(revision 3606)
+--- perllib/params.pm	(.../tags/orig)	(revision 3815)
++++ perllib/params.pm	(.../trunk)	(revision 3817)
 @@ -51,7 +51,7 @@
      bless $self, $class;
  
@@ -6269,8 +7315,8 @@ Index: perllib/params.pm
      $self->_iLog->Log("Default value is ".$obj1->DefaultValue());
 Index: pathutl.pm
 ===================================================================
---- pathutl.pm	(.../tags/orig)	(revision 3605)
-+++ pathutl.pm	(.../trunk)	(revision 3606)
+--- pathutl.pm	(.../tags/orig)	(revision 3815)
++++ pathutl.pm	(.../trunk)	(revision 3817)
 @@ -9,7 +9,7 @@
  #	Distinguish paths from filepaths by assuming paths end with "\"
  #	therefore ensure this is the case for all paths coming into programs using this module
@@ -6563,8 +7609,8 @@ Index: pathutl.pm
  
 Index: memtrace.pl
 ===================================================================
---- memtrace.pl	(.../tags/orig)	(revision 3605)
-+++ memtrace.pl	(.../trunk)	(revision 3606)
+--- memtrace.pl	(.../tags/orig)	(revision 3815)
++++ memtrace.pl	(.../trunk)	(revision 3817)
 @@ -237,7 +237,7 @@
  	{
  	my $build;
@@ -6576,8 +7622,8 @@ Index: memtrace.pl
  	&usage;
 Index: epocaif.pl
 ===================================================================
---- epocaif.pl	(.../tags/orig)	(revision 3605)
-+++ epocaif.pl	(.../trunk)	(revision 3606)
+--- epocaif.pl	(.../tags/orig)	(revision 3815)
++++ epocaif.pl	(.../trunk)	(revision 3817)
 @@ -1,3 +1,5 @@
 +#!/usr/bin/perl -w
 +#
@@ -6823,8 +7869,8 @@ Index: epocaif.pl
  		$curdrive="";
 Index: e32variant.pm
 ===================================================================
---- e32variant.pm	(.../tags/orig)	(revision 3605)
-+++ e32variant.pm	(.../trunk)	(revision 3606)
+--- e32variant.pm	(.../tags/orig)	(revision 3815)
++++ e32variant.pm	(.../trunk)	(revision 3817)
 @@ -2,7 +2,7 @@
  #
  # Copyright (c) 2004-2006 Symbian Software Ltd.  All rights reserved.
@@ -6912,8 +7958,8 @@ Index: e32variant.pm
  }
 Index: makhelp.pm
 ===================================================================
---- makhelp.pm	(.../tags/orig)	(revision 3605)
-+++ makhelp.pm	(.../trunk)	(revision 3606)
+--- makhelp.pm	(.../tags/orig)	(revision 3815)
++++ makhelp.pm	(.../trunk)	(revision 3817)
 @@ -4,7 +4,7 @@
  #
  
@@ -6952,8 +7998,8 @@ Index: makhelp.pm
  EPOCALLOWDLLDATA
 Index: cshlpcmp.pl
 ===================================================================
---- cshlpcmp.pl	(.../tags/orig)	(revision 3605)
-+++ cshlpcmp.pl	(.../trunk)	(revision 3606)
+--- cshlpcmp.pl	(.../tags/orig)	(revision 3815)
++++ cshlpcmp.pl	(.../trunk)	(revision 3817)
 @@ -1,4 +1,4 @@
 -#!perl
 +#!/usr/bin/perl
@@ -7016,7 +8062,7 @@ Index: cshlpcmp.pl
 Index: cjpeg
 ===================================================================
 --- cjpeg	(.../tags/orig)	(revision 0)
-+++ cjpeg	(.../trunk)	(revision 3606)
++++ cjpeg	(.../trunk)	(revision 3817)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -7035,8 +8081,8 @@ Index: cjpeg
 +wine $ROOT/$PGM.exe "$@"
 Index: makdeps.pm
 ===================================================================
---- makdeps.pm	(.../tags/orig)	(revision 3605)
-+++ makdeps.pm	(.../trunk)	(revision 3606)
+--- makdeps.pm	(.../tags/orig)	(revision 3815)
++++ makdeps.pm	(.../trunk)	(revision 3817)
 @@ -7,7 +7,7 @@
  # Module which wraps the dependency information provided the preprocessor when invoked with certain switches
  # so that dependency information rather than preprocessing information is produced.
@@ -7157,7 +8203,7 @@ Index: makdeps.pm
 Index: setupcomms
 ===================================================================
 --- setupcomms	(.../tags/orig)	(revision 0)
-+++ setupcomms	(.../trunk)	(revision 3606)
++++ setupcomms	(.../trunk)	(revision 3817)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -7174,7 +8220,7 @@ Index: setupcomms
 Index: mifconv
 ===================================================================
 --- mifconv	(.../tags/orig)	(revision 0)
-+++ mifconv	(.../trunk)	(revision 3606)
++++ mifconv	(.../trunk)	(revision 3817)
 @@ -0,0 +1,20 @@
 +#!/bin/sh
 +#
@@ -7199,7 +8245,7 @@ Index: mifconv
 Index: abld
 ===================================================================
 --- abld	(.../tags/orig)	(revision 0)
-+++ abld	(.../trunk)	(revision 3606)
++++ abld	(.../trunk)	(revision 3817)
 @@ -0,0 +1,19 @@
 +#!/bin/sh
 +#
