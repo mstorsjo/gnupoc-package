@@ -12,8 +12,8 @@ mkdir -p $DEST
 
 cp sign.sh wrapper.sh gnupoc-common.sh cshlpcmp $DEST
 cd $DEST
-for i in abld bldmake bmconv elf2e32 elftran epoc eshell genstubs getexports \
-	makekeys makesis makmake mifconv rcomp signsis
+for i in abld bldmake bmconv elf2e32 elftran epoc eshell gendirective \
+	genstubs getexports makekeys makesis makmake mifconv rcomp signsis
 do
 	ln -s wrapper.sh $i
 done
