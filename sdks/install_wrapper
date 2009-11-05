@@ -12,7 +12,9 @@ mkdir -p $DEST
 
 cp sign.sh wrapper.sh gnupoc-common.sh cshlpcmp $DEST
 cd $DEST
-for i in abld bldmake bmconv epoc eshell makekeys makesis makmake mifconv rcomp signsis ; do
+for i in abld bldmake bmconv elf2e32 elftran epoc eshell genstubs getexports \
+	makekeys makesis makmake mifconv rcomp signsis
+do
 	ln -s wrapper.sh $i
 done
 if [ "`which gmake`" != "" ]; then
