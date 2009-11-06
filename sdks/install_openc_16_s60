@@ -9,6 +9,8 @@ fi
 openc_tarball=$1
 S60_SDK_DIR=$2
 
+export PATH=unshield:$PATH
+
 # create temporary directory
 TEMP=$(mktemp -d)
 trap "echo Removing temporary files...; rm -rf $TEMP" EXIT
@@ -26,19 +28,19 @@ unzip -d $TEMP $openc_tarball
 
 # Install C libraries and headers
 # (header files are the same for all SDK versions)
-./unshield/unshield -d $TEMP -g opencepoc32_3.1 x $TEMP/Installer/data1.cab
+unshield -d $TEMP -g opencepoc32_3.1 x $TEMP/Installer/data1.cab
 ./lowercase $TEMP/opencepoc32_3.1/epoc32
 ./fixinclude $TEMP/opencepoc32_3.1/epoc32/include
 copy_files $TEMP/opencepoc32_3.1/epoc32/ $S60_SDK_DIR/epoc32/
 
 # Install C++ libraries and headers
-./unshield/unshield -d $TEMP -g opencppepoc32 x $TEMP/Installer/data1.cab
+unshield -d $TEMP -g opencppepoc32 x $TEMP/Installer/data1.cab
 ./lowercase $TEMP/opencppepoc32/epoc32
 ./fixinclude $TEMP/opencppepoc32/epoc32/include
 copy_files $TEMP/opencppepoc32/epoc32/ $S60_SDK_DIR/epoc32/
 
 # Install C plugin
-./unshield/unshield -d $TEMP -g opencnokiaplugin x $TEMP/Installer/data1.cab
+unshield -d $TEMP -g opencnokiaplugin x $TEMP/Installer/data1.cab
 ./lowercase $TEMP/opencnokiaplugin/nokia_plugin/openc/s60opencsis
 ./lowercase $TEMP/opencnokiaplugin/nokia_plugin/openc/s60opencex
 ./fixinclude $TEMP/opencnokiaplugin/nokia_plugin/openc/s60opencex
@@ -46,7 +48,7 @@ copy_files $TEMP/opencppepoc32/epoc32/ $S60_SDK_DIR/epoc32/
 copy_files $TEMP/opencnokiaplugin/ $S60_SDK_DIR/
 
 # Install C++ plugin
-./unshield/unshield -d $TEMP -g opencppnokiaplugin x $TEMP/Installer/data1.cab
+unshield -d $TEMP -g opencppnokiaplugin x $TEMP/Installer/data1.cab
 ./lowercase $TEMP/opencppnokiaplugin/nokia_plugin/opencpp/s60opencppsis
 for d in s60boostex s60opencppex; do
     ./lowercase $TEMP/opencppnokiaplugin/nokia_plugin/opencpp/$d
