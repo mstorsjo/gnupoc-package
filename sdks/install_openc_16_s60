@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-if [ $# -ne 2 ]; then
-    echo "Usage: $0 <s60_open_c_cpp_plug_in_v1_6_en.zip> <s60-sdk-dir>"
+if [ $# -ne 2 -o $0 != "./install_openc_16_s60" ]; then
+    echo "Usage: ./install_openc_16_s60 <s60_open_c_cpp_plug_in_v1_6_en.zip> <s60-sdk-dir>"
     exit 1
 fi
 
