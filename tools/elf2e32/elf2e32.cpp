@@ -1621,9 +1621,9 @@ int main(int argc, char *argv[]) {
 		Elf32_Shdr* shdr;
 		if ((shdr = elf32_getshdr(section)) != NULL) {
 			const char* name = elf_strptr(elf, ehdr->e_shstrndx, shdr->sh_name);
-			if (!strcmp(name, ".text"))
+			if (!strcmp(name, ".text") || !strcmp(name, "ER_RO"))
 				header.codeBase = shdr->sh_addr;
-			else if (!strcmp(name, ".data"))
+			else if (!strcmp(name, ".data") || !strcmp(name, "ER_RW"))
 				header.dataBase = shdr->sh_addr;
 /*
 			else if (!strcmp(name, ".bss")) {
@@ -1645,7 +1645,7 @@ int main(int argc, char *argv[]) {
 			if ((shdr->sh_flags & SHF_ALLOC) == 0)
 				continue;
 
-			if (!strcmp(name, ".data"))
+			if (!strcmp(name, ".data") || !strcmp(name, "ER_RW"))
 				continue;
 
 			Elf_Data* data = NULL;
@@ -1687,7 +1687,7 @@ int main(int argc, char *argv[]) {
 		Elf32_Shdr* shdr;
 		if ((shdr = elf32_getshdr(section)) != NULL) {
 			const char* name = elf_strptr(elf, ehdr->e_shstrndx, shdr->sh_name);
-			if (strcmp(name, ".data"))
+			if (strcmp(name, ".data") && strcmp(name, "ER_RW"))
 				continue;
 
 			Elf_Data* data = NULL;
