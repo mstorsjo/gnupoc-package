@@ -375,6 +375,7 @@ void getCapabilities(char* str, uint32_t* caps) {
 
 #define KUidCompressionDeflate	0x101f7afc
 
+#define R_ARM_NONE	0
 #define R_ARM_ABS32	2
 #define R_ARM_GLOB_DAT	21
 #define R_ARM_RELATIVE	23
@@ -1233,8 +1234,10 @@ void checkRelocations(Elf* elf, Elf_Scn* relocationSection, Elf32_Shdr* relocati
 			} else {
 				const char* dsoname = getDsoName(elf, sections->verneedHeader->sh_link, verneed, sections->verneedNum, verIndex);
 				const char* dllname = getDllName(elf, sections->verneedHeader->sh_link, verneed, sections->verneedNum, verIndex);
-				fixRelocation(rel->r_offset - header->codeBase + header->codeOffset, out, name, dsoname, libpath);
-				importList.addImport(dllname, rel->r_offset - header->codeBase);
+				if (type != R_ARM_NONE) {
+					fixRelocation(rel->r_offset - header->codeBase + header->codeOffset, out, name, dsoname, libpath);
+					importList.addImport(dllname, rel->r_offset - header->codeBase);
+				}
 			}
 		}
 	}
