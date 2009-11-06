@@ -472,7 +472,7 @@ bool findSection(Elf* elf, Elf32_Word type, Elf_Scn** sectionPtr, Elf32_Shdr** s
 	return false;
 }
 
-bool fixRelocation(uint32_t offset, FILE* out, const char* symbol, const char* lib, const char* libpath) {
+void fixRelocation(uint32_t offset, FILE* out, const char* symbol, const char* lib, const char* libpath) {
 	char buffer[1000];
 	sprintf(buffer, "%s/%s", libpath, lib);
 	int fd = open(buffer, O_RDONLY);
@@ -493,7 +493,7 @@ bool fixRelocation(uint32_t offset, FILE* out, const char* symbol, const char* l
 	}
 	if (fd < 0) {
 		printf("file not found %s\n", lib);
-		return false;
+		return;
 	}
 	Elf* elf = elf_begin(fd, ELF_C_READ, NULL);
 
@@ -503,7 +503,7 @@ bool fixRelocation(uint32_t offset, FILE* out, const char* symbol, const char* l
 		printf("fixRelocation SHT_DYNSYM not found\n");
 		elf_end(elf);
 		close(fd);
-		return false;
+		return;
 	}
 	Elf32_Sym* sym;
 	Elf32_Addr addr;
@@ -511,7 +511,7 @@ bool fixRelocation(uint32_t offset, FILE* out, const char* symbol, const char* l
 		printf("fixRelocation symbol %s not found\n", symbol);
 		elf_end(elf);
 		close(fd);
-		return false;
+		return;
 	}
 	addr = sym->st_value;
 
@@ -519,7 +519,7 @@ bool fixRelocation(uint32_t offset, FILE* out, const char* symbol, const char* l
 		printf("fixRelocation section SHT_PROGBITS not found\n");
 		elf_end(elf);
 		close(fd);
-		return false;
+		return;
 	}
 
 	addr -= shdr->sh_addr;
@@ -530,7 +530,7 @@ bool fixRelocation(uint32_t offset, FILE* out, const char* symbol, const char* l
 		printf("fixRelocation addr past d_size\n");
 		elf_end(elf);
 		close(fd);
-		return false;
+		return;
 	}
 //	uint32_t ordinal = *((uint32_t*) (((uint8_t*)data->d_buf) + addr));
 	uint8_t* dataptr = (uint8_t*) data->d_buf;
@@ -540,17 +540,12 @@ bool fixRelocation(uint32_t offset, FILE* out, const char* symbol, const char* l
 	uint8_t origBuf[4];
 	fread(origBuf, 1, sizeof(origBuf), out);
 	uint32_t orig = origBuf[0] | (origBuf[1]<<8) | (origBuf[2]<<16) | (origBuf[3]<<24);
-	if (orig & 0xffff0000) {
-//		printf("relocation already made? skipping\n");
-		return false;
-	}
 	ordinal += orig << 16;
 	fseek(out, offset, SEEK_SET);
 //	fwrite(&ordinal, 1, sizeof(ordinal), out);
 	writeUint32(ordinal, out);
 	elf_end(elf);
 	close(fd);
-	return true;
 }
 
 void fixRelocation(uint32_t offset, FILE* out, Elf32_Addr value) {
@@ -1238,8 +1233,8 @@ void checkRelocations(Elf* elf, Elf_Scn* relocationSection, Elf32_Shdr* relocati
 			} else {
 				const char* dsoname = getDsoName(elf, sections->verneedHeader->sh_link, verneed, sections->verneedNum, verIndex);
 				const char* dllname = getDllName(elf, sections->verneedHeader->sh_link, verneed, sections->verneedNum, verIndex);
-				if (fixRelocation(rel->r_offset - header->codeBase + header->codeOffset, out, name, dsoname, libpath))
-					importList.addImport(dllname, rel->r_offset - header->codeBase);
+				fixRelocation(rel->r_offset - header->codeBase + header->codeOffset, out, name, dsoname, libpath);
+				importList.addImport(dllname, rel->r_offset - header->codeBase);
 			}
 		}
 	}
