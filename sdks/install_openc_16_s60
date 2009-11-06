@@ -2,7 +2,8 @@
 set -e
 
 if [ $# -ne 2 -o $0 != "./install_openc_16_s60" ]; then
-    echo "Usage: ./install_openc_16_s60 <s60_open_c_cpp_plug_in_v1_6_en.zip> <s60-sdk-dir>"
+    echo "Usage: ./install_openc_16_s60 <path-to-openc-plugin-zip> <s60-sdk-dir>"
+    echo " e.g.: ./install_openc_16_s60 s60_open_c_cpp_plug_in_v1_6_en.zip ~/symbian-sdks/s60_50"
     exit 1
 fi
 
