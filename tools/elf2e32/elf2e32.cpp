@@ -727,7 +727,7 @@ public:
 		free(buffer);
 	}
 	T* objectAtIndex(uint32_t index) {
-	if (index < used)
+		if (index < used)
 			return &((T*)buffer)[index];
 		return NULL;
 	}
