@@ -1,5 +1,5 @@
 /*
-    Elf2e32
+    gendirective
     Copyright 2007 - 2009 Martin Storsjö
 
     This program is free software; you can redistribute it and/or modify
