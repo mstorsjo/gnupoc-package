@@ -35,6 +35,7 @@
 #include <libelf.h>
 #include <string.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 int main(int argc, char *argv[]) {
 	if (argc < 2) {
@@ -69,11 +70,16 @@ int main(int argc, char *argv[]) {
 				continue;
 			fwrite(data->d_buf, 1, data->d_size, stdout);
 			fprintf(stdout, "\n");
+
+			elf_end(elf);
+			close(fd);
 			return 0;
 		}
 	}
 
 	fprintf(stderr, "No .directive section found!\n");
+	elf_end(elf);
+	close(fd);
 	return 1;
 }
 

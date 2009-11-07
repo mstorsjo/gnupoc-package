@@ -35,6 +35,7 @@
 #include <libelf.h>
 #include <string.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 int main(int argc, char *argv[]) {
 	if (argc < 2) {
@@ -101,6 +102,10 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
+
+	elf_end(elf);
+	close(fd);
+
 	return 0;
 }
 
