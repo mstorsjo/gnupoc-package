@@ -67,6 +67,11 @@ public:
 		}
 		return objectAtIndex(used - 1);
 	}
+	T* appendClearedObject() {
+		T* ptr = appendObject();
+		memset(ptr, 0, sizeof(T));
+		return ptr;
+	}
 	void appendObject(const T& obj) {
 		T* ptr = appendObject();
 		*ptr = obj;

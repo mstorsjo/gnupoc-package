@@ -94,56 +94,56 @@ void writeStub(const char* file, const char* symbol, const char* name) {
 	symtab.getShdr()->sh_info = directive.sectionIndex();
 
 	Elf32_Sym* sym;
-	sym = symtab.appendObject();
+	sym = symtab.appendClearedObject();
 	sym->st_name = 0;
 	sym->st_value = 0;
 	sym->st_size = 0;
 	sym->st_info = ELF32_ST_INFO(STB_LOCAL, STT_NOTYPE);
 	sym->st_shndx = 0;
 
-	sym = symtab.appendObject();
+	sym = symtab.appendClearedObject();
 	sym->st_name = strtab.appendString("$a");
 	sym->st_value = 0;
 	sym->st_size = 0;
 	sym->st_info = ELF32_ST_INFO(STB_LOCAL, STT_FUNC);
 	sym->st_shndx = stubcode.sectionIndex();
 
-	sym = symtab.appendObject();
+	sym = symtab.appendClearedObject();
 	sym->st_name = strtab.appendString("$d");
 	sym->st_value = 4;
 	sym->st_size = 0;
 	sym->st_info = ELF32_ST_INFO(STB_LOCAL, STT_OBJECT);
 	sym->st_shndx = stubcode.sectionIndex();
 
-	sym = symtab.appendObject();
+	sym = symtab.appendClearedObject();
 	sym->st_name = strtab.appendString("StubCode");
 	sym->st_value = 0;
 	sym->st_size = stubcode.usedSize();
 	sym->st_info = ELF32_ST_INFO(STB_LOCAL, STT_SECTION);
 	sym->st_shndx = stubcode.sectionIndex();
 
-	sym = symtab.appendObject();
+	sym = symtab.appendClearedObject();
 	sym->st_name = strtab.appendString(".directive");
 	sym->st_value = 0;
 	sym->st_size = 0;
 	sym->st_info = ELF32_ST_INFO(STB_LOCAL, STT_SECTION);
 	sym->st_shndx = symtab.sectionIndex();
 
-	sym = symtab.appendObject();
+	sym = symtab.appendClearedObject();
 	sym->st_name = strtab.appendString("theImportedSymbol");
 	sym->st_value = 4;
 	sym->st_size = 0;
 	sym->st_info = ELF32_ST_INFO(STB_LOCAL, STT_FUNC);
 	sym->st_shndx = stubcode.sectionIndex();
 
-	sym = symtab.appendObject();
+	sym = symtab.appendClearedObject();
 	sym->st_name = strtab.appendString(symbol);
 	sym->st_value = 0;
 	sym->st_size = 0;
 	sym->st_info = ELF32_ST_INFO(STB_GLOBAL, STT_FUNC);
 	sym->st_shndx = stubcode.sectionIndex();
 
-	sym = symtab.appendObject();
+	sym = symtab.appendClearedObject();
 	sym->st_name = strtab.appendString(name);
 	sym->st_value = 0;
 	sym->st_size = 0;
