@@ -55,6 +55,14 @@ using namespace std;
 void DeflateCompress(char* bytes, TInt size, ostream& os);
 
 
+int epocVersion = 0; // Unknown
+#define MAKE_VERSION(a,b) ((a << 8) | (b))
+#define EPOC_VERSION_9_1 MAKE_VERSION(9, 1)
+#define EPOC_VERSION_9_2 MAKE_VERSION(9, 2)
+#define EPOC_VERSION_9_3 MAKE_VERSION(9, 3)
+#define EPOC_VERSION_9_4 MAKE_VERSION(9, 4)
+
+
 #ifndef EF_ARM_INTERWORK
 #define EF_ARM_INTERWORK 0x04
 #endif
@@ -797,7 +805,7 @@ public:
 		for (unsigned int i = 0; i < exports.size(); i++) {
 			if (i == presetOrdinals)
 				fprintf(out, "; NEW:\r\n");
-			if (1) { // S60 3.0 style
+			if (epocVersion <= EPOC_VERSION_9_1) { // S60 3.0 style
 				fprintf(out, "\t%s @ %d NONAME ; %s\r\n", exports[i]->name, i+1, exports[i]->code ? "CODE" : "DATA");
 			} else { // S60 3.1 and onwards
 				if (exports[i]->code)
@@ -1249,7 +1257,37 @@ void parseDefFile(const char* filename, ExportList* exportList) {
 	}
 }
 
+void detectVersion() {
+	const char* epocroot = getenv("EPOCROOT");
+	if (!epocroot)
+		return;
+
+	char buf[2000];
+	sprintf(buf, "%s/epoc32/include/variant/symbian_os_v9.1.hrh", epocroot);
+	if (findCaseInsensitive(buf)) {
+		epocVersion = EPOC_VERSION_9_1;
+		return;
+	}
+	sprintf(buf, "%s/epoc32/include/variant/symbian_os_v9.2.hrh", epocroot);
+	if (findCaseInsensitive(buf)) {
+		epocVersion = EPOC_VERSION_9_2;
+		return;
+	}
+	sprintf(buf, "%s/epoc32/include/variant/symbian_os_v9.3.hrh", epocroot);
+	if (findCaseInsensitive(buf)) {
+		epocVersion = EPOC_VERSION_9_3;
+		return;
+	}
+	sprintf(buf, "%s/epoc32/include/variant/symbian_os.hrh", epocroot);
+	if (findCaseInsensitive(buf)) {
+		epocVersion = EPOC_VERSION_9_4;
+		return;
+	}
+}
+
 int main(int argc, char *argv[]) {
+	detectVersion();
+
 	int fixedaddress = 0;
 	int unfrozen = 0;
 	int noexportlibrary = 0;
