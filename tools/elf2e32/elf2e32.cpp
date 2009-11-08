@@ -764,16 +764,16 @@ public:
 	Elf32_Shdr* getShdr() {
 		return elf32_getshdr(section);
 	}
-	void update() {
+	void update(int align = 4) {
 		Elf_Data* data = elf_getdata(section, NULL);
-		data->d_align = 4;
+		data->d_align = align;
 		data->d_off = 0;
 		data->d_buf = buffer;
 		data->d_type = TRANS;
 		data->d_size = usedSize();
 		data->d_version = EV_CURRENT;
 	}
-private:
+protected:
 	uint8_t* buffer;
 	uint32_t bufferSize;
 	uint32_t used;
@@ -833,9 +833,9 @@ public:
 	Elf32_Shdr* getShdr() {
 		return elf32_getshdr(section);
 	}
-	void update() {
+	void update(int align = 0) {
 		Elf_Data* data = elf_getdata(section, NULL);
-		data->d_align = 0;
+		data->d_align = align;
 		data->d_off = 0;
 		data->d_buf = buffer;
 		data->d_type = ELF_T_BYTE;
