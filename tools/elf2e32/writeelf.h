@@ -37,10 +37,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifndef R_ARM_NONE
 #define R_ARM_NONE	0
 #define R_ARM_ABS32	2
 #define R_ARM_GLOB_DAT	21
 #define R_ARM_RELATIVE	23
+#endif
 
 template<class T, Elf_Type TRANS> class StructArray {
 public:
