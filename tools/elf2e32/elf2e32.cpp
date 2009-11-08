@@ -1499,7 +1499,7 @@ int main(int argc, char *argv[]) {
 			const char* name = elf_strptr(elf, ehdr->e_shstrndx, shdr->sh_name);
 			if (!strcmp(name, ".text") || !strcmp(name, "ER_RO"))
 				header.codeBase = shdr->sh_addr;
-			else if (!strcmp(name, ".data") || !strcmp(name, "ER_RW"))
+			else if (!strcmp(name, ".data") || !strcmp(name, "ER_RW") || !strcmp(name, "ER_ZI"))
 				header.dataBase = shdr->sh_addr;
 /*
 			else if (!strcmp(name, ".bss")) {
@@ -1521,7 +1521,7 @@ int main(int argc, char *argv[]) {
 			if ((shdr->sh_flags & SHF_ALLOC) == 0)
 				continue;
 
-			if (!strcmp(name, ".data") || !strcmp(name, "ER_RW"))
+			if (!strcmp(name, ".data") || !strcmp(name, "ER_RW") || !strcmp(name, "ER_ZI"))
 				continue;
 
 			Elf_Data* data = NULL;
