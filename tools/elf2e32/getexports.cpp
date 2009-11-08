@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 				Elf_Scn* ref = elf_getscn(elf, sym->st_shndx);
 				Elf32_Shdr* refhdr;
 				if (ref != NULL && (refhdr = elf32_getshdr(ref))) {
-					if (refhdr->sh_type == SHT_PROGBITS) {
+					if (refhdr->sh_type == SHT_PROGBITS || refhdr->sh_type == SHT_NOBITS) {
 						printf(" %s DATA %d\n", name, refhdr->sh_size);
 					}
 				}
