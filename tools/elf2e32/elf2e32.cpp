@@ -1548,6 +1548,22 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	if (header.flags & KImageDll) {
+		exportList.doSort();
+		if (defoutput)
+			exportList.writeDef(defoutput);
+		if (dso && !noexportlibrary)
+			exportList.writeDso(dso, linkas);
+		header.exportDirOffset = ftell(out) + 4;
+		header.exportDirCount = exportList.numExports();
+		uint32_t start = ftell(out);
+		exportList.write(out, &header, &relocationList);
+		uint32_t end = ftell(out);
+		header.codeSize += end - start;
+		header.textSize += end - start;
+	}
+
+
 	while ((section = elf_nextscn(elf, section)) != NULL) {
 		Elf32_Shdr* shdr;
 		if ((shdr = elf32_getshdr(section)) != NULL) {
@@ -1579,21 +1595,6 @@ int main(int argc, char *argv[]) {
 		uint32_t pad = 4 - (header.dataSize & 3);
 		for (unsigned int i = 0; i < pad; i++)
 			writeUint8(0, out);
-	}
-
-	if (header.flags & KImageDll) {
-		exportList.doSort();
-		if (defoutput)
-			exportList.writeDef(defoutput);
-		if (dso && !noexportlibrary)
-			exportList.writeDso(dso, linkas);
-		header.exportDirOffset = ftell(out) + 4;
-		header.exportDirCount = exportList.numExports();
-		uint32_t start = ftell(out);
-		exportList.write(out, &header, &relocationList);
-		uint32_t end = ftell(out);
-		header.codeSize += end - start;
-		header.textSize += end - start;
 	}
 
 	header.importOffset = ftell(out);
