@@ -797,7 +797,14 @@ public:
 		for (unsigned int i = 0; i < exports.size(); i++) {
 			if (i == presetOrdinals)
 				fprintf(out, "; NEW:\r\n");
-			fprintf(out, "\t%s @ %d NONAME ; %s\r\n", exports[i]->name, i+1, exports[i]->code ? "CODE" : "DATA");
+			if (1) { // S60 3.0 style
+				fprintf(out, "\t%s @ %d NONAME ; %s\r\n", exports[i]->name, i+1, exports[i]->code ? "CODE" : "DATA");
+			} else { // S60 3.1 and onwards
+				if (exports[i]->code)
+					fprintf(out, "\t%s @ %d NONAME\r\n", exports[i]->name, i+1);
+				else
+					fprintf(out, "\t%s @ %d NONAME DATA %d\r\n", exports[i]->name, i+1, exports[i]->size);
+			}
 		}
 		fprintf(out, "\r\n");
 		fclose(out);
