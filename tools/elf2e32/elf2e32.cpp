@@ -1309,7 +1309,8 @@ int main(int argc, char *argv[]) {
 	header.headerCrc = 0;
 	header.moduleVersion = 10<<16 | 0;
 	header.compressionType = KUidCompressionDeflate;
-	header.toolsVersion = 2 | (0<<8) | (505<<16);
+	header.toolsVersion = 2 | (0<<8) | (505<<16); // S60 3.0 - 3.2
+//	header.toolsVersion = 2 | (0<<8) | (512<<16); // S60 5.0 version
 	uint64_t timestamp = uint64_t(time(NULL))*1000000 + 0xDCDDB3E5D20000LL;
 	header.timeLo = (timestamp >> 0) & 0xffffffff;
 	header.timeHi = (timestamp >> 32) & 0xffffffff;
