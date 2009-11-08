@@ -106,12 +106,28 @@ protected:
 	uint32_t used;
 	Elf_Scn* section;
 };
+class StringSection : public StructArray<uint8_t, ELF_T_BYTE> {
+public:
+	void appendString(const char* str) {
+		int len = strlen(str);
+		if (used + len > bufferSize) {
+			while (used + len > bufferSize)
+				bufferSize *= 2;
+			buffer = (uint8_t*) realloc(buffer, bufferSize);
+		}
+		memcpy(buffer + used, str, len);
+		used += len;
+	}
+};
+
 typedef StructArray<Elf32_Dyn, ELF_T_DYN> DynArray;
 typedef StructArray<Elf32_Word, ELF_T_WORD> OrdinalArray;
 typedef StructArray<Elf32_Sym, ELF_T_SYM> SymbolArray;
 typedef StructArray<uint8_t, ELF_T_VDEF> VerdefArray;
 typedef StructArray<Elf32_Half, ELF_T_HALF> VersymArray;
 typedef StructArray<Elf32_Word, ELF_T_WORD> HashArray;
+typedef StructArray<Elf32_Word, ELF_T_WORD> CodeSection;
+typedef StructArray<Elf32_Rel, ELF_T_REL> RelocationSection;
 
 class StringTable {
 public:
