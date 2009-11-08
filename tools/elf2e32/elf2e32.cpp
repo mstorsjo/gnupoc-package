@@ -715,12 +715,13 @@ class ExportList {
 public:
 	class Export {
 	public:
-		Export(const char* name, uint32_t value, bool code = true) {
+		Export(const char* name, uint32_t value, bool code = true, int size = 0) {
 			this->name = NULL;
 			if (name)
 				this->name = strdup(name);
 			address = value;
 			this->code = code;
+			this->size = size;
 		}
 		void setName(const char* name) {
 			free(this->name);
@@ -734,6 +735,7 @@ public:
 		char* name;
 		uint32_t address;
 		bool code;
+		int size;
 		static bool compare(const Export* exp1, const Export* exp2) {
 			if (!exp1->name && !exp2->name)
 				return 0;
@@ -763,15 +765,16 @@ public:
 			presetOrdinals = ordinal;
 		exports[ordinal - 1]->setName(name);
 	}
-	void addExport(const char* name, uint32_t addr, bool code = true) {
+	void addExport(const char* name, uint32_t addr, bool code = true, int size = 0) {
 		for (unsigned int i = 0; i < exports.size(); i++) {
 			if (exports[i]->name && !strcmp(exports[i]->name, name)) {
 				exports[i]->address = addr;
 				exports[i]->code = code;
+				exports[i]->size = size;
 				return;
 			}
 		}
-		Export* exp = new Export(name, addr, code);
+		Export* exp = new Export(name, addr, code, size);
 		exports.push_back(exp);
 	}
 	void doSort() {
@@ -1171,7 +1174,7 @@ void findExports(Elf* elf, ExportList* exportList) {
 		if (bind == STB_GLOBAL && (type == STT_FUNC || type == STT_OBJECT) && sym->st_value) {
 			if (!strncmp(name, "_ZTS", 4))
 				continue;
-			exportList->addExport(name, sym->st_value, type == STT_FUNC);
+			exportList->addExport(name, sym->st_value, type == STT_FUNC, sym->st_size);
 //			printf("%s: %x %d %x %x %x\n", name, sym->st_value, sym->st_size, sym->st_info, sym->st_other, sym->st_shndx);
 			sum++;
 		}
