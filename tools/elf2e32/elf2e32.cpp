@@ -46,6 +46,7 @@
 #include <zlib.h>
 #include <fstream>
 #include "deflate.h"
+#include "writeelf.h"
 
 #include <sys/types.h>
 #include <dirent.h>
@@ -374,11 +375,6 @@ void getCapabilities(char* str, uint32_t* caps) {
 #define KDataRelocType		0x2000
 
 #define KUidCompressionDeflate	0x101f7afc
-
-#define R_ARM_NONE	0
-#define R_ARM_ABS32	2
-#define R_ARM_GLOB_DAT	21
-#define R_ARM_RELATIVE	23
 
 uint32_t uidCrc(uint32_t uid1, uint32_t uid2, uint32_t uid3) {
 	uint8_t buf1[] = { (uid1 >> 8), (uid1 >> 24), (uid2 >> 8), (uid2 >> 24), (uid3 >> 8), (uid3 >> 24) };
@@ -713,140 +709,6 @@ public:
 private:
 //	vector<Relocation> relocations;
 	map<uint32_t, vector<Relocation> > sublists;
-};
-
-template<class T, Elf_Type TRANS> class StructArray {
-public:
-	StructArray() {
-		bufferSize = 10240;
-		buffer = (uint8_t*) malloc(bufferSize);
-		used = 0;
-		section = NULL;
-	}
-	~StructArray() {
-		free(buffer);
-	}
-	T* objectAtIndex(uint32_t index) {
-		if (index < used)
-			return &((T*)buffer)[index];
-		return NULL;
-	}
-	T* appendObject() {
-		used++;
-		if (sizeof(T)*used > bufferSize) {
-			while (sizeof(T)*used > bufferSize)
-				bufferSize *= 2;
-			buffer = (uint8_t*) realloc(buffer, bufferSize);
-		}
-		return objectAtIndex(used - 1);
-	}
-	void appendObject(const T& obj) {
-		T* ptr = appendObject();
-		*ptr = obj;
-	}
-	uint32_t usedSize() {
-		return sizeof(T)*used;
-	}
-	uint8_t* getBuffer() {
-		return buffer;
-	}
-	Elf_Scn* createSection(Elf* elf) {
-		section = elf_newscn(elf);
-		elf_newdata(section);
-		return section;
-	}
-	Elf_Scn* getSection() {
-		return section;
-	}
-	uint32_t sectionIndex() {
-		return elf_ndxscn(section);
-	}
-	Elf32_Shdr* getShdr() {
-		return elf32_getshdr(section);
-	}
-	void update(int align = 4) {
-		Elf_Data* data = elf_getdata(section, NULL);
-		data->d_align = align;
-		data->d_off = 0;
-		data->d_buf = buffer;
-		data->d_type = TRANS;
-		data->d_size = usedSize();
-		data->d_version = EV_CURRENT;
-	}
-protected:
-	uint8_t* buffer;
-	uint32_t bufferSize;
-	uint32_t used;
-	Elf_Scn* section;
-};
-typedef StructArray<Elf32_Dyn, ELF_T_DYN> DynArray;
-typedef StructArray<Elf32_Word, ELF_T_WORD> OrdinalArray;
-typedef StructArray<Elf32_Sym, ELF_T_SYM> SymbolArray;
-typedef StructArray<uint8_t, ELF_T_VDEF> VerdefArray;
-typedef StructArray<Elf32_Half, ELF_T_HALF> VersymArray;
-typedef StructArray<Elf32_Word, ELF_T_WORD> HashArray;
-
-class StringTable {
-public:
-	StringTable() {
-		bufferSize = 10240;
-		buffer = (uint8_t*) malloc(bufferSize);
-		used = 0;
-		section = NULL;
-		appendString("");
-	}
-	~StringTable() {
-		free(buffer);
-	}
-	uint32_t appendString(const char* str) {
-		int len = strlen(str);
-		len++;
-		uint32_t pos = used;
-		if (used + len < bufferSize) {
-			while (used + len > bufferSize)
-				bufferSize *= 2;
-			buffer = (uint8_t*) realloc(buffer, bufferSize);
-		}
-		strcpy((char*)buffer + used, str);
-		used += len;
-		return pos;
-	}
-	uint32_t usedSize() {
-		return used;
-	}
-	uint8_t* getBuffer() {
-		return buffer;
-	}
-	Elf_Scn* createSection(Elf* elf) {
-		section = elf_newscn(elf);
-		elf_newdata(section);
-		getShdr()->sh_entsize = 1;
-		getShdr()->sh_addralign = 0;
-		return section;
-	}
-	Elf_Scn* getSection() {
-		return section;
-	}
-	uint32_t sectionIndex() {
-		return elf_ndxscn(section);
-	}
-	Elf32_Shdr* getShdr() {
-		return elf32_getshdr(section);
-	}
-	void update(int align = 0) {
-		Elf_Data* data = elf_getdata(section, NULL);
-		data->d_align = align;
-		data->d_off = 0;
-		data->d_buf = buffer;
-		data->d_type = ELF_T_BYTE;
-		data->d_size = usedSize();
-		data->d_version = EV_CURRENT;
-	}
-private:
-	uint8_t* buffer;
-	uint32_t bufferSize;
-	uint32_t used;
-	Elf_Scn* section;
 };
 
 class ExportList {
