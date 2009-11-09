@@ -308,12 +308,28 @@ int main(int argc, char *argv[]) {
 	}
 
 	int fd = open(elfinput, O_RDONLY);
+	if (fd < 0) {
+		perror(elfinput);
+		return 1;
+	}
+
 	unlink(output);
 	FILE* out = fopen(output, "w+b");
 
 	Elf* elf = elf_begin(fd, ELF_C_READ, NULL);
+	if (!elf) {
+		fprintf(stderr, "%s\n", elf_errmsg(elf_errno()));
+		close(fd);
+		return 1;
+	}
 	Elf_Scn* section = NULL;
 	Elf32_Ehdr* ehdr = elf32_getehdr(elf);
+	if (!ehdr) {
+		fprintf(stderr, "%s\n", elf_errmsg(elf_errno()));
+		elf_end(elf);
+		close(fd);
+		return 1;
+	}
 //	findExports(elf, &exportList);
 	if (findSymbol(elf, "Symbian$$CPP$$Exception$$Descriptor", &headerV.exceptionDescriptor))
 		headerV.exceptionDescriptor |= 1;
