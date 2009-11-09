@@ -39,7 +39,8 @@
 
 struct E32ImageHeader;
 
-void fixRelocation(uint32_t offset, FILE* out, const char* symbol, const char* lib, const char* libpath);
+uint32_t fixImportRelocation(uint32_t offset, FILE* out, uint32_t value);
+uint32_t fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const char* lib, const char* libpath);
 
 void fixRelocation(uint32_t offset, FILE* out, uint32_t value);
 
