@@ -215,6 +215,7 @@ void parseDefFile(const char* filename, ExportList* exportList) {
 */
 		}
 	}
+	fclose(in);
 }
 
 
