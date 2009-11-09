@@ -112,13 +112,25 @@ void parseDynamic(Elf* elf, Elf32_Phdr* phdr, FILE* out, E32ImageHeader* header)
 
 	Elf32_Sym* symArray = (Elf32_Sym*) symtabData->d_buf;
 	Elf32_Sym* symEnd = (Elf32_Sym*) ((uint8_t*)symtabData->d_buf + symtabData->d_size);
-/*
+
 	Elf32_Sym* sym = (Elf32_Sym*) symtabData->d_buf;
 	for (; sym < symEnd; sym++) {
 		const char* name = &strtabPtr[sym->st_name];
-		printf("name: %s\n", name);
+		if (!strcmp(name, "DLL##ExportTable")) {
+			header->exportDirOffset = sym->st_value - header->codeBase + header->codeOffset;
+			header->flags |= KImageDll;
+		} else if (!strcmp(name, "DLL##ExportTableSize")) {
+			if (sym->st_value >= header->codeBase && sym->st_value < header->codeBase + header->codeSize) {
+				uint32_t offset = sym->st_value - header->codeBase + header->codeOffset;
+				fseek(out, offset, SEEK_SET);
+				uint8_t buf[4];
+				fread(buf, 1, sizeof(buf), out);
+				uint32_t value = buf[0] | (buf[1]<<8) | (buf[2]<<16) | (buf[3]<<24);
+				header->exportDirCount = value;
+			}
+		}
 	}
-*/
+
 	Elf32_Rel* rel = (Elf32_Rel*) relData->d_buf;
 	Elf32_Rel* relEnd = (Elf32_Rel*) ((uint8_t*)relData->d_buf + relData->d_size);
 	for (; rel < relEnd; rel++) {
@@ -370,17 +382,6 @@ int main(int argc, char *argv[]) {
 			header.codeSize++;
 			header.textSize++;
 		}
-	}
-
-	if (header.flags & KImageDll) {
-		exportList.doSort();
-		header.exportDirOffset = ftell(out) + 4;
-		header.exportDirCount = exportList.numExports();
-		uint32_t start = ftell(out);
-		exportList.write(out, &header, &relocationList);
-		uint32_t end = ftell(out);
-		header.codeSize += end - start;
-		header.textSize += end - start;
 	}
 
 
