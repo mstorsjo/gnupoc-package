@@ -145,7 +145,7 @@ uint32_t fixRelocation(uint32_t offset, FILE* out, uint32_t value) {
 }
 
 
-void ImportList::write(FILE* out) {
+void ImportList::write(FILE* out, bool padsize) {
 	sort(libraries.begin(), libraries.end(), Library::compare);
 	uint32_t size = 0;
 	size += 4;
@@ -159,7 +159,8 @@ void ImportList::write(FILE* out) {
 		size += strlen(libraries[i]->name) + 1;
 	}
 	uint32_t padding = (size & 3) ? (4 - (size & 3)) : 0;
-	size += padding;
+	if (padsize)
+		size += padding;
 	writeUint32(size, out);
 	for (unsigned int i = 0; i < libraries.size(); i++) {
 		writeUint32(libraries[i]->offset, out);
