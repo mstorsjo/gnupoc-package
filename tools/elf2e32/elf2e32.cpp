@@ -177,7 +177,10 @@ void parseDefFile(const char* filename, ExportList* exportList) {
 	char line[500];
 	char *ptr;
 	bool header = false;
+	int linenum = 0;
+	int prevOrdinal = 0;
 	while ((ptr = fgets(line, sizeof(line), in)) != NULL) {
+		linenum++;
 		int len = strlen(ptr);
 		if (ptr[len-1] == '\r' || ptr[len-1] == '\n') ptr[--len] = '\0';
 		if (ptr[len-1] == '\r' || ptr[len-1] == '\n') ptr[--len] = '\0';
@@ -196,7 +199,10 @@ void parseDefFile(const char* filename, ExportList* exportList) {
 			char name[500];
 			int ordinal;
 			if (sscanf(ptr, "\t%s @ %d", name, &ordinal) == 2) {
+				if (ordinal != prevOrdinal + 1)
+					fprintf(stderr, "Ordinal number is not in sequence: %s[Line No=%d][%s]\n", filename, linenum, name);
 				exportList->addExportOrdinal(name, ordinal);
+				prevOrdinal = ordinal;
 			}
 /*
 			while (isspace(*ptr))
