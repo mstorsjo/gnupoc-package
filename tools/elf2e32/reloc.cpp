@@ -225,6 +225,17 @@ void ExportList::addExport(const char* name, uint32_t addr, bool code, int size)
 		fprintf(stderr, "Warning: New Symbol %s not found, export(s) not yet Frozen\n", name);
 }
 
+bool ExportList::warnMissing(const char* elfinput) {
+	bool missing = false;
+	for (unsigned int i = 0; i < exports.size(); i++) {
+		if (exports[i]->address == 0) {
+			fprintf(stderr, "Symbol %s Missing from ELF File: %s.\n", exports[i]->name, elfinput);
+			missing = true;
+		}
+	}
+	return missing;
+}
+
 void ExportList::write(FILE* out, E32ImageHeader* header, RelocationList* relocations) {
 	writeUint32(exports.size(), out);
 	for (unsigned int i = 0; i < exports.size(); i++) {
@@ -240,6 +251,8 @@ void ExportList::writeDef(const char* filename) {
 	for (unsigned int i = 0; i < exports.size(); i++) {
 		if (i == presetOrdinals)
 			fprintf(out, "; NEW:\r\n");
+		if (exports[i]->address == 0)
+			fprintf(out, "; MISSING:");
 		if (epocVersion <= EPOC_VERSION_9_1) { // S60 3.0 style
 			fprintf(out, "\t%s @ %d NONAME ; %s\r\n", exports[i]->name, i+1, exports[i]->code ? "CODE" : "DATA");
 		} else { // S60 3.1 and onwards
@@ -322,6 +335,11 @@ void ExportList::writeDso(const char* filename, const char* soname) {
 	for (unsigned int i = 0; i < exports.size(); i++) {
 		ordinalArray.appendObject(i+1);
 		Elf32_Sym* sym = symtab.appendObject();
+		if (!exports[i]->name) {
+			memset(sym, 0, sizeof(Elf32_Sym));
+			versymArray.appendObject(2);
+			continue;
+		}
 		sym->st_name = strtab.appendString(exports[i]->name);
 		sym->st_value = 4*i;
 		sym->st_size = 4;

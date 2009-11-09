@@ -213,6 +213,7 @@ public:
 			presetOrdinals = ordinal;
 		exports[ordinal - 1]->setName(name);
 	}
+	bool warnMissing(const char* elfinput);
 	void addExport(const char* name, uint32_t addr, bool code = true, int size = 0);
 	void doSort() {
 		sort(exports.begin() + presetOrdinals, exports.end(), Export::compare);

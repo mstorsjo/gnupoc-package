@@ -455,6 +455,12 @@ int main(int argc, char *argv[]) {
 	findSection(elf, SHT_GNU_versym, &relocSections.symverSection, &relocSections.symverHeader);
 	findSection(elf, SHT_GNU_verneed, &relocSections.verneedSection, &relocSections.verneedHeader);
 	findExports(elf, &exportList);
+	if (exportList.warnMissing(elfinput)) {
+		elf_end(elf);
+		close(fd);
+		free(dso);
+		return 1;
+	}
 	if (findSymbol(elf, "Symbian$$CPP$$Exception$$Descriptor", &headerV.exceptionDescriptor))
 		headerV.exceptionDescriptor |= 1;
 
