@@ -59,7 +59,7 @@ void writeUint8(uint8_t value, FILE* out) {
 	fwrite(&value, 1, 1, out);
 }
 
-void writeHeaders(FILE* out, E32ImageHeader* header, E32ImageHeaderComp* headerComp, E32ImageHeaderV* headerV) {
+void writeHeaders(FILE* out, const E32ImageHeader* header, const E32ImageHeaderComp* headerComp, const E32ImageHeaderV* headerV) {
 	writeUint32(header->uid1, out);
 	writeUint32(header->uid2, out);
 	writeUint32(header->uid3, out);
@@ -218,7 +218,7 @@ uint32_t uidCrc(uint32_t uid1, uint32_t uid2, uint32_t uid3) {
 }
 
 
-void finalizeE32Image(FILE* out, E32ImageHeader* header, E32ImageHeaderComp* headerComp, E32ImageHeaderV* headerV, const char* filename) {
+void finalizeE32Image(FILE* out, E32ImageHeader* header, const E32ImageHeaderComp* headerComp, const E32ImageHeaderV* headerV, const char* filename) {
 	fseek(out, 0, SEEK_SET);
 	header->headerCrc = KImageCrcInitialiser;
 #define CRCSIZE 0x9c
