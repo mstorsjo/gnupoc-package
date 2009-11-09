@@ -133,7 +133,7 @@ void fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const c
 	fixImportRelocation(offset, out, ordinal);
 }
 
-void fixRelocation(uint32_t offset, FILE* out, uint32_t value) {
+uint32_t fixRelocation(uint32_t offset, FILE* out, uint32_t value) {
 	fseek(out, offset, SEEK_SET);
 	uint8_t origBuf[4];
 	fread(origBuf, 1, sizeof(origBuf), out);
@@ -141,6 +141,7 @@ void fixRelocation(uint32_t offset, FILE* out, uint32_t value) {
 	value += orig;
 	fseek(out, offset, SEEK_SET);
 	writeUint32(value, out);
+	return value;
 }
 
 
