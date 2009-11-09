@@ -3,7 +3,7 @@ LDFLAGS += -lelf -lz
 
 all: elf2e32 bindiff gendirective getexports genstubs
 
-elf2e32: elf2e32.o crc.o deflate/deflate.a
+elf2e32: elf2e32.o crc.o epocversion.o caseinsensitive.o deflate/deflate.a
 	$(CXX) -o $@ $+ $(LDFLAGS)
 
 gendirective: gendirective.o
