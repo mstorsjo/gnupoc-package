@@ -193,6 +193,9 @@ void parseDefFile(const char* filename, ExportList* exportList) {
 				header = true;
 			}
 		} else {
+			bool code = true;
+			if (strstr(ptr, "; DATA"))
+				code = false;
 			char* comments = strchr(ptr, ';');
 			if (comments)
 				*comments = '\0';
@@ -201,7 +204,17 @@ void parseDefFile(const char* filename, ExportList* exportList) {
 			if (sscanf(ptr, "\t%s @ %d", name, &ordinal) == 2) {
 				if (ordinal != prevOrdinal + 1)
 					fprintf(stderr, "Ordinal number is not in sequence: %s[Line No=%d][%s]\n", filename, linenum, name);
-				exportList->addExportOrdinal(name, ordinal);
+
+				const char* ptr2 = ptr + strlen(name); // Skip past name
+				ptr2 = strchr(ptr2, '@'); // Skip past @
+				int size = 0;
+				const char* ptr3 = strstr(ptr2, "DATA");
+				if (ptr3) {
+					code = false;
+					sscanf(ptr3, "DATA %d", &size);
+				}
+
+				exportList->addExportOrdinal(name, ordinal, code, size);
 				prevOrdinal = ordinal;
 			}
 /*

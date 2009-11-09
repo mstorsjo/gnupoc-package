@@ -214,8 +214,11 @@ void ExportList::addExport(const char* name, uint32_t addr, bool code, int size)
 	for (unsigned int i = 0; i < exports.size(); i++) {
 		if (exports[i]->name && !strcmp(exports[i]->name, name)) {
 			exports[i]->address = addr;
-			exports[i]->code = code;
-			exports[i]->size = size;
+			if (!exports[i]->size) {
+				// Not initialized with proper data, replace it
+				exports[i]->code = code;
+				exports[i]->size = size;
+			}
 			return;
 		}
 	}

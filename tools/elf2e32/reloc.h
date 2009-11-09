@@ -206,12 +206,14 @@ public:
 			delete exports[i];
 		exports.clear();
 	}
-	void addExportOrdinal(const char* name, uint32_t ordinal) {
+	void addExportOrdinal(const char* name, uint32_t ordinal, bool code = true, int size = 0) {
 		while (exports.size() < ordinal)
 			exports.push_back(new Export(NULL, 0));
 		if (presetOrdinals < ordinal)
 			presetOrdinals = ordinal;
 		exports[ordinal - 1]->setName(name);
+		exports[ordinal - 1]->code = code;
+		exports[ordinal - 1]->size = size;
 	}
 	bool warnMissing(const char* elfinput);
 	void addExport(const char* name, uint32_t addr, bool code = true, int size = 0);
