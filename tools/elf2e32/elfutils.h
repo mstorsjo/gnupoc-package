@@ -33,6 +33,14 @@
 #ifndef __ELFUTILS_H
 #define __ELFUTILS_H
 
+#ifndef R_ARM_NONE
+#define R_ARM_NONE      0
+#define R_ARM_ABS32     2
+#define R_ARM_GLOB_DAT  21
+#define R_ARM_RELATIVE  23
+#define R_ARM_RABS22	253
+#endif
+
 #include <libelf.h>
 
 bool getLibraryName(Elf_Data* verneed, Elf32_Word verneedNum, Elf32_Half index, Elf32_Verneed** needPtr, Elf32_Vernaux** auxPtr);

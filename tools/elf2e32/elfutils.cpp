@@ -33,6 +33,7 @@
 #include "elfutils.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 
 bool getLibraryName(Elf_Data* verneed, Elf32_Word verneedNum, Elf32_Half index, Elf32_Verneed** needPtr, Elf32_Vernaux** auxPtr) {
 	Elf32_Verneed* need = (Elf32_Verneed*) verneed->d_buf;
