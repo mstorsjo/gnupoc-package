@@ -473,8 +473,10 @@ void ExportList::writeDso(const char* filename, const char* soname) {
 	versymArray.getShdr()->sh_link = symtab.sectionIndex();
 
 
-	strtab.appendString("");
-	strtab.getBuffer()[strtab.usedSize()-1] = ' ';
+	do {
+		strtab.appendString("");
+		strtab.getBuffer()[strtab.usedSize()-1] = ' ';
+	} while (strtab.usedSize() % 4);
 	ordinalArray.update();
 	dynArray.update();
 	hashArray.update();
