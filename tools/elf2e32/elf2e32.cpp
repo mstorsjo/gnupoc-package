@@ -482,7 +482,8 @@ int main(int argc, char *argv[]) {
 	findSection(elf, SHT_DYNSYM, &relocSections.dynsymSection, &relocSections.dynsymHeader);
 	findSection(elf, SHT_GNU_versym, &relocSections.symverSection, &relocSections.symverHeader);
 	findSection(elf, SHT_GNU_verneed, &relocSections.verneedSection, &relocSections.verneedHeader);
-	findExports(elf, &exportList);
+	if (header.flags & KImageDll)
+		findExports(elf, &exportList);
 	if (exportList.warnMissing(elfinput)) {
 		elf_end(elf);
 		close(fd);
