@@ -346,7 +346,12 @@ void ExportList::writeDso(const char* filename, const char* soname) {
 		sym->st_name = strtab.appendString(exports[i]->name);
 		sym->st_value = 4*i;
 		sym->st_size = 4;
-		sym->st_info = ELF32_ST_INFO(STB_GLOBAL, STT_NOTYPE);
+		if (epocVersion >= EPOC_VERSION_9_2) {
+			sym->st_info = ELF32_ST_INFO(STB_GLOBAL, exports[i]->code ? STT_FUNC : STT_OBJECT);
+			if (!exports[i]->code)
+				sym->st_size = exports[i]->size;
+		} else
+			sym->st_info = ELF32_ST_INFO(STB_GLOBAL, STT_NOTYPE);
 		sym->st_shndx = 1;
 		uint32_t hash = elf_hash((const elf_string) exports[i]->name) % prime;
 		hashChain[i+1] = hashTable[hash];
