@@ -418,21 +418,21 @@ int main(int argc, char *argv[]) {
 			writeUint8(0, out);
 	}
 
-	if (header.flags & KImageDll) {
-		// On S60 5.0, this is an error
-		if (header.dataSize > 0) {
-			printf("ELF File %s contains initialized writable data\n.", elfinput);
-		} else if (header.bssSize > 0) {
-			printf("ELF File %s contains uninitialized writable data\n.", elfinput);
-		}
-	}
-
 	header.importOffset = ftell(out);
 
 	section = NULL;
 //	printf("code: %x - %x\n", header.codeBase, header.codeBase + header.codeSize);
 //	printf("data: %x - %x\n", header.dataBase, header.dataBase + header.dataSize);
 	parseDynamic(elf, dynamicPhdr, out, &header);
+
+	if ((header.flags & KImageDll) && !dlldata) {
+		// On S60 5.0, this is an error
+		if (header.dataSize > 0) {
+			printf("Dll %s has initialized data.\n", elfinput);
+		} else if (header.bssSize > 0) {
+			printf("Dll %s has uninitialized data.\n", elfinput);
+		}
+	}
 
 	if (headerV.exceptionDescriptor)
 		headerV.exceptionDescriptor -= header.codeBase;
