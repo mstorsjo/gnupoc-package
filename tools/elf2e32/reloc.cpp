@@ -334,7 +334,12 @@ void ExportList::writeDso(const char* filename, const char* soname) {
 	firstSym->st_info = ELF32_ST_INFO(STB_LOCAL, STT_NOTYPE);
 	firstSym->st_shndx = 0;
 
-	versymArray.appendObject(0);
+	if (epocVersion <= EPOC_VERSION_9_1)
+		versymArray.appendObject(0);
+	else if (epocVersion <= EPOC_VERSION_9_3)
+		versymArray.appendObject(0xcdcd);
+	else
+		versymArray.appendObject(0x0068); // Is this meaningful or just random uninitialized data that the original elf2e32 produces? It may also be 0x00e8 in some cases
 	for (unsigned int i = 0; i < exports.size(); i++) {
 		ordinalArray.appendObject(i+1);
 		Elf32_Sym* sym = symtab.appendObject();
@@ -473,10 +478,11 @@ void ExportList::writeDso(const char* filename, const char* soname) {
 	versymArray.getShdr()->sh_link = symtab.sectionIndex();
 
 
-	do {
+	while (strtab.usedSize() % 4) {
 		strtab.appendString("");
-		strtab.getBuffer()[strtab.usedSize()-1] = ' ';
-	} while (strtab.usedSize() % 4);
+		if (epocVersion < EPOC_VERSION_9_4)
+			strtab.getBuffer()[strtab.usedSize()-1] = ' ';
+	}
 	ordinalArray.update();
 	dynArray.update();
 	hashArray.update();
