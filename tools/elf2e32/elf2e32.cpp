@@ -471,12 +471,30 @@ int main(int argc, char *argv[]) {
 	}
 
 	int fd = open(elfinput, O_RDONLY);
+	if (fd < 0) {
+		perror(elfinput);
+		free(dso);
+		return 1;
+	}
 	unlink(output);
 	FILE* out = fopen(output, "w+b");
 
 	Elf* elf = elf_begin(fd, ELF_C_READ, NULL);
+	if (!elf) {
+		fprintf(stderr, "%s\n", elf_errmsg(elf_errno()));
+		free(dso);
+		close(fd);
+		return 1;
+	}
 	Elf_Scn* section = NULL;
 	Elf32_Ehdr* ehdr = elf32_getehdr(elf);
+	if (!ehdr) {
+		fprintf(stderr, "%s\n", elf_errmsg(elf_errno()));
+		free(dso);
+		elf_end(elf);
+		close(fd);
+		return 1;
+	}
 	RelocSections relocSections;
 	getDynamicValue(elf, DT_VERNEEDNUM, &relocSections.verneedNum);
 	findSection(elf, SHT_DYNSYM, &relocSections.dynsymSection, &relocSections.dynsymHeader);
