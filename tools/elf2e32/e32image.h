@@ -131,5 +131,7 @@ void getCapabilities(char* str, uint32_t* caps);
 
 uint32_t uidCrc(uint32_t uid1, uint32_t uid2, uint32_t uid3);
 
+void finalizeE32Image(FILE* out, E32ImageHeader* header, E32ImageHeaderComp* headerComp, E32ImageHeaderV* headerV, const char* filename);
+
 
 #endif

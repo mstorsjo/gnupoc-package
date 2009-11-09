@@ -43,9 +43,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <libelf.h>
-#include <zlib.h>
-#include <fstream>
-#include "deflate.h"
 #include "caseinsensitive.h"
 #include "epocversion.h"
 #include "e32image.h"
@@ -53,9 +50,6 @@
 #include "reloc.h"
 
 #include <sys/types.h>
-
-using namespace std;
-void DeflateCompress(char* bytes, TInt size, ostream& os);
 
 
 
@@ -629,40 +623,7 @@ int main(int argc, char *argv[]) {
 	elf_end(elf);
 	close(fd);
 
-	fseek(out, 0, SEEK_SET);
-	header.headerCrc = KImageCrcInitialiser;
-#define CRCSIZE 0x9c
-	writeHeaders(out, &header, &headerComp, &headerV);
-	uint8_t buf[CRCSIZE];
-	fseek(out, 0, SEEK_SET);
-	fread(buf, 1, CRCSIZE, out);
-	header.headerCrc = ~crc32(0xffffffff, buf, CRCSIZE);
-	fseek(out, 0, SEEK_SET);
-	writeHeaders(out, &header, &headerComp, &headerV);
-
-
-	if (header.compressionType == KUidCompressionDeflate) {
-		fseek(out, 0, SEEK_END);
-		uint32_t len = ftell(out);
-		len -= CRCSIZE;
-		uint8_t* headerData = (uint8_t*) malloc(CRCSIZE);
-		uint8_t* data = (uint8_t*) malloc(len);
-		fseek(out, 0, SEEK_SET);
-		fread(headerData, 1, CRCSIZE, out);
-		fread(data, 1, len, out);
-		fclose(out);
-
-		ofstream stream(output, ios_base::binary | ios_base::out);
-		stream.write((const char*) headerData, CRCSIZE);
-//		writeHeaders(out, &header, &headerComp, &headerV);
-		DeflateCompress((char*) data, len, stream);
-		stream.close();
-
-		free(data);
-		free(headerData);
-	} else {
-		fclose(out);
-	}
+	finalizeE32Image(out, &header, &headerComp, &headerV, output);
 
 	free(dso);
 

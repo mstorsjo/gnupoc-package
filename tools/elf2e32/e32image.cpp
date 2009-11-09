@@ -33,6 +33,13 @@
 #include "e32image.h"
 #include "caseinsensitive.h"
 #include <string.h>
+#include "deflate.h"
+#include <zlib.h>
+#include <fstream>
+#include <stdlib.h>
+
+using namespace std;
+void DeflateCompress(char* bytes, TInt size, ostream& os);
 
 extern "C" {
 #include "crc.h"
@@ -208,5 +215,41 @@ uint32_t uidCrc(uint32_t uid1, uint32_t uid2, uint32_t uid3) {
 	uint16_t crc1 = crcSlow(buf1, 6);
 	uint16_t crc2 = crcSlow(buf2, 6);
 	return (crc1<<16) | crc2;
+}
+
+
+void finalizeE32Image(FILE* out, E32ImageHeader* header, E32ImageHeaderComp* headerComp, E32ImageHeaderV* headerV, const char* filename) {
+	fseek(out, 0, SEEK_SET);
+	header->headerCrc = KImageCrcInitialiser;
+#define CRCSIZE 0x9c
+	writeHeaders(out, header, headerComp, headerV);
+	uint8_t buf[CRCSIZE];
+	fseek(out, 0, SEEK_SET);
+	fread(buf, 1, CRCSIZE, out);
+	header->headerCrc = ~crc32(0xffffffff, buf, CRCSIZE);
+	fseek(out, 0, SEEK_SET);
+	writeHeaders(out, header, headerComp, headerV);
+
+	if (header->compressionType == KUidCompressionDeflate) {
+		fseek(out, 0, SEEK_END);
+		uint32_t len = ftell(out);
+		len -= CRCSIZE;
+		uint8_t* headerData = (uint8_t*) malloc(CRCSIZE);
+		uint8_t* data = (uint8_t*) malloc(len);
+		fseek(out, 0, SEEK_SET);
+		fread(headerData, 1, CRCSIZE, out);
+		fread(data, 1, len, out);
+		fclose(out);
+
+		ofstream stream(filename, ios_base::binary | ios_base::out);
+		stream.write((const char*) headerData, CRCSIZE);
+		DeflateCompress((char*) data, len, stream);
+		stream.close();
+
+		free(data);
+		free(headerData);
+	} else {
+		fclose(out);
+	}
 }
 
