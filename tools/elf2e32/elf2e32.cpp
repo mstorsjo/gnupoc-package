@@ -59,18 +59,6 @@ void DeflateCompress(char* bytes, TInt size, ostream& os);
 
 
 
-#ifndef EF_ARM_INTERWORK
-#define EF_ARM_INTERWORK 0x04
-#endif
-
-#ifdef ELF_HASH_UNSIGNED
-typedef unsigned char* elf_string;
-#else
-typedef char* elf_string;
-#endif
-
-
-
 
 
 struct RelocSections {
