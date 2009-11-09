@@ -221,6 +221,8 @@ void ExportList::addExport(const char* name, uint32_t addr, bool code, int size)
 	}
 	Export* exp = new Export(name, addr, code, size);
 	exports.push_back(exp);
+	if (epocVersion >= EPOC_VERSION_9_3)
+		fprintf(stderr, "Warning: New Symbol %s not found, export(s) not yet Frozen\n", name);
 }
 
 void ExportList::write(FILE* out, E32ImageHeader* header, RelocationList* relocations) {
