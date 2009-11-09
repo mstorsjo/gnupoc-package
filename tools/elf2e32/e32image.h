@@ -119,6 +119,7 @@ void getCapabilities(char* str, uint32_t* caps);
 #define KImageDll		0x00000001
 #define KImageOldJFlag		0x00000008
 #define EPriorityForeground	350
+#define ECpuArmV4		0x2000
 #define ECpuArmV5		0x2001
 #define KImageHdr_ExpD_NoHoles		0x00
 #define KImageHdr_ExpD_FullBitmap	0x01
