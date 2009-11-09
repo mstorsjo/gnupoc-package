@@ -60,10 +60,22 @@ public:
 		~Library() {
 			free(name);
 		}
-		void list() {
+		void list(FILE* out) {
 			printf("%s:\n", name);
-			for (unsigned int i = 0; i < addresses.size(); i++)
-				printf("\t%d\n", addresses[i]);
+			for (unsigned int i = 0; i < addresses.size(); i++) {
+				fseek(out, addresses[i] + 0x9c, SEEK_SET);
+				uint8_t buf[4];
+				fread(buf, 1, sizeof(buf), out);
+				uint32_t value = buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
+				uint32_t offset = value >> 16;
+				value &= 0xffff;
+//				printf("\t%d\n", addresses[i]);
+				printf("\t%d", value);
+				if (offset)
+					printf(" offset by %d\n", offset);
+				else
+					printf("\n");
+			}
 		}
 		char* name;
 		vector<uint32_t> addresses;
@@ -91,9 +103,9 @@ public:
 		Library* lib = findLibrary(libname);
 		lib->addresses.push_back(addr);
 	}
-	void listImports() {
+	void listImports(FILE* out) {
 		for (unsigned int i = 0; i < libraries.size(); i++)
-			libraries[i]->list();
+			libraries[i]->list(out);
 	}
 	void write(FILE* out);
 
