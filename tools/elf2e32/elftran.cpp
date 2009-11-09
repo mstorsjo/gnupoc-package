@@ -274,6 +274,16 @@ int main(int argc, char *argv[]) {
 			sscanf(argv[i + 1], "%d.%d", &major, &minor);
 			header.moduleVersion = (major << 16) | (minor);
 			i++;
+		} else if (!strcmp(argv[i], "-compressionmethod")) {
+			if (!strcmp(argv[i + 1], "none"))
+				header.compressionType = 0;
+			else if (!strcmp(argv[i + 1], "deflate"))
+				header.compressionType = KUidCompressionDeflate;
+			else if (!strcmp(argv[i + 1], "bytepair"))
+				printf("Bytepair compression not supported!\n");
+			else
+				printf("Unknown compression method \"%s\"\n", argv[i + 1]);
+			i++;
 		} else {
 			if (argv[i][0] == '-') {
 				fprintf(stderr, "Unhandled parameter %s?\n", argv[i]);
