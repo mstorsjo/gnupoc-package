@@ -91,7 +91,7 @@ void fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const c
 	Elf_Scn* section = NULL;
 	Elf32_Shdr* shdr = NULL;
 	if (!findSection(elf, SHT_DYNSYM, &section, &shdr)) {
-		printf("fixRelocation SHT_DYNSYM not found\n");
+		printf("fixImportRelocation SHT_DYNSYM not found\n");
 		elf_end(elf);
 		close(fd);
 		return;
@@ -99,7 +99,7 @@ void fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const c
 	Elf32_Sym* sym;
 	Elf32_Addr addr;
 	if (!findSymbol(elf, section, shdr, symbol, &sym)) {
-		printf("fixRelocation symbol %s not found\n", symbol);
+		printf("fixImportRelocation symbol %s not found\n", symbol);
 		elf_end(elf);
 		close(fd);
 		return;
@@ -107,7 +107,7 @@ void fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const c
 	addr = sym->st_value;
 
 	if (!findSection(elf, SHT_PROGBITS, &section, &shdr)) {
-		printf("fixRelocation section SHT_PROGBITS not found\n");
+		printf("fixImportRelocation section SHT_PROGBITS not found\n");
 		elf_end(elf);
 		close(fd);
 		return;
@@ -118,7 +118,7 @@ void fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const c
 	Elf_Data* data = NULL;
 	data = elf_rawdata(section, data);
 	if (addr >= data->d_size) {
-		printf("fixRelocation addr past d_size\n");
+		printf("fixImportRelocation addr past d_size\n");
 		elf_end(elf);
 		close(fd);
 		return;
