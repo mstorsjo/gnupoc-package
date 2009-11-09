@@ -1,9 +1,12 @@
 CXXFLAGS += -Wall -pedantic -ggdb -Wno-long-long -Ideflate/deflate -Ideflate/inc
 LDFLAGS += -lelf -lz
 
-all: elf2e32 bindiff gendirective getexports genstubs
+all: elf2e32 bindiff gendirective getexports genstubs elftran
 
 elf2e32: elf2e32.o crc.o epocversion.o caseinsensitive.o e32image.o elfutils.o reloc.o deflate/deflate.a
+	$(CXX) -o $@ $+ $(LDFLAGS)
+
+elftran: elftran.o crc.o epocversion.o caseinsensitive.o e32image.o elfutils.o reloc.o deflate/deflate.a
 	$(CXX) -o $@ $+ $(LDFLAGS)
 
 gendirective: gendirective.o
@@ -32,5 +35,5 @@ bindiff: bindiff.o
 
 clean:
 	$(MAKE) -C deflate clean
-	rm -f elf2e32 bindiff gendirective getexports genstubs *.o
+	rm -f elf2e32 bindiff gendirective getexports genstubs elftran *.o
 
