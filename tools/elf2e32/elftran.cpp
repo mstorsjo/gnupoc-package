@@ -296,6 +296,8 @@ int main(int argc, char *argv[]) {
 			header.flags |= KImageUnpaged;
 		} else if (!strcmp(argv[i], "-sym_name_lkup")) {
 			// FIXME?
+		} else if (!strcmp(argv[i], "-debuggable")) {
+			header.flags |= KImageDebuggable;
 		} else {
 			if (argv[i][0] == '-') {
 				fprintf(stderr, "Unhandled parameter %s?\n", argv[i]);
