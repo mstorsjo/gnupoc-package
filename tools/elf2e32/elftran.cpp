@@ -294,6 +294,8 @@ int main(int argc, char *argv[]) {
 		} else if (!strcmp(argv[i], "-defaultpaged")) {
 		} else if (!strcmp(argv[i], "-unpaged")) {
 			header.flags |= KImageUnpaged;
+		} else if (!strcmp(argv[i], "-sym_name_lkup")) {
+			// FIXME?
 		} else {
 			if (argv[i][0] == '-') {
 				fprintf(stderr, "Unhandled parameter %s?\n", argv[i]);
