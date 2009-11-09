@@ -277,7 +277,7 @@ int main(int argc, char *argv[]) {
 		{ "e32input", 1, NULL, 0 },
 		{ "priority", 1, NULL, 0 },
 		{ "version", 1, NULL, 0 },
-		{ "callentry", 1, NULL, 0 },
+		{ "callentry", 0, NULL, 0 },
 		{ "fpu", 1, NULL, 0 },
 		{ "paged", 0, NULL, 0 },
 		{ "unpaged", 0, NULL, 0 },
@@ -430,6 +430,8 @@ int main(int argc, char *argv[]) {
 				int major = 10, minor = 0;
 				sscanf(optarg, "%d.%d", &major, &minor);
 				header.moduleVersion = (major << 16) | (minor);
+			} else if (!strcmp(name, "callentry")) {
+//				header.flags &= ~KImageNoCallEntryPoint;
 			} else {
 				fprintf(stderr, "*** Unhandled parameter %s\n", name);
 			}
