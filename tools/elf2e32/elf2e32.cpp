@@ -610,9 +610,9 @@ int main(int argc, char *argv[]) {
 	if (header.flags & KImageDll) {
 		// On S60 5.0, this is an error
 		if (header.dataSize > 0) {
-			printf("ELF File %s contains initialized writable data\n.", elfinput);
+			printf("ELF File %s contains initialized writable data.\n", elfinput);
 		} else if (header.bssSize > 0) {
-			printf("ELF File %s contains uninitialized writable data\n.", elfinput);
+			printf("ELF File %s contains uninitialized writable data.\n", elfinput);
 		}
 	}
 
