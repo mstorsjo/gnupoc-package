@@ -462,6 +462,12 @@ int main(int argc, char *argv[]) {
 		return 0;
 	}
 
+	if (!output) {
+		printf("no output file specified\n");
+		free(dso);
+		return 1;
+	}
+
 	int fd = open(elfinput, O_RDONLY);
 	unlink(output);
 	FILE* out = fopen(output, "w+b");
