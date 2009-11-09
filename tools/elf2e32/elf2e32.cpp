@@ -49,7 +49,6 @@
 #include "elfutils.h"
 #include "reloc.h"
 
-#include <sys/types.h>
 
 
 
