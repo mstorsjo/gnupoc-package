@@ -53,7 +53,7 @@ typedef char* elf_string;
 
 
 
-uint32_t fixImportRelocation(uint32_t offset, FILE* out, uint32_t ordinal) {
+void fixImportRelocation(uint32_t offset, FILE* out, uint32_t ordinal) {
 	fseek(out, offset, SEEK_SET);
 	uint8_t origBuf[4];
 	fread(origBuf, 1, sizeof(origBuf), out);
@@ -61,10 +61,9 @@ uint32_t fixImportRelocation(uint32_t offset, FILE* out, uint32_t ordinal) {
 	ordinal += orig << 16;
 	fseek(out, offset, SEEK_SET);
 	writeUint32(ordinal, out);
-	return ordinal;
 }
 
-uint32_t fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const char* lib, const char* libpath) {
+void fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const char* lib, const char* libpath) {
 	char buffer[1000];
 	sprintf(buffer, "%s/%s", libpath, lib);
 	int fd = open(buffer, O_RDONLY);
@@ -85,7 +84,7 @@ uint32_t fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, con
 	}
 	if (fd < 0) {
 		printf("file not found %s\n", lib);
-		return 0;
+		return;
 	}
 	Elf* elf = elf_begin(fd, ELF_C_READ, NULL);
 
@@ -95,7 +94,7 @@ uint32_t fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, con
 		printf("fixRelocation SHT_DYNSYM not found\n");
 		elf_end(elf);
 		close(fd);
-		return 0;
+		return;
 	}
 	Elf32_Sym* sym;
 	Elf32_Addr addr;
@@ -103,7 +102,7 @@ uint32_t fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, con
 		printf("fixRelocation symbol %s not found\n", symbol);
 		elf_end(elf);
 		close(fd);
-		return 0;
+		return;
 	}
 	addr = sym->st_value;
 
@@ -111,7 +110,7 @@ uint32_t fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, con
 		printf("fixRelocation section SHT_PROGBITS not found\n");
 		elf_end(elf);
 		close(fd);
-		return 0;
+		return;
 	}
 
 	addr -= shdr->sh_addr;
@@ -122,7 +121,7 @@ uint32_t fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, con
 		printf("fixRelocation addr past d_size\n");
 		elf_end(elf);
 		close(fd);
-		return 0;
+		return;
 	}
 //	uint32_t ordinal = *((uint32_t*) (((uint8_t*)data->d_buf) + addr));
 	uint8_t* dataptr = (uint8_t*) data->d_buf;
@@ -131,7 +130,7 @@ uint32_t fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, con
 	elf_end(elf);
 	close(fd);
 
-	return fixImportRelocation(offset, out, ordinal);
+	fixImportRelocation(offset, out, ordinal);
 }
 
 void fixRelocation(uint32_t offset, FILE* out, uint32_t value) {
