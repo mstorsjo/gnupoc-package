@@ -108,7 +108,7 @@ public:
 		for (unsigned int i = 0; i < libraries.size(); i++)
 			libraries[i]->list(out);
 	}
-	void write(FILE* out, bool padsize = true);
+	void write(FILE* out, bool doSort = true, bool padsize = true);
 
 	int numLibraries() {
 		return libraries.size();

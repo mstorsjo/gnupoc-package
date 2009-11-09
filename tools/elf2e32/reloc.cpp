@@ -145,8 +145,9 @@ uint32_t fixRelocation(uint32_t offset, FILE* out, uint32_t value) {
 }
 
 
-void ImportList::write(FILE* out, bool padsize) {
-	sort(libraries.begin(), libraries.end(), Library::compare);
+void ImportList::write(FILE* out, bool doSort, bool padsize) {
+	if (doSort)
+		sort(libraries.begin(), libraries.end(), Library::compare);
 	uint32_t size = 0;
 	size += 4;
 	for (unsigned int i = 0; i < libraries.size(); i++) {
