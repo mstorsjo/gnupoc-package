@@ -45,7 +45,7 @@
 #include "elfutils.h"
 #include "reloc.h"
 
-Elf_Data* getTranslatedElfData(Elf* elf, off64_t offset, size_t size, Elf_Type type) {
+Elf_Data* getTranslatedElfData(Elf* elf, off_t offset, size_t size, Elf_Type type) {
 #ifdef NO_ELF_RAWCHUNK
 	Elf_Data* data = (Elf_Data*) malloc(sizeof(Elf_Data));
 	memset(data, 0, sizeof(Elf_Data));
