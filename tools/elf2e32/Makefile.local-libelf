@@ -6,5 +6,5 @@ include Makefile
 libelf.a: libelf/lib/libelf.a
 
 libelf/lib/libelf.a:
-	cd libelf-0.8.9 && libelf_cv_elf_h_works=no ./configure --enable-shared=no --prefix=`pwd`/../libelf --enable-compat=yes && make && make install
+	cd libelf-0.8.13 && libelf_cv_elf_h_works=no ./configure --enable-shared=no --prefix=`pwd`/../libelf --enable-compat=yes && make && make install
 
