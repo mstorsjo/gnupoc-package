@@ -514,6 +514,7 @@ int main(int argc, char *argv[]) {
 	Elf32_Phdr* phdr = elf32_getphdr(elf);
 	for (unsigned int i = 0; i < ehdr->e_phnum; i++, phdr++) {
 		if ((phdr->p_type == PT_LOAD) && ((phdr->p_flags & (PF_R | PF_W)) == (PF_R | PF_W))) {
+			header.dataBase = phdr->p_vaddr;
 			header.bssSize = phdr->p_memsz - phdr->p_filesz;
 		}
 	}
@@ -525,8 +526,6 @@ int main(int argc, char *argv[]) {
 			const char* name = elf_strptr(elf, ehdr->e_shstrndx, shdr->sh_name);
 			if (!strcmp(name, ".text") || !strcmp(name, "ER_RO"))
 				header.codeBase = shdr->sh_addr;
-			else if (!strcmp(name, ".data") || !strcmp(name, "ER_RW") || !strcmp(name, "ER_ZI"))
-				header.dataBase = shdr->sh_addr;
 /*
 			else if (!strcmp(name, ".bss")) {
 				header.bssSize = shdr->sh_size;
