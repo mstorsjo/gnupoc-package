@@ -1,4 +1,4 @@
-CXXFLAGS = -Ilibelf/include -DELF_HASH_UNSIGNED
+CXXFLAGS = -Ilibelf/include -DELF_HASH_UNSIGNED -DNO_ELF_RAWCHUNK
 LDFLAGS = -Llibelf/lib
 
 include Makefile

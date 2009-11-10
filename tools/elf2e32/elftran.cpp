@@ -45,6 +45,55 @@
 #include "elfutils.h"
 #include "reloc.h"
 
+Elf_Data* getTranslatedElfData(Elf* elf, off64_t offset, size_t size, Elf_Type type) {
+#ifdef NO_ELF_RAWCHUNK
+	Elf_Data* data = (Elf_Data*) malloc(sizeof(Elf_Data));
+	memset(data, 0, sizeof(Elf_Data));
+	data->d_buf = malloc(size);
+	data->d_type = type;
+	data->d_version = EV_CURRENT;
+	data->d_size = size;
+	data->d_off = 0;
+	data->d_align = 0;
+	size_t fileSize = 0;
+	const char* orig = elf_rawfile(elf, &fileSize);
+	if (!orig) {
+		// elf_rawfile returns NULL with elfutils libelf unless opened with ELF_C_READ_MMAP,
+		// but this version has elf_getdata_rawchunk instead.
+		fprintf(stderr, "%s\n", elf_errmsg(elf_errno()));
+		return NULL;
+	}
+	fileSize -= offset;
+	orig += offset;
+	if (data->d_size > fileSize)
+		data->d_size = fileSize;
+
+	Elf_Data indata;
+	indata.d_buf = (void*) orig;
+	indata.d_type = type;
+	indata.d_version = EV_CURRENT;
+	indata.d_size = data->d_size;
+	indata.d_off = 0;
+	indata.d_align = 0;
+	Elf32_Ehdr* ehdr = elf32_getehdr(elf);
+	Elf_Data* out = elf32_xlatetom(data, &indata, ehdr->e_ident[EI_DATA]);
+	if (!out) {
+		free(data->d_buf);
+		free(data);
+		return NULL;
+	}
+	return data;
+#else
+	return elf_getdata_rawchunk(elf, offset, size, type);
+#endif
+}
+
+void freeElfData(Elf_Data* data) {
+#ifdef NO_ELF_RAWCHUNK
+	free(data->d_buf);
+	free(data);
+#endif
+}
 
 ImportList importList;
 RelocationList relocationList;
@@ -70,7 +119,7 @@ char* parseNameValue(const char* name, Elf32_Word* valuePtr) {
 }
 
 void parseDynamic(Elf* elf, Elf32_Phdr* phdr, FILE* out, E32ImageHeader* header) {
-	Elf_Data* data = elf_getdata_rawchunk(elf, phdr->p_offset, phdr->p_filesz, ELF_T_DYN);
+	Elf_Data* data = getTranslatedElfData(elf, phdr->p_offset, phdr->p_filesz, ELF_T_DYN);
 
 	Elf32_Word symtabStart = 0;
 	Elf32_Word symtabSize  = 0;
@@ -94,20 +143,23 @@ void parseDynamic(Elf* elf, Elf32_Phdr* phdr, FILE* out, E32ImageHeader* header)
 	}
 	if (!symtabStart || !symtabSize) {
 		fprintf(stderr, "Symtab not found in dynamic segment\n");
+		freeElfData(data);
 		return;
 	}
 	if (!strtabStart || !strtabSize) {
 		fprintf(stderr, "Strtab not found in dynamic segment\n");
+		freeElfData(data);
 		return;
 	}
 	if (!relStart || !relSize) {
 		fprintf(stderr, "Rel not found in dynamic segment\n");
+		freeElfData(data);
 		return;
 	}
 
-	Elf_Data* symtabData = elf_getdata_rawchunk(elf, phdr->p_offset + symtabStart, symtabSize, ELF_T_SYM);
-	Elf_Data* strtabData = elf_getdata_rawchunk(elf, phdr->p_offset + strtabStart, strtabSize, ELF_T_BYTE);
-	Elf_Data* relData    = elf_getdata_rawchunk(elf, phdr->p_offset + relStart,    relSize,    ELF_T_REL);
+	Elf_Data* symtabData = getTranslatedElfData(elf, phdr->p_offset + symtabStart, symtabSize, ELF_T_SYM);
+	Elf_Data* strtabData = getTranslatedElfData(elf, phdr->p_offset + strtabStart, strtabSize, ELF_T_BYTE);
+	Elf_Data* relData    = getTranslatedElfData(elf, phdr->p_offset + relStart,    relSize,    ELF_T_REL);
 	const char* strtabPtr = (const char*) strtabData->d_buf;
 
 	Elf32_Sym* symArray = (Elf32_Sym*) symtabData->d_buf;
@@ -161,6 +213,10 @@ void parseDynamic(Elf* elf, Elf32_Phdr* phdr, FILE* out, E32ImageHeader* header)
 			free(dllname);
 		}
 	}
+	freeElfData(data);
+	freeElfData(symtabData);
+	freeElfData(strtabData);
+	freeElfData(relData);
 }
 
 int main(int argc, char *argv[]) {
