@@ -407,7 +407,9 @@ int main(int argc, char *argv[]) {
 	Elf32_Phdr* phdr = elf32_getphdr(elf);
 	Elf32_Phdr* dynamicPhdr = NULL;
 	for (unsigned int i = 0; i < ehdr->e_phnum; i++, phdr++) {
-		if ((phdr->p_type == PT_LOAD) && ((phdr->p_flags & (PF_R | PF_W)) == (PF_R | PF_W))) {
+		if ((phdr->p_type == PT_LOAD) && ((phdr->p_flags & (PF_R | PF_X)) == (PF_R | PF_X))) {
+			header.codeBase = phdr->p_vaddr;
+		} else if ((phdr->p_type == PT_LOAD) && ((phdr->p_flags & (PF_R | PF_W)) == (PF_R | PF_W))) {
 			header.dataBase = phdr->p_vaddr;
 			header.bssSize = phdr->p_memsz - phdr->p_filesz;
 		} else if (phdr->p_type == PT_DYNAMIC) {
@@ -416,25 +418,6 @@ int main(int argc, char *argv[]) {
 	}
 
 	fseek(out, header.codeOffset, SEEK_SET);
-	while ((section = elf_nextscn(elf, section)) != NULL) {
-		Elf32_Shdr* shdr;
-		if ((shdr = elf32_getshdr(section)) != NULL) {
-			const char* name = elf_strptr(elf, ehdr->e_shstrndx, shdr->sh_name);
-			if (!strcmp(name, ".text") || !strcmp(name, "ER_RO"))
-				header.codeBase = shdr->sh_addr;
-/*
-			else if (!strcmp(name, ".bss")) {
-				header.bssSize = shdr->sh_size;
-				uint32_t align = shdr->sh_addralign;
-				if (align > 8)
-					align = 8;
-				header.bssSize = (header.bssSize + (align-1)) & (~(align-1));
-			}
-*/
-		}
-	}
-	section = NULL;
-
 	while ((section = elf_nextscn(elf, section)) != NULL) {
 		Elf32_Shdr* shdr;
 		if ((shdr = elf32_getshdr(section)) != NULL) {
