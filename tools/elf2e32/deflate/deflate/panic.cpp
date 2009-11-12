@@ -7,7 +7,7 @@
 #include "h_utl.h"
 #include <stdlib.h>
 
-char* HuffmanError[]=	{
+const char* HuffmanError[]=	{
 						"Huffman: Too many codes\n",
 						"Huffman: Invalid coding\n",
 						"Huffman: Buffer overflow\n",
