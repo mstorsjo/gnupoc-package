@@ -38,6 +38,8 @@
 #define R_ARM_ABS32     2
 #define R_ARM_GLOB_DAT  21
 #define R_ARM_RELATIVE  23
+#endif
+#ifndef R_ARM_RABS22
 #define R_ARM_RABS22	253
 #endif
 
