@@ -1,4 +1,4 @@
-CXXFLAGS = -Ilibelf/include -DELF_HASH_UNSIGNED -DNO_ELF_RAWCHUNK
+CXXFLAGS = -Ilibelf/include -DNO_ELF_RAWCHUNK
 LDFLAGS = -Llibelf/lib
 
 include Makefile
@@ -6,5 +6,5 @@ include Makefile
 libelf.a: libelf/lib/libelf.a
 
 libelf/lib/libelf.a:
-	cd libelf-0.8.13 && libelf_cv_elf_h_works=no ./configure --enable-shared=no --prefix=`pwd`/../libelf --enable-compat=yes && make && make install
+	cd libelf-elftoolchain && make install PREFIX=`pwd`/../libelf
 
