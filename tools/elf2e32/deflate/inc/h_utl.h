@@ -12,17 +12,17 @@
 #ifdef __VC32__
  #ifdef __MSVCDOTNET__
   #include <iostream>
-  #include <strstream>
+//  #include <strstream>
   #include <fstream>
   using namespace std;
  #else //!__MSVCDOTNET__
   #include <iostream.h>
-  #include <strstrea.h>
+//  #include <strstrea.h>
   #include <fstream.h>
  #endif //__MSVCDOTNET__
 #else //!__VC32__
   #include <iostream>
-  #include <strstream>
+//  #include <strstream>
   #include <fstream>
   using namespace std;
 #endif // __VC32__
@@ -99,7 +99,7 @@ extern TBool PVerbose;
 TAny *operator new(size_t aSize);
 void operator delete(TAny *aPtr);
 //
-istrstream &operator>>(istrstream &is, TVersion &aVersion);
+//istrstream &operator>>(istrstream &is, TVersion &aVersion);
 //
 TInt StringToTime(TInt64 &aTime, char *aString);
 
@@ -113,6 +113,7 @@ extern TBool gLittleEndian;
 /**
  Convert string to number.
 */
+/*
 template <class T>
 TInt Val(T& aVal, char* aStr)
 	{
@@ -125,6 +126,7 @@ TInt Val(T& aVal, char* aStr)
 	aVal=x;
 	return KErrNone;
 	}
+*/
 
 // Filename decompose routines
 enum TDecomposeFlag
