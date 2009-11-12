@@ -21,6 +21,7 @@ class TBitOutput
 public:
 	TBitOutput();
 	TBitOutput(TUint8* aBuf,TInt aSize);
+	virtual ~TBitOutput() {}
 	inline void Set(TUint8* aBuf,TInt aSize);
 	inline const TUint8* Ptr() const;
 	inline TInt BufferedBits() const;
@@ -76,6 +77,7 @@ class TBitInput
 public:
 	TBitInput();
 	TBitInput(const TUint8* aPtr, TInt aLength, TInt aOffset=0);
+	virtual ~TBitInput() {}
 	void Set(const TUint8* aPtr, TInt aLength, TInt aOffset=0);
 //
 	TUint ReadL();
