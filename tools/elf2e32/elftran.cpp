@@ -45,6 +45,20 @@
 #include "elfutils.h"
 #include "reloc.h"
 
+int getTypeSize(Elf_Type type) {
+	switch (type) {
+	case ELF_T_DYN:
+		return sizeof(Elf32_Dyn);
+	case ELF_T_SYM:
+		return sizeof(Elf32_Sym);
+	case ELF_T_REL:
+		return sizeof(Elf32_Rel);
+	case ELF_T_BYTE:
+	default:
+		return 1;
+	}
+}
+
 Elf_Data* getTranslatedElfData(Elf* elf, off_t offset, size_t size, Elf_Type type) {
 #ifdef NO_ELF_RAWCHUNK
 	Elf_Data* data = (Elf_Data*) malloc(sizeof(Elf_Data));
@@ -69,6 +83,9 @@ Elf_Data* getTranslatedElfData(Elf* elf, off_t offset, size_t size, Elf_Type typ
 	if (data->d_size > fileSize)
 		data->d_size = fileSize;
 
+	// Make the size an integer number of elements of the given type
+	data->d_size -= data->d_size % getTypeSize(type);
+
 	Elf_Data indata;
 	indata.d_buf = (void*) orig;
 	indata.d_type = type;
@@ -79,6 +96,7 @@ Elf_Data* getTranslatedElfData(Elf* elf, off_t offset, size_t size, Elf_Type typ
 	Elf32_Ehdr* ehdr = elf32_getehdr(elf);
 	Elf_Data* out = elf32_xlatetom(data, &indata, ehdr->e_ident[EI_DATA]);
 	if (!out) {
+		fprintf(stderr, "%s\n", elf_errmsg(elf_errno()));
 		free(data->d_buf);
 		free(data);
 		return NULL;
