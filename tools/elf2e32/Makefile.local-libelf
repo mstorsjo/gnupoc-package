@@ -6,5 +6,5 @@ include Makefile
 libelf.a: libelf/lib/libelf.a
 
 libelf/lib/libelf.a:
-	cd libelf-elftoolchain && make install PREFIX=`pwd`/../libelf
+	cd libelf-elftoolchain && $(MAKE) install PREFIX=`pwd`/../libelf
 
