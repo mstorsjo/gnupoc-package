@@ -10,17 +10,18 @@ class HDeflateHash
 	{
 public:
 	inline static HDeflateHash* NewLC(TInt aLinks);
+	inline ~HDeflateHash();
 //
 	inline TInt First(const TUint8* aPtr,TInt aPos);
 	inline TInt Next(TInt aPos,TInt aOffset) const;
 private:
-	inline HDeflateHash();
+	inline HDeflateHash(TInt aLinks);
 	inline static TInt Hash(const TUint8* aPtr);
 private:
 	typedef TUint16 TOffset;
 private:
 	TInt iHash[256];
-	TOffset iOffset[1];	// or more
+	TOffset* iOffset;
 	};
 
 class MDeflater
@@ -66,12 +67,15 @@ private:
 
 // Class HDeflateHash
 
-inline HDeflateHash::HDeflateHash()
-	{TInt* p=iHash+256;do *--p=-KDeflateMaxDistance-1; while (p>iHash);}
+inline HDeflateHash::HDeflateHash(TInt aLinks)
+	{TInt* p=iHash+256;do *--p=-KDeflateMaxDistance-1; while (p>iHash); iOffset = new TOffset[aLinks]; }
+
+inline HDeflateHash::~HDeflateHash()
+	{ delete [] iOffset; }
 
 inline HDeflateHash* HDeflateHash::NewLC(TInt aLinks)
 	{
-	return new(HMem::Alloc(0,_FOFF(HDeflateHash,iOffset[Min(aLinks,KDeflateMaxDistance)]))) HDeflateHash;
+	return new HDeflateHash(Min(aLinks,KDeflateMaxDistance));
 	}
 
 inline TInt HDeflateHash::Hash(const TUint8* aPtr)
