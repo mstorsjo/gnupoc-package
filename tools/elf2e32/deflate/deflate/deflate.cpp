@@ -308,5 +308,6 @@ void DeflateL(const TUint8* aBuf, TInt aLength, TBitOutput& aOutput)
 	TEncoding* encoding=new TEncoding;
 	HMem::FillZ(encoding,sizeof(TEncoding));
 	DoDeflateL(aBuf,aLength,aOutput,*encoding);
+	delete encoding;
 	}
 
