@@ -458,8 +458,12 @@ int main(int argc, char *argv[]) {
 
 	if (!elfinput) {
 		exportList.doSort();
-		if (dso && !noexportlibrary)
-			exportList.writeDso(dso, linkas);
+		if (dso && !noexportlibrary) {
+			if (linkas)
+				exportList.writeDso(dso, linkas);
+			else
+				fprintf(stderr, "No linkas parameter supplied\n");
+		}
 		free(dso);
 		return 0;
 	}
