@@ -59,7 +59,8 @@ Elf_Data* getTranslatedElfData(Elf* elf, off_t offset, size_t size, Elf_Type typ
 	const char* orig = elf_rawfile(elf, &fileSize);
 	if (!orig) {
 		// elf_rawfile returns NULL with elfutils libelf unless opened with ELF_C_READ_MMAP,
-		// but this version has elf_getdata_rawchunk instead.
+		// but that version has elf_getdata_rawchunk instead.
+		// That bug is fixed in the latest upstream version.
 		fprintf(stderr, "%s\n", elf_errmsg(elf_errno()));
 		return NULL;
 	}
