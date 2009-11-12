@@ -1,0 +1,13 @@
+This is a slightly modified version of libelf from elftoolchain,
+modified by Martin Storsjo.
+
+It is modified to be selfcontained, using elf headers from FreeBSD 8,
+instead of using the headers of the host system. Additionally, the
+makefile is modified to support gnumake.
+
+The library also contains a few other minor modifications:
+- Allow Elf_Data::d_type to differ from the type mapped from sh_type
+- Allow Elf_Data::d_align to be zero
+- Merged a patch by kaiwang27 at sourceforge, for supporting translation
+  of verdef/verneed
+
