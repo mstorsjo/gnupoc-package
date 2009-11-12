@@ -175,8 +175,6 @@ void writeStub(const char* file, const char* symbol, const char* name) {
 	ehdr->e_shstrndx = shstrtab.sectionIndex();
 	symtab.getShdr()->sh_link = strtab.sectionIndex();
 
-	elf_update(elf, ELF_C_NULL);
-
 	strtab.update(0);
 	symtab.update(0);
 	comment.update(0);
