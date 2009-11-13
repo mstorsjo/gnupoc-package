@@ -521,6 +521,9 @@ void ExportList::writeDso(const char* filename, const char* soname) {
 	dynArray.objectAtIndex(6)->d_un.d_val = verdefArray.getShdr()->sh_offset;
 	dynArray.objectAtIndex(8)->d_un.d_val = hashArray.getShdr()->sh_offset;
 
+	elf_flagphdr(elf, ELF_C_SET, ELF_F_DIRTY);
+	dynArray.flagDirty();
+
 	elf_update(elf, ELF_C_WRITE);
 
 	elf_end(elf);

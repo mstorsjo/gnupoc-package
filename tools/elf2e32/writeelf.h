@@ -101,6 +101,9 @@ public:
 		data->d_size = usedSize();
 		data->d_version = EV_CURRENT;
 	}
+	void flagDirty() {
+		elf_flagscn(section, ELF_C_SET, ELF_F_DIRTY);
+	}
 protected:
 	uint8_t* buffer;
 	uint32_t bufferSize;
