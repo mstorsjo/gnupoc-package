@@ -861,6 +861,9 @@ _libelf_write_elf(Elf *e, off_t newsize)
 		e->e_u.e_elf.e_phdr.e_phdr64 = NULL;
 	}
 
+	if (newfile)
+		free(newfile);
+
 	return (rc);
 
  error:
