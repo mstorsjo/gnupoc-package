@@ -149,7 +149,7 @@ public:
 		int len = strlen(str);
 		len++;
 		uint32_t pos = used;
-		if (used + len < bufferSize) {
+		if (used + len > bufferSize) {
 			while (used + len > bufferSize)
 				bufferSize *= 2;
 			buffer = (uint8_t*) realloc(buffer, bufferSize);
