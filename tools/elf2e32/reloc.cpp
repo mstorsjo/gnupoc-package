@@ -327,7 +327,7 @@ void ExportList::writeDso(const char* filename, const char* soname) {
 	uint32_t* hashTable = hashArray.objectAtIndex(2);
 	uint32_t* hashChain = hashArray.objectAtIndex(2 + prime);
 
-	Elf32_Sym* firstSym = symtab.appendObject();
+	Elf32_Sym* firstSym = symtab.appendClearedObject();
 	firstSym->st_name = 0;
 	firstSym->st_value = 0;
 	firstSym->st_size = 0;
@@ -342,9 +342,8 @@ void ExportList::writeDso(const char* filename, const char* soname) {
 //		versymArray.appendObject(0x0068); // Is this meaningful or just random uninitialized data that the original elf2e32 produces? It may also be 0x00e8 in some cases
 	for (unsigned int i = 0; i < exports.size(); i++) {
 		ordinalArray.appendObject(i+1);
-		Elf32_Sym* sym = symtab.appendObject();
+		Elf32_Sym* sym = symtab.appendClearedObject();
 		if (!exports[i]->name) {
-			memset(sym, 0, sizeof(Elf32_Sym));
 			versymArray.appendObject(2);
 			continue;
 		}
