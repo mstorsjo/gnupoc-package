@@ -32,7 +32,7 @@ cd bmconv-1.1.0-2 && $MAKE && cp src/bmconv $DEST/bin
 cd rcomp-7.0.1 && $MAKE && cp src/rcomp $DEST/bin
 cd makesis-4 && $MAKE && cp src/makesis src/signsis src/makekeys $DEST/bin
 cd make-3.81 && ./configure && $MAKE && cp make $DEST/bin/extmake
-cd elf2e32 && $MAKE -f Makefile.local-libelf libelf.a elf2e32 && cp elf2e32 $DEST/bin
+cd elf2e32 && $MAKE -f Makefile.local-libelf libelf.a all && cp elf2e32 elftran gendirective genstubs getexports $DEST/bin
 g++ mifconv.cpp -o $DEST/bin/mifconv
 ln -sf $TRUE $DEST/bin/rem
 cp del $DEST/bin
