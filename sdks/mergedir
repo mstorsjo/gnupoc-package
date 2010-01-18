@@ -6,7 +6,7 @@ sub renameWrap($$) {
   my $src = shift;
   my $dest = shift;
   rename($src, $dest) && return 1;
-  return system("mv \"$src\" \"$dest\"") == 0;
+  return system("mv '$src' '$dest'") == 0;
 }
 
 sub mergedir($$) {
