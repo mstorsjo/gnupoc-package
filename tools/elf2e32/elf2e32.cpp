@@ -432,6 +432,12 @@ int main(int argc, char *argv[]) {
 				header.moduleVersion = (major << 16) | (minor);
 			} else if (!strcmp(name, "callentry")) {
 //				header.flags &= ~KImageNoCallEntryPoint;
+			} else if (!strcmp(name, "paged")) {
+				header.flags |= KImagePaged;
+			} else if (!strcmp(name, "unpaged")) {
+				header.flags |= KImageUnpaged;
+			} else if (!strcmp(name, "defaultpaged")) {
+				header.flags &= ~(KImageUnpaged | KImagePaged);
 			} else {
 				fprintf(stderr, "*** Unhandled parameter %s\n", name);
 			}
