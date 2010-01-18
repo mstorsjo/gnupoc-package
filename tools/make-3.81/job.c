@@ -2526,8 +2526,17 @@ construct_command_argv_internal (char *line, char **restp, char *shell,
                     --p;
 #endif  /* HAVE_DOS_PATHS */
 
-                /* Copy and skip the following char.  */
-                *ap++ = *p;
+                if (!strncmp(line, shell, strlen(shell)) && p[1] != '\0')
+                  {
+                    /* Command executed by the shell, use the original unescaping logic. */
+                    /* Copy and skip the following char.  */
+                    *ap++ = *++p;
+                  }
+                else
+                  {
+                    /* Normal command to execute, convert backslashes to forward slashes */
+                    *ap++ = *p;
+                  }
               }
 	    break;
 
