@@ -50,7 +50,7 @@ be used from any SDK version, but you'll need mifconv.exe from the 3.0
 SDK, since mifconv.exe in 3.1 has some problems starting within wine.
 
 When using the SDKs, set the EPOCROOT variable to point to your SDK and
-add the epoc32/tools directory and your toolchain to your PATH, e.g.:
+add the toolchain and epoc32/tools directory to your PATH, e.g.:
 
 export EPOCROOT=~/symbian-sdks/s60_30/
 export PATH=~/csl-gcc/bin:${EPOCROOT}epoc32/tools:${PATH}
