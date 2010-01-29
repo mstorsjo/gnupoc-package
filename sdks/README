@@ -96,7 +96,7 @@ in stranger examples.) To build the hello world example, do the following:
 
 export PATH=~/gnupoc:${PATH}
 export EPOCROOT=~/symbian-sdks/s60_30/
-cd ~/symbian-sdks/s60_30/s60ex/helloworldbasic/group
+cd ${EPOCROOT}/s60ex/helloworldbasic/group
 bldmake bldfiles
 abld build gcce urel
 cd ../sis
