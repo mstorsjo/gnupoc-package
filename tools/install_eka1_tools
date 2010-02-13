@@ -34,7 +34,7 @@ cd rcomp-7.0.1 && $MAKE && cp src/rcomp $DEST/bin
 gcc genaif.c -o $DEST/bin/genaif
 g++ aiftool.cpp -o $DEST/bin/aiftool
 
-cd make-3.81 && ./configure && $MAKE && cp make $DEST/bin/extmake
+cd make-3.81 && ./configure && $MAKE make && cp make $DEST/bin/extmake
 g++ mifconv.cpp -o $DEST/bin/mifconv
 ln -sf $TRUE $DEST/bin/rem
 cp del $DEST/bin

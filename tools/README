@@ -92,9 +92,7 @@ the toolchain directory, and the build scripts will use the original exe
 with wine instead, and let me know about the problems.
 
 Note, both EKA1 and EKA2 tools require zlib, the EKA2 tools also require
-openssl libraries. gettext is a requirement for building the patched
-make tool, if it's missing, you may get non-obvious error messages when
-building.
+openssl libraries.
 
 
 
