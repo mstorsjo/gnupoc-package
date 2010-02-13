@@ -178,6 +178,31 @@ struct ColorType {
 	{ NULL, 0 },
 };
 
+void handleFileArgument(const char* arg) {
+	if (!outname) {
+		outname = strdup(arg);
+		fixDirSep(outname);
+	} else {
+		ImageFile image(arg);
+		image.colorType = colorType;
+		image.maskType = maskType;
+		image.animType = animType;
+		printf("Checking: %s\n", image.name);
+		FILE* in = fopen(image.name, "rb");
+		if (!in) {
+			perror(image.name);
+			exit(1);
+		}
+		fseek(in, 0, SEEK_END);
+		image.size = ftell(in);
+		fclose(in);
+		images.push_back(image);
+		colorType = 0;
+		maskType = 0;
+		animType = 0;
+	}
+}
+
 void processArgument(const char* arg) {
 	if (arg[0] == '/') {
 		const char* param = arg + 1;
@@ -209,28 +234,7 @@ void processArgument(const char* arg) {
 			type++;
 		}
 	} else {
-		if (!outname) {
-			outname = strdup(arg);
-			fixDirSep(outname);
-		} else {
-			ImageFile image(arg);
-			image.colorType = colorType;
-			image.maskType = maskType;
-			image.animType = animType;
-			printf("Checking: %s\n", image.name);
-			FILE* in = fopen(image.name, "rb");
-			if (!in) {
-				perror(image.name);
-				exit(1);
-			}
-			fseek(in, 0, SEEK_END);
-			image.size = ftell(in);
-			fclose(in);
-			images.push_back(image);
-			colorType = 0;
-			maskType = 0;
-			animType = 0;
-		}
+		handleFileArgument(arg);
 	}
 }
 
