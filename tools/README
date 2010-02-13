@@ -19,6 +19,9 @@ compile and install it using the install_gcc_539 script:
 
 ./install_gcc_539 gcc-539-2aeh-source.tar.bz2 ~/symbian-gcc
 
+If there are build problems, make sure curses development libraries are
+installed, the errors if this is missing aren't too descriptive.
+
 
 GCC for S60 3rd ed and UIQ 3
 ----------------------------
@@ -89,7 +92,9 @@ the toolchain directory, and the build scripts will use the original exe
 with wine instead, and let me know about the problems.
 
 Note, both EKA1 and EKA2 tools require zlib, the EKA2 tools also require
-openssl libraries.
+openssl libraries. gettext is a requirement for building the patched
+make tool, if it's missing, you may get non-obvious error messages when
+building.
 
 
 
