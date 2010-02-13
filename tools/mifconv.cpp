@@ -205,6 +205,23 @@ void handleFileArgument(const char* arg) {
 
 void processArgument(const char* arg) {
 	if (arg[0] == '/') {
+		if (!outname) {
+			// Special case, the first argument starts
+			// with a /, should be interpreted as an absolute
+			// file name.
+			handleFileArgument(arg);
+			return;
+		}
+		FILE* in = fopen(arg, "rb");
+		if (in) {
+			fclose(in);
+			// Argument starting with a /, but refers to
+			// an existing file. Assume this is inteded
+			// as a filename reference instead of an option.
+			handleFileArgument(arg);
+			return;
+		}
+
 		const char* param = arg + 1;
 		if (param[0] == 'h' || param[0] == 'H') {
 			free(headername);
