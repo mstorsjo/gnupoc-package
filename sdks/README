@@ -49,19 +49,25 @@ using wine, copy make.exe and mifconv.exe, too. make.exe probably can
 be used from any SDK version, but you'll need mifconv.exe from the 3.0
 SDK, since mifconv.exe in 3.1 has some problems starting within wine.
 
-When using the SDKs, set the EPOCROOT variable to point to your SDK and
-add the toolchain and epoc32/tools directory to your PATH, e.g.:
-
-export EPOCROOT=~/symbian-sdks/s60_30/
-export PATH=~/csl-gcc/bin:${EPOCROOT}epoc32/tools:${PATH}
-
-Or, more conveniently, install wrapper scripts:
+Then finally install wrapper scripts:
 ./install_wrapper ~/gnupoc
 
-Using these wrapper scripts, you only have to add the wrapper directory to
-your PATH, and the wrappers call the correct tools depending on the EPOCROOT
-variable. The wrappers also include sign.sh, to avoid having to enter
-the key password on the command line.
+
+When using the SDK, add the ~/gnupoc directory to your PATH:
+export PATH=~/gnupoc:$PATH
+
+And set the EPOCROOT variable to point to your SDK:
+export EPOCROOT=~/symbian-sdks/s60_30/
+
+
+As an alternative to using the wrapper script directory, you can opt to
+manually add the toolchain and epoc32/tools directory to your path.
+
+export PATH=~/csl-gcc/bin:${EPOCROOT}epoc32/tools:${PATH}
+
+See details in gnupoc-common.sh for more detailed info on what other env
+variables may need to be set up.
+
 
 These installations can also use the Visual C++ 2003 and/or Codewarrior
 compilers. Make sure the binaries are within the wine path. For Codewarrior,
