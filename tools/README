@@ -53,7 +53,8 @@ Additional tools
 ----------------
 
 If you want to use native versions of the SDK tools instead of running
-them through wine, compile and install them using the appropriate script:
+them through wine, which is strongly suggested, compile and install
+them using the appropriate script:
 
 ./install_eka1_tools ~/symbian-gcc
 
@@ -61,7 +62,8 @@ or
 
 ./install_eka2_tools ~/csl-gcc
 
-depending on which toolchain they're for.
+depending on which toolchain they're for. (EKA1 is for S60 1st and 2nd ed,
+EKA2 is for S60 3rd/5th and UIQ 3.0 onwards.)
 
 
 The tools for eka2 includes a hacked version of gnu make, to handle
