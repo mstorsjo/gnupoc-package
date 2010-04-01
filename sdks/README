@@ -52,6 +52,9 @@ SDK, since mifconv.exe in 3.1 has some problems starting within wine.
 Then finally install wrapper scripts:
 ./install_wrapper ~/gnupoc
 
+If you installed the toolchain into nonstandard directories, edit
+~/gnupoc/gnupoc-common.sh and set EKA1TOOLS and EKA2TOOLS to point to the
+directories where you installed the tools.
 
 When using the SDK, add the ~/gnupoc directory to your PATH:
 export PATH=~/gnupoc:$PATH
