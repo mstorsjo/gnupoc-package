@@ -30,7 +30,8 @@ On linux, you can use the prebuilt binaries from CodeSourcery,
 http://www.codesourcery.com/gnu_toolchains/arm/releases/2005Q1C,
 select IA32 GNU/Linux, or from
 http://www.martin.st/symbian/gnu-csl-arm-2005Q1C-arm-none-symbianelf-i686-pc-linux-gnu.tar.bz2.
-To use these, just extract the package to a directory:
+To use these, just extract the package to a directory - run these commands
+in your home directory:
 
 mkdir csl-gcc
 cd csl-gcc
