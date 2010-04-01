@@ -49,8 +49,8 @@ This requires that you have flex and bison installed.
 
 
 
-Additional tools
-----------------
+The rest of the toolchain
+-------------------------
 
 If you want to use native versions of the SDK tools instead of running
 them through wine, which is strongly suggested, compile and install
