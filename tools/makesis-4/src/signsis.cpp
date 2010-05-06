@@ -271,7 +271,7 @@ int main(int argc, char *argv[]) {
 		const char* certData = selfsignedCer;
 		int certLen = strlen(certData);
 		const char* keyData = selfsignedKey;
-		int keyLen = strlen(certData);
+		int keyLen = strlen(keyData);
 		bool freeCerts = false;
 		if (cert && key) {
 			try {
