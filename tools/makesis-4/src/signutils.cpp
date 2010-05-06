@@ -283,14 +283,50 @@ SISCertificateChain* makeChain(const char* certData, int certLen, EVP_PKEY** pub
 
 	char* ptr;
 	long length = BIO_get_mem_data(out, &ptr);
-	if (length <= 0) {
-		fprintf(stderr, "Bad certificate file\n");
-		throw SignBadCert;
+	if (length > 0) {
+		SISBlob* blob = new SISBlob((uint8_t*) ptr, length);
+		BIO_free_all(out);
+		return new SISCertificateChain(blob);
 	}
-	SISBlob* blob = new SISBlob((uint8_t*) ptr, length);
 	BIO_free_all(out);
 
-	return new SISCertificateChain(blob);
+	in = BIO_new_mem_buf((void*) certData, certLen);
+	out = BIO_new(BIO_s_mem());
+
+	while (true) {
+		X509* cert = d2i_X509_bio(in, NULL);
+		if (!cert) {
+			unsigned long err = ERR_peek_last_error();
+			int lib = ERR_GET_LIB(err);
+			int func = ERR_GET_FUNC(err);
+			int reason = ERR_GET_REASON(err);
+			if (lib == ERR_LIB_ASN1 && func == ASN1_F_ASN1_GET_OBJECT && reason == ASN1_R_HEADER_TOO_LONG)
+				break;
+			ERR_print_errors_fp(stderr);
+			throw SignBadCert;
+		}
+		if (!*publicKey)
+			*publicKey = X509_PUBKEY_get(X509_get_X509_PUBKEY(cert));
+		i2d_X509_bio(out, cert);
+
+		X509_OBJECT obj;
+		obj.type = X509_LU_X509;
+		obj.data.x509 = cert;
+		X509_OBJECT_free_contents(&obj);
+		break;
+	}
+	BIO_free_all(in);
+
+	length = BIO_get_mem_data(out, &ptr);
+	if (length > 0) {
+		SISBlob* blob = new SISBlob((uint8_t*) ptr, length);
+		BIO_free_all(out);
+		return new SISCertificateChain(blob);
+	}
+	BIO_free_all(out);
+
+	fprintf(stderr, "Bad certificate file\n");
+	throw SignBadCert;
 }
 
 SISSignatureCertificateChain* makeChain(SISField* controller, const char* certData, int certLen, const char* keyData, int keyLen, const char* passphrase, SigType type) {
