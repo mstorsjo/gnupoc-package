@@ -269,12 +269,14 @@ int main(int argc, char *argv[]) {
 	} else {
 		SISDataIndex* dataIndex = (SISDataIndex*) controller->FindRemoveElement(SISFieldType::SISDataIndex);
 		const char* certData = selfsignedCer;
+		int certLen = strlen(certData);
 		const char* keyData = selfsignedKey;
+		int keyLen = strlen(certData);
 		bool freeCerts = false;
 		if (cert && key) {
 			try {
-				certData = loadTextFile(cert);
-				keyData = loadTextFile(key);
+				certData = loadTextFile(cert, &certLen);
+				keyData = loadTextFile(key, &keyLen);
 			} catch (SignUtilError err) {
 				return err;
 			}
