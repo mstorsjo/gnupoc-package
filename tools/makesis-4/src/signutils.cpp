@@ -97,14 +97,14 @@ char* loadTextFile(const char* name, int* lengthptr) {
 	return buffer;
 }
 
-SISSignature* makeSignature(SISField* controller, const char* keyData, const char* passphrase, SigType type, EVP_PKEY* publicKey) {
+SISSignature* makeSignature(SISField* controller, const char* keyData, int keyLen, const char* passphrase, SigType type, EVP_PKEY* publicKey) {
 	if (type == SigAuto) {
 		if (strstr(keyData, " DSA "))
 			type = SigDsa;
 		else
 			type = SigRsa;
 	}
-	BIO* io = BIO_new_mem_buf((void*) keyData, -1);
+	BIO* io = BIO_new_mem_buf((void*) keyData, keyLen);
 	EVP_PKEY* key = PEM_read_bio_PrivateKey(io, NULL, password_cb, (void*) passphrase);
 	if (!key) {
 		ERR_print_errors_fp(stderr);
@@ -247,8 +247,8 @@ SISCertificateChain* makeChain(const char* certData) {
 }
 */
 
-SISCertificateChain* makeChain(const char* certData, EVP_PKEY** publicKey) {
-	BIO* in = BIO_new_mem_buf((void*) certData, -1);
+SISCertificateChain* makeChain(const char* certData, int certLen, EVP_PKEY** publicKey) {
+	BIO* in = BIO_new_mem_buf((void*) certData, certLen);
 	BIO* out = BIO_new(BIO_s_mem());
 
 	while (true) {
@@ -286,14 +286,14 @@ SISCertificateChain* makeChain(const char* certData, EVP_PKEY** publicKey) {
 	return new SISCertificateChain(blob);
 }
 
-SISSignatureCertificateChain* makeChain(SISField* controller, const char* certData, const char* keyData, const char* passphrase, SigType type) {
+SISSignatureCertificateChain* makeChain(SISField* controller, const char* certData, int certLen, const char* keyData, int keyLen, const char* passphrase, SigType type) {
 	EVP_PKEY* publicKey = NULL;
-	SISCertificateChain* chain = makeChain(certData, &publicKey);
+	SISCertificateChain* chain = makeChain(certData, certLen, &publicKey);
 	if (!publicKey) {
 		fprintf(stderr, "No public key found!\n");
 		throw SignBadCert;
 	}
-	SISSignature* signature = makeSignature(controller, keyData, passphrase, type, publicKey);
+	SISSignature* signature = makeSignature(controller, keyData, keyLen, passphrase, type, publicKey);
 	EVP_PKEY_free(publicKey);
 	SISArray* signatures = new SISArray(SISFieldType::SISSignature);
 	signatures->AddElement(signature);

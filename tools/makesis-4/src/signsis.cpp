@@ -286,7 +286,7 @@ int main(int argc, char *argv[]) {
 		}
 
 		try {
-			SISSignatureCertificateChain* chain = makeChain(controller, certData, keyData, passphrase, type);
+			SISSignatureCertificateChain* chain = makeChain(controller, certData, certLen, keyData, keyLen, passphrase, type);
 			controller->AddElement(chain);
 		} catch (SignUtilError err) {
 			return err;

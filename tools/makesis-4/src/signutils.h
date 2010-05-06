@@ -53,7 +53,7 @@ enum SignUtilError {
 char* loadTextFile(const char* name, int* length = NULL);
 
 void initSigning();
-SISSignatureCertificateChain* makeChain(SISField* controller, const char* certData, const char* keyData, const char* passphrase, SigType type = SigAuto);
+SISSignatureCertificateChain* makeChain(SISField* controller, const char* certData, int certLen, const char* keyData, int keyLen, const char* passphrase, SigType type = SigAuto);
 void cleanupSigning();
 
 #endif

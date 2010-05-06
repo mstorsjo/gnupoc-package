@@ -730,7 +730,7 @@ void CSISFileGenerator::GenerateSISFile(const wchar_t* target, bool stub) {
 	if (siswriter->GetSelfsign()) {
 		initSigning();
 		try {
-			SISSignatureCertificateChain* chain = makeChain(controller, selfsignedCer, selfsignedKey, NULL);
+			SISSignatureCertificateChain* chain = makeChain(controller, selfsignedCer, strlen(selfsignedCer), selfsignedKey, strlen(selfsignedKey), NULL);
 			controller->AddElement(chain);
 		} catch (SignUtilError err) {
 			throw ErrCantSign;
