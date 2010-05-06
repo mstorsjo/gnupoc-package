@@ -313,7 +313,6 @@ SISCertificateChain* makeChain(const char* certData, int certLen, EVP_PKEY** pub
 		obj.type = X509_LU_X509;
 		obj.data.x509 = cert;
 		X509_OBJECT_free_contents(&obj);
-		break;
 	}
 	BIO_free_all(in);
 
