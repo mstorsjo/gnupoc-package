@@ -50,7 +50,7 @@ enum SignUtilError {
 	SignOpenSSLErr
 };
 
-char* loadTextFile(const char* name);
+char* loadTextFile(const char* name, int* length = NULL);
 
 void initSigning();
 SISSignatureCertificateChain* makeChain(SISField* controller, const char* certData, const char* keyData, const char* passphrase, SigType type = SigAuto);

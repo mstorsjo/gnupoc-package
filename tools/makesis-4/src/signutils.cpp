@@ -79,7 +79,7 @@ int password_cb(char *buf, int size, int rwflag, void *userdata) {
 	return len;
 }
 
-char* loadTextFile(const char* name) {
+char* loadTextFile(const char* name, int* lengthptr) {
 	FILE* in = fopen(name, "rb");
 	if (!in) {
 		perror(name);
@@ -92,6 +92,8 @@ char* loadTextFile(const char* name) {
 	fread(buffer, 1, len, in);
 	fclose(in);
 	buffer[len] = '\0';
+	if (lengthptr)
+		*lengthptr = len;
 	return buffer;
 }
 
