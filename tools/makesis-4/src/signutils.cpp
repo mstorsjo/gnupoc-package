@@ -98,20 +98,27 @@ char* loadTextFile(const char* name, int* lengthptr) {
 }
 
 SISSignature* makeSignature(SISField* controller, const char* keyData, int keyLen, const char* passphrase, SigType type, EVP_PKEY* publicKey) {
+	BIO* io = BIO_new_mem_buf((void*) keyData, keyLen);
+	EVP_PKEY* key = PEM_read_bio_PrivateKey(io, NULL, password_cb, (void*) passphrase);
+	if (!key) {
+		BIO_free_all(io);
+		io = BIO_new_mem_buf((void*) keyData, keyLen);
+		key = d2i_PrivateKey_bio(io, NULL);
+		if (!key) {
+			ERR_print_errors_fp(stderr);
+			fprintf(stderr, "Unable to load key\n");
+			throw SignBadKey;
+		}
+	}
+	BIO_free_all(io);
+
 	if (type == SigAuto) {
-		if (strstr(keyData, " DSA "))
+		if (key->type == EVP_PKEY_DSA || key->type == EVP_PKEY_DSA1 || key->type == EVP_PKEY_DSA2 || key->type == EVP_PKEY_DSA3 || key->type == EVP_PKEY_DSA4)
 			type = SigDsa;
 		else
 			type = SigRsa;
 	}
-	BIO* io = BIO_new_mem_buf((void*) keyData, keyLen);
-	EVP_PKEY* key = PEM_read_bio_PrivateKey(io, NULL, password_cb, (void*) passphrase);
-	if (!key) {
-		ERR_print_errors_fp(stderr);
-		fprintf(stderr, "Unable to load key\n");
-		throw SignBadKey;
-	}
-	BIO_free_all(io);
+
 	uint8_t* buffer = new uint8_t[controller->Length()];
 	uint8_t* ptr = buffer;
 	controller->CopyFieldData(ptr);
