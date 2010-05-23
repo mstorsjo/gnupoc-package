@@ -231,11 +231,15 @@ define(`IGNORE',
 IGNORE(MOVEP)
 IGNORE(NOTE)
 IGNORE(GNUHASH)
+IGNORE(VDEF)
+IGNORE(VNEED)
 
 define(IGNORE_BYTE,		1)	/* 'lator, leave 'em bytes alone */
 define(IGNORE_GNUHASH,		1)
 define(IGNORE_NOTE,		1)
 define(IGNORE_SXWORD32,		1)
+define(IGNORE_VDEF,		1)
+define(IGNORE_VNEED,		1)
 define(IGNORE_XWORD32,		1)
 
 /*
@@ -446,6 +450,161 @@ libelf_cvt$3_$1_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 ')')
+
+/*
+ * Converter helper functions for ELF_T_VDEF and ELF_T_VNEED.
+ *
+ * Macro use:
+ * `$1': C structure name suffix.
+ * `$2': ELF class specifier for types, one of [`32', `64']
+ */
+define(`MAKE_VERHLP_TO_F',
+`
+static void
+libelf_cvt$2_$1_tof(char *dst, char *src, int byteswap)
+{
+	Elf$2_$1	t, *s;
+
+	s = (Elf$2_$1 *) (uintptr_t) src;
+	t = *s;
+	if (byteswap) {
+		SWAP_STRUCT($1, $2)
+	}
+	WRITE_STRUCT($1, $2)
+}
+')
+
+define(`MAKE_VERHLP_TO_M',
+`
+static void
+libelf_cvt$2_$1_tom(char *dst, char *src, int byteswap)
+{
+	Elf$2_$1	 t, *d;
+	char		*s;
+
+	s = src;
+	d = (Elf$2_$1 *) (uintptr_t) dst;
+	READ_STRUCT($1, $2)
+	if (byteswap) {
+		SWAP_STRUCT($1, $2)
+	}
+	*d = t;
+}
+')
+
+/*
+ * Converter for ELF_T_VDEF and ELF_T_VNEED.
+ *
+ * Macro use:
+ * `$1': Name of the ELF type.
+ * `$2': C structure name suffix.
+ * `$3': Corresponding auxiliary structure name suffix.
+ * `$4': C structure field name prefix, one of [`vd', `vn']
+ * `$5': ELF class specifier for types, one of [`32', `64']
+ */
+define(`MAKE_VER',
+`
+static int
+libelf_cvt$5_$1_tof(char *dst, size_t dsz, char *src, size_t count,
+    int byteswap)
+{
+	Elf$5_$2	*v;
+	Elf$5_$3	*a;
+	size_t		 vsz, asz;
+	char		*dst2, *src2, *de, *se;
+
+	vsz = sizeof(Elf$5_$2);
+	asz = sizeof(Elf$5_$3);
+
+	de = dst + dsz;
+	se = src + count;
+	while (dst + vsz <= de && src + vsz <= se) {
+		libelf_cvt$5_$2_tof(dst, src, byteswap);
+		v = (Elf$5_$2 *) (uintptr_t) src;
+		dst2 = dst + v->$4_aux;
+		src2 = src + v->$4_aux;
+		while (dst2 + asz <= de && src2 + asz <= se) {
+			libelf_cvt$5_$3_tof(dst2, src2, byteswap);
+			a = (Elf$5_$3 *) (uintptr_t) src2;
+			if (a->$4a_next == 0)
+				break;
+			dst2 += a->$4a_next;
+			src2 += a->$4a_next;
+		}
+		if (dst2 + asz > de || src2 + asz > se)
+			return (0);
+		if (v->$4_next == 0)
+			break;
+		dst += v->$4_next;
+		src += v->$4_next;
+	}
+	if (dst + vsz > de || src + vsz > se)
+		return(0);
+
+	return (1);
+}
+
+static int
+libelf_cvt$5_$1_tom(char *dst, size_t dsz, char *src, size_t count,
+    int byteswap)
+{
+	Elf$5_$2	*v;
+	Elf$5_$3	*a;
+	size_t		 vsz, asz;
+	char		*dst2, *src2, *de, *se;
+
+	vsz = sizeof(Elf$5_$2);
+	asz = sizeof(Elf$5_$3);
+
+	de = dst + dsz;
+	se = src + count;
+	while (dst + vsz <= de && src + vsz <= se) {
+		libelf_cvt$5_$2_tom(dst, src, byteswap);
+		v = (Elf$5_$2 *) (uintptr_t) dst;
+		dst2 = dst + v->$4_aux;
+		src2 = src + v->$4_aux;
+		while (dst2 + asz <= de && src2 + asz <= se) {
+			libelf_cvt$5_$3_tom(dst2, src2, byteswap);
+			a = (Elf$5_$3 *) (uintptr_t) dst2;
+			if (a->$4a_next == 0)
+				break;
+			dst2 += a->$4a_next;
+			src2 += a->$4a_next;
+		}
+		if (dst2 + asz > de || src2 + asz > se)
+			return (0);
+		if (v->$4_next == 0)
+			break;
+		dst += v->$4_next;
+		src += v->$4_next;
+	}
+	if (dst + vsz > de || src + vsz > se)
+		return(0);
+
+	return (1);
+}
+')
+
+define(`MAKE_VER_HELPERS',
+  `MAKE_VERHLP_TO_F($1,32)dnl
+   MAKE_VERHLP_TO_M($1,32)dnl
+   MAKE_VERHLP_TO_F($1,64)dnl
+   MAKE_VERHLP_TO_M($1,64)')
+
+define(`MAKE_VER_CONVERTERS',
+  `#if	LIBELF_CONFIG_VDEF
+   MAKE_VER_HELPERS(Verdef)dnl
+   MAKE_VER_HELPERS(Verdaux)dnl
+   MAKE_VER(VDEF,Verdef,Verdaux,vd,32)dnl
+   MAKE_VER(VDEF,Verdef,Verdaux,vd,64)dnl
+#endif	/* LIBELF_CONFIG_VDEF */
+#if	LIBELF_CONFIG_VNEED
+   MAKE_VER_HELPERS(Verneed)dnl
+   MAKE_VER_HELPERS(Vernaux)dnl
+   MAKE_VER(VNEED,Verneed,Vernaux,vn,32)dnl
+   MAKE_VER(VNEED,Verneed,Vernaux,vn,64)dnl
+#endif	/* LIBELF_CONFIG_VNEED */
+')
 
 /*
  * Make type convertor functions from the type definition
@@ -822,6 +981,8 @@ libelf_cvt_NOTE_tof(char *dst, size_t dsz, char *src, size_t count,
 }
 #endif	/* LIBELF_CONFIG_NOTE */
 
+MAKE_VER_CONVERTERS()
+
 struct converters {
 	int	(*tof32)(char *dst, size_t dsz, char *src, size_t cnt,
 		    int byteswap);
@@ -886,8 +1047,26 @@ CONVERTER_NAMES(ELF_TYPE_LIST)
 		.tom32 = libelf_cvt_NOTE_tom,
 		.tof64 = libelf_cvt_NOTE_tof,
 		.tom64 = libelf_cvt_NOTE_tom
-	}
+	},
 #endif	/* LIBELF_CONFIG_NOTE */
+
+#if	LIBELF_CONFIG_VDEF
+	[ELF_T_VDEF] = {
+		.tof32 = libelf_cvt32_VDEF_tof,
+		.tom32 = libelf_cvt32_VDEF_tom,
+		.tof64 = libelf_cvt64_VDEF_tof,
+		.tom64 = libelf_cvt64_VDEF_tom
+	},
+#endif	/* LIBELF_CONFIG_VDEF */
+
+#if	LIBELF_CONFIG_VNEED
+	[ELF_T_VNEED] = {
+		.tof32 = libelf_cvt32_VNEED_tof,
+		.tom32 = libelf_cvt32_VNEED_tom,
+		.tof64 = libelf_cvt64_VNEED_tof,
+		.tom64 = libelf_cvt64_VNEED_tom
+	}
+#endif	/* LIBELF_CONFIG_VNEED */
 };
 
 int (*_libelf_get_translator(Elf_Type t, int direction, int elfclass))

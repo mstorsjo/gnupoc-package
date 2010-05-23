@@ -2115,314 +2115,10 @@ libelf_cvt64_SYM_tom(char *dst, size_t dsz, char *src, size_t count,
 
 #endif /* LIBELF_CONFIG_SYM */
 #if	LIBELF_CONFIG_VDEF
-
-static int
-libelf_cvt32_VDEF_tof(char *dst, size_t dsz, char *src, size_t count,
-    int byteswap)
-{
-	Elf32_Verdef	t, *s;
-	size_t c;
-
-	(void) dsz;
-
-	s = (Elf32_Verdef *) (uintptr_t) src;
-	for (c = 0; c < count; c++) {
-		t = *s++;
-		if (byteswap) {
-			/* Swap an Elf32_Verdef */
-			SWAP_HALF(t.vd_version);
-			SWAP_HALF(t.vd_flags);
-			SWAP_HALF(t.vd_ndx);
-			SWAP_HALF(t.vd_cnt);
-			SWAP_WORD(t.vd_hash);
-			SWAP_WORD(t.vd_aux);
-			SWAP_WORD(t.vd_next);
-			/**/
-		}
-		/* Write an Elf32_Verdef */
-		WRITE_HALF(dst,t.vd_version);
-		WRITE_HALF(dst,t.vd_flags);
-		WRITE_HALF(dst,t.vd_ndx);
-		WRITE_HALF(dst,t.vd_cnt);
-		WRITE_WORD(dst,t.vd_hash);
-		WRITE_WORD(dst,t.vd_aux);
-		WRITE_WORD(dst,t.vd_next);
-		/**/
-	}
-
-	return (1);
-}
-       
-static int
-libelf_cvt64_VDEF_tof(char *dst, size_t dsz, char *src, size_t count,
-    int byteswap)
-{
-	Elf64_Verdef	t, *s;
-	size_t c;
-
-	(void) dsz;
-
-	s = (Elf64_Verdef *) (uintptr_t) src;
-	for (c = 0; c < count; c++) {
-		t = *s++;
-		if (byteswap) {
-			/* Swap an Elf64_Verdef */
-			SWAP_HALF(t.vd_version);
-			SWAP_HALF(t.vd_flags);
-			SWAP_HALF(t.vd_ndx);
-			SWAP_HALF(t.vd_cnt);
-			SWAP_WORD(t.vd_hash);
-			SWAP_WORD(t.vd_aux);
-			SWAP_WORD(t.vd_next);
-			/**/
-		}
-		/* Write an Elf64_Verdef */
-		WRITE_HALF(dst,t.vd_version);
-		WRITE_HALF(dst,t.vd_flags);
-		WRITE_HALF(dst,t.vd_ndx);
-		WRITE_HALF(dst,t.vd_cnt);
-		WRITE_WORD(dst,t.vd_hash);
-		WRITE_WORD(dst,t.vd_aux);
-		WRITE_WORD(dst,t.vd_next);
-		/**/
-	}
-
-	return (1);
-}
-       
-static int
-libelf_cvt32_VDEF_tom(char *dst, size_t dsz, char *src, size_t count,
-    int byteswap)
-{
-	Elf32_Verdef	 t, *d;
-	char		*s,*s0;
-	size_t		fsz;
-
-	fsz = elf32_fsize(ELF_T_VDEF, (size_t) 1, EV_CURRENT);
-	d   = ((Elf32_Verdef *) (uintptr_t) dst) + (count - 1);
-	s0  = (char *) src + (count - 1) * fsz;
-
-	if (dsz < count * sizeof(Elf32_Verdef))
-		return (0);
-
-	while (count--) {
-		s = s0;
-		/* Read an Elf32_Verdef */
-		READ_HALF(s,t.vd_version);
-		READ_HALF(s,t.vd_flags);
-		READ_HALF(s,t.vd_ndx);
-		READ_HALF(s,t.vd_cnt);
-		READ_WORD(s,t.vd_hash);
-		READ_WORD(s,t.vd_aux);
-		READ_WORD(s,t.vd_next);
-		/**/
-		if (byteswap) {
-			/* Swap an Elf32_Verdef */
-			SWAP_HALF(t.vd_version);
-			SWAP_HALF(t.vd_flags);
-			SWAP_HALF(t.vd_ndx);
-			SWAP_HALF(t.vd_cnt);
-			SWAP_WORD(t.vd_hash);
-			SWAP_WORD(t.vd_aux);
-			SWAP_WORD(t.vd_next);
-			/**/
-		}
-		*d-- = t; s0 -= fsz;
-	}
-
-	return (1);
-}
-       
-static int
-libelf_cvt64_VDEF_tom(char *dst, size_t dsz, char *src, size_t count,
-    int byteswap)
-{
-	Elf64_Verdef	 t, *d;
-	char		*s,*s0;
-	size_t		fsz;
-
-	fsz = elf64_fsize(ELF_T_VDEF, (size_t) 1, EV_CURRENT);
-	d   = ((Elf64_Verdef *) (uintptr_t) dst) + (count - 1);
-	s0  = (char *) src + (count - 1) * fsz;
-
-	if (dsz < count * sizeof(Elf64_Verdef))
-		return (0);
-
-	while (count--) {
-		s = s0;
-		/* Read an Elf64_Verdef */
-		READ_HALF(s,t.vd_version);
-		READ_HALF(s,t.vd_flags);
-		READ_HALF(s,t.vd_ndx);
-		READ_HALF(s,t.vd_cnt);
-		READ_WORD(s,t.vd_hash);
-		READ_WORD(s,t.vd_aux);
-		READ_WORD(s,t.vd_next);
-		/**/
-		if (byteswap) {
-			/* Swap an Elf64_Verdef */
-			SWAP_HALF(t.vd_version);
-			SWAP_HALF(t.vd_flags);
-			SWAP_HALF(t.vd_ndx);
-			SWAP_HALF(t.vd_cnt);
-			SWAP_WORD(t.vd_hash);
-			SWAP_WORD(t.vd_aux);
-			SWAP_WORD(t.vd_next);
-			/**/
-		}
-		*d-- = t; s0 -= fsz;
-	}
-
-	return (1);
-}
-
+                     
 #endif /* LIBELF_CONFIG_VDEF */
 #if	LIBELF_CONFIG_VNEED
-
-static int
-libelf_cvt32_VNEED_tof(char *dst, size_t dsz, char *src, size_t count,
-    int byteswap)
-{
-	Elf32_Verneed	t, *s;
-	size_t c;
-
-	(void) dsz;
-
-	s = (Elf32_Verneed *) (uintptr_t) src;
-	for (c = 0; c < count; c++) {
-		t = *s++;
-		if (byteswap) {
-			/* Swap an Elf32_Verneed */
-			SWAP_HALF(t.vn_version);
-			SWAP_HALF(t.vn_cnt);
-			SWAP_WORD(t.vn_file);
-			SWAP_WORD(t.vn_aux);
-			SWAP_WORD(t.vn_next);
-			/**/
-		}
-		/* Write an Elf32_Verneed */
-		WRITE_HALF(dst,t.vn_version);
-		WRITE_HALF(dst,t.vn_cnt);
-		WRITE_WORD(dst,t.vn_file);
-		WRITE_WORD(dst,t.vn_aux);
-		WRITE_WORD(dst,t.vn_next);
-		/**/
-	}
-
-	return (1);
-}
-       
-static int
-libelf_cvt64_VNEED_tof(char *dst, size_t dsz, char *src, size_t count,
-    int byteswap)
-{
-	Elf64_Verneed	t, *s;
-	size_t c;
-
-	(void) dsz;
-
-	s = (Elf64_Verneed *) (uintptr_t) src;
-	for (c = 0; c < count; c++) {
-		t = *s++;
-		if (byteswap) {
-			/* Swap an Elf64_Verneed */
-			SWAP_HALF(t.vn_version);
-			SWAP_HALF(t.vn_cnt);
-			SWAP_WORD(t.vn_file);
-			SWAP_WORD(t.vn_aux);
-			SWAP_WORD(t.vn_next);
-			/**/
-		}
-		/* Write an Elf64_Verneed */
-		WRITE_HALF(dst,t.vn_version);
-		WRITE_HALF(dst,t.vn_cnt);
-		WRITE_WORD(dst,t.vn_file);
-		WRITE_WORD(dst,t.vn_aux);
-		WRITE_WORD(dst,t.vn_next);
-		/**/
-	}
-
-	return (1);
-}
-       
-static int
-libelf_cvt32_VNEED_tom(char *dst, size_t dsz, char *src, size_t count,
-    int byteswap)
-{
-	Elf32_Verneed	 t, *d;
-	char		*s,*s0;
-	size_t		fsz;
-
-	fsz = elf32_fsize(ELF_T_VNEED, (size_t) 1, EV_CURRENT);
-	d   = ((Elf32_Verneed *) (uintptr_t) dst) + (count - 1);
-	s0  = (char *) src + (count - 1) * fsz;
-
-	if (dsz < count * sizeof(Elf32_Verneed))
-		return (0);
-
-	while (count--) {
-		s = s0;
-		/* Read an Elf32_Verneed */
-		READ_HALF(s,t.vn_version);
-		READ_HALF(s,t.vn_cnt);
-		READ_WORD(s,t.vn_file);
-		READ_WORD(s,t.vn_aux);
-		READ_WORD(s,t.vn_next);
-		/**/
-		if (byteswap) {
-			/* Swap an Elf32_Verneed */
-			SWAP_HALF(t.vn_version);
-			SWAP_HALF(t.vn_cnt);
-			SWAP_WORD(t.vn_file);
-			SWAP_WORD(t.vn_aux);
-			SWAP_WORD(t.vn_next);
-			/**/
-		}
-		*d-- = t; s0 -= fsz;
-	}
-
-	return (1);
-}
-       
-static int
-libelf_cvt64_VNEED_tom(char *dst, size_t dsz, char *src, size_t count,
-    int byteswap)
-{
-	Elf64_Verneed	 t, *d;
-	char		*s,*s0;
-	size_t		fsz;
-
-	fsz = elf64_fsize(ELF_T_VNEED, (size_t) 1, EV_CURRENT);
-	d   = ((Elf64_Verneed *) (uintptr_t) dst) + (count - 1);
-	s0  = (char *) src + (count - 1) * fsz;
-
-	if (dsz < count * sizeof(Elf64_Verneed))
-		return (0);
-
-	while (count--) {
-		s = s0;
-		/* Read an Elf64_Verneed */
-		READ_HALF(s,t.vn_version);
-		READ_HALF(s,t.vn_cnt);
-		READ_WORD(s,t.vn_file);
-		READ_WORD(s,t.vn_aux);
-		READ_WORD(s,t.vn_next);
-		/**/
-		if (byteswap) {
-			/* Swap an Elf64_Verneed */
-			SWAP_HALF(t.vn_version);
-			SWAP_HALF(t.vn_cnt);
-			SWAP_WORD(t.vn_file);
-			SWAP_WORD(t.vn_aux);
-			SWAP_WORD(t.vn_next);
-			/**/
-		}
-		*d-- = t; s0 -= fsz;
-	}
-
-	return (1);
-}
-
+                     
 #endif /* LIBELF_CONFIG_VNEED */
 #if	LIBELF_CONFIG_WORD
 
@@ -2847,6 +2543,740 @@ libelf_cvt_NOTE_tof(char *dst, size_t dsz, char *src, size_t count,
 }
 #endif	/* LIBELF_CONFIG_NOTE */
 
+#if	LIBELF_CONFIG_VDEF
+   
+static void
+libelf_cvt32_Verdef_tof(char *dst, char *src, int byteswap)
+{
+	Elf32_Verdef	t, *s;
+
+	s = (Elf32_Verdef *) (uintptr_t) src;
+	t = *s;
+	if (byteswap) {
+		/* Swap an Elf32_Verdef */
+			SWAP_HALF(t.vd_version);
+			SWAP_HALF(t.vd_flags);
+			SWAP_HALF(t.vd_ndx);
+			SWAP_HALF(t.vd_cnt);
+			SWAP_WORD(t.vd_hash);
+			SWAP_WORD(t.vd_aux);
+			SWAP_WORD(t.vd_next);
+			/**/
+	}
+	/* Write an Elf32_Verdef */
+		WRITE_HALF(dst,t.vd_version);
+		WRITE_HALF(dst,t.vd_flags);
+		WRITE_HALF(dst,t.vd_ndx);
+		WRITE_HALF(dst,t.vd_cnt);
+		WRITE_WORD(dst,t.vd_hash);
+		WRITE_WORD(dst,t.vd_aux);
+		WRITE_WORD(dst,t.vd_next);
+		/**/
+}
+   
+static void
+libelf_cvt32_Verdef_tom(char *dst, char *src, int byteswap)
+{
+	Elf32_Verdef	 t, *d;
+	char		*s;
+
+	s = src;
+	d = (Elf32_Verdef *) (uintptr_t) dst;
+	/* Read an Elf32_Verdef */
+		READ_HALF(s,t.vd_version);
+		READ_HALF(s,t.vd_flags);
+		READ_HALF(s,t.vd_ndx);
+		READ_HALF(s,t.vd_cnt);
+		READ_WORD(s,t.vd_hash);
+		READ_WORD(s,t.vd_aux);
+		READ_WORD(s,t.vd_next);
+		/**/
+	if (byteswap) {
+		/* Swap an Elf32_Verdef */
+			SWAP_HALF(t.vd_version);
+			SWAP_HALF(t.vd_flags);
+			SWAP_HALF(t.vd_ndx);
+			SWAP_HALF(t.vd_cnt);
+			SWAP_WORD(t.vd_hash);
+			SWAP_WORD(t.vd_aux);
+			SWAP_WORD(t.vd_next);
+			/**/
+	}
+	*d = t;
+}
+   
+static void
+libelf_cvt64_Verdef_tof(char *dst, char *src, int byteswap)
+{
+	Elf64_Verdef	t, *s;
+
+	s = (Elf64_Verdef *) (uintptr_t) src;
+	t = *s;
+	if (byteswap) {
+		/* Swap an Elf64_Verdef */
+			SWAP_HALF(t.vd_version);
+			SWAP_HALF(t.vd_flags);
+			SWAP_HALF(t.vd_ndx);
+			SWAP_HALF(t.vd_cnt);
+			SWAP_WORD(t.vd_hash);
+			SWAP_WORD(t.vd_aux);
+			SWAP_WORD(t.vd_next);
+			/**/
+	}
+	/* Write an Elf64_Verdef */
+		WRITE_HALF(dst,t.vd_version);
+		WRITE_HALF(dst,t.vd_flags);
+		WRITE_HALF(dst,t.vd_ndx);
+		WRITE_HALF(dst,t.vd_cnt);
+		WRITE_WORD(dst,t.vd_hash);
+		WRITE_WORD(dst,t.vd_aux);
+		WRITE_WORD(dst,t.vd_next);
+		/**/
+}
+   
+static void
+libelf_cvt64_Verdef_tom(char *dst, char *src, int byteswap)
+{
+	Elf64_Verdef	 t, *d;
+	char		*s;
+
+	s = src;
+	d = (Elf64_Verdef *) (uintptr_t) dst;
+	/* Read an Elf64_Verdef */
+		READ_HALF(s,t.vd_version);
+		READ_HALF(s,t.vd_flags);
+		READ_HALF(s,t.vd_ndx);
+		READ_HALF(s,t.vd_cnt);
+		READ_WORD(s,t.vd_hash);
+		READ_WORD(s,t.vd_aux);
+		READ_WORD(s,t.vd_next);
+		/**/
+	if (byteswap) {
+		/* Swap an Elf64_Verdef */
+			SWAP_HALF(t.vd_version);
+			SWAP_HALF(t.vd_flags);
+			SWAP_HALF(t.vd_ndx);
+			SWAP_HALF(t.vd_cnt);
+			SWAP_WORD(t.vd_hash);
+			SWAP_WORD(t.vd_aux);
+			SWAP_WORD(t.vd_next);
+			/**/
+	}
+	*d = t;
+}
+   
+static void
+libelf_cvt32_Verdaux_tof(char *dst, char *src, int byteswap)
+{
+	Elf32_Verdaux	t, *s;
+
+	s = (Elf32_Verdaux *) (uintptr_t) src;
+	t = *s;
+	if (byteswap) {
+		/* Swap an Elf32_Verdaux */
+			SWAP_WORD(t.vda_name);
+			SWAP_WORD(t.vda_next);
+			/**/
+	}
+	/* Write an Elf32_Verdaux */
+		WRITE_WORD(dst,t.vda_name);
+		WRITE_WORD(dst,t.vda_next);
+		/**/
+}
+   
+static void
+libelf_cvt32_Verdaux_tom(char *dst, char *src, int byteswap)
+{
+	Elf32_Verdaux	 t, *d;
+	char		*s;
+
+	s = src;
+	d = (Elf32_Verdaux *) (uintptr_t) dst;
+	/* Read an Elf32_Verdaux */
+		READ_WORD(s,t.vda_name);
+		READ_WORD(s,t.vda_next);
+		/**/
+	if (byteswap) {
+		/* Swap an Elf32_Verdaux */
+			SWAP_WORD(t.vda_name);
+			SWAP_WORD(t.vda_next);
+			/**/
+	}
+	*d = t;
+}
+   
+static void
+libelf_cvt64_Verdaux_tof(char *dst, char *src, int byteswap)
+{
+	Elf64_Verdaux	t, *s;
+
+	s = (Elf64_Verdaux *) (uintptr_t) src;
+	t = *s;
+	if (byteswap) {
+		/* Swap an Elf64_Verdaux */
+			SWAP_WORD(t.vda_name);
+			SWAP_WORD(t.vda_next);
+			/**/
+	}
+	/* Write an Elf64_Verdaux */
+		WRITE_WORD(dst,t.vda_name);
+		WRITE_WORD(dst,t.vda_next);
+		/**/
+}
+   
+static void
+libelf_cvt64_Verdaux_tom(char *dst, char *src, int byteswap)
+{
+	Elf64_Verdaux	 t, *d;
+	char		*s;
+
+	s = src;
+	d = (Elf64_Verdaux *) (uintptr_t) dst;
+	/* Read an Elf64_Verdaux */
+		READ_WORD(s,t.vda_name);
+		READ_WORD(s,t.vda_next);
+		/**/
+	if (byteswap) {
+		/* Swap an Elf64_Verdaux */
+			SWAP_WORD(t.vda_name);
+			SWAP_WORD(t.vda_next);
+			/**/
+	}
+	*d = t;
+}
+   
+static int
+libelf_cvt32_VDEF_tof(char *dst, size_t dsz, char *src, size_t count,
+    int byteswap)
+{
+	Elf32_Verdef	*v;
+	Elf32_Verdaux	*a;
+	size_t		 vsz, asz;
+	char		*dst2, *src2, *de, *se;
+
+	vsz = sizeof(Elf32_Verdef);
+	asz = sizeof(Elf32_Verdaux);
+
+	de = dst + dsz;
+	se = src + count;
+	while (dst + vsz <= de && src + vsz <= se) {
+		libelf_cvt32_Verdef_tof(dst, src, byteswap);
+		v = (Elf32_Verdef *) (uintptr_t) src;
+		dst2 = dst + v->vd_aux;
+		src2 = src + v->vd_aux;
+		while (dst2 + asz <= de && src2 + asz <= se) {
+			libelf_cvt32_Verdaux_tof(dst2, src2, byteswap);
+			a = (Elf32_Verdaux *) (uintptr_t) src2;
+			if (a->vda_next == 0)
+				break;
+			dst2 += a->vda_next;
+			src2 += a->vda_next;
+		}
+		if (dst2 + asz > de || src2 + asz > se)
+			return (0);
+		if (v->vd_next == 0)
+			break;
+		dst += v->vd_next;
+		src += v->vd_next;
+	}
+	if (dst + vsz > de || src + vsz > se)
+		return(0);
+
+	return (1);
+}
+
+static int
+libelf_cvt32_VDEF_tom(char *dst, size_t dsz, char *src, size_t count,
+    int byteswap)
+{
+	Elf32_Verdef	*v;
+	Elf32_Verdaux	*a;
+	size_t		 vsz, asz;
+	char		*dst2, *src2, *de, *se;
+
+	vsz = sizeof(Elf32_Verdef);
+	asz = sizeof(Elf32_Verdaux);
+
+	de = dst + dsz;
+	se = src + count;
+	while (dst + vsz <= de && src + vsz <= se) {
+		libelf_cvt32_Verdef_tom(dst, src, byteswap);
+		v = (Elf32_Verdef *) (uintptr_t) dst;
+		dst2 = dst + v->vd_aux;
+		src2 = src + v->vd_aux;
+		while (dst2 + asz <= de && src2 + asz <= se) {
+			libelf_cvt32_Verdaux_tom(dst2, src2, byteswap);
+			a = (Elf32_Verdaux *) (uintptr_t) dst2;
+			if (a->vda_next == 0)
+				break;
+			dst2 += a->vda_next;
+			src2 += a->vda_next;
+		}
+		if (dst2 + asz > de || src2 + asz > se)
+			return (0);
+		if (v->vd_next == 0)
+			break;
+		dst += v->vd_next;
+		src += v->vd_next;
+	}
+	if (dst + vsz > de || src + vsz > se)
+		return(0);
+
+	return (1);
+}
+   
+static int
+libelf_cvt64_VDEF_tof(char *dst, size_t dsz, char *src, size_t count,
+    int byteswap)
+{
+	Elf64_Verdef	*v;
+	Elf64_Verdaux	*a;
+	size_t		 vsz, asz;
+	char		*dst2, *src2, *de, *se;
+
+	vsz = sizeof(Elf64_Verdef);
+	asz = sizeof(Elf64_Verdaux);
+
+	de = dst + dsz;
+	se = src + count;
+	while (dst + vsz <= de && src + vsz <= se) {
+		libelf_cvt64_Verdef_tof(dst, src, byteswap);
+		v = (Elf64_Verdef *) (uintptr_t) src;
+		dst2 = dst + v->vd_aux;
+		src2 = src + v->vd_aux;
+		while (dst2 + asz <= de && src2 + asz <= se) {
+			libelf_cvt64_Verdaux_tof(dst2, src2, byteswap);
+			a = (Elf64_Verdaux *) (uintptr_t) src2;
+			if (a->vda_next == 0)
+				break;
+			dst2 += a->vda_next;
+			src2 += a->vda_next;
+		}
+		if (dst2 + asz > de || src2 + asz > se)
+			return (0);
+		if (v->vd_next == 0)
+			break;
+		dst += v->vd_next;
+		src += v->vd_next;
+	}
+	if (dst + vsz > de || src + vsz > se)
+		return(0);
+
+	return (1);
+}
+
+static int
+libelf_cvt64_VDEF_tom(char *dst, size_t dsz, char *src, size_t count,
+    int byteswap)
+{
+	Elf64_Verdef	*v;
+	Elf64_Verdaux	*a;
+	size_t		 vsz, asz;
+	char		*dst2, *src2, *de, *se;
+
+	vsz = sizeof(Elf64_Verdef);
+	asz = sizeof(Elf64_Verdaux);
+
+	de = dst + dsz;
+	se = src + count;
+	while (dst + vsz <= de && src + vsz <= se) {
+		libelf_cvt64_Verdef_tom(dst, src, byteswap);
+		v = (Elf64_Verdef *) (uintptr_t) dst;
+		dst2 = dst + v->vd_aux;
+		src2 = src + v->vd_aux;
+		while (dst2 + asz <= de && src2 + asz <= se) {
+			libelf_cvt64_Verdaux_tom(dst2, src2, byteswap);
+			a = (Elf64_Verdaux *) (uintptr_t) dst2;
+			if (a->vda_next == 0)
+				break;
+			dst2 += a->vda_next;
+			src2 += a->vda_next;
+		}
+		if (dst2 + asz > de || src2 + asz > se)
+			return (0);
+		if (v->vd_next == 0)
+			break;
+		dst += v->vd_next;
+		src += v->vd_next;
+	}
+	if (dst + vsz > de || src + vsz > se)
+		return(0);
+
+	return (1);
+}
+#endif	/* LIBELF_CONFIG_VDEF */
+#if	LIBELF_CONFIG_VNEED
+   
+static void
+libelf_cvt32_Verneed_tof(char *dst, char *src, int byteswap)
+{
+	Elf32_Verneed	t, *s;
+
+	s = (Elf32_Verneed *) (uintptr_t) src;
+	t = *s;
+	if (byteswap) {
+		/* Swap an Elf32_Verneed */
+			SWAP_HALF(t.vn_version);
+			SWAP_HALF(t.vn_cnt);
+			SWAP_WORD(t.vn_file);
+			SWAP_WORD(t.vn_aux);
+			SWAP_WORD(t.vn_next);
+			/**/
+	}
+	/* Write an Elf32_Verneed */
+		WRITE_HALF(dst,t.vn_version);
+		WRITE_HALF(dst,t.vn_cnt);
+		WRITE_WORD(dst,t.vn_file);
+		WRITE_WORD(dst,t.vn_aux);
+		WRITE_WORD(dst,t.vn_next);
+		/**/
+}
+   
+static void
+libelf_cvt32_Verneed_tom(char *dst, char *src, int byteswap)
+{
+	Elf32_Verneed	 t, *d;
+	char		*s;
+
+	s = src;
+	d = (Elf32_Verneed *) (uintptr_t) dst;
+	/* Read an Elf32_Verneed */
+		READ_HALF(s,t.vn_version);
+		READ_HALF(s,t.vn_cnt);
+		READ_WORD(s,t.vn_file);
+		READ_WORD(s,t.vn_aux);
+		READ_WORD(s,t.vn_next);
+		/**/
+	if (byteswap) {
+		/* Swap an Elf32_Verneed */
+			SWAP_HALF(t.vn_version);
+			SWAP_HALF(t.vn_cnt);
+			SWAP_WORD(t.vn_file);
+			SWAP_WORD(t.vn_aux);
+			SWAP_WORD(t.vn_next);
+			/**/
+	}
+	*d = t;
+}
+   
+static void
+libelf_cvt64_Verneed_tof(char *dst, char *src, int byteswap)
+{
+	Elf64_Verneed	t, *s;
+
+	s = (Elf64_Verneed *) (uintptr_t) src;
+	t = *s;
+	if (byteswap) {
+		/* Swap an Elf64_Verneed */
+			SWAP_HALF(t.vn_version);
+			SWAP_HALF(t.vn_cnt);
+			SWAP_WORD(t.vn_file);
+			SWAP_WORD(t.vn_aux);
+			SWAP_WORD(t.vn_next);
+			/**/
+	}
+	/* Write an Elf64_Verneed */
+		WRITE_HALF(dst,t.vn_version);
+		WRITE_HALF(dst,t.vn_cnt);
+		WRITE_WORD(dst,t.vn_file);
+		WRITE_WORD(dst,t.vn_aux);
+		WRITE_WORD(dst,t.vn_next);
+		/**/
+}
+   
+static void
+libelf_cvt64_Verneed_tom(char *dst, char *src, int byteswap)
+{
+	Elf64_Verneed	 t, *d;
+	char		*s;
+
+	s = src;
+	d = (Elf64_Verneed *) (uintptr_t) dst;
+	/* Read an Elf64_Verneed */
+		READ_HALF(s,t.vn_version);
+		READ_HALF(s,t.vn_cnt);
+		READ_WORD(s,t.vn_file);
+		READ_WORD(s,t.vn_aux);
+		READ_WORD(s,t.vn_next);
+		/**/
+	if (byteswap) {
+		/* Swap an Elf64_Verneed */
+			SWAP_HALF(t.vn_version);
+			SWAP_HALF(t.vn_cnt);
+			SWAP_WORD(t.vn_file);
+			SWAP_WORD(t.vn_aux);
+			SWAP_WORD(t.vn_next);
+			/**/
+	}
+	*d = t;
+}
+   
+static void
+libelf_cvt32_Vernaux_tof(char *dst, char *src, int byteswap)
+{
+	Elf32_Vernaux	t, *s;
+
+	s = (Elf32_Vernaux *) (uintptr_t) src;
+	t = *s;
+	if (byteswap) {
+		/* Swap an Elf32_Vernaux */
+			SWAP_WORD(t.vna_hash);
+			SWAP_HALF(t.vna_flags);
+			SWAP_HALF(t.vna_other);
+			SWAP_WORD(t.vna_name);
+			SWAP_WORD(t.vna_next);
+			/**/
+	}
+	/* Write an Elf32_Vernaux */
+		WRITE_WORD(dst,t.vna_hash);
+		WRITE_HALF(dst,t.vna_flags);
+		WRITE_HALF(dst,t.vna_other);
+		WRITE_WORD(dst,t.vna_name);
+		WRITE_WORD(dst,t.vna_next);
+		/**/
+}
+   
+static void
+libelf_cvt32_Vernaux_tom(char *dst, char *src, int byteswap)
+{
+	Elf32_Vernaux	 t, *d;
+	char		*s;
+
+	s = src;
+	d = (Elf32_Vernaux *) (uintptr_t) dst;
+	/* Read an Elf32_Vernaux */
+		READ_WORD(s,t.vna_hash);
+		READ_HALF(s,t.vna_flags);
+		READ_HALF(s,t.vna_other);
+		READ_WORD(s,t.vna_name);
+		READ_WORD(s,t.vna_next);
+		/**/
+	if (byteswap) {
+		/* Swap an Elf32_Vernaux */
+			SWAP_WORD(t.vna_hash);
+			SWAP_HALF(t.vna_flags);
+			SWAP_HALF(t.vna_other);
+			SWAP_WORD(t.vna_name);
+			SWAP_WORD(t.vna_next);
+			/**/
+	}
+	*d = t;
+}
+   
+static void
+libelf_cvt64_Vernaux_tof(char *dst, char *src, int byteswap)
+{
+	Elf64_Vernaux	t, *s;
+
+	s = (Elf64_Vernaux *) (uintptr_t) src;
+	t = *s;
+	if (byteswap) {
+		/* Swap an Elf64_Vernaux */
+			SWAP_WORD(t.vna_hash);
+			SWAP_HALF(t.vna_flags);
+			SWAP_HALF(t.vna_other);
+			SWAP_WORD(t.vna_name);
+			SWAP_WORD(t.vna_next);
+			/**/
+	}
+	/* Write an Elf64_Vernaux */
+		WRITE_WORD(dst,t.vna_hash);
+		WRITE_HALF(dst,t.vna_flags);
+		WRITE_HALF(dst,t.vna_other);
+		WRITE_WORD(dst,t.vna_name);
+		WRITE_WORD(dst,t.vna_next);
+		/**/
+}
+   
+static void
+libelf_cvt64_Vernaux_tom(char *dst, char *src, int byteswap)
+{
+	Elf64_Vernaux	 t, *d;
+	char		*s;
+
+	s = src;
+	d = (Elf64_Vernaux *) (uintptr_t) dst;
+	/* Read an Elf64_Vernaux */
+		READ_WORD(s,t.vna_hash);
+		READ_HALF(s,t.vna_flags);
+		READ_HALF(s,t.vna_other);
+		READ_WORD(s,t.vna_name);
+		READ_WORD(s,t.vna_next);
+		/**/
+	if (byteswap) {
+		/* Swap an Elf64_Vernaux */
+			SWAP_WORD(t.vna_hash);
+			SWAP_HALF(t.vna_flags);
+			SWAP_HALF(t.vna_other);
+			SWAP_WORD(t.vna_name);
+			SWAP_WORD(t.vna_next);
+			/**/
+	}
+	*d = t;
+}
+   
+static int
+libelf_cvt32_VNEED_tof(char *dst, size_t dsz, char *src, size_t count,
+    int byteswap)
+{
+	Elf32_Verneed	*v;
+	Elf32_Vernaux	*a;
+	size_t		 vsz, asz;
+	char		*dst2, *src2, *de, *se;
+
+	vsz = sizeof(Elf32_Verneed);
+	asz = sizeof(Elf32_Vernaux);
+
+	de = dst + dsz;
+	se = src + count;
+	while (dst + vsz <= de && src + vsz <= se) {
+		libelf_cvt32_Verneed_tof(dst, src, byteswap);
+		v = (Elf32_Verneed *) (uintptr_t) src;
+		dst2 = dst + v->vn_aux;
+		src2 = src + v->vn_aux;
+		while (dst2 + asz <= de && src2 + asz <= se) {
+			libelf_cvt32_Vernaux_tof(dst2, src2, byteswap);
+			a = (Elf32_Vernaux *) (uintptr_t) src2;
+			if (a->vna_next == 0)
+				break;
+			dst2 += a->vna_next;
+			src2 += a->vna_next;
+		}
+		if (dst2 + asz > de || src2 + asz > se)
+			return (0);
+		if (v->vn_next == 0)
+			break;
+		dst += v->vn_next;
+		src += v->vn_next;
+	}
+	if (dst + vsz > de || src + vsz > se)
+		return(0);
+
+	return (1);
+}
+
+static int
+libelf_cvt32_VNEED_tom(char *dst, size_t dsz, char *src, size_t count,
+    int byteswap)
+{
+	Elf32_Verneed	*v;
+	Elf32_Vernaux	*a;
+	size_t		 vsz, asz;
+	char		*dst2, *src2, *de, *se;
+
+	vsz = sizeof(Elf32_Verneed);
+	asz = sizeof(Elf32_Vernaux);
+
+	de = dst + dsz;
+	se = src + count;
+	while (dst + vsz <= de && src + vsz <= se) {
+		libelf_cvt32_Verneed_tom(dst, src, byteswap);
+		v = (Elf32_Verneed *) (uintptr_t) dst;
+		dst2 = dst + v->vn_aux;
+		src2 = src + v->vn_aux;
+		while (dst2 + asz <= de && src2 + asz <= se) {
+			libelf_cvt32_Vernaux_tom(dst2, src2, byteswap);
+			a = (Elf32_Vernaux *) (uintptr_t) dst2;
+			if (a->vna_next == 0)
+				break;
+			dst2 += a->vna_next;
+			src2 += a->vna_next;
+		}
+		if (dst2 + asz > de || src2 + asz > se)
+			return (0);
+		if (v->vn_next == 0)
+			break;
+		dst += v->vn_next;
+		src += v->vn_next;
+	}
+	if (dst + vsz > de || src + vsz > se)
+		return(0);
+
+	return (1);
+}
+   
+static int
+libelf_cvt64_VNEED_tof(char *dst, size_t dsz, char *src, size_t count,
+    int byteswap)
+{
+	Elf64_Verneed	*v;
+	Elf64_Vernaux	*a;
+	size_t		 vsz, asz;
+	char		*dst2, *src2, *de, *se;
+
+	vsz = sizeof(Elf64_Verneed);
+	asz = sizeof(Elf64_Vernaux);
+
+	de = dst + dsz;
+	se = src + count;
+	while (dst + vsz <= de && src + vsz <= se) {
+		libelf_cvt64_Verneed_tof(dst, src, byteswap);
+		v = (Elf64_Verneed *) (uintptr_t) src;
+		dst2 = dst + v->vn_aux;
+		src2 = src + v->vn_aux;
+		while (dst2 + asz <= de && src2 + asz <= se) {
+			libelf_cvt64_Vernaux_tof(dst2, src2, byteswap);
+			a = (Elf64_Vernaux *) (uintptr_t) src2;
+			if (a->vna_next == 0)
+				break;
+			dst2 += a->vna_next;
+			src2 += a->vna_next;
+		}
+		if (dst2 + asz > de || src2 + asz > se)
+			return (0);
+		if (v->vn_next == 0)
+			break;
+		dst += v->vn_next;
+		src += v->vn_next;
+	}
+	if (dst + vsz > de || src + vsz > se)
+		return(0);
+
+	return (1);
+}
+
+static int
+libelf_cvt64_VNEED_tom(char *dst, size_t dsz, char *src, size_t count,
+    int byteswap)
+{
+	Elf64_Verneed	*v;
+	Elf64_Vernaux	*a;
+	size_t		 vsz, asz;
+	char		*dst2, *src2, *de, *se;
+
+	vsz = sizeof(Elf64_Verneed);
+	asz = sizeof(Elf64_Vernaux);
+
+	de = dst + dsz;
+	se = src + count;
+	while (dst + vsz <= de && src + vsz <= se) {
+		libelf_cvt64_Verneed_tom(dst, src, byteswap);
+		v = (Elf64_Verneed *) (uintptr_t) dst;
+		dst2 = dst + v->vn_aux;
+		src2 = src + v->vn_aux;
+		while (dst2 + asz <= de && src2 + asz <= se) {
+			libelf_cvt64_Vernaux_tom(dst2, src2, byteswap);
+			a = (Elf64_Vernaux *) (uintptr_t) dst2;
+			if (a->vna_next == 0)
+				break;
+			dst2 += a->vna_next;
+			src2 += a->vna_next;
+		}
+		if (dst2 + asz > de || src2 + asz > se)
+			return (0);
+		if (v->vn_next == 0)
+			break;
+		dst += v->vn_next;
+		src += v->vn_next;
+	}
+	if (dst + vsz > de || src + vsz > se)
+		return(0);
+
+	return (1);
+}
+#endif	/* LIBELF_CONFIG_VNEED */
+
+
 struct converters {
 	int	(*tof32)(char *dst, size_t dsz, char *src, size_t cnt,
 		    int byteswap);
@@ -2946,16 +3376,6 @@ static struct converters cvt[ELF_T_NUM] = {
         .tof32 = libelf_cvt32_SYM_tof, .tom32 = libelf_cvt32_SYM_tom,
         .tof64 = libelf_cvt64_SYM_tof, .tom64 = libelf_cvt64_SYM_tom },
 #endif
-#if LIBELF_CONFIG_VDEF
-    [ELF_T_VDEF] = {
-        .tof32 = libelf_cvt32_VDEF_tof, .tom32 = libelf_cvt32_VDEF_tom,
-        .tof64 = libelf_cvt64_VDEF_tof, .tom64 = libelf_cvt64_VDEF_tom },
-#endif
-#if LIBELF_CONFIG_VNEED
-    [ELF_T_VNEED] = {
-        .tof32 = libelf_cvt32_VNEED_tof, .tom32 = libelf_cvt32_VNEED_tom,
-        .tof64 = libelf_cvt64_VNEED_tof, .tom64 = libelf_cvt64_VNEED_tom },
-#endif
 #if LIBELF_CONFIG_WORD
     [ELF_T_WORD] = {
         .tof32 = libelf_cvt_WORD_tof, .tom32 = libelf_cvt_WORD_tom,
@@ -2992,8 +3412,26 @@ static struct converters cvt[ELF_T_NUM] = {
 		.tom32 = libelf_cvt_NOTE_tom,
 		.tof64 = libelf_cvt_NOTE_tof,
 		.tom64 = libelf_cvt_NOTE_tom
-	}
+	},
 #endif	/* LIBELF_CONFIG_NOTE */
+
+#if	LIBELF_CONFIG_VDEF
+	[ELF_T_VDEF] = {
+		.tof32 = libelf_cvt32_VDEF_tof,
+		.tom32 = libelf_cvt32_VDEF_tom,
+		.tof64 = libelf_cvt64_VDEF_tof,
+		.tom64 = libelf_cvt64_VDEF_tom
+	},
+#endif	/* LIBELF_CONFIG_VDEF */
+
+#if	LIBELF_CONFIG_VNEED
+	[ELF_T_VNEED] = {
+		.tof32 = libelf_cvt32_VNEED_tof,
+		.tom32 = libelf_cvt32_VNEED_tom,
+		.tof64 = libelf_cvt64_VNEED_tof,
+		.tom64 = libelf_cvt64_VNEED_tom
+	}
+#endif	/* LIBELF_CONFIG_VNEED */
 };
 
 int (*_libelf_get_translator(Elf_Type t, int direction, int elfclass))

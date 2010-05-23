@@ -105,10 +105,10 @@ static struct msize msize[ELF_T_NUM] = {
     [ELF_T_SYM] = { .msz32 = sizeof(Elf32_Sym), .msz64 = sizeof(Elf64_Sym) },
 #endif
 #if	LIBELF_CONFIG_VDEF
-    [ELF_T_VDEF] = { .msz32 = sizeof(Elf32_Verdef), .msz64 = sizeof(Elf64_Verdef) },
+    [ELF_T_VDEF] = { .msz32 = 1, .msz64 = 1 },
 #endif
 #if	LIBELF_CONFIG_VNEED
-    [ELF_T_VNEED] = { .msz32 = sizeof(Elf32_Verneed), .msz64 = sizeof(Elf64_Verneed) },
+    [ELF_T_VNEED] = { .msz32 = 1, .msz64 = 1 },
 #endif
 #if	LIBELF_CONFIG_WORD
     [ELF_T_WORD] = { .msz32 = sizeof(Elf32_Word), .msz64 = sizeof(Elf64_Word) },
