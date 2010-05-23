@@ -8,6 +8,4 @@ makefile is modified to support gnumake.
 The library also contains a few other minor modifications:
 - Allow Elf_Data::d_type to differ from the type mapped from sh_type
 - Allow Elf_Data::d_align to be zero
-- Merged a patch by kaiwang27 at sourceforge, for supporting translation
-  of verdef/verneed
 

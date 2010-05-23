@@ -105,10 +105,10 @@ static struct fsize fsize[ELF_T_NUM] = {
     [ELF_T_SYM] = { .fsz32 = sizeof(Elf32_Word)+sizeof(Elf32_Addr)+sizeof(Elf32_Word)+1+1+sizeof(Elf32_Half)+0, .fsz64 = sizeof(Elf64_Word)+1+1+sizeof(Elf64_Half)+sizeof(Elf64_Addr)+sizeof(Elf64_Xword)+0 },
 #endif
 #if	LIBELF_CONFIG_VDEF
-    [ELF_T_VDEF] = { .fsz32 = 1, .fsz64 = 1 },
+    [ELF_T_VDEF] = { .fsz32 = sizeof(Elf32_Half)+sizeof(Elf32_Half)+sizeof(Elf32_Half)+sizeof(Elf32_Half)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+0, .fsz64 = sizeof(Elf64_Half)+sizeof(Elf64_Half)+sizeof(Elf64_Half)+sizeof(Elf64_Half)+sizeof(Elf64_Word)+sizeof(Elf64_Word)+sizeof(Elf64_Word)+0 },
 #endif
 #if	LIBELF_CONFIG_VNEED
-    [ELF_T_VNEED] = { .fsz32 = 1, .fsz64 = 1 },
+    [ELF_T_VNEED] = { .fsz32 = sizeof(Elf32_Half)+sizeof(Elf32_Half)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+0, .fsz64 = sizeof(Elf64_Half)+sizeof(Elf64_Half)+sizeof(Elf64_Word)+sizeof(Elf64_Word)+sizeof(Elf64_Word)+0 },
 #endif
 #if	LIBELF_CONFIG_WORD
     [ELF_T_WORD] = { .fsz32 = sizeof(Elf32_Word), .fsz64 = sizeof(Elf64_Word) },

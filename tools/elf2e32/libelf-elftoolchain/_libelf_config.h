@@ -51,8 +51,6 @@
 #define	LIBELF_CONFIG_SYMINFO	1
 #define	LIBELF_CONFIG_GNUHASH	1
 
-
-
 #ifdef __FreeBSD__
 
 #if __FreeBSD_version >= 330000
@@ -62,13 +60,11 @@
 #endif  /* __FreeBSD__ */
 
 
-
 #ifdef __NetBSD__
 
 #define	LIBELF_CONFIG_STRL_FUNCTIONS	1
 
 #endif	/* __NetBSD__ */
-
 
 
 #ifndef roundup2
@@ -77,30 +73,6 @@
 
 #define	LIBELF_VCSID(ID)
 
-
-/*
- * Supply macros missing from <sys/queue.h>
- */
-
-#ifndef	STAILQ_FOREACH_SAFE
-#define STAILQ_FOREACH_SAFE(var, head, field, tvar)            \
-       for ((var) = STAILQ_FIRST((head));                      \
-            (var) && ((tvar) = STAILQ_NEXT((var), field), 1);  \
-            (var) = (tvar))
-#endif
-
-#ifndef	STAILQ_LAST
-#define STAILQ_LAST(head, type, field)                                  \
-        (STAILQ_EMPTY((head)) ?                                         \
-                NULL :                                                  \
-                ((struct type *)(void *)                                \
-                ((char *)((head)->stqh_last) - offsetof(struct type, field))))
-#endif
-
-
-/*
- * Symbols that are sometimes missing in system headers.
- */
 
 #ifndef	LIBELF_CONFIG_GNUHASH
 #define	LIBELF_CONFIG_GNUHASH	1

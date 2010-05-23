@@ -47,8 +47,6 @@ include(SRCDIR`/elf_types.m4')
 define(BYTE_SIZE,	1)
 define(GNUHASH_SIZE,	1)
 define(NOTE_SIZE,	1)
-define(VDEF_SIZE,	1)
-define(VNEED_SIZE,	1)
 
 /*
  * Unimplemented types.

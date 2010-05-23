@@ -47,6 +47,7 @@ SRCS=	elf.c							\
 	libelf_align.c						\
 	libelf_allocate.c					\
 	libelf_ar.c						\
+	libelf_ar_util.c					\
 	libelf_checksum.c					\
 	libelf_data.c						\
 	libelf_ehdr.c						\
@@ -138,14 +139,12 @@ MLINKS+= \
 	gelf_xlatetof.3 gelf_xlatetom.3
 
 
-# Disable generation of these files in the distributed version
-#
-#%.c: %.m4
-#	m4 -D SRCDIR=$(shell pwd) $< > $@
-#
-#libelf_convert.c:	elf_types.m4 libelf_convert.m4
-#libelf_fsize.c:		elf_types.m4 libelf_fsize.m4
-#libelf_msize.c:		elf_types.m4 libelf_msize.m4
+%.c: %.m4
+	m4 -D SRCDIR=$(shell pwd) $< > $@
+
+libelf_convert.c:	elf_types.m4 libelf_convert.m4
+libelf_fsize.c:		elf_types.m4 libelf_fsize.m4
+libelf_msize.c:		elf_types.m4 libelf_msize.m4
 
 OBJS=$(SRCS:.c=.o)
 
