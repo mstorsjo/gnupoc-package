@@ -238,7 +238,7 @@ public:
 			sum += iElements[i]->HeaderDataLength();
 		return sum;
 	}
-	virtual void AddElement(SISField* aField) {
+	virtual void AddElementAt(SISField* aField, uint32_t aPos) {
 		if (iNumElements == iArraySize) {
 			iArraySize *= 2;
 			SISField** newArray = new SISField*[iArraySize];
@@ -247,7 +247,12 @@ public:
 			delete [] iElements;
 			iElements = newArray;
 		}
-		iElements[iNumElements++] = aField;
+		memmove(&iElements[aPos+1], &iElements[aPos], sizeof(SISField*)*(iNumElements - aPos));
+		iElements[aPos] = aField;
+		iNumElements++;
+	}
+	virtual void AddElement(SISField* aField) {
+		AddElementAt(aField, iNumElements);
 	}
 	void CopyFieldData(uint8_t*& aPtr) const {
 		for (uint32_t i = 0; i < iNumElements; i++) {
