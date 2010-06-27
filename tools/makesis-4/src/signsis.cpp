@@ -315,6 +315,19 @@ int main(int argc, char *argv[]) {
 	}
 	updateChecksum(csum, cController);
 
+	SISDataChecksum* dcsum = (SISDataChecksum*) contents->FindElement(SISFieldType::SISDataChecksum);
+	if (!dcsum) {
+		SISData* data = (SISData*) contents->FindElement(SISFieldType::SISData);
+		if (data) {
+			uint8_t* dataContent = new uint8_t[data->HeaderDataLength()];
+			uint8_t* dataPtr = dataContent;
+			data->CopyHeaderData(dataPtr);
+			uint16_t crc = crcFast(dataContent, data->HeaderDataLength());
+			delete [] dataContent;
+			dcsum = new SISDataChecksum(crc);
+			contents->AddElementAt(dcsum, 1);
+		}
+	}
 
 	FILE* out = fopen(output, "wb");
 	fwrite(header, 1, 16, out);
