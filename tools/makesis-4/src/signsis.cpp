@@ -309,7 +309,8 @@ int main(int argc, char *argv[]) {
 	cController->Compress(algorithm);
 
 	SISControllerChecksum* csum = (SISControllerChecksum*) contents->FindElement(SISFieldType::SISControllerChecksum);
-	updateChecksum(csum, cController);
+	if (csum)
+		updateChecksum(csum, cController);
 
 
 	FILE* out = fopen(output, "wb");
