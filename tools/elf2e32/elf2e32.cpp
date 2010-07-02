@@ -114,8 +114,15 @@ void checkRelocations(Elf* elf, Elf_Scn* relocationSection, Elf32_Shdr* relocati
 				const char* dsoname = getDsoName(elf, sections->verneedHeader->sh_link, verneed, sections->verneedNum, verIndex);
 				const char* dllname = getDllName(elf, sections->verneedHeader->sh_link, verneed, sections->verneedNum, verIndex);
 				if (type != R_ARM_NONE) {
-					fixImportRelocation(rel->r_offset - header->codeBase + header->codeOffset, out, name, dsoname, libpath);
-					importList.addImport(dllname, rel->r_offset - header->codeBase);
+					if (rel->r_offset >= header->codeBase && rel->r_offset < header->codeBase + header->codeSize) {
+						fixImportRelocation(rel->r_offset - header->codeBase + header->codeOffset, out, name, dsoname, libpath);
+						importList.addImport(dllname, rel->r_offset - header->codeBase);
+					} else if (rel->r_offset >= header->dataBase && rel->r_offset < header->dataBase + header->dataSize + header->bssSize) {
+						fixImportRelocation(rel->r_offset - header->dataBase + header->dataOffset, out, name, dsoname, libpath);
+						importList.addImport(dllname, rel->r_offset - header->dataBase);
+					} else {
+						printf("unhandled import relocation of symbol %s\n", name);
+					}
 				}
 			}
 		}
