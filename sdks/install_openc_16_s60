@@ -13,7 +13,7 @@ S60_SDK_DIR=$2
 export PATH=unshield:$PATH
 
 # create temporary directory
-TEMP=$(mktemp -d)
+TEMP=openc_temp
 trap "echo Removing temporary files...; rm -rf $TEMP" EXIT
 
 # Install OpenC
