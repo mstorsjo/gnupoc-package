@@ -118,6 +118,8 @@ void checkRelocations(Elf* elf, Elf_Scn* relocationSection, Elf32_Shdr* relocati
 						fixImportRelocation(rel->r_offset - header->codeBase + header->codeOffset, out, name, dsoname, libpath);
 						importList.addImport(dllname, rel->r_offset - header->codeBase);
 					} else if (rel->r_offset >= header->dataBase && rel->r_offset < header->dataBase + header->dataSize + header->bssSize) {
+						if (epocVersion >= EPOC_VERSION_9_4)
+							printf("Error: '%s' Import relocation does not refer to code segment.\n", name);
 						fixImportRelocation(rel->r_offset - header->dataBase + header->dataOffset, out, name, dsoname, libpath);
 						importList.addImport(dllname, rel->r_offset - header->dataBase);
 					} else {
