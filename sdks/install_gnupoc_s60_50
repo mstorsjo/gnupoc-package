@@ -3,6 +3,7 @@
 if test $# != 2 -o $0 != "./install_gnupoc_s60_50"; then
   echo "Usage: ./install_gnupoc_s60_50 <path-to-sdk-zip> <target-dir>"
   echo " e.g.: ./install_gnupoc_s60_50 S60_5th_Edition_SDK_v1_0_en.zip ~/symbian-sdks/s60_50"
+  echo " e.g.: ./install_gnupoc_s60_50 Nokia_N97_SDK_v1_0_en.zip ~/symbian-sdks/s60_n97"
   exit 1
 fi
 
