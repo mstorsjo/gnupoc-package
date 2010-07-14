@@ -43,6 +43,7 @@ sub lcfile($) {
   while(my $line = <FHIN>) {
     $line =~ tr [A-Z] [a-z];
     $line =~ s/libgles_cm.lib/libGLES_CM.lib/;
+    $line =~ s/libglesv2.lib/libGLESv2.lib/;
     $line =~ s/[\r\n]//g;
     print FHOUT "$line\n";
   }

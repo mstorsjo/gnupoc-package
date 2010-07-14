@@ -42,6 +42,7 @@ sub dodir($) {
     } else {
       my $new = lc($i);
       $new =~ s/libGLES_CM/libGLES_CM/i;
+      $new =~ s/libGLESv2/libGLESv2/i;
       $new =~ s/libOpenVG/libOpenVG/i;
       if($i ne $new) {
         #print "FILE: $i -> $new\n";
@@ -54,6 +55,8 @@ sub dodir($) {
   my $ldir = pop(@dirs);
   my $newname = lc($ldir);
   $newname = uc($ldir) if (uc($ldir) eq "GLES");
+  $newname = uc($ldir) if (uc($ldir) eq "GLES2");
+  $newname = uc($ldir) if (uc($ldir) eq "EGL");
   if($ldir ne $newname) {
     my $ndir = join('/', @dirs);
     if($ndir) {
