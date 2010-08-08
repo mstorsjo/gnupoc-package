@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]; then
+	echo $0 dir
+	exit 0
+fi
+
+dir=$1
+for i in $dir/*.dso; do
+	name=`basename $i`
+	base=`echo $name | sed s/.dso//`
+	if [ "`echo $base | grep '{'`" = "" ]; then
+		vername=`strings -a $i | grep $base | grep dso | sed s/.dso//`
+		if [ "$vername" != "" ] && [ ! -f $dir/$vername.dso ]; then
+			cp $dir/$base.dso $dir/$vername.dso
+			cp $dir/$base.lib $dir/$vername.lib
+		fi
+	fi
+done
+
