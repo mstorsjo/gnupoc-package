@@ -1,0 +1,15 @@
+--- mkspecs-orig/common/symbian/symbian.conf	2010-06-02 05:03:08.000000000 +0300
++++ mkspecs/common/symbian/symbian.conf	2010-08-07 20:58:57.000000000 +0300
+@@ -100,9 +100,9 @@
+     QMAKE_CHK_DIR_EXISTS = test -d
+ }
+ 
+-QMAKE_MOC		= $$[QT_INSTALL_BINS]$${DIR_SEPARATOR}moc.exe
+-QMAKE_UIC		= $$[QT_INSTALL_BINS]$${DIR_SEPARATOR}uic.exe
+-QMAKE_IDC		= $$[QT_INSTALL_BINS]$${DIR_SEPARATOR}idc.exe
++QMAKE_MOC		= moc
++QMAKE_UIC		= uic
++QMAKE_IDC		= idc
+ 
+ QMAKE_IDL		= midl
+ QMAKE_LIB		= ar -ru

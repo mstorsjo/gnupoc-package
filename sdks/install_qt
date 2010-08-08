@@ -1,0 +1,48 @@
+#!/bin/sh
+
+if test $# != 3 -o $0 != "./install_qt"; then
+  echo "Usage: ./install_qt <path-to-qt-exe> <target-qt-dir> <target-sdk-dir>"
+  echo " e.g.: ./install_qt qt-symbian-opensource-4.6.3.exe ~/symbian-sdks/qt ~/symbian-sdks/s60_31"
+  exit 1
+fi
+
+SRC=$1
+QTDEST=`echo $2 | sed s:/\$::`
+SDKDEST=`echo $3 | sed s:/\$::`
+
+mkdir -p $DEST
+
+export PATH=7z:$PATH
+# 7z must find the path to 7z.so
+P7ZIP=`which 7z`
+
+while read a
+do
+  echo "$a"
+  sh -c "$a"
+  if test $? != 0; then
+    echo "Unexpected error: aborting."
+    exit 1
+  fi
+done << __END
+
+
+### Unzip
+mkdir -p qt_temp
+$P7ZIP x -y -oqt_temp $SRC
+./fixdso qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/armv5/lib
+mkdir -p qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/armv5/urel
+cp qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/armv5/udeb/* qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/armv5/urel
+./mergedir qt_temp/\\\\\$OUTDIR/epoc32/epoc32 $SDKDEST/epoc32
+mv qt_temp/\\\\\$OUTDIR/bin $QTDEST
+cat qt-mkspecs.patch | (cd $QTDEST && patch -p0)
+rm -rf qt_temp
+
+__END
+
+cat > $QTDEST/bin/qt.conf <<EOF
+[Paths]
+Prefix = $QTDEST
+EOF
+
+exit 0
