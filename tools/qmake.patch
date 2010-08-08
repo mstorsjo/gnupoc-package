@@ -19,6 +19,18 @@ diff -ur qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/makefile.cpp q
                      else
                          t << valGlue(cleans, "\n\t" + del_statement, "\n\t" + del_statement, "");
                  if(!wrote_clean_cmds) {
+diff -ur qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/symbian/symmake.cpp qt-everywhere-opensource-src-4.6.2/qmake/generators/symbian/symmake.cpp
+--- qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/symbian/symmake.cpp	2010-02-11 17:55:16.000000000 +0200
++++ qt-everywhere-opensource-src-4.6.2/qmake/generators/symbian/symmake.cpp	2010-08-08 11:51:39.000000000 +0300
+@@ -1898,7 +1898,7 @@
+ 
+     t << OK_SIS_TARGET ":" << endl;
+ 
+-    QString pkgcommand = QString("\tcreatepackage.bat $(QT_SIS_OPTIONS) %1_template.%2 $(QT_SIS_TARGET) " \
++    QString pkgcommand = QString("\tcreatepackage.pl $(QT_SIS_OPTIONS) %1_template.%2 $(QT_SIS_TARGET) " \
+                                  "$(QT_SIS_CERTIFICATE) $(QT_SIS_KEY) $(QT_SIS_PASSPHRASE)")
+                           .arg(fixedTarget)
+                           .arg("pkg");
 diff -ur qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/symbian/symmake_abld.cpp qt-everywhere-opensource-src-4.6.2/qmake/generators/symbian/symmake_abld.cpp
 --- qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/symbian/symmake_abld.cpp	2010-02-11 17:55:16.000000000 +0200
 +++ qt-everywhere-opensource-src-4.6.2/qmake/generators/symbian/symmake_abld.cpp	2010-08-08 11:46:06.000000000 +0300
