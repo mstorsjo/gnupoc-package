@@ -36,6 +36,8 @@ cp qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/armv5/udeb/* qt_temp/\\\\\$OUTDIR/
 ./mergedir qt_temp/\\\\\$OUTDIR/epoc32/epoc32 $SDKDEST/epoc32
 mv qt_temp/\\\\\$OUTDIR/bin $QTDEST
 cat qt-mkspecs.patch | (cd $QTDEST && patch -p0)
+./dos2unix $QTDEST/bin/createpackage.pl
+cat qt-createpackage.patch | (cd $QTDEST/bin && patch -p0)
 rm -rf qt_temp
 
 __END
