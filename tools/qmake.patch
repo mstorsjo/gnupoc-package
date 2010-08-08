@@ -21,7 +21,7 @@ diff -ur qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/makefile.cpp q
                  if(!wrote_clean_cmds) {
 diff -ur qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/symbian/symmake_abld.cpp qt-everywhere-opensource-src-4.6.2/qmake/generators/symbian/symmake_abld.cpp
 --- qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/symbian/symmake_abld.cpp	2010-02-11 17:55:16.000000000 +0200
-+++ qt-everywhere-opensource-src-4.6.2/qmake/generators/symbian/symmake_abld.cpp	2010-08-08 02:39:25.000000000 +0300
++++ qt-everywhere-opensource-src-4.6.2/qmake/generators/symbian/symmake_abld.cpp	2010-08-08 11:46:06.000000000 +0300
 @@ -195,16 +195,16 @@
      t << "DEL_FILE          = " << var("QMAKE_DEL_FILE") << endl;
      t << "DEL_DIR           = " << var("QMAKE_DEL_DIR") << endl;
@@ -49,7 +49,7 @@ diff -ur qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/symbian/symmak
                      dirsToClean << fixedValue;
 -                    t << "\t-@ if NOT EXIST \""  << fixedValue << "\" mkdir \""
 -                      << fixedValue << "\"" << endl;
-+                    t << "\t-@ if [ ! -f \""  << fixedValue << "\" ]; then mkdir \""
++                    t << "\t-@ if [ ! -d \""  << fixedValue << "\" ]; then mkdir \""
 +                      << fixedValue << "\"; fi" << endl;
                  }
              }
