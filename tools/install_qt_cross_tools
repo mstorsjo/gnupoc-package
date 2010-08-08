@@ -1,0 +1,40 @@
+#!/bin/sh
+
+if [ $# != 2 -o $0 != "./install_qt_cross_tools" ]; then
+  echo "Usage: ./install_qt_cross_tools <path-to-qt-tarball> <qt-target-dir>"
+  echo " e.g.: ./install_qt_cross_tools qt-everywhere-opensource-src-4.6.2.tar.gz ~/symbian-sdks/qt_4.6.2"
+  exit 1
+fi
+
+SRC=$1
+DEST=`echo $2 | sed s:/\$::`
+
+mkdir -p $DEST
+
+MAKE=make
+if [ "`which gmake`" != "" ]; then
+        MAKE=gmake
+fi
+
+while read a
+do
+  echo "$a"
+  sh -c "$a"
+  if test $? != 0; then
+    echo "Unexpected error: aborting."
+    exit 1
+  fi
+done << __END
+
+mkdir -p qt-build
+tar -zxvf $SRC -C qt-build
+cd qt-build/qt-* && patch -p1 < ../../qmake.patch
+rm -rf qt-build/qt-*/examples
+rm -rf qt-build/qt-*/demos
+echo yes | (cd qt-build/qt-* && ./configure -opensource -fast)
+cd qt-build/qt-* && $MAKE sub-tools-bootstrap sub-moc sub-rcc sub-uic
+cd qt-build/qt-* && cp bin/qmake bin/moc bin/rcc bin/uic $DEST/bin
+#rm -rf qt-build
+
+__END
+

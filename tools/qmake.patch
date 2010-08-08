@@ -1,0 +1,64 @@
+diff -ur qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/makefile.cpp qt-everywhere-opensource-src-4.6.2/qmake/generators/makefile.cpp
+--- qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/makefile.cpp	2010-02-11 17:55:16.000000000 +0200
++++ qt-everywhere-opensource-src-4.6.2/qmake/generators/makefile.cpp	2010-08-08 02:52:06.000000000 +0300
+@@ -1809,7 +1809,7 @@
+             if(tmp_clean.indexOf("${QMAKE_") == -1) {
+                 t << "\n\t" << "-$(DEL_FILE) " << tmp_clean;
+                 if (isForSymbian())
+-                    t << " 2> NUL"; // Eliminate unnecessary warnings
++                    t << " 2> /dev/null"; // Eliminate unnecessary warnings
+                 wrote_clean = true;
+             }
+             if(!wrote_clean_cmds || !wrote_clean) {
+@@ -1839,7 +1839,7 @@
+                 }
+                 if(!cleans.isEmpty())
+                     if (isForSymbian())
+-                        t << valGlue(cleans, "\n\t" + del_statement, " 2> NUL\n\t" + del_statement, " 2> NUL");
++                        t << valGlue(cleans, "\n\t" + del_statement, " 2> /dev/null\n\t" + del_statement, " 2> /dev/null");
+                     else
+                         t << valGlue(cleans, "\n\t" + del_statement, "\n\t" + del_statement, "");
+                 if(!wrote_clean_cmds) {
+diff -ur qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/symbian/symmake_abld.cpp qt-everywhere-opensource-src-4.6.2/qmake/generators/symbian/symmake_abld.cpp
+--- qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/symbian/symmake_abld.cpp	2010-02-11 17:55:16.000000000 +0200
++++ qt-everywhere-opensource-src-4.6.2/qmake/generators/symbian/symmake_abld.cpp	2010-08-08 02:39:25.000000000 +0300
+@@ -195,16 +195,16 @@
+     t << "DEL_FILE          = " << var("QMAKE_DEL_FILE") << endl;
+     t << "DEL_DIR           = " << var("QMAKE_DEL_DIR") << endl;
+     t << "MOVE              = " << var("QMAKE_MOVE") << endl;
+-    t << "XCOPY             = xcopy /d /f /h /r /y /i" << endl;
+-    t << "ABLD              = ABLD.BAT" << endl;
++    t << "XCOPY             = cp -R" << endl;
++    t << "ABLD              = abld" << endl;
+     t << "DEBUG_PLATFORMS   = " << debugPlatforms.join(" ") << endl;
+     t << "RELEASE_PLATFORMS = " << releasePlatforms.join(" ") << endl;
+     t << "MAKE              = make" << endl;
+     t << endl;
+     t << "ifeq (WINS,$(findstring WINS, $(PLATFORM)))" << endl;
+-    t << "ZDIR=$(EPOCROOT)epoc32\\release\\$(PLATFORM)\\$(CFG)\\Z" << endl;
++    t << "ZDIR=$(EPOCROOT)epoc32/release/$(PLATFORM)/$(CFG)/z" << endl;
+     t << "else" << endl;
+-    t << "ZDIR=$(EPOCROOT)epoc32\\data\\z" << endl;
++    t << "ZDIR=$(EPOCROOT)epoc32/data/z" << endl;
+     t << "endif" << endl;
+     t << endl;
+     t << "DEFINES" << '\t' << " = "
+@@ -304,8 +304,8 @@
+                 if (values.at(i).endsWith("/" QT_EXTRA_INCLUDE_DIR)) {
+                     QString fixedValue(QDir::toNativeSeparators(values.at(i)));
+                     dirsToClean << fixedValue;
+-                    t << "\t-@ if NOT EXIST \""  << fixedValue << "\" mkdir \""
+-                      << fixedValue << "\"" << endl;
++                    t << "\t-@ if [ ! -f \""  << fixedValue << "\" ]; then mkdir \""
++                      << fixedValue << "\"; fi" << endl;
+                 }
+             }
+         }
+@@ -451,7 +451,6 @@
+     t << "\t@echo #  Version     :  >> " MAKE_CACHE_NAME << endl;
+     t << "\t@echo # >> " MAKE_CACHE_NAME << endl;
+     t << "\t@echo # ============================================================================== >> " MAKE_CACHE_NAME <<  endl;
+-    t << "\t@echo. >> " MAKE_CACHE_NAME <<  endl;
+     t << "\t@echo QT_SIS_TARGET ?= $(QT_SIS_TARGET) >> " MAKE_CACHE_NAME << endl;
+     t << endl;
+ 
