@@ -10,7 +10,7 @@ SRC=$1
 QTDEST=`echo $2 | sed s:/\$::`
 SDKDEST=`echo $3 | sed s:/\$::`
 
-mkdir -p $DEST
+mkdir -p $QTDEST
 
 export PATH=7z:$PATH
 # 7z must find the path to 7z.so
