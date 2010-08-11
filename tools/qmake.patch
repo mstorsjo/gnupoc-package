@@ -1,7 +1,8 @@
-diff -ur qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/makefile.cpp qt-everywhere-opensource-src-4.6.2/qmake/generators/makefile.cpp
---- qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/makefile.cpp	2010-02-11 17:55:16.000000000 +0200
-+++ qt-everywhere-opensource-src-4.6.2/qmake/generators/makefile.cpp	2010-08-08 02:52:06.000000000 +0300
-@@ -1809,7 +1809,7 @@
+diff --git a/qmake/generators/makefile.cpp b/qmake/generators/makefile.cpp
+index ad865a2..527bd0d 100644
+--- a/qmake/generators/makefile.cpp
++++ b/qmake/generators/makefile.cpp
+@@ -1822,7 +1822,7 @@ MakefileGenerator::writeExtraCompilerTargets(QTextStream &t)
              if(tmp_clean.indexOf("${QMAKE_") == -1) {
                  t << "\n\t" << "-$(DEL_FILE) " << tmp_clean;
                  if (isForSymbian())
@@ -10,43 +11,45 @@ diff -ur qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/makefile.cpp q
                  wrote_clean = true;
              }
              if(!wrote_clean_cmds || !wrote_clean) {
-@@ -1839,7 +1839,7 @@
+@@ -1852,7 +1852,7 @@ MakefileGenerator::writeExtraCompilerTargets(QTextStream &t)
                  }
-                 if(!cleans.isEmpty())
+                 if(!cleans.isEmpty()) {
                      if (isForSymbian())
 -                        t << valGlue(cleans, "\n\t" + del_statement, " 2> NUL\n\t" + del_statement, " 2> NUL");
 +                        t << valGlue(cleans, "\n\t" + del_statement, " 2> /dev/null\n\t" + del_statement, " 2> /dev/null");
                      else
                          t << valGlue(cleans, "\n\t" + del_statement, "\n\t" + del_statement, "");
-                 if(!wrote_clean_cmds) {
-diff -ur qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/symbian/symmake.cpp qt-everywhere-opensource-src-4.6.2/qmake/generators/symbian/symmake.cpp
---- qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/symbian/symmake.cpp	2010-02-11 17:55:16.000000000 +0200
-+++ qt-everywhere-opensource-src-4.6.2/qmake/generators/symbian/symmake.cpp	2010-08-08 12:00:00.000000000 +0300
-@@ -1898,7 +1898,7 @@
+                 }
+diff --git a/qmake/generators/symbian/symmake.cpp b/qmake/generators/symbian/symmake.cpp
+index 84f0be4..94f049b 100644
+--- a/qmake/generators/symbian/symmake.cpp
++++ b/qmake/generators/symbian/symmake.cpp
+@@ -1942,7 +1942,7 @@ void SymbianMakefileGenerator::writeSisTargets(QTextStream &t)
  
      t << OK_SIS_TARGET ":" << endl;
  
--    QString pkgcommand = QString("\tcreatepackage.bat $(QT_SIS_OPTIONS) %1_template.%2 $(QT_SIS_TARGET) " \
-+    QString pkgcommand = QString("\tcreatepackage.pl $(QT_SIS_OPTIONS) %1_template.%2 $(QT_SIS_TARGET) " \
+-    QString pkgcommand = QString::fromLatin1("\tcreatepackage.bat $(QT_SIS_OPTIONS) %1_template.%2 $(QT_SIS_TARGET) " \
++    QString pkgcommand = QString::fromLatin1("\tcreatepackage.pl $(QT_SIS_OPTIONS) %1_template.%2 $(QT_SIS_TARGET) " \
                                   "$(QT_SIS_CERTIFICATE) $(QT_SIS_KEY) $(QT_SIS_PASSPHRASE)")
                            .arg(fixedTarget)
                            .arg("pkg");
-@@ -1924,7 +1924,7 @@
+@@ -1992,7 +1992,7 @@ void SymbianMakefileGenerator::writeSisTargets(QTextStream &t)
  
      t << OK_INSTALLER_SIS_TARGET ": " << endl;
  
--    pkgcommand = QString("\tcreatepackage.bat $(QT_SIS_OPTIONS) %1_installer.%2 - " \
-+    pkgcommand = QString("\tcreatepackage.pl $(QT_SIS_OPTIONS) %1_installer.%2 - " \
+-    pkgcommand = QString::fromLatin1("\tcreatepackage.bat $(QT_SIS_OPTIONS) %1_installer.%2 - " \
++    pkgcommand = QString::fromLatin1("\tcreatepackage.pl $(QT_SIS_OPTIONS) %1_installer.%2 - " \
                           "$(QT_SIS_CERTIFICATE) $(QT_SIS_KEY) $(QT_SIS_PASSPHRASE)")
                    .arg(fixedTarget)
                    .arg("pkg");
-diff -ur qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/symbian/symmake_abld.cpp qt-everywhere-opensource-src-4.6.2/qmake/generators/symbian/symmake_abld.cpp
---- qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/symbian/symmake_abld.cpp	2010-02-11 17:55:16.000000000 +0200
-+++ qt-everywhere-opensource-src-4.6.2/qmake/generators/symbian/symmake_abld.cpp	2010-08-08 11:46:06.000000000 +0300
-@@ -195,16 +195,16 @@
-     t << "DEL_FILE          = " << var("QMAKE_DEL_FILE") << endl;
-     t << "DEL_DIR           = " << var("QMAKE_DEL_DIR") << endl;
+diff --git a/qmake/generators/symbian/symmake_abld.cpp b/qmake/generators/symbian/symmake_abld.cpp
+index 70264a5..5c7332f 100644
+--- a/qmake/generators/symbian/symmake_abld.cpp
++++ b/qmake/generators/symbian/symmake_abld.cpp
+@@ -206,16 +206,16 @@ void SymbianAbldMakefileGenerator::writeWrapperMakefile(QFile& wrapperFile, bool
      t << "MOVE              = " << var("QMAKE_MOVE") << endl;
+     t << "CHK_DIR_EXISTS    = " << var("QMAKE_CHK_DIR_EXISTS") << endl;
+     t << "MKDIR             = " << var("QMAKE_MKDIR") << endl;
 -    t << "XCOPY             = xcopy /d /f /h /r /y /i" << endl;
 -    t << "ABLD              = ABLD.BAT" << endl;
 +    t << "XCOPY             = cp -R" << endl;
@@ -64,7 +67,7 @@ diff -ur qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/symbian/symmak
      t << "endif" << endl;
      t << endl;
      t << "DEFINES" << '\t' << " = "
-@@ -304,8 +304,8 @@
+@@ -315,8 +315,8 @@ void SymbianAbldMakefileGenerator::writeWrapperMakefile(QFile& wrapperFile, bool
                  if (values.at(i).endsWith("/" QT_EXTRA_INCLUDE_DIR)) {
                      QString fixedValue(QDir::toNativeSeparators(values.at(i)));
                      dirsToClean << fixedValue;
@@ -75,7 +78,7 @@ diff -ur qt-everywhere-opensource-src-4.6.2-orig/qmake/generators/symbian/symmak
                  }
              }
          }
-@@ -451,7 +451,6 @@
+@@ -477,7 +477,6 @@ void SymbianAbldMakefileGenerator::writeStoreBuildTarget(QTextStream &t)
      t << "\t@echo #  Version     :  >> " MAKE_CACHE_NAME << endl;
      t << "\t@echo # >> " MAKE_CACHE_NAME << endl;
      t << "\t@echo # ============================================================================== >> " MAKE_CACHE_NAME <<  endl;
