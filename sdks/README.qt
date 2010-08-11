@@ -27,11 +27,13 @@ http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.3.tar.gz).
 
 First install the Qt SDK:
 
-./install_qt qt-symbian-opensource-4.6.3.exe ~/symbian-sdks/qt_4.6.3 ~/symbian-sdks/s60_31
+./install_qt qt-symbian-opensource-4.6.3.exe -qt ~/symbian-sdks/qt_4.6.3 -sdk ~/symbian-sdks/s60_31
 
 This installs the Qt library into ~/symbian-sdks/qt_4.6.3 and adds the
 link libraries and other needed files into the S60 SDK at
-~/symbian-sdks/s60_31.
+~/symbian-sdks/s60_31. You can install it into more than one SDK if you want
+to (or to none, too), and you can omit the -qt parameter if you already
+have the Qt part installed and just want to add it to another SDK.
 
 Then build the local Qt build tools, in the gnupoc-package/tools directory:
 
