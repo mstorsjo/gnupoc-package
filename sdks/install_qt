@@ -1,16 +1,37 @@
 #!/bin/sh
 
-if test $# != 3 -o $0 != "./install_qt"; then
-  echo "Usage: ./install_qt <path-to-qt-exe> <target-qt-dir> <target-sdk-dir>"
-  echo " e.g.: ./install_qt qt-symbian-opensource-4.6.3.exe ~/symbian-sdks/qt ~/symbian-sdks/s60_31"
+if test $# -lt 3 -o $0 != "./install_qt"; then
+  echo "Usage: ./install_qt <path-to-qt-exe> [-qt <target-qt-dir>] [-sdk <target-sdk-dir>] [-sdk <another-sdk-dir>]"
+  echo " e.g.: ./install_qt qt-symbian-opensource-4.6.3.exe -qt ~/symbian-sdks/qt -sdk ~/symbian-sdks/s60_31"
   exit 1
 fi
 
 SRC=$1
-QTDEST=`echo $2 | sed s:/\$::`
-SDKDEST=`echo $3 | sed s:/\$::`
+shift
 
-mkdir -p $QTDEST
+QTDIR=""
+
+while [ $# -gt 1 ]; do
+	if [ "$1" = "-qt" ]; then
+		QTDIR=$2
+		shift 2
+	else if [ "$1" = "-sdk" ]; then
+		SDKS="$SDKS $2"
+		shift 2
+	else
+		echo Unknown parameter $1
+		exit 1
+	fi; fi
+done
+if [ $# -gt 0 ]; then
+	echo Unknown parameter $1
+	exit 1
+fi
+
+QTDEST=`echo $QTDIR | sed s:/\$::`
+SDKS=`echo $SDKS | sed s:/\$:: | sed 's:/ : :'`
+
+if [ "$QTDEST" != "" ]; then mkdir -p $QTDEST; fi
 
 export PATH=7z:$PATH
 # 7z must find the path to 7z.so
@@ -33,11 +54,8 @@ $P7ZIP x -y -oqt_temp $SRC
 ./fixdso qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/armv5/lib
 mkdir -p qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/armv5/urel
 cp qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/armv5/udeb/* qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/armv5/urel
-./mergedir qt_temp/\\\\\$OUTDIR/epoc32/epoc32 $SDKDEST/epoc32
-mv qt_temp/\\\\\$OUTDIR/bin/* $QTDEST
-cat qt-mkspecs.patch | (cd $QTDEST && patch -p0)
-./dos2unix $QTDEST/bin/createpackage.pl
-cat qt-createpackage.patch | (cd $QTDEST/bin && patch -p0)
+for sdk in $SDKS; do ./mergedir -copy qt_temp/\\\\\$OUTDIR/epoc32/epoc32 \$sdk/epoc32; done
+if [ "$QTDEST" != "" ]; then ./mergedir qt_temp/\\\\\$OUTDIR/bin $QTDEST; cat qt-mkspecs.patch | (cd $QTDEST && patch -p0); ./dos2unix $QTDEST/bin/createpackage.pl; cat qt-createpackage.patch | (cd $QTDEST/bin && patch -p0); fi
 rm -rf qt_temp
 
 __END
