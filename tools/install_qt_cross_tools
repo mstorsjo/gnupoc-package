@@ -2,7 +2,7 @@
 
 if [ $# != 2 -o $0 != "./install_qt_cross_tools" ]; then
   echo "Usage: ./install_qt_cross_tools <path-to-qt-tarball> <qt-target-dir>"
-  echo " e.g.: ./install_qt_cross_tools qt-everywhere-opensource-src-4.6.2.tar.gz ~/symbian-sdks/qt_4.6.2"
+  echo " e.g.: ./install_qt_cross_tools qt-everywhere-opensource-src-4.6.3.tar.gz ~/symbian-sdks/qt_4.6.3"
   exit 1
 fi
 
