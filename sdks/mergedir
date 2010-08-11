@@ -2,9 +2,14 @@
 
 use strict;
 
+my $copy = 0;
+
 sub renameWrap($$) {
   my $src = shift;
   my $dest = shift;
+  if ($copy) {
+      return system("cp -R '$src' '$dest'") == 0;
+  }
   rename($src, $dest) && return 1;
   return system("mv '$src' '$dest'") == 0;
 }
@@ -39,5 +44,11 @@ sub mergedir($$) {
   return 1;
 }
 
-die("Usage: mergedir source target\n") if(@ARGV != 2);
+foreach my $arg (@ARGV) {
+	if ($arg eq "-copy") {
+		$copy = 1;
+	}
+}
+@ARGV = grep { $_ ne "-copy" } @ARGV;
+die("Usage: mergedir [-copy] source target\n") if(@ARGV != 2);
 mergedir($ARGV[0], $ARGV[1]);
