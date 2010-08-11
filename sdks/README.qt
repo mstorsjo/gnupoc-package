@@ -1,0 +1,66 @@
+Installation of Qt SDKs for Symbian
+-----------------------------------
+
+Start by installing the base SDK and toolchain you want to use (see
+README and ../tools/README), S60 3.1 and newer SDKs are supported.
+
+On the S60 3.x SDKs, first install the Open C/C++ plugin on top of
+the SDK.
+The plugin can (currently) be downloaded from:
+http://www.forum.nokia.com/info/sw.nokia.com/id/91d89929-fb8c-4d66-bea0-227e42df9053/Open_C_SDK_Plug-In.html
+
+Then install it:
+
+./install_openc_16_s60 s60_open_c_cpp_plug_in_v1_6_en.zip ~/symbian-sdks/s60_31
+
+Then download the Qt SDK for symbian you want to use - currently, the
+4.6.3 version is tested, newer ones may or may not work without further
+tweaking.
+
+Download "Qt libraries for Symbian" from http://qt.nokia.com/downloads,
+or get http://get.qt.nokia.com/qt/source/qt-symbian-opensource-4.6.3.exe.
+
+Additionally, some Qt build tools (qmake, moc, uic, rcc) need to be built
+locally, get the normal source package ("Qt libraries for Linux/X11" at
+http://qt.nokia.com/downloads or
+http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.3.tar.gz).
+
+First install the Qt SDK:
+
+./install_qt qt-symbian-opensource-4.6.3.exe ~/symbian-sdks/qt_4.6.3 ~/symbian-sdks/s60_31
+
+This installs the Qt library into ~/symbian-sdks/qt_4.6.3 and adds the
+link libraries and other needed files into the S60 SDK at
+~/symbian-sdks/s60_31.
+
+Then build the local Qt build tools, in the gnupoc-package/tools directory:
+
+./install_qt_cross_tools qt-everywhere-opensource-src-4.6.3.tar.gz ~/symbian-sdks/qt_4.6.3
+
+This tries to do a minimal build of the necessary parts of Qt, without
+needlessly building too much of the rest of it.
+
+
+Then, to build using this SDK, first set up the PATH and EPOCROOT environment
+variables as for normal use of the Symbian SDKs, as described in README.
+Add the qt bin directory to the path, like this:
+
+export PATH=~/symbian-sdks/qt_4.6.3/bin:$PATH
+
+Then to build, just enter the qt project directory and build as normally
+when using Qt for Symbian, e.g.:
+
+qmake
+make release-gcce
+make sis
+
+See more instructions on how to use Qt for Symbian at
+http://doc.qt.nokia.com/4.6/symbian-with-qt-introduction.html. The make
+targets with tighter system integration, such as runonphone, don't work
+at the moment. And for the installer_sis target, the required
+smartinstaller.sis file doesn't seem to be included in
+qt-symbian-opensource-4.6.3.exe, but it can be downloaded separately from
+http://wiki.forum.nokia.com/index.php/Nokia_Smart_Installer_for_Symbian.
+Place smartinstaller.sis in the qt directory (~/symbian-sdks/qt_4.6.3
+in the example above), and make installer_sis should work.
+
