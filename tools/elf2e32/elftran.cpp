@@ -263,8 +263,10 @@ int main(int argc, char *argv[]) {
 		header.toolsVersion = 2 | (1<<8) | (564<<16);
 	else if (epocVersion <= EPOC_VERSION_9_3)
 		header.toolsVersion = 2 | (1<<8) | (576<<16);
-	else
+	else if (epocVersion <= EPOC_VERSION_9_4)
 		header.toolsVersion = 2 | (1<<8) | (596<<16);
+	else
+		header.toolsVersion = 2 | (2<<8) | (  0<<16);
 	uint64_t timestamp = uint64_t(time(NULL))*1000000 + 0xDCDDB3E5D20000LL;
 	header.timeLo = (timestamp >> 0) & 0xffffffff;
 	header.timeHi = (timestamp >> 32) & 0xffffffff;
