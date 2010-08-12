@@ -43,10 +43,10 @@ index 84f0be4..94f049b 100644
                    .arg(fixedTarget)
                    .arg("pkg");
 diff --git a/qmake/generators/symbian/symmake_abld.cpp b/qmake/generators/symbian/symmake_abld.cpp
-index 70264a5..e80c789 100644
+index 70264a5..79d54dc 100644
 --- a/qmake/generators/symbian/symmake_abld.cpp
 +++ b/qmake/generators/symbian/symmake_abld.cpp
-@@ -206,16 +206,16 @@ void SymbianAbldMakefileGenerator::writeWrapperMakefile(QFile& wrapperFile, bool
+@@ -206,16 +206,17 @@ void SymbianAbldMakefileGenerator::writeWrapperMakefile(QFile& wrapperFile, bool
      t << "MOVE              = " << var("QMAKE_MOVE") << endl;
      t << "CHK_DIR_EXISTS    = " << var("QMAKE_CHK_DIR_EXISTS") << endl;
      t << "MKDIR             = " << var("QMAKE_MKDIR") << endl;
@@ -58,6 +58,7 @@ index 70264a5..e80c789 100644
      t << "RELEASE_PLATFORMS = " << releasePlatforms.join(" ") << endl;
      t << "MAKE              = make" << endl;
      t << endl;
++    t << "EPOCROOT:=$(subst \\,/,$(EPOCROOT))" << endl;
      t << "ifeq (WINS,$(findstring WINS, $(PLATFORM)))" << endl;
 -    t << "ZDIR=$(EPOCROOT)epoc32\\release\\$(PLATFORM)\\$(CFG)\\Z" << endl;
 +    t << "ZDIR=$(EPOCROOT)epoc32/release/$(PLATFORM)/$(CFG)/z" << endl;
@@ -67,7 +68,7 @@ index 70264a5..e80c789 100644
      t << "endif" << endl;
      t << endl;
      t << "DEFINES" << '\t' << " = "
-@@ -315,8 +315,8 @@ void SymbianAbldMakefileGenerator::writeWrapperMakefile(QFile& wrapperFile, bool
+@@ -315,8 +316,8 @@ void SymbianAbldMakefileGenerator::writeWrapperMakefile(QFile& wrapperFile, bool
                  if (values.at(i).endsWith("/" QT_EXTRA_INCLUDE_DIR)) {
                      QString fixedValue(QDir::toNativeSeparators(values.at(i)));
                      dirsToClean << fixedValue;
@@ -78,7 +79,7 @@ index 70264a5..e80c789 100644
                  }
              }
          }
-@@ -468,16 +468,15 @@ bool SymbianAbldMakefileGenerator::writeDeploymentTargets(QTextStream &t, bool i
+@@ -468,16 +469,15 @@ bool SymbianAbldMakefileGenerator::writeDeploymentTargets(QTextStream &t, bool i
  void SymbianAbldMakefileGenerator::writeStoreBuildTarget(QTextStream &t)
  {
      t << STORE_BUILD_TARGET ":" << endl;
