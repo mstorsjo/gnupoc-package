@@ -8,7 +8,7 @@ To compile it from source on OS X:
 tar -jxvf p7zip_9.13_src_all.tar.bz2
 cd p7zip_9.13
 patch -p1 < ../p7zip.patch
-cp makefile.macosx makefile.machine
+cp makefile.macosx_32bits makefile.machine
 make 7z
 cp bin/7z ..
 cp bin/7z.so ..
