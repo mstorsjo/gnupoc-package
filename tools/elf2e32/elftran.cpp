@@ -375,6 +375,30 @@ int main(int argc, char *argv[]) {
 			// FIXME?
 		} else if (!strcmp(argv[i], "-debuggable")) {
 			header.flags |= KImageDebuggable;
+		} else if (!strcmp(argv[i], "-codepaging")) {
+			if (!strcmp(argv[i + 1], "paged")) {
+				header.flags |= KImagePaged;
+			} else if (!strcmp(argv[i + 1], "unpaged")) {
+				header.flags |= KImageUnpaged;
+			} else if (!strcmp(argv[i + 1], "default")) {
+				header.flags &= ~(KImageUnpaged | KImagePaged);
+			} else {
+				fprintf(stderr, "Unsupported codepaging value %s\n", optarg);
+			}
+			i++;
+		} else if (!strcmp(argv[i], "-datapaging")) {
+			if (!strcmp(argv[i + 1], "paged")) {
+				header.flags |= KImageDataPaged;
+			} else if (!strcmp(argv[i + 1], "unpaged")) {
+				header.flags |= KImageDataUnpaged;
+			} else if (!strcmp(argv[i + 1], "default")) {
+				header.flags &= ~(KImageDataUnpaged | KImageDataPaged);
+			} else {
+				fprintf(stderr, "Unsupported codepaging value %s\n", optarg);
+			}
+			i++;
+		} else if (!strcmp(argv[i], "-smpsafe")) {
+			header.flags |= KImageSMPSafe;
 		} else {
 			if (argv[i][0] == '-') {
 				fprintf(stderr, "Unhandled parameter %s?\n", argv[i]);
