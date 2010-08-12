@@ -121,6 +121,9 @@ void getCapabilities(char* str, uint32_t* caps);
 #define KImageUnpaged		0x00000100
 #define KImagePaged		0x00000200
 #define KImageDebuggable	0x00000800
+#define KImageDataUnpaged	0x00001000
+#define KImageDataPaged		0x00002000
+#define KImageSMPSafe		0x00004000
 #define EPriorityForeground	350
 #define ECpuArmV4		0x2000
 #define ECpuArmV5		0x2001
