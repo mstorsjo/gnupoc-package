@@ -288,6 +288,8 @@ int main(int argc, char *argv[]) {
 		{ "version", 1, NULL, 0 },
 		{ "callentry", 0, NULL, 0 },
 		{ "fpu", 1, NULL, 0 },
+		{ "codepaging", 1, NULL, 0 },
+		{ "datapaging", 1, NULL, 0 },
 		{ "paged", 0, NULL, 0 },
 		{ "unpaged", 0, NULL, 0 },
 		{ "defaultpaged", 0, NULL, 0 },
@@ -295,6 +297,7 @@ int main(int argc, char *argv[]) {
 		{ "customdlltarget", 0, NULL, 0 },
 		{ "namedlookup", 0, NULL, 0 },
 		{ "debuggable", 0, NULL, 0 },
+		{ "smpsafe", 0, NULL, 0 },
 		{ NULL, 0, NULL, 0 }
 	};
 
@@ -311,8 +314,10 @@ int main(int argc, char *argv[]) {
 	header.compressionType = KUidCompressionDeflate;
 	if (epocVersion <= EPOC_VERSION_9_3)
 		header.toolsVersion = 2 | (0<<8) | (505<<16); // S60 3.0 - 3.2
-	else
+	else if (epocVersion <= EPOC_VERSION_9_4)
 		header.toolsVersion = 2 | (0<<8) | (512<<16); // S60 5.0 version
+	else
+		header.toolsVersion = 2 | (1<<8) | ( 15<<16); // Symbian^3 version
 	uint64_t timestamp = uint64_t(time(NULL))*1000000 + 0xDCDDB3E5D20000LL;
 	header.timeLo = (timestamp >> 0) & 0xffffffff;
 	header.timeHi = (timestamp >> 32) & 0xffffffff;
@@ -447,6 +452,28 @@ int main(int argc, char *argv[]) {
 				header.flags |= KImageUnpaged;
 			} else if (!strcmp(name, "defaultpaged")) {
 				header.flags &= ~(KImageUnpaged | KImagePaged);
+			} else if (!strcmp(name, "codepaging")) {
+				if (!strcmp(optarg, "paged")) {
+					header.flags |= KImagePaged;
+				} else if (!strcmp(optarg, "unpaged")) {
+					header.flags |= KImageUnpaged;
+				} else if (!strcmp(optarg, "default")) {
+					header.flags &= ~(KImageUnpaged | KImagePaged);
+				} else {
+					fprintf(stderr, "Unsupported codepaging value %s\n", optarg);
+				}
+			} else if (!strcmp(name, "datapaging")) {
+				if (!strcmp(optarg, "paged")) {
+					header.flags |= KImageDataPaged;
+				} else if (!strcmp(optarg, "unpaged")) {
+					header.flags |= KImageDataUnpaged;
+				} else if (!strcmp(optarg, "default")) {
+					header.flags &= ~(KImageDataUnpaged | KImageDataPaged);
+				} else {
+					fprintf(stderr, "Unsupported datapaging value %s\n", optarg);
+				}
+			} else if (!strcmp(name, "smpsafe")) {
+				header.flags |= KImageSMPSafe;
 			} else {
 				fprintf(stderr, "*** Unhandled parameter %s\n", name);
 			}
