@@ -1,0 +1,47 @@
+diff --git a/bin/createpackage.pl b/bin/createpackage.pl
+index 7f4375f..65db28d 100755
+--- a/bin/createpackage.pl
++++ b/bin/createpackage.pl
+@@ -163,9 +163,9 @@ my $stub_sis_name = $sisoutputbasename."_stub.sis";
+ my $scriptpath = dirname(__FILE__);
+ my $certtext = $certificate;
+ my $certpath = $scriptpath;
+-$certpath =~ s-^(.*[^\\])$-$1\\-o;          # ensure path ends with a backslash
+-$certpath =~ s-/-\\-go;                     # for those working with UNIX shells
+-$certpath =~ s-bin\\$-src\\s60installs\\-;  # certificates are one step up in hierarcy
++$certpath =~ s-^(.*[^\/])$-$1\/-o;          # ensure path ends with a backslash
++$certpath =~ s-\\-/-go;                     # for those working with UNIX shells
++$certpath =~ s-bin/$-src/s60installs/-;     # certificates are one step up in hierarcy
+ 
+ # Check some pre-conditions and print error messages if needed.
+ unless (length($templatepkg)) {
+diff --git a/mkspecs/common/symbian/symbian.conf b/mkspecs/common/symbian/symbian.conf
+index ba31116..f5161c8 100644
+--- a/mkspecs/common/symbian/symbian.conf
++++ b/mkspecs/common/symbian/symbian.conf
+@@ -100,9 +100,9 @@ contains(QMAKE_HOST.os,Windows) {
+     QMAKE_CHK_DIR_EXISTS = test -d
+ }
+ 
+-QMAKE_MOC		= $$[QT_INSTALL_BINS]$${DIR_SEPARATOR}moc.exe
+-QMAKE_UIC		= $$[QT_INSTALL_BINS]$${DIR_SEPARATOR}uic.exe
+-QMAKE_IDC		= $$[QT_INSTALL_BINS]$${DIR_SEPARATOR}idc.exe
++QMAKE_MOC		= moc
++QMAKE_UIC		= uic
++QMAKE_IDC		= idc
+ 
+ QMAKE_IDL		= midl
+ QMAKE_LIB		= ar -ru
+diff --git a/src/gui/s60framework/qs60maindocument.h b/src/gui/s60framework/qs60maindocument.h
+index 79eadd7..90d69a4 100644
+--- a/src/gui/s60framework/qs60maindocument.h
++++ b/src/gui/s60framework/qs60maindocument.h
+@@ -46,7 +46,7 @@
+ 
+ #ifdef Q_WS_S60
+ 
+-#include <AknDoc.h>
++#include <akndoc.h>
+ 
+ class CEikApplication;
+ 

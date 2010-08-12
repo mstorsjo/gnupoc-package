@@ -57,9 +57,10 @@ mkdir -p qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/gcce/urel
 cp qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/armv5/udeb/* qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/armv5/urel
 cp qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/armv5/udeb/qtmain.lib qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/gcce/urel
 for sdk in $SDKS; do ./mergedir -copy qt_temp/\\\\\$OUTDIR/epoc32/epoc32 \$sdk/epoc32; done
-cat qt-mkspecs.patch | (cd qt_temp/\\\\\$OUTDIR/bin && patch -p0)
 ./dos2unix qt_temp/\\\\\$OUTDIR/bin/bin/createpackage.pl
-cat qt-createpackage.patch | (cd qt_temp/\\\\\$OUTDIR/bin/bin && patch -p0)
+./dos2unix qt_temp/\\\\\$OUTDIR/bin/mkspecs/common/symbian/symbian.conf
+./dos2unix qt_temp/\\\\\$OUTDIR/bin/src/gui/s60framework/qs60maindocument.h
+cat qt.patch | (cd qt_temp/\\\\\$OUTDIR/bin && patch -p1)
 chmod a+x qt_temp/\\\\\$OUTDIR/bin/bin/createpackage.pl
 if [ "$QTDEST" != "" ]; then ./mergedir qt_temp/\\\\\$OUTDIR/bin $QTDEST; fi
 rm -rf qt_temp
