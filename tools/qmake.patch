@@ -114,3 +114,24 @@ index 70264a5..79d54dc 100644
      t << "\t@echo QT_SIS_TARGET ?= $(QT_SIS_TARGET) >> " MAKE_CACHE_NAME << endl;
      t << endl;
  
+diff --git a/qmake/project.cpp b/qmake/project.cpp
+index 5a87dd7..17e561a 100644
+--- a/qmake/project.cpp
++++ b/qmake/project.cpp
+@@ -593,9 +593,13 @@ QStringList qmake_feature_paths(QMakeProperty *prop=0)
+         const QString base_concat = QDir::separator() + QString("features");
+         switch(Option::target_mode) {
+         case Option::TARG_MACX_MODE:                     //also a unix
+-            concat << base_concat + QDir::separator() + "mac";
+-            concat << base_concat + QDir::separator() + "macx";
+-            concat << base_concat + QDir::separator() + "unix";
++            if (isForSymbian())
++                concat << base_concat + QDir::separator() + "symbian";
++            else {
++                concat << base_concat + QDir::separator() + "mac";
++                concat << base_concat + QDir::separator() + "macx";
++                concat << base_concat + QDir::separator() + "unix";
++            }
+             break;
+         case Option::TARG_UNIX_MODE:
+             {
