@@ -58,6 +58,11 @@ void detectVersion() {
 		epocVersion = EPOC_VERSION_9_3;
 		return;
 	}
+	sprintf(buf, "%s/epoc32/tools/checklib.exe", epocroot);
+	if (findCaseInsensitive(buf)) {
+		epocVersion = EPOC_VERSION_S_3;
+		return;
+	}
 	sprintf(buf, "%s/epoc32/include/variant/symbian_os.hrh", epocroot);
 	if (findCaseInsensitive(buf)) {
 		epocVersion = EPOC_VERSION_9_4;

@@ -40,6 +40,7 @@ extern int epocVersion;
 #define EPOC_VERSION_9_2 MAKE_VERSION(9, 2)
 #define EPOC_VERSION_9_3 MAKE_VERSION(9, 3)
 #define EPOC_VERSION_9_4 MAKE_VERSION(9, 4)
+#define EPOC_VERSION_S_3 MAKE_VERSION(9, 5)
 
 void detectVersion();
 
