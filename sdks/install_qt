@@ -60,9 +60,16 @@ rm -rf qt_temp
 
 __END
 
-cat > $QTDEST/bin/qt.conf <<EOF
+if [ "$QTDEST" != "" ]; then
+	cat > $QTDEST/bin/qt.conf <<EOF
 [Paths]
 Prefix = $QTDEST
 EOF
+
+	cat > $QTDEST/.qmake.cache <<EOF
+QT_BUILD_TREE   = $QTDEST
+QT_SOURCE_TREE  = $QTDEST
+EOF
+fi
 
 exit 0
