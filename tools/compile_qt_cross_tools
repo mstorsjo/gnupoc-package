@@ -1,0 +1,36 @@
+#!/bin/sh
+
+if [ $# != 1 ]; then
+  echo "Usage: ./compile_qt_cross_tools <qt-dir>"
+  echo " e.g.: ./compile_qt_cross_tools ~/symbian-sdks/qt_4.6.3"
+  exit 1
+fi
+
+DIR=$1
+cd $DIR || exit 1
+
+MAKE=make
+if [ "`which gmake`" != "" ]; then
+        MAKE=gmake
+fi
+
+while read a
+do
+  echo "$a"
+  sh -c "$a"
+  if test $? != 0; then
+    echo "Unexpected error: aborting."
+    exit 1
+  fi
+done << __END
+
+cp .qmake.cache .qmake.cache.orig
+cp src/corelib/global/qconfig.h src/corelib/global/qconfig.h.orig
+echo yes | (./configure -opensource -fast)
+$MAKE sub-tools-bootstrap sub-moc sub-rcc sub-uic
+cp .qmake.cache.orig .qmake.cache
+rm -f src/corelib/global/qconfig.h
+cp src/corelib/global/qconfig.h.orig src/corelib/global/qconfig.h
+
+__END
+
