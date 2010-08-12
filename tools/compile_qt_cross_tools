@@ -20,6 +20,9 @@ do
   sh -c "$a"
   if test $? != 0; then
     echo "Unexpected error: aborting."
+    cp .qmake.cache.orig .qmake.cache
+    rm -f src/corelib/global/qconfig.h
+    cp src/corelib/global/qconfig.h.orig src/corelib/global/qconfig.h
     exit 1
   fi
 done << __END
