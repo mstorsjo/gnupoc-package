@@ -14,18 +14,13 @@ Then install it:
 ./install_openc_16_s60 s60_open_c_cpp_plug_in_v1_6_en.zip ~/symbian-sdks/s60_31
 
 Then download the Qt SDK for symbian you want to use - currently, the
-4.6.3 version is tested, newer ones may or may not work without further
+4.6.3 version is tested, newer ones probably won't work without further
 tweaking.
 
 Download "Qt libraries for Symbian" from http://qt.nokia.com/downloads,
 or get http://get.qt.nokia.com/qt/source/qt-symbian-opensource-4.6.3.exe.
 
-Additionally, some Qt build tools (qmake, moc, uic, rcc) need to be built
-locally, get the normal source package ("Qt libraries for Linux/X11" at
-http://qt.nokia.com/downloads or
-http://get.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.6.3.tar.gz).
-
-First install the Qt SDK:
+Install the Qt SDK:
 
 ./install_qt qt-symbian-opensource-4.6.3.exe -qt ~/symbian-sdks/qt_4.6.3 -sdk ~/symbian-sdks/s60_31
 
@@ -35,12 +30,8 @@ link libraries and other needed files into the S60 SDK at
 to (or to none, too), and you can omit the -qt parameter if you already
 have the Qt part installed and just want to add it to another SDK.
 
-Then build the local Qt build tools, in the gnupoc-package/tools directory:
-
-./install_qt_cross_tools qt-everywhere-opensource-src-4.6.3.tar.gz ~/symbian-sdks/qt_4.6.3
-
-This tries to do a minimal build of the necessary parts of Qt, without
-needlessly building too much of the rest of it.
+This also builds native Qt build tools (qmake, moc, uic, rcc) from the
+extracted code.
 
 
 Then, to build using this SDK, first set up the PATH and EPOCROOT environment
