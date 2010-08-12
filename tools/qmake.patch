@@ -21,9 +21,18 @@ index ad865a2..527bd0d 100644
                          t << valGlue(cleans, "\n\t" + del_statement, "\n\t" + del_statement, "");
                  }
 diff --git a/qmake/generators/symbian/symmake.cpp b/qmake/generators/symbian/symmake.cpp
-index 84f0be4..94f049b 100644
+index 84f0be4..8ac810a 100644
 --- a/qmake/generators/symbian/symmake.cpp
 +++ b/qmake/generators/symbian/symmake.cpp
+@@ -468,7 +468,7 @@ void SymbianMakefileGenerator::generatePkgFile(const QString &iconFile, Deployme
+                 t << QString("\"%1epoc32/data/z%2\"    - \"!:%3\"")
+                      .arg(epocRoot())
+                      .arg(iconFile)
+-                     .arg(QDir::toNativeSeparators(iconFile)) << endl << endl;
++                     .arg(QString(iconFile).replace("/", "\\")) << endl << endl;
+             }
+         }
+     }
 @@ -1942,7 +1942,7 @@ void SymbianMakefileGenerator::writeSisTargets(QTextStream &t)
  
      t << OK_SIS_TARGET ":" << endl;
