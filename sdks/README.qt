@@ -36,9 +36,10 @@ extracted code.
 
 Then, to build using this SDK, first set up the PATH and EPOCROOT environment
 variables as for normal use of the Symbian SDKs, as described in README.
-Add the qt bin directory to the path, like this:
+Add the qt bin directory to the path, and set the default makespec:
 
 export PATH=~/symbian-sdks/qt_4.6.3/bin:$PATH
+export QMAKESPEC=symbian-abld
 
 Then to build, just enter the qt project directory and build as normally
 when using Qt for Symbian, e.g.:
