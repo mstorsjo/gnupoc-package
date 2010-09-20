@@ -11,7 +11,7 @@ http://www.forum.nokia.com/info/sw.nokia.com/id/91d89929-fb8c-4d66-bea0-227e42df
 
 Then install it:
 
-./install_openc_16_s60 s60_open_c_cpp_plug_in_v1_6_en.zip ~/symbian-sdks/s60_31
+./install_openc_175_s60 s60_open_c_cpp_plug_in_v1_7_en.zip ~/symbian-sdks/s60_31
 
 Then download the Qt SDK for symbian you want to use - currently, the
 4.6.3 version is tested, newer ones probably won't work without further
