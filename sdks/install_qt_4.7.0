@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 if test $# -lt 3 -o $0 != "./install_qt_4.7.0"; then
   echo "Usage: ./install_qt_4.7.0 <path-to-qt-exe> [-nocompile] [-qt <target-qt-dir>] [-sdk <target-sdk-dir>] [-sdk <another-sdk-dir>]"
   echo " e.g.: ./install_qt_4.7.0 qt-symbian-opensource-4.7.0-s60.exe -qt ~/symbian-sdks/qt -sdk ~/symbian-sdks/s60_31"
@@ -41,36 +43,27 @@ export PATH=7z:$PATH
 # 7z must find the path to 7z.so
 P7ZIP=`which 7z`
 
-while read a
-do
-  echo "$a"
-  sh -c "$a"
-  if test $? != 0; then
-    echo "Unexpected error: aborting."
-    exit 1
-  fi
-done << __END
-
+set -x
 
 ### Unzip
 mkdir -p qt_temp
 $P7ZIP x -y -oqt_temp $SRC
-mkdir -p qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/gcce/urel
-cp qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/armv5/urel/qtmain.lib qt_temp/\\\\\$OUTDIR/epoc32/epoc32/release/gcce/urel
-for sdk in $SDKS; do ./mergedir -copy qt_temp/\\\\\$OUTDIR/epoc32/epoc32 \$sdk/epoc32; done
-./dos2unix qt_temp/\\\\\$OUTDIR/bin/bin/createpackage.pl
-find qt_temp/\\\\\$OUTDIR/bin/mkspecs -type f | xargs -n 1 ./dos2unix
-cat qt-4.7.0.patch | (cd qt_temp/\\\\\$OUTDIR/bin && patch -p1)
-./dos2unix qt_temp/\\\\\$OUTDIR/bin/qmake/generators/symbian/symmake_abld.cpp
-cat ../tools/qmake-4.7.0.patch | (cd qt_temp/\\\\\$OUTDIR/bin && patch -p1)
-chmod a+x qt_temp/\\\\\$OUTDIR/bin/bin/createpackage.pl
-./dos2unix qt_temp/\\\\\$OUTDIR/bin/src/corelib/global/qglobal.h
-for i in qt_temp/\\\\\$OUTDIR/bin/config.tests/unix/*.test qt_temp/\\\\\$OUTDIR/bin/config.tests/x11/*.test qt_temp/\\\\\$OUTDIR/bin/config.tests/mac/*.test; do ./dos2unix \$i; chmod a+x \$i; done
-for i in configure config.tests/unix/makeabs config.tests/unix/padstring; do ./dos2unix qt_temp/\\\\\$OUTDIR/bin/\$i; chmod a+x qt_temp/\\\\\$OUTDIR/bin/\$i; done
-if [ "$QTDEST" != "" ]; then ./mergedir qt_temp/\\\\\$OUTDIR/bin $QTDEST; fi
+mkdir -p qt_temp/\$OUTDIR/epoc32/epoc32/release/gcce/urel
+cp qt_temp/\$OUTDIR/epoc32/epoc32/release/armv5/urel/qtmain.lib qt_temp/\$OUTDIR/epoc32/epoc32/release/gcce/urel
+for sdk in $SDKS; do ./mergedir -copy qt_temp/\$OUTDIR/epoc32/epoc32 \$sdk/epoc32; done
+./dos2unix qt_temp/\$OUTDIR/bin/bin/createpackage.pl
+find qt_temp/\$OUTDIR/bin/mkspecs -type f | xargs -n 1 ./dos2unix
+cat qt-4.7.0.patch | (cd qt_temp/\$OUTDIR/bin && patch -p1)
+./dos2unix qt_temp/\$OUTDIR/bin/qmake/generators/symbian/symmake_abld.cpp
+cat ../tools/qmake-4.7.0.patch | (cd qt_temp/\$OUTDIR/bin && patch -p1)
+chmod a+x qt_temp/\$OUTDIR/bin/bin/createpackage.pl
+./dos2unix qt_temp/\$OUTDIR/bin/src/corelib/global/qglobal.h
+for i in qt_temp/\$OUTDIR/bin/config.tests/unix/*.test qt_temp/\$OUTDIR/bin/config.tests/x11/*.test qt_temp/\$OUTDIR/bin/config.tests/mac/*.test; do ./dos2unix $i; chmod a+x $i; done
+for i in configure config.tests/unix/makeabs config.tests/unix/padstring; do ./dos2unix qt_temp/\$OUTDIR/bin/$i; chmod a+x qt_temp/\$OUTDIR/bin/$i; done
+if [ "$QTDEST" != "" ]; then ./mergedir qt_temp/\$OUTDIR/bin $QTDEST; fi
 rm -rf qt_temp
 
-__END
+set +x
 
 if [ "$QTDEST" != "" ]; then
 	cat > $QTDEST/bin/qt.conf <<EOF
