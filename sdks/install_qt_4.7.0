@@ -50,7 +50,7 @@ mkdir -p qt_temp
 $P7ZIP x -y -oqt_temp $SRC
 mkdir -p qt_temp/\$OUTDIR/epoc32/epoc32/release/gcce/urel
 cp qt_temp/\$OUTDIR/epoc32/epoc32/release/armv5/urel/qtmain.lib qt_temp/\$OUTDIR/epoc32/epoc32/release/gcce/urel
-for sdk in $SDKS; do ./mergedir -copy qt_temp/\$OUTDIR/epoc32/epoc32 \$sdk/epoc32; done
+for sdk in $SDKS; do ./mergedir -copy qt_temp/\$OUTDIR/epoc32/epoc32 $sdk/epoc32; done
 ./dos2unix qt_temp/\$OUTDIR/bin/bin/createpackage.pl
 find qt_temp/\$OUTDIR/bin/mkspecs -type f | xargs -n 1 ./dos2unix
 cat qt-4.7.0.patch | (cd qt_temp/\$OUTDIR/bin && patch -p1)
