@@ -1,8 +1,8 @@
 #!/bin/sh
 
-if test $# -lt 3 -o $0 != "./install_qt"; then
-  echo "Usage: ./install_qt <path-to-qt-exe> [-nocompile] [-qt <target-qt-dir>] [-sdk <target-sdk-dir>] [-sdk <another-sdk-dir>]"
-  echo " e.g.: ./install_qt qt-symbian-opensource-4.6.3.exe -qt ~/symbian-sdks/qt -sdk ~/symbian-sdks/s60_31"
+if test $# -lt 3 -o $0 != "./install_qt_4.6.3"; then
+  echo "Usage: ./install_qt_4.6.3 <path-to-qt-exe> [-nocompile] [-qt <target-qt-dir>] [-sdk <target-sdk-dir>] [-sdk <another-sdk-dir>]"
+  echo " e.g.: ./install_qt_4.6.3 qt-symbian-opensource-4.6.3.exe -qt ~/symbian-sdks/qt -sdk ~/symbian-sdks/s60_31"
   exit 1
 fi
 
@@ -61,12 +61,12 @@ for sdk in $SDKS; do ./mergedir -copy qt_temp/\\\\\$OUTDIR/epoc32/epoc32 \$sdk/e
 ./dos2unix qt_temp/\\\\\$OUTDIR/bin/bin/createpackage.pl
 ./dos2unix qt_temp/\\\\\$OUTDIR/bin/src/gui/s60framework/qs60maindocument.h
 find qt_temp/\\\\\$OUTDIR/bin/mkspecs -type f | xargs -n 1 ./dos2unix
-cat qt.patch | (cd qt_temp/\\\\\$OUTDIR/bin && patch -p1)
+cat qt-4.6.3.patch | (cd qt_temp/\\\\\$OUTDIR/bin && patch -p1)
 ./dos2unix qt_temp/\\\\\$OUTDIR/bin/qmake/project.cpp
 ./dos2unix qt_temp/\\\\\$OUTDIR/bin/qmake/generators/makefile.cpp
 ./dos2unix qt_temp/\\\\\$OUTDIR/bin/qmake/generators/symbian/symmake.cpp
 ./dos2unix qt_temp/\\\\\$OUTDIR/bin/qmake/generators/symbian/symmake_abld.cpp
-cat ../tools/qmake.patch | (cd qt_temp/\\\\\$OUTDIR/bin && patch -p1)
+cat ../tools/qmake-4.6.3.patch | (cd qt_temp/\\\\\$OUTDIR/bin && patch -p1)
 chmod a+x qt_temp/\\\\\$OUTDIR/bin/bin/createpackage.pl
 ./dos2unix qt_temp/\\\\\$OUTDIR/bin/src/corelib/global/qglobal.h
 for i in qt_temp/\\\\\$OUTDIR/bin/config.tests/unix/*.test qt_temp/\\\\\$OUTDIR/bin/config.tests/x11/*.test qt_temp/\\\\\$OUTDIR/bin/config.tests/mac/*.test; do ./dos2unix \$i; chmod a+x \$i; done

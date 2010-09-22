@@ -28,7 +28,7 @@ done << __END
 
 mkdir -p qt-build
 tar -zxvf $SRC -C qt-build
-cd qt-build/qt-* && patch -p1 < ../../qmake.patch
+cd qt-build/qt-* && patch -p1 < ../../qmake-4.6.3.patch
 rm -rf qt-build/qt-*/examples
 rm -rf qt-build/qt-*/demos
 echo yes | (cd qt-build/qt-* && ./configure -opensource -fast)
