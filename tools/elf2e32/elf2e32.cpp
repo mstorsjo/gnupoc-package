@@ -246,6 +246,16 @@ void parseDefFile(const char* filename, ExportList* exportList) {
 	fclose(in);
 }
 
+void parseNumber(const char* str, uint32_t* ptr) {
+	unsigned int val;
+	if (!strncmp(str, "0x", 2) || !strncmp(str, "0X", 2)) {
+		sscanf(str, "%x", &val);
+	} else {
+		sscanf(str, "%u", &val);
+	}
+	*ptr = val;
+}
+
 
 int main(int argc, char *argv[]) {
 	detectVersion();
@@ -367,15 +377,15 @@ int main(int argc, char *argv[]) {
 		case 0:
 			name = long_options[option_index].name;
 			if (!strcmp(name, "sid")) {
-				sscanf(optarg, "%x", &headerV.secureId);
+				parseNumber(optarg, &headerV.secureId);
 			} else if (!strcmp(name, "uid1")) {
-				sscanf(optarg, "%x", &header.uid1);
+				parseNumber(optarg, &header.uid1);
 			} else if (!strcmp(name, "uid2")) {
-				sscanf(optarg, "%x", &header.uid2);
+				parseNumber(optarg, &header.uid2);
 			} else if (!strcmp(name, "uid3")) {
-				sscanf(optarg, "%x", &header.uid3);
+				parseNumber(optarg, &header.uid3);
 			} else if (!strcmp(name, "vid")) {
-				sscanf(optarg, "%x", &headerV.vendorId);
+				parseNumber(optarg, &headerV.vendorId);
 			} else if (!strcmp(name, "capability")) {
 				getCapabilities(optarg, headerV.caps);
 			} else if (!strcmp(name, "fpu")) {
@@ -405,9 +415,20 @@ int main(int argc, char *argv[]) {
 			} else if (!strcmp(name, "libpath")) {
 				libpath = optarg;
 			} else if (!strcmp(name, "heap")) {
-				sscanf(optarg, "%x,%x", (uint32_t*) &header.heapSizeMin, (uint32_t*) &header.heapSizeMax);
+				char buf1[10];
+				char buf2[10];
+				strncpy(buf1, optarg, sizeof(buf1));
+				buf1[sizeof(buf1) - 1] = '\0';
+				char* ptr = strchr(buf1, ',');
+				if (ptr) {
+					*ptr = '\0';
+					strncpy(buf2, ptr + 1, sizeof(buf2));
+					buf2[sizeof(buf2) - 1] = '\0';
+					parseNumber(buf2, (uint32_t*) &header.heapSizeMax);
+				}
+				parseNumber(buf1, (uint32_t*) &header.heapSizeMin);
 			} else if (!strcmp(name, "stack")) {
-				sscanf(optarg, "%x", (uint32_t*) &header.stackSize);
+				parseNumber(optarg, (uint32_t*) &header.stackSize);
 			} else if (!strcmp(name, "defoutput")) {
 				defoutput = optarg;
 			} else if (!strcmp(name, "sysdef")) {
