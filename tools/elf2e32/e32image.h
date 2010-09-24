@@ -92,6 +92,8 @@ void writeUint8(uint8_t value, FILE* out);
 
 void writeHeaders(FILE* out, const E32ImageHeader* header, const E32ImageHeaderComp* headerComp, const E32ImageHeaderV* headerV);
 
+void readHeaders(FILE* in, E32ImageHeader* header, E32ImageHeaderComp* headerComp, E32ImageHeaderV* headerV);
+
 struct Capability {
 	const char* name;
 	int bit;
@@ -139,5 +141,13 @@ uint32_t uidCrc(uint32_t uid1, uint32_t uid2, uint32_t uid3);
 
 void finalizeE32Image(FILE* out, E32ImageHeader* header, const E32ImageHeaderComp* headerComp, const E32ImageHeaderV* headerV, const char* filename);
 
+#define KDumpFlagHeader 1
+#define KDumpFlagSecurity 2
+#define KDumpFlagCode 4
+#define KDumpFlagData 8
+#define KDumpFlagExport 16
+#define KDumpFlagImport 32
+
+void dumpE32Image(const char* filename, FILE* in, int flags, const E32ImageHeader* header, const E32ImageHeaderComp* headerComp, const E32ImageHeaderV* headerV);
 
 #endif

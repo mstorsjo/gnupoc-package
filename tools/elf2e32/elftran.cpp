@@ -300,6 +300,7 @@ int main(int argc, char *argv[]) {
 
 	const char* output = NULL;
 	const char* elfinput = NULL;
+	int dumpFlags = 0;
 
 	for (int i = 1; i < argc; i++) {
 		if (!strcmp(argv[i], "-sid")) {
@@ -399,6 +400,22 @@ int main(int argc, char *argv[]) {
 			i++;
 		} else if (!strcmp(argv[i], "-smpsafe")) {
 			header.flags |= KImageSMPSafe;
+		} else if (!strcmp(argv[i], "-dump")) {
+			for (const char* c = argv[i + 1]; *c; c++) {
+				if (tolower(*c) == 'h')
+					dumpFlags |= KDumpFlagHeader;
+				else if (tolower(*c) == 's')
+					dumpFlags |= KDumpFlagSecurity;
+				else if (tolower(*c) == 'c')
+					dumpFlags |= KDumpFlagCode;
+				else if (tolower(*c) == 'd')
+					dumpFlags |= KDumpFlagData;
+				else if (tolower(*c) == 'e')
+					dumpFlags |= KDumpFlagExport;
+				else if (tolower(*c) == 'i')
+					dumpFlags |= KDumpFlagImport;
+			}
+			i++;
 		} else {
 			if (argv[i][0] == '-') {
 				fprintf(stderr, "Unhandled parameter %s?\n", argv[i]);
@@ -408,6 +425,19 @@ int main(int argc, char *argv[]) {
 			else if (!output)
 				output = argv[i];
 		}
+	}
+
+	if (elfinput && !output) {
+		const char* e32input = elfinput;
+		FILE* in = fopen(e32input, "r+b");
+		if (!in) {
+			perror(e32input);
+			return 1;
+		}
+		readHeaders(in, &header, &headerComp, &headerV);
+		dumpE32Image(e32input, in, dumpFlags, &header, &headerComp, &headerV);
+		fclose(in);
+		return 0;
 	}
 
 	header.uidChecksum = uidCrc(header.uid1, header.uid2, header.uid3);

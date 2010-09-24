@@ -59,6 +59,24 @@ void writeUint8(uint8_t value, FILE* out) {
 	fwrite(&value, 1, 1, out);
 }
 
+uint32_t readUint32(FILE* in) {
+	uint8_t buf[4];
+	fread(buf, 1, 4, in);
+	return buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
+}
+
+uint16_t readUint16(FILE* in) {
+	uint8_t buf[2];
+	fread(buf, 1, 2, in);
+	return buf[0] | (buf[1] << 8);
+}
+
+uint8_t readUint8(FILE* in) {
+	uint8_t buf[1];
+	fread(buf, 1, 1, in);
+	return buf[0];
+}
+
 void writeHeaders(FILE* out, const E32ImageHeader* header, const E32ImageHeaderComp* headerComp, const E32ImageHeaderV* headerV) {
 	writeUint32(header->uid1, out);
 	writeUint32(header->uid2, out);
@@ -104,6 +122,51 @@ void writeHeaders(FILE* out, const E32ImageHeader* header, const E32ImageHeaderC
 	writeUint8(headerV->exportDesc[0], out);
 }
 
+void readHeaders(FILE* in, E32ImageHeader* header, E32ImageHeaderComp* headerComp, E32ImageHeaderV* headerV) {
+	header->uid1                 = readUint32(in);
+	header->uid2                 = readUint32(in);
+	header->uid3                 = readUint32(in);
+	header->uidChecksum          = readUint32(in);
+	header->signature            = readUint32(in);
+	header->headerCrc            = readUint32(in);
+	header->moduleVersion        = readUint32(in);
+	header->compressionType      = readUint32(in);
+	header->toolsVersion         = readUint32(in);
+	header->timeLo               = readUint32(in);
+	header->timeHi               = readUint32(in);
+	header->flags                = readUint32(in);
+	header->codeSize             = readUint32(in);
+	header->dataSize             = readUint32(in);
+	header->heapSizeMin          = readUint32(in);
+	header->heapSizeMax          = readUint32(in);
+	header->stackSize            = readUint32(in);
+	header->bssSize              = readUint32(in);
+	header->entryPoint           = readUint32(in);
+	header->codeBase             = readUint32(in);
+	header->dataBase             = readUint32(in);
+	header->dllRefTableCount     = readUint32(in);
+	header->exportDirOffset      = readUint32(in);
+	header->exportDirCount       = readUint32(in);
+	header->textSize             = readUint32(in);
+	header->codeOffset           = readUint32(in);
+	header->dataOffset           = readUint32(in);
+	header->importOffset         = readUint32(in);
+	header->codeRelocOffset      = readUint32(in);
+	header->dataRelocOffset      = readUint32(in);
+	header->processPriority      = readUint16(in);
+	header->cpuIdentifier        = readUint16(in);
+	headerComp->uncompressedSize = readUint32(in);
+	headerV->secureId            = readUint32(in);
+	headerV->vendorId            = readUint32(in);
+	headerV->caps[0]             = readUint32(in);
+	headerV->caps[1]             = readUint32(in);
+	headerV->exceptionDescriptor = readUint32(in);
+	headerV->spare2              = readUint32(in);
+	headerV->exportDescSize      = readUint16(in);
+	headerV->exportDescType      = readUint8(in);
+	headerV->exportDesc[0]       = readUint8(in);
+}
+
 const Capability capabilityNames[] = {
 	{ "TCB",		0 },
 	{ "CommDD",		1 },
@@ -136,6 +199,16 @@ int findCapabilityBit(const char* name) {
 		cap++;
 	}
 	return -1;
+}
+
+const char* findCapabilityName(int bit) {
+	const Capability* cap = capabilityNames;
+	while (cap->name) {
+		if (cap->bit == bit)
+			return cap->name;
+		cap++;
+	}
+	return NULL;
 }
 
 void setBit(int bit, uint32_t* caps) {
@@ -250,6 +323,77 @@ void finalizeE32Image(FILE* out, E32ImageHeader* header, const E32ImageHeaderCom
 		free(headerData);
 	} else {
 		fclose(out);
+	}
+}
+
+void dumpE32Image(const char* filename, FILE* in, int flags, const E32ImageHeader* header, const E32ImageHeaderComp* headerComp, const E32ImageHeaderV* headerV) {
+	if (!flags)
+		flags = KDumpFlagHeader | KDumpFlagSecurity | KDumpFlagCode | KDumpFlagData | KDumpFlagExport | KDumpFlagImport;
+
+	FILE* out = stdout;
+	fprintf(out, "E32ImageFile '%s'\n", filename);
+	if (flags & KDumpFlagHeader) {
+		fprintf(out, "V%d.%02d(%d)\tTime Stamp: %08x,%08x\n", header->toolsVersion & 0xff, (header->toolsVersion >> 8) & 0xff, (header->toolsVersion >> 16) & 0xffff, header->timeHi, header->timeLo);
+		fprintf(out, "EPOC %s for %s CPU\n", header->flags & KImageDll ? "Dll" : "Exe", header->cpuIdentifier == ECpuArmV4 ? "ARMV4" : (header->cpuIdentifier == ECpuArmV5 ? "ARMV5" : "Unknown"));
+		fprintf(out, "Flags:\t%08x\n", header->flags);
+		fprintf(out, "Priority %s\n", header->processPriority == EPriorityForeground ? "Foreground" : "Unknown");
+		// Entry points are not called
+		// Image header is format 2
+		if (!header->compressionType)
+			fprintf(out, "Image is not compressed\n");
+		else if (header->compressionType == KUidCompressionDeflate)
+			fprintf(out, "Image is compressed using the DEFLATE algorithm\n");
+		else
+			fprintf(out, "Image is compressed using an unknown algorithm\n");
+		if (header->compressionType)
+			fprintf(out, "Uncompressed size %08x\n", headerComp->uncompressedSize + CRCSIZE);
+		if (!(header->flags & KImageHWFloatMask))
+			fprintf(out, "Image FPU support : Soft VFP\n");
+		else
+			fprintf(out, "Image FPU support : Other\n");
+		fprintf(out, "Pageability : %s\n", (header->flags & KImageUnpaged) ? "Unpaged" : "Default");
+	}
+	if (flags & (KDumpFlagHeader | KDumpFlagSecurity)) {
+		fprintf(out, "Secure ID: %08x\n", headerV->secureId);
+		fprintf(out, "Vendor ID: %08x\n", headerV->vendorId);
+		fprintf(out, "Capabilities: %08x %08x\n", headerV->caps[1], headerV->caps[0]);
+		if (flags & KDumpFlagSecurity) {
+			for (int i = 0; i < 64; i++) {
+				uint32_t val = i < 32 ? headerV->caps[0] : headerV->caps[1];
+				if (val & (1 << (i & 31))) {
+					const char* name = findCapabilityName(i);
+					if (name)
+						fprintf(out, "              %s\n", name);
+				}
+			}
+		}
+	}
+	if (flags & KDumpFlagHeader) {
+		fprintf(out, "Exception Descriptor Offset:  %08x\n", headerV->exceptionDescriptor);
+		//fprintf(out, "Exception Index Table Base: %08x\n", 0);
+		//fprintf(out, "Exception Index Table Limit: %08x\n", 0);
+		//fprintf(out, "RO Segment Base: %08x\n", 0);
+		//fprintf(out, "RO Segment Limit: %08x\n", 0);
+		//fprintf(out, "Export Description: Size=%03x, Type=%02x\n", 0, 0);
+		//fprintf(out, "\n");
+		//fprintf(out, "Export description consistent\n");
+		fprintf(out, "Module Version: %d.%d\n", (header->moduleVersion >> 16) & 0xffff, header->moduleVersion & 0xffff);
+		//fprintf(out, "Imports are ELF-style\n");
+		//fprintf(out, "ARM EABI\n");
+		//fprintf(out, "Built against EKA2\n");
+		fprintf(out, "Uids:\t\t%08x %08x %08x (%08x)\n", header->uid1, header->uid2, header->uid3, header->uidChecksum);
+		fprintf(out, "Header CRC:\t%08x\n", header->headerCrc);
+		fprintf(out, "File Size:\t%08x\n", headerComp->uncompressedSize + CRCSIZE);
+		fprintf(out, "Code Size:\t%08x\n", header->codeSize);
+		fprintf(out, "Data Size:\t%08x\n", header->dataSize);
+		fprintf(out, "Compression:\t%08x\n", header->compressionType);
+		fprintf(out, "Min Heap Size:\t%08x\n", header->heapSizeMin);
+		fprintf(out, "Max Heap Size:\t%08x\n", header->heapSizeMax);
+		fprintf(out, "Stack Size:\t%08x\n", header->stackSize);
+		fprintf(out, "Code link addr:\t%08x\n", header->codeBase);
+		fprintf(out, "Data link addr:\t%08x\n", header->dataBase);
+		fprintf(out, "Code reloc offset:\t%08x\n", header->codeRelocOffset);
+		fprintf(out, "Data reloc offset:\t%08x\n", header->dataRelocOffset);
 	}
 }
 
