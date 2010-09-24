@@ -246,7 +246,8 @@ void clearCapability(const char* name, uint32_t* caps) {
 		clearBit(bit, caps);
 }
 
-void getCapabilities(char* str, uint32_t* caps) {
+void getCapabilities(const char* origStr, uint32_t* caps) {
+	char* str = strdup(origStr);
 	memset(caps, 0, 2);
 	char* ptr = str;
 	bool set = true;
@@ -278,6 +279,7 @@ void getCapabilities(char* str, uint32_t* caps) {
 		setCapability(start, caps);
 	else	
 		clearCapability(start, caps);
+	free(str);
 }
 
 uint32_t uidCrc(uint32_t uid1, uint32_t uid2, uint32_t uid3) {
@@ -291,7 +293,7 @@ uint32_t uidCrc(uint32_t uid1, uint32_t uid2, uint32_t uid3) {
 }
 
 
-void finalizeE32Image(FILE* out, E32ImageHeader* header, const E32ImageHeaderComp* headerComp, const E32ImageHeaderV* headerV, const char* filename) {
+void finalizeE32Image(FILE* out, E32ImageHeader* header, const E32ImageHeaderComp* headerComp, const E32ImageHeaderV* headerV, const char* filename, bool compress) {
 	fseek(out, 0, SEEK_SET);
 	header->headerCrc = KImageCrcInitialiser;
 #define CRCSIZE 0x9c
@@ -303,7 +305,7 @@ void finalizeE32Image(FILE* out, E32ImageHeader* header, const E32ImageHeaderCom
 	fseek(out, 0, SEEK_SET);
 	writeHeaders(out, header, headerComp, headerV);
 
-	if (header->compressionType == KUidCompressionDeflate) {
+	if (header->compressionType == KUidCompressionDeflate && compress) {
 		fseek(out, 0, SEEK_END);
 		uint32_t len = ftell(out);
 		len -= CRCSIZE;

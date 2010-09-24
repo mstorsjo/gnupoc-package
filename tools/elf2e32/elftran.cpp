@@ -238,6 +238,138 @@ void parseDynamic(Elf* elf, Elf32_Phdr* phdr, FILE* out, E32ImageHeader* header)
 	freeElfData(relData);
 }
 
+int parseOptions(char** argv, int argc, E32ImageHeader* header, E32ImageHeaderComp* headerComp, E32ImageHeaderV* headerV, int* dlldata, const char** elfinput, const char** output, int* dumpFlags, bool* headersModified) {
+	for (int i = 1; i < argc; i++) {
+		if (!strcmp(argv[i], "-sid")) {
+			sscanf(argv[i + 1], "%x", &headerV->secureId);
+			i++;
+		} else if (!strcmp(argv[i], "-uid1")) {
+			sscanf(argv[i + 1], "%x", &header->uid1);
+			i++;
+		} else if (!strcmp(argv[i], "-uid2")) {
+			sscanf(argv[i + 1], "%x", &header->uid2);
+			i++;
+		} else if (!strcmp(argv[i], "-uid3")) {
+			sscanf(argv[i + 1], "%x", &header->uid3);
+			i++;
+		} else if (!strcmp(argv[i], "-vid")) {
+			sscanf(argv[i + 1], "%x", &headerV->vendorId);
+			i++;
+		} else if (!strcmp(argv[i], "-capability")) {
+			getCapabilities(argv[i + 1], headerV->caps);
+			i++;
+		} else if (!strcmp(argv[i], "-fpu")) {
+			if (!strcmp(argv[i + 1], "softvfp")) {
+				header->flags = (header->flags & ~KImageHWFloatMask);
+			} else if (!strcmp(argv[i + 1], "vfpv2")) {
+				header->flags = (header->flags & ~KImageHWFloatMask) | KImageHWFloat_VFPv2;
+			} else {
+				fprintf(stderr, "Unknown argument for parameter fpu: %s\n", argv[i + 1]);
+				return 1;
+			}
+			i++;
+		} else if (!strcmp(argv[i], "-heap")) {
+			if (i + 2 < argc) {
+				sscanf(argv[i + 1], "%x", (uint32_t*) &header->heapSizeMin);
+				sscanf(argv[i + 2], "%x", (uint32_t*) &header->heapSizeMax);
+				i += 2;
+			} else {
+				fprintf(stderr, "Not enough arguments for -heap\n");
+				return 1;
+			}
+		} else if (!strcmp(argv[i], "-stack")) {
+			sscanf(argv[i + 1], "%x", (uint32_t*) &header->stackSize);
+			i++;
+		} else if (!strcmp(argv[i], "-nocompress")) {
+			header->compressionType = 0;
+		} else if (!strcmp(argv[i], "-compress")) {
+			header->compressionType = KUidCompressionDeflate;
+		} else if (!strcmp(argv[i], "-nocall") || !strcmp(argv[i], "-nocallentrypoint")) {
+			header->flags |= KImageNoCallEntryPoint;
+		} else if (!strcmp(argv[i], "-call") || !strcmp(argv[i], "-callentrypoint")) {
+			header->flags &= ~KImageNoCallEntryPoint;
+		} else if (!strcmp(argv[i], "-fixed")) {
+		} else if (!strcmp(argv[i], "-allowdlldata")) {
+			*dlldata = 1;
+		} else if (!strcmp(argv[i], "-version")) {
+			int major = 10, minor = 0;
+			sscanf(argv[i + 1], "%d.%d", &major, &minor);
+			header->moduleVersion = (major << 16) | (minor);
+			i++;
+		} else if (!strcmp(argv[i], "-compressionmethod")) {
+			if (!strcmp(argv[i + 1], "none"))
+				header->compressionType = 0;
+			else if (!strcmp(argv[i + 1], "deflate"))
+				header->compressionType = KUidCompressionDeflate;
+			else if (!strcmp(argv[i + 1], "bytepair"))
+				printf("Bytepair compression not supported!\n");
+			else
+				printf("Unknown compression method \"%s\"\n", argv[i + 1]);
+			i++;
+		} else if (!strcmp(argv[i], "-defaultpaged")) {
+		} else if (!strcmp(argv[i], "-unpaged")) {
+			header->flags |= KImageUnpaged;
+		} else if (!strcmp(argv[i], "-sym_name_lkup")) {
+			// FIXME?
+		} else if (!strcmp(argv[i], "-debuggable")) {
+			header->flags |= KImageDebuggable;
+		} else if (!strcmp(argv[i], "-codepaging")) {
+			if (!strcmp(argv[i + 1], "paged")) {
+				header->flags |= KImagePaged;
+			} else if (!strcmp(argv[i + 1], "unpaged")) {
+				header->flags |= KImageUnpaged;
+			} else if (!strcmp(argv[i + 1], "default")) {
+				header->flags &= ~(KImageUnpaged | KImagePaged);
+			} else {
+				fprintf(stderr, "Unsupported codepaging value %s\n", optarg);
+			}
+			i++;
+		} else if (!strcmp(argv[i], "-datapaging")) {
+			if (!strcmp(argv[i + 1], "paged")) {
+				header->flags |= KImageDataPaged;
+			} else if (!strcmp(argv[i + 1], "unpaged")) {
+				header->flags |= KImageDataUnpaged;
+			} else if (!strcmp(argv[i + 1], "default")) {
+				header->flags &= ~(KImageDataUnpaged | KImageDataPaged);
+			} else {
+				fprintf(stderr, "Unsupported codepaging value %s\n", optarg);
+			}
+			i++;
+		} else if (!strcmp(argv[i], "-smpsafe")) {
+			header->flags |= KImageSMPSafe;
+		} else if (!strcmp(argv[i], "-dump")) {
+			for (const char* c = argv[i + 1]; *c; c++) {
+				if (tolower(*c) == 'h')
+					*dumpFlags |= KDumpFlagHeader;
+				else if (tolower(*c) == 's')
+					*dumpFlags |= KDumpFlagSecurity;
+				else if (tolower(*c) == 'c')
+					*dumpFlags |= KDumpFlagCode;
+				else if (tolower(*c) == 'd')
+					*dumpFlags |= KDumpFlagData;
+				else if (tolower(*c) == 'e')
+					*dumpFlags |= KDumpFlagExport;
+				else if (tolower(*c) == 'i')
+					*dumpFlags |= KDumpFlagImport;
+			}
+			i++;
+			continue;
+		} else {
+			if (argv[i][0] == '-') {
+				fprintf(stderr, "Unhandled parameter %s?\n", argv[i]);
+			}
+			if (!*elfinput)
+				*elfinput = argv[i];
+			else if (!*output)
+				*output = argv[i];
+			continue;
+		}
+		*headersModified = true;
+	}
+	return 0;
+}
+
+
 int main(int argc, char *argv[]) {
 	detectVersion();
 
@@ -301,131 +433,11 @@ int main(int argc, char *argv[]) {
 	const char* output = NULL;
 	const char* elfinput = NULL;
 	int dumpFlags = 0;
+	bool headersModified = false;
 
-	for (int i = 1; i < argc; i++) {
-		if (!strcmp(argv[i], "-sid")) {
-			sscanf(argv[i + 1], "%x", &headerV.secureId);
-			i++;
-		} else if (!strcmp(argv[i], "-uid1")) {
-			sscanf(argv[i + 1], "%x", &header.uid1);
-			i++;
-		} else if (!strcmp(argv[i], "-uid2")) {
-			sscanf(argv[i + 1], "%x", &header.uid2);
-			i++;
-		} else if (!strcmp(argv[i], "-uid3")) {
-			sscanf(argv[i + 1], "%x", &header.uid3);
-			i++;
-		} else if (!strcmp(argv[i], "-vid")) {
-			sscanf(argv[i + 1], "%x", &headerV.vendorId);
-			i++;
-		} else if (!strcmp(argv[i], "-capability")) {
-			getCapabilities(argv[i + 1], headerV.caps);
-			i++;
-		} else if (!strcmp(argv[i], "-fpu")) {
-			if (!strcmp(argv[i + 1], "softvfp")) {
-				header.flags = (header.flags & ~KImageHWFloatMask);
-			} else if (!strcmp(argv[i + 1], "vfpv2")) {
-				header.flags = (header.flags & ~KImageHWFloatMask) | KImageHWFloat_VFPv2;
-			} else {
-				fprintf(stderr, "Unknown argument for parameter fpu: %s\n", argv[i + 1]);
-				return 1;
-			}
-			i++;
-		} else if (!strcmp(argv[i], "-heap")) {
-			if (i + 2 < argc) {
-				sscanf(argv[i + 1], "%x", (uint32_t*) &header.heapSizeMin);
-				sscanf(argv[i + 2], "%x", (uint32_t*) &header.heapSizeMax);
-				i += 2;
-			} else {
-				fprintf(stderr, "Not enough arguments for -heap\n");
-				return 1;
-			}
-		} else if (!strcmp(argv[i], "-stack")) {
-			sscanf(argv[i + 1], "%x", (uint32_t*) &header.stackSize);
-			i++;
-		} else if (!strcmp(argv[i], "-nocompress")) {
-			header.compressionType = 0;
-		} else if (!strcmp(argv[i], "-compress")) {
-			header.compressionType = KUidCompressionDeflate;
-		} else if (!strcmp(argv[i], "-nocall") || !strcmp(argv[i], "-nocallentrypoint")) {
-			header.flags |= KImageNoCallEntryPoint;
-		} else if (!strcmp(argv[i], "-call") || !strcmp(argv[i], "-callentrypoint")) {
-			header.flags &= ~KImageNoCallEntryPoint;
-		} else if (!strcmp(argv[i], "-fixed")) {
-		} else if (!strcmp(argv[i], "-allowdlldata")) {
-			dlldata = 1;
-		} else if (!strcmp(argv[i], "-version")) {
-			int major = 10, minor = 0;
-			sscanf(argv[i + 1], "%d.%d", &major, &minor);
-			header.moduleVersion = (major << 16) | (minor);
-			i++;
-		} else if (!strcmp(argv[i], "-compressionmethod")) {
-			if (!strcmp(argv[i + 1], "none"))
-				header.compressionType = 0;
-			else if (!strcmp(argv[i + 1], "deflate"))
-				header.compressionType = KUidCompressionDeflate;
-			else if (!strcmp(argv[i + 1], "bytepair"))
-				printf("Bytepair compression not supported!\n");
-			else
-				printf("Unknown compression method \"%s\"\n", argv[i + 1]);
-			i++;
-		} else if (!strcmp(argv[i], "-defaultpaged")) {
-		} else if (!strcmp(argv[i], "-unpaged")) {
-			header.flags |= KImageUnpaged;
-		} else if (!strcmp(argv[i], "-sym_name_lkup")) {
-			// FIXME?
-		} else if (!strcmp(argv[i], "-debuggable")) {
-			header.flags |= KImageDebuggable;
-		} else if (!strcmp(argv[i], "-codepaging")) {
-			if (!strcmp(argv[i + 1], "paged")) {
-				header.flags |= KImagePaged;
-			} else if (!strcmp(argv[i + 1], "unpaged")) {
-				header.flags |= KImageUnpaged;
-			} else if (!strcmp(argv[i + 1], "default")) {
-				header.flags &= ~(KImageUnpaged | KImagePaged);
-			} else {
-				fprintf(stderr, "Unsupported codepaging value %s\n", optarg);
-			}
-			i++;
-		} else if (!strcmp(argv[i], "-datapaging")) {
-			if (!strcmp(argv[i + 1], "paged")) {
-				header.flags |= KImageDataPaged;
-			} else if (!strcmp(argv[i + 1], "unpaged")) {
-				header.flags |= KImageDataUnpaged;
-			} else if (!strcmp(argv[i + 1], "default")) {
-				header.flags &= ~(KImageDataUnpaged | KImageDataPaged);
-			} else {
-				fprintf(stderr, "Unsupported codepaging value %s\n", optarg);
-			}
-			i++;
-		} else if (!strcmp(argv[i], "-smpsafe")) {
-			header.flags |= KImageSMPSafe;
-		} else if (!strcmp(argv[i], "-dump")) {
-			for (const char* c = argv[i + 1]; *c; c++) {
-				if (tolower(*c) == 'h')
-					dumpFlags |= KDumpFlagHeader;
-				else if (tolower(*c) == 's')
-					dumpFlags |= KDumpFlagSecurity;
-				else if (tolower(*c) == 'c')
-					dumpFlags |= KDumpFlagCode;
-				else if (tolower(*c) == 'd')
-					dumpFlags |= KDumpFlagData;
-				else if (tolower(*c) == 'e')
-					dumpFlags |= KDumpFlagExport;
-				else if (tolower(*c) == 'i')
-					dumpFlags |= KDumpFlagImport;
-			}
-			i++;
-		} else {
-			if (argv[i][0] == '-') {
-				fprintf(stderr, "Unhandled parameter %s?\n", argv[i]);
-			}
-			if (!elfinput)
-				elfinput = argv[i];
-			else if (!output)
-				output = argv[i];
-		}
-	}
+	int ret;
+	if ((ret = parseOptions(argv, argc, &header, &headerComp, &headerV, &dlldata, &elfinput, &output, &dumpFlags, &headersModified)) != 0)
+		return ret;
 
 	if (elfinput && !output) {
 		const char* e32input = elfinput;
@@ -435,8 +447,16 @@ int main(int argc, char *argv[]) {
 			return 1;
 		}
 		readHeaders(in, &header, &headerComp, &headerV);
-		dumpE32Image(e32input, in, dumpFlags, &header, &headerComp, &headerV);
-		fclose(in);
+		if (headersModified) {
+			output = elfinput = NULL;
+			parseOptions(argv, argc, &header, &headerComp, &headerV, &dlldata, &elfinput, &output, &dumpFlags, &headersModified);
+		}
+		if (!headersModified || dumpFlags)
+			dumpE32Image(e32input, in, dumpFlags, &header, &headerComp, &headerV);
+		if (headersModified) {
+			finalizeE32Image(in, &header, &headerComp, &headerV, e32input, false);
+		} else
+			fclose(in);
 		return 0;
 	}
 

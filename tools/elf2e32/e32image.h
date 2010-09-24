@@ -109,7 +109,7 @@ void clearBit(int bit, uint32_t* caps);
 void setCapability(const char* name, uint32_t* caps);
 void clearCapability(const char* name, uint32_t* caps);
 
-void getCapabilities(char* str, uint32_t* caps);
+void getCapabilities(const char* str, uint32_t* caps);
 
 #define KImageHWFloatMask	0x00f00000
 #define KImageHWFloat_VFPv2	0x00100000
@@ -139,7 +139,7 @@ void getCapabilities(char* str, uint32_t* caps);
 
 uint32_t uidCrc(uint32_t uid1, uint32_t uid2, uint32_t uid3);
 
-void finalizeE32Image(FILE* out, E32ImageHeader* header, const E32ImageHeaderComp* headerComp, const E32ImageHeaderV* headerV, const char* filename);
+void finalizeE32Image(FILE* out, E32ImageHeader* header, const E32ImageHeaderComp* headerComp, const E32ImageHeaderV* headerV, const char* filename, bool compress = true);
 
 #define KDumpFlagHeader 1
 #define KDumpFlagSecurity 2
