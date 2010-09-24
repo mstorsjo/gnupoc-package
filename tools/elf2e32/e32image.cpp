@@ -252,7 +252,7 @@ void getCapabilities(char* str, uint32_t* caps) {
 	bool set = true;
 	char* start = str;
 	while (*ptr) {
-		if (*ptr == '+') {
+		if (*ptr == '+' || *ptr == ' ') {
 			*ptr = '\0';
 			if (set)
 				setCapability(start, caps);
