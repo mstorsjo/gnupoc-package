@@ -1,16 +1,8 @@
 diff --git a/qmake/generators/symbian/symmake_abld.cpp b/qmake/generators/symbian/symmake_abld.cpp
-index 03d1a18..7bced07 100644
+index 03d1a18..07d4b7d 100644
 --- a/qmake/generators/symbian/symmake_abld.cpp
 +++ b/qmake/generators/symbian/symmake_abld.cpp
-@@ -217,6 +217,7 @@ void SymbianAbldMakefileGenerator::writeWrapperMakefile(QFile& wrapperFile, bool
-     t << "RELEASE_PLATFORMS = " << releasePlatforms.join(" ") << endl;
-     t << "MAKE              = make" << endl;
-     t << endl;
-+    t << "EPOCROOT:=$(subst \\,/,$(EPOCROOT))" << endl;
-     t << "ifeq (WINS,$(findstring WINS, $(PLATFORM)))" << endl;
-     t << "ZDIR=$(EPOCROOT)" << QDir::toNativeSeparators("epoc32/release/$(PLATFORM)/$(CFG)/z") << endl;
-     t << "else" << endl;
-@@ -327,6 +328,7 @@ void SymbianAbldMakefileGenerator::writeWrapperMakefile(QFile& wrapperFile, bool
+@@ -327,6 +327,7 @@ void SymbianAbldMakefileGenerator::writeWrapperMakefile(QFile& wrapperFile, bool
                      QString fixedValue(QDir::toNativeSeparators(values.at(i)));
                      dirsToClean << fixedValue;
                      t << "\t-@ " << dirExists << " \""  << fixedValue << "\" "
