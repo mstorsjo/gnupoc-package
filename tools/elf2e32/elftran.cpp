@@ -240,7 +240,7 @@ void parseDynamic(Elf* elf, Elf32_Phdr* phdr, FILE* out, E32ImageHeader* header)
 
 void parseNumber(const char* str, uint32_t* ptr) {
 	unsigned int val;
-	if (!strncmp(str, "0x", 2)) {
+	if (!strncmp(str, "0x", 2) || !strncmp(str, "0X", 2)) {
 		sscanf(str, "%x", &val);
 	} else {
 		sscanf(str, "%u", &val);
