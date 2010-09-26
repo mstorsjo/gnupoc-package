@@ -246,16 +246,6 @@ void parseDefFile(const char* filename, ExportList* exportList) {
 	fclose(in);
 }
 
-void parseNumber(const char* str, uint32_t* ptr) {
-	unsigned int val;
-	if (!strncmp(str, "0x", 2) || !strncmp(str, "0X", 2)) {
-		sscanf(str, "%x", &val);
-	} else {
-		sscanf(str, "%u", &val);
-	}
-	*ptr = val;
-}
-
 
 int main(int argc, char *argv[]) {
 	detectVersion();
@@ -377,15 +367,15 @@ int main(int argc, char *argv[]) {
 		case 0:
 			name = long_options[option_index].name;
 			if (!strcmp(name, "sid")) {
-				parseNumber(optarg, &headerV.secureId);
+				headerV.secureId = strtol(optarg, NULL, 0);
 			} else if (!strcmp(name, "uid1")) {
-				parseNumber(optarg, &header.uid1);
+				header.uid1 = strtol(optarg, NULL, 0);
 			} else if (!strcmp(name, "uid2")) {
-				parseNumber(optarg, &header.uid2);
+				header.uid2 = strtol(optarg, NULL, 0);
 			} else if (!strcmp(name, "uid3")) {
-				parseNumber(optarg, &header.uid3);
+				header.uid3 = strtol(optarg, NULL, 0);
 			} else if (!strcmp(name, "vid")) {
-				parseNumber(optarg, &headerV.vendorId);
+				headerV.vendorId = strtol(optarg, NULL, 0);
 			} else if (!strcmp(name, "capability")) {
 				getCapabilities(optarg, headerV.caps);
 			} else if (!strcmp(name, "fpu")) {
@@ -424,11 +414,11 @@ int main(int argc, char *argv[]) {
 					*ptr = '\0';
 					strncpy(buf2, ptr + 1, sizeof(buf2));
 					buf2[sizeof(buf2) - 1] = '\0';
-					parseNumber(buf2, (uint32_t*) &header.heapSizeMax);
+					header.heapSizeMax = strtol(buf2, NULL, 0);
 				}
-				parseNumber(buf1, (uint32_t*) &header.heapSizeMin);
+				header.heapSizeMin = strtol(buf1, NULL, 0);
 			} else if (!strcmp(name, "stack")) {
-				parseNumber(optarg, (uint32_t*) &header.stackSize);
+				header.stackSize = strtol(optarg, NULL, 0);
 			} else if (!strcmp(name, "defoutput")) {
 				defoutput = optarg;
 			} else if (!strcmp(name, "sysdef")) {

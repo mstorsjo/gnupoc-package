@@ -238,32 +238,22 @@ void parseDynamic(Elf* elf, Elf32_Phdr* phdr, FILE* out, E32ImageHeader* header)
 	freeElfData(relData);
 }
 
-void parseNumber(const char* str, uint32_t* ptr) {
-	unsigned int val;
-	if (!strncmp(str, "0x", 2) || !strncmp(str, "0X", 2)) {
-		sscanf(str, "%x", &val);
-	} else {
-		sscanf(str, "%u", &val);
-	}
-	*ptr = val;
-}
-
 int parseOptions(char** argv, int argc, E32ImageHeader* header, E32ImageHeaderComp* headerComp, E32ImageHeaderV* headerV, int* dlldata, const char** elfinput, const char** output, int* dumpFlags, bool* headersModified) {
 	for (int i = 1; i < argc; i++) {
 		if (!strcmp(argv[i], "-sid")) {
-			parseNumber(argv[i + 1], &headerV->secureId);
+			headerV->secureId = strtol(argv[i + 1], NULL, 0);
 			i++;
 		} else if (!strcmp(argv[i], "-uid1")) {
-			parseNumber(argv[i + 1], &header->uid1);
+			header->uid1 = strtol(argv[i + 1], NULL, 0);
 			i++;
 		} else if (!strcmp(argv[i], "-uid2")) {
-			parseNumber(argv[i + 1], &header->uid2);
+			header->uid2 = strtol(argv[i + 1], NULL, 0);
 			i++;
 		} else if (!strcmp(argv[i], "-uid3")) {
-			parseNumber(argv[i + 1], &header->uid3);
+			header->uid3 = strtol(argv[i + 1], NULL, 0);
 			i++;
 		} else if (!strcmp(argv[i], "-vid")) {
-			parseNumber(argv[i + 1], &headerV->vendorId);
+			headerV->vendorId = strtol(argv[i + 1], NULL, 0);
 			i++;
 		} else if (!strcmp(argv[i], "-capability")) {
 			getCapabilities(argv[i + 1], headerV->caps);
@@ -280,15 +270,15 @@ int parseOptions(char** argv, int argc, E32ImageHeader* header, E32ImageHeaderCo
 			i++;
 		} else if (!strcmp(argv[i], "-heap")) {
 			if (i + 2 < argc) {
-				parseNumber(argv[i + 1], (uint32_t*) &header->heapSizeMin);
-				parseNumber(argv[i + 2], (uint32_t*) &header->heapSizeMax);
+				header->heapSizeMin = strtol(argv[i + 1], NULL, 0);
+				header->heapSizeMax = strtol(argv[i + 2], NULL, 0);
 				i += 2;
 			} else {
 				fprintf(stderr, "Not enough arguments for -heap\n");
 				return 1;
 			}
 		} else if (!strcmp(argv[i], "-stack")) {
-			parseNumber(argv[i + 1], (uint32_t*) &header->stackSize);
+			header->stackSize = strtol(argv[i + 1], NULL, 0);
 			i++;
 		} else if (!strcmp(argv[i], "-nocompress")) {
 			header->compressionType = 0;
