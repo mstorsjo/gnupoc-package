@@ -397,5 +397,6 @@ void dumpE32Image(const char* filename, FILE* in, int flags, const E32ImageHeade
 		fprintf(out, "Code reloc offset:\t%08x\n", header->codeRelocOffset);
 		fprintf(out, "Data reloc offset:\t%08x\n", header->dataRelocOffset);
 	}
+	fprintf(out, "\n");
 }
 
