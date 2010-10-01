@@ -405,8 +405,8 @@ int main(int argc, char *argv[]) {
 			} else if (!strcmp(name, "libpath")) {
 				libpath = optarg;
 			} else if (!strcmp(name, "heap")) {
-				char buf1[10];
-				char buf2[10];
+				char buf1[50];
+				char buf2[50];
 				strncpy(buf1, optarg, sizeof(buf1));
 				buf1[sizeof(buf1) - 1] = '\0';
 				char* ptr = strchr(buf1, ',');
