@@ -484,7 +484,7 @@ int pathcommands_flex_debug = 0;
 char *pathcommandstext;
 #line 1 "pathcommands-tokenizer.l"
 /*
-    Copyright 2007 Martin Storsjö
+    Copyright 2007 Martin Storsjo
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

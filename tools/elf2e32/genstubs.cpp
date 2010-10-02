@@ -1,6 +1,6 @@
 /*
     genstubs
-    Copyright 2007 - 2009 Martin Storsjö
+    Copyright 2007 - 2009 Martin Storsjo
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
     so. If you do not wish to do so, delete this exception statement from
     your version.
 
-    Martin Storsjö
+    Martin Storsjo
     martin@martin.st
 */
 

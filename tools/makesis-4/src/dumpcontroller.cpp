@@ -1,6 +1,6 @@
 /*
     Makesis 4
-    Copyright 2007 Martin Storsjö
+    Copyright 2007 Martin Storsjo
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as
@@ -16,7 +16,7 @@
     License along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
-    Martin Storsjö
+    Martin Storsjo
     martin@martin.st
 */
 

@@ -1,6 +1,6 @@
 /*
     Makesis 4
-    Copyright 2007 Martin Storsjö
+    Copyright 2007 Martin Storsjo
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as
@@ -26,7 +26,7 @@
     to your version of the file, but you are not obliged to do so. If you
     do not wish to do so, delete this exception statement from your version.
 
-    Martin Storsjö
+    Martin Storsjo
     martin@martin.st
 */
 
