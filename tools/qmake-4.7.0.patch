@@ -1,3 +1,31 @@
+diff --git a/qmake/generators/symbian/symbiancommon.cpp b/qmake/generators/symbian/symbiancommon.cpp
+index 58d2edd..a3606bd 100644
+--- a/qmake/generators/symbian/symbiancommon.cpp
++++ b/qmake/generators/symbian/symbiancommon.cpp
+@@ -390,9 +390,9 @@ void SymbianCommonGenerator::generatePkgFile(const QString &iconFile, bool epocB
+                     t << QString("\"%1epoc32/data/z%2\" - \"!:%3\"")
+                          .arg(epocRoot())
+                          .arg(iconFile)
+-                         .arg(QDir::toNativeSeparators(iconFile)) << endl << endl;
++                         .arg(QString(iconFile).replace("/", "\\")) << endl << endl;
+                     ts << QString("\"\" - \"%1\"")
+-                         .arg(romPath(QDir::toNativeSeparators(iconFile))) << endl << endl;
++                         .arg(romPath(QString(iconFile).replace("/", "\\"))) << endl << endl;
+                 } else {
+                     QDir mifIconDir(project->first("DESTDIR"));
+                     QFileInfo mifIcon(mifIconDir.relativeFilePath(project->first("TARGET")));
+@@ -401,9 +401,9 @@ void SymbianCommonGenerator::generatePkgFile(const QString &iconFile, bool epocB
+                     t << QString("\"%1/%2\" - \"!:%3\"")
+                          .arg(mifIcon.path())
+                          .arg(mifIconFileName)
+-                         .arg(QDir::toNativeSeparators(iconFile)) << endl << endl;
++                         .arg(QString(iconFile).replace("/", "\\")) << endl << endl;
+                     ts << QString("\"\" - \"%1\"")
+-                         .arg(romPath(QDir::toNativeSeparators(iconFile))) << endl << endl;
++                         .arg(romPath(QString(iconFile).replace("/", "\\"))) << endl << endl;
+                 }
+             }
+         }
 diff --git a/qmake/generators/symbian/symmake_abld.cpp b/qmake/generators/symbian/symmake_abld.cpp
 index 03d1a18..07d4b7d 100644
 --- a/qmake/generators/symbian/symmake_abld.cpp
