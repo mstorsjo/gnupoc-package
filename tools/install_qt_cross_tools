@@ -31,7 +31,7 @@ tar -zxvf $SRC -C qt-build
 cd qt-build/qt-* && patch -p1 < ../../qmake-4.6.3.patch
 rm -rf qt-build/qt-*/examples
 rm -rf qt-build/qt-*/demos
-echo yes | (cd qt-build/qt-* && ./configure -opensource -fast)
+cd qt-build/qt-* && ./configure -opensource -fast -confirm-license
 cd qt-build/qt-* && $MAKE sub-tools-bootstrap sub-moc sub-rcc sub-uic
 cd qt-build/qt-* && cp bin/qmake bin/moc bin/rcc bin/uic $DEST/bin
 rm -rf qt-build

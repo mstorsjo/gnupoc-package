@@ -31,7 +31,7 @@ done << __END
 
 cp .qmake.cache .qmake.cache.orig
 cp src/corelib/global/qconfig.h src/corelib/global/qconfig.h.orig
-echo yes | (./configure -opensource -fast)
+./configure -opensource -fast -confirm-license
 $MAKE sub-tools-bootstrap sub-moc sub-rcc sub-uic
 cp .qmake.cache.orig .qmake.cache
 rm -f src/corelib/global/qconfig.h
