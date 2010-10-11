@@ -1,7 +1,7 @@
 Index: getexports
 ===================================================================
 --- getexports	(.../tags/orig)	(revision 0)
-+++ getexports	(.../trunk)	(revision 4301)
++++ getexports	(.../trunk)	(revision 4315)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -20,8 +20,8 @@ Index: getexports
 +wine $ROOT/$PGM.exe "$@"
 Index: cl_generic.pm
 ===================================================================
---- cl_generic.pm	(.../tags/orig)	(revision 4179)
-+++ cl_generic.pm	(.../trunk)	(revision 4301)
+--- cl_generic.pm	(.../tags/orig)	(revision 4313)
++++ cl_generic.pm	(.../trunk)	(revision 4315)
 @@ -40,8 +40,8 @@
  
  use File::Basename;
@@ -210,8 +210,8 @@ Index: cl_generic.pm
  	my @systemIncludes = &main::Path_Chop(&main::Path_AbsToWork(&main::ResourceSysIncPaths));
 Index: e32env.pm
 ===================================================================
---- e32env.pm	(.../tags/orig)	(revision 4179)
-+++ e32env.pm	(.../trunk)	(revision 4301)
+--- e32env.pm	(.../tags/orig)	(revision 4313)
++++ e32env.pm	(.../trunk)	(revision 4315)
 @@ -17,7 +17,7 @@
  # 
  #
@@ -275,8 +275,8 @@ Index: e32env.pm
  }
 Index: winutl.pm
 ===================================================================
---- winutl.pm	(.../tags/orig)	(revision 4179)
-+++ winutl.pm	(.../trunk)	(revision 4301)
+--- winutl.pm	(.../tags/orig)	(revision 4313)
++++ winutl.pm	(.../trunk)	(revision 4315)
 @@ -16,7 +16,7 @@
  # 
  #
@@ -322,7 +322,7 @@ Index: winutl.pm
 Index: extmake
 ===================================================================
 --- extmake	(.../tags/orig)	(revision 0)
-+++ extmake	(.../trunk)	(revision 4301)
++++ extmake	(.../trunk)	(revision 4315)
 @@ -0,0 +1,4 @@
 +#!/bin/sh
 +
@@ -331,7 +331,7 @@ Index: extmake
 Index: genbldinf.pl
 ===================================================================
 --- genbldinf.pl	(.../tags/orig)	(revision 0)
-+++ genbldinf.pl	(.../trunk)	(revision 4301)
++++ genbldinf.pl	(.../trunk)	(revision 4315)
 @@ -0,0 +1,38 @@
 +#!/usr/bin/perl -w
 +#
@@ -373,8 +373,8 @@ Index: genbldinf.pl
 +system ("cat $BLDINF");
 Index: cl_arm.pm
 ===================================================================
---- cl_arm.pm	(.../tags/orig)	(revision 4179)
-+++ cl_arm.pm	(.../trunk)	(revision 4301)
+--- cl_arm.pm	(.../tags/orig)	(revision 4313)
++++ cl_arm.pm	(.../trunk)	(revision 4315)
 @@ -14,7 +14,7 @@
  #
  
@@ -1162,8 +1162,8 @@ Index: cl_arm.pm
  	}
 Index: cl_codewarrior.pm
 ===================================================================
---- cl_codewarrior.pm	(.../tags/orig)	(revision 4179)
-+++ cl_codewarrior.pm	(.../trunk)	(revision 4301)
+--- cl_codewarrior.pm	(.../tags/orig)	(revision 4313)
++++ cl_codewarrior.pm	(.../trunk)	(revision 4315)
 @@ -14,7 +14,7 @@
  #
  
@@ -1782,8 +1782,8 @@ Index: cl_codewarrior.pm
  				"\n"
 Index: eshell.pl
 ===================================================================
---- eshell.pl	(.../tags/orig)	(revision 4179)
-+++ eshell.pl	(.../trunk)	(revision 4301)
+--- eshell.pl	(.../tags/orig)	(revision 4313)
++++ eshell.pl	(.../trunk)	(revision 4315)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  # Copyright (c) 1999-2009 Nokia Corporation and/or its subsidiary(-ies).
@@ -1825,7 +1825,7 @@ Index: eshell.pl
 Index: bldmake
 ===================================================================
 --- bldmake	(.../tags/orig)	(revision 0)
-+++ bldmake	(.../trunk)	(revision 4301)
++++ bldmake	(.../trunk)	(revision 4315)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -1841,8 +1841,8 @@ Index: bldmake
 +perl -S bldmake.pl "$@"
 Index: rvct_ver2set.pm
 ===================================================================
---- rvct_ver2set.pm	(.../tags/orig)	(revision 4179)
-+++ rvct_ver2set.pm	(.../trunk)	(revision 4301)
+--- rvct_ver2set.pm	(.../tags/orig)	(revision 4313)
++++ rvct_ver2set.pm	(.../trunk)	(revision 4315)
 @@ -28,7 +28,7 @@
  #
  
@@ -1854,8 +1854,8 @@ Index: rvct_ver2set.pm
  # PUBLIC FUNCTIONS
 Index: lockit_info.pm
 ===================================================================
---- lockit_info.pm	(.../tags/orig)	(revision 4179)
-+++ lockit_info.pm	(.../trunk)	(revision 4301)
+--- lockit_info.pm	(.../tags/orig)	(revision 4313)
++++ lockit_info.pm	(.../trunk)	(revision 4315)
 @@ -32,7 +32,7 @@
  	Close_InfoFile
  );
@@ -2096,8 +2096,8 @@ Index: lockit_info.pm
  
 Index: makmake.pl
 ===================================================================
---- makmake.pl	(.../tags/orig)	(revision 4179)
-+++ makmake.pl	(.../trunk)	(revision 4301)
+--- makmake.pl	(.../tags/orig)	(revision 4313)
++++ makmake.pl	(.../trunk)	(revision 4315)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  # Copyright (c) 1997-2009 Nokia Corporation and/or its subsidiary(-ies).
@@ -2519,8 +2519,8 @@ Index: makmake.pl
  	return $localTrg;
 Index: epocmbm.pl
 ===================================================================
---- epocmbm.pl	(.../tags/orig)	(revision 4179)
-+++ epocmbm.pl	(.../trunk)	(revision 4301)
+--- epocmbm.pl	(.../tags/orig)	(revision 4313)
++++ epocmbm.pl	(.../trunk)	(revision 4315)
 @@ -24,7 +24,7 @@
  BEGIN {
  	require 5.005_03;		# check user has a version of perl that will cope
@@ -2547,8 +2547,8 @@ Index: epocmbm.pl
  		print "* BMCONV failed\n";
 Index: mmp.pm
 ===================================================================
---- mmp.pm	(.../tags/orig)	(revision 4179)
-+++ mmp.pm	(.../trunk)	(revision 4301)
+--- mmp.pm	(.../tags/orig)	(revision 4313)
++++ mmp.pm	(.../trunk)	(revision 4315)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  # Copyright (c) 1997-2009 Nokia Corporation and/or its subsidiary(-ies).
@@ -3492,11 +3492,11 @@ Index: mmp.pm
  		}
 -		if( /^PAGED$/o) {
 +		if( /^PAGED$/oi) {
- 			if ($CodePagingTargetMode == PAGED or $DataPagingTargetMode == PAGED) {
- 				push @MmpWarn, "$CurFile($LineNum) : duplicate paging setting\n";
- 			}
-@@ -1715,7 +1734,7 @@
- 			$DataPagingTargetMode = PAGED;
+ 			#revert "PAGED" keyword from code and data paged to code paged only
+ 			#if ($CodePagingTargetMode == PAGED or $DataPagingTargetMode == PAGED) {
+ 			if ($CodePagingTargetMode == PAGED) {
+@@ -1720,7 +1739,7 @@
+ 			#$DataPagingTargetMode = PAGED;
  			next LINE;
  			}
 -		if( /^UNPAGED$/o) {
@@ -3504,7 +3504,7 @@ Index: mmp.pm
  			if ($CodePagingTargetMode == UNPAGED or $DataPagingTargetMode == UNPAGED) {
  				push @MmpWarn, "$CurFile($LineNum) : duplicate paging setting\n";
  			}
-@@ -1726,7 +1745,7 @@
+@@ -1731,7 +1750,7 @@
  			$DataPagingTargetMode = UNPAGED;
  			next LINE;
  			}
@@ -3513,7 +3513,7 @@ Index: mmp.pm
  			if ($CodePagingTargetMode == PAGED) {
  				push @MmpWarn, "$CurFile($LineNum) : duplicate paging setting\n";
  			}
-@@ -1736,7 +1755,7 @@
+@@ -1741,7 +1760,7 @@
  			$CodePagingTargetMode = PAGED;
  			next LINE;
  			}
@@ -3522,7 +3522,7 @@ Index: mmp.pm
  			if ($CodePagingTargetMode == UNPAGED) {
  				push @MmpWarn, "$CurFile($LineNum) : duplicate paging setting\n";
  			}
-@@ -1746,7 +1765,7 @@
+@@ -1751,7 +1770,7 @@
  			$CodePagingTargetMode = UNPAGED;
  			next LINE;
  			}
@@ -3531,7 +3531,7 @@ Index: mmp.pm
  			if ($DataPagingTargetMode == PAGED) {
  				push @MmpWarn, "$CurFile($LineNum) : duplicate paging setting\n";
  			}
-@@ -1756,7 +1775,7 @@
+@@ -1761,7 +1780,7 @@
  			$DataPagingTargetMode = PAGED;
  			next LINE;
  			}
@@ -3540,7 +3540,7 @@ Index: mmp.pm
  			if ($DataPagingTargetMode == UNPAGED) {
  				push @MmpWarn, "$CurFile($LineNum) : duplicate paging setting\n";
  			}
-@@ -1766,18 +1785,18 @@
+@@ -1771,18 +1790,18 @@
  			$DataPagingTargetMode = UNPAGED;
  			next LINE;
  			}
@@ -3562,7 +3562,7 @@ Index: mmp.pm
  			push @MmpDie, "$CurFile($LineNum) : FEATUREVARIANT specified multiple times" if ($FeatureVariant);
  			$FeatureVariant = 1;
  			next LINE;
-@@ -1896,7 +1915,7 @@
+@@ -1901,7 +1920,7 @@
  	}
  
  	# check for languages
@@ -3571,7 +3571,7 @@ Index: mmp.pm
  
    if (&main::EPOCSecurePlatform() && !defined($Capability) &&
      (($TrgType{Basic} eq "DLL") || (uc($TrgType) eq "EXEXP")))
-@@ -2086,7 +2105,7 @@
+@@ -2091,7 +2110,7 @@
  #	Get the EPOC entrypoint static library
  	unless ($FirstLib) {
  		unless ($TrgType{FirstLib}) {
@@ -3580,7 +3580,7 @@ Index: mmp.pm
  		}
  		else {
  			$FirstLib=$TrgType{FirstLib};
-@@ -2133,7 +2152,7 @@
+@@ -2138,7 +2157,7 @@
  	# apply the default .DEF filename, and
  	# check as far as possible that the project is frozen
  	if (($TrgType{NeedDeffile} or $CheckDef)) {
@@ -3589,7 +3589,7 @@ Index: mmp.pm
  			my $augment;
  			if ($ASSPExports) {
  			    if ($$Plat_ref{DefFile} =~ /^\s*EABI\s*/i ) {
-@@ -2148,10 +2167,11 @@
+@@ -2153,10 +2172,11 @@
  					$augment = lc("B$$Plat_ref{DefFile}");
  			    }
  			}
@@ -3606,8 +3606,8 @@ Index: mmp.pm
  		unless ($Def{Base}) {
 Index: wrappermakefile.pm
 ===================================================================
---- wrappermakefile.pm	(.../tags/orig)	(revision 4179)
-+++ wrappermakefile.pm	(.../trunk)	(revision 4301)
+--- wrappermakefile.pm	(.../tags/orig)	(revision 4313)
++++ wrappermakefile.pm	(.../trunk)	(revision 4315)
 @@ -21,7 +21,7 @@
  	GenerateWrapper
  );
@@ -3620,7 +3620,7 @@ Index: wrappermakefile.pm
 Index: genstubs
 ===================================================================
 --- genstubs	(.../tags/orig)	(revision 0)
-+++ genstubs	(.../trunk)	(revision 4301)
++++ genstubs	(.../trunk)	(revision 4315)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -3640,7 +3640,7 @@ Index: genstubs
 Index: makesis
 ===================================================================
 --- makesis	(.../tags/orig)	(revision 0)
-+++ makesis	(.../trunk)	(revision 4301)
++++ makesis	(.../trunk)	(revision 4315)
 @@ -0,0 +1,22 @@
 +#!/bin/sh
 +#
@@ -3666,8 +3666,8 @@ Index: makesis
 +fi
 Index: efreeze.pl
 ===================================================================
---- efreeze.pl	(.../tags/orig)	(revision 4179)
-+++ efreeze.pl	(.../trunk)	(revision 4301)
+--- efreeze.pl	(.../tags/orig)	(revision 4313)
++++ efreeze.pl	(.../trunk)	(revision 4315)
 @@ -36,9 +36,9 @@
  }
  
@@ -3683,8 +3683,8 @@ Index: efreeze.pl
  # THE MAIN PROGRAM SECTION
 Index: epoc.pl
 ===================================================================
---- epoc.pl	(.../tags/orig)	(revision 4179)
-+++ epoc.pl	(.../trunk)	(revision 4301)
+--- epoc.pl	(.../tags/orig)	(revision 4313)
++++ epoc.pl	(.../trunk)	(revision 4315)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  # Copyright (c) 1999-2009 Nokia Corporation and/or its subsidiary(-ies).
@@ -3736,8 +3736,8 @@ Index: epoc.pl
      return $epocroot;
 Index: genutl.pm
 ===================================================================
---- genutl.pm	(.../tags/orig)	(revision 4179)
-+++ genutl.pm	(.../trunk)	(revision 4301)
+--- genutl.pm	(.../tags/orig)	(revision 4313)
++++ genutl.pm	(.../trunk)	(revision 4315)
 @@ -15,7 +15,7 @@
  # 
  #
@@ -3750,7 +3750,7 @@ Index: genutl.pm
 Index: pfsdump
 ===================================================================
 --- pfsdump	(.../tags/orig)	(revision 0)
-+++ pfsdump	(.../trunk)	(revision 4301)
++++ pfsdump	(.../trunk)	(revision 4315)
 @@ -0,0 +1,17 @@
 +#!/bin/sh
 +#
@@ -3772,7 +3772,7 @@ Index: pfsdump
 Index: checklib
 ===================================================================
 --- checklib	(.../tags/orig)	(revision 0)
-+++ checklib	(.../trunk)	(revision 4301)
++++ checklib	(.../trunk)	(revision 4315)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -3791,8 +3791,8 @@ Index: checklib
 +wine $ROOT/$PGM.exe "$@"
 Index: ide_cw.pm
 ===================================================================
---- ide_cw.pm	(.../tags/orig)	(revision 4179)
-+++ ide_cw.pm	(.../trunk)	(revision 4301)
+--- ide_cw.pm	(.../tags/orig)	(revision 4313)
++++ ide_cw.pm	(.../trunk)	(revision 4315)
 @@ -1481,7 +1481,7 @@
  		$UidText.=")\n";
  		$UidText.="#pragma data_seg()\n";
@@ -3804,8 +3804,8 @@ Index: ide_cw.pm
  
 Index: cl_bpabi.pm
 ===================================================================
---- cl_bpabi.pm	(.../tags/orig)	(revision 4179)
-+++ cl_bpabi.pm	(.../trunk)	(revision 4301)
+--- cl_bpabi.pm	(.../tags/orig)	(revision 4313)
++++ cl_bpabi.pm	(.../trunk)	(revision 4315)
 @@ -14,7 +14,7 @@
  #
  
@@ -4669,8 +4669,8 @@ Index: cl_bpabi.pm
  	if ( $vmapfile ){
 Index: featurevariantparser.pm
 ===================================================================
---- featurevariantparser.pm	(.../tags/orig)	(revision 4179)
-+++ featurevariantparser.pm	(.../trunk)	(revision 4301)
+--- featurevariantparser.pm	(.../tags/orig)	(revision 4313)
++++ featurevariantparser.pm	(.../trunk)	(revision 4315)
 @@ -51,7 +51,7 @@
  my $childNodeStatus;
  my $varianthrh;
@@ -4682,8 +4682,8 @@ Index: featurevariantparser.pm
  my $fullpath;
 Index: trgtype.pm
 ===================================================================
---- trgtype.pm	(.../tags/orig)	(revision 4179)
-+++ trgtype.pm	(.../trunk)	(revision 4301)
+--- trgtype.pm	(.../tags/orig)	(revision 4313)
++++ trgtype.pm	(.../trunk)	(revision 4315)
 @@ -17,7 +17,7 @@
  # 
  #
@@ -4819,8 +4819,8 @@ Index: trgtype.pm
  	unless ($TrgHash{UID2}) {
 Index: def2dll.bat
 ===================================================================
---- def2dll.bat	(.../tags/orig)	(revision 4179)
-+++ def2dll.bat	(.../trunk)	(revision 4301)
+--- def2dll.bat	(.../tags/orig)	(revision 4313)
++++ def2dll.bat	(.../trunk)	(revision 4315)
 @@ -13,8 +13,6 @@
  :: Description:
  ::
@@ -4950,8 +4950,8 @@ Index: def2dll.bat
 -
 Index: scanlog.pl
 ===================================================================
---- scanlog.pl	(.../tags/orig)	(revision 4179)
-+++ scanlog.pl	(.../trunk)	(revision 4301)
+--- scanlog.pl	(.../tags/orig)	(revision 4313)
++++ scanlog.pl	(.../trunk)	(revision 4315)
 @@ -24,7 +24,7 @@
  # Add the directory contain this perl script into the path to find modules
  use lib $FindBin::Bin;
@@ -4964,7 +4964,7 @@ Index: scanlog.pl
 Index: elf2e32
 ===================================================================
 --- elf2e32	(.../tags/orig)	(revision 0)
-+++ elf2e32	(.../trunk)	(revision 4301)
++++ elf2e32	(.../trunk)	(revision 4315)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -4983,8 +4983,8 @@ Index: elf2e32
 +wine $ROOT/$PGM.exe "$@"
 Index: bldmake.pl
 ===================================================================
---- bldmake.pl	(.../tags/orig)	(revision 4179)
-+++ bldmake.pl	(.../trunk)	(revision 4301)
+--- bldmake.pl	(.../tags/orig)	(revision 4313)
++++ bldmake.pl	(.../trunk)	(revision 4315)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  # Copyright (c) 1997-2009 Nokia Corporation and/or its subsidiary(-ies).
@@ -5803,7 +5803,7 @@ Index: bldmake.pl
 Index: eshell
 ===================================================================
 --- eshell	(.../tags/orig)	(revision 0)
-+++ eshell	(.../trunk)	(revision 4301)
++++ eshell	(.../trunk)	(revision 4315)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -5820,7 +5820,7 @@ Index: eshell
 Index: bmconv
 ===================================================================
 --- bmconv	(.../tags/orig)	(revision 0)
-+++ bmconv	(.../trunk)	(revision 4301)
++++ bmconv	(.../trunk)	(revision 4315)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -5839,8 +5839,8 @@ Index: bmconv
 +wine $ROOT/$PGM.exe "$@"
 Index: e32plat.pm
 ===================================================================
---- e32plat.pm	(.../tags/orig)	(revision 4179)
-+++ e32plat.pm	(.../trunk)	(revision 4301)
+--- e32plat.pm	(.../tags/orig)	(revision 4313)
++++ e32plat.pm	(.../trunk)	(revision 4315)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  # Copyright (c) 1997-2009 Nokia Corporation and/or its subsidiary(-ies).
@@ -6010,8 +6010,8 @@ Index: e32plat.pm
  	}
 Index: modload.pm
 ===================================================================
---- modload.pm	(.../tags/orig)	(revision 4179)
-+++ modload.pm	(.../trunk)	(revision 4301)
+--- modload.pm	(.../tags/orig)	(revision 4313)
++++ modload.pm	(.../trunk)	(revision 4315)
 @@ -16,7 +16,7 @@
  #
  
@@ -6052,8 +6052,8 @@ Index: modload.pm
  }
 Index: rvct_plat2set.pm
 ===================================================================
---- rvct_plat2set.pm	(.../tags/orig)	(revision 4179)
-+++ rvct_plat2set.pm	(.../trunk)	(revision 4301)
+--- rvct_plat2set.pm	(.../tags/orig)	(revision 4313)
++++ rvct_plat2set.pm	(.../trunk)	(revision 4315)
 @@ -38,9 +38,9 @@
  # 
  #
@@ -6111,7 +6111,7 @@ Index: rvct_plat2set.pm
 Index: def2dll
 ===================================================================
 --- def2dll	(.../tags/orig)	(revision 0)
-+++ def2dll	(.../trunk)	(revision 4301)
++++ def2dll	(.../trunk)	(revision 4315)
 @@ -0,0 +1,4 @@
 +#!/bin/sh
 +DIR=`dirname $0`
@@ -6119,8 +6119,8 @@ Index: def2dll
 +perl $DIR/$TOOL.bat "$@"
 Index: prepdef.pl
 ===================================================================
---- prepdef.pl	(.../tags/orig)	(revision 4179)
-+++ prepdef.pl	(.../trunk)	(revision 4301)
+--- prepdef.pl	(.../tags/orig)	(revision 4313)
++++ prepdef.pl	(.../trunk)	(revision 4315)
 @@ -34,9 +34,9 @@
  }
  
@@ -6136,8 +6136,8 @@ Index: prepdef.pl
  
 Index: compilation_config/armv5.mk
 ===================================================================
---- compilation_config/armv5.mk	(.../tags/orig)	(revision 4179)
-+++ compilation_config/armv5.mk	(.../trunk)	(revision 4301)
+--- compilation_config/armv5.mk	(.../tags/orig)	(revision 4313)
++++ compilation_config/armv5.mk	(.../trunk)	(revision 4315)
 @@ -38,7 +38,7 @@
  AR=armar
  
@@ -6210,8 +6210,8 @@ Index: compilation_config/armv5.mk
  LD_OPTIONS=$(SYMBIAN_LD_MESSAGE_OPTION)$(UNRESOLVED_SYMBOL_REF_OPTION) $(STDLIB_OPTION) $(EXTRA_LD_OPTION)
 Index: compilation_config/extractvars.make
 ===================================================================
---- compilation_config/extractvars.make	(.../tags/orig)	(revision 4179)
-+++ compilation_config/extractvars.make	(.../trunk)	(revision 4301)
+--- compilation_config/extractvars.make	(.../tags/orig)	(revision 4313)
++++ compilation_config/extractvars.make	(.../trunk)	(revision 4315)
 @@ -26,6 +26,7 @@
  	echo VERSION=$(VERSION)
  	echo VERSION_INFO=$(VERSION_INFO)
@@ -6222,8 +6222,8 @@ Index: compilation_config/extractvars.make
  	echo FC_LOGGER_GENERATED_C_FILE_NAME=$(FC_LOGGER_GENERATED_C_FILE_NAME)
 Index: compilation_config/gcce.mk
 ===================================================================
---- compilation_config/gcce.mk	(.../tags/orig)	(revision 4179)
-+++ compilation_config/gcce.mk	(.../trunk)	(revision 4301)
+--- compilation_config/gcce.mk	(.../tags/orig)	(revision 4313)
++++ compilation_config/gcce.mk	(.../trunk)	(revision 4315)
 @@ -204,7 +204,7 @@
  #---------------------
  
@@ -6255,8 +6255,8 @@ Index: compilation_config/gcce.mk
  # GCCE compiler version is done as the via option differs for different versions in GCCE
 Index: prepfile.pm
 ===================================================================
---- prepfile.pm	(.../tags/orig)	(revision 4179)
-+++ prepfile.pm	(.../trunk)	(revision 4301)
+--- prepfile.pm	(.../tags/orig)	(revision 4313)
++++ prepfile.pm	(.../trunk)	(revision 4315)
 @@ -16,7 +16,7 @@
  #
  
@@ -6346,7 +6346,7 @@ Index: prepfile.pm
 Index: petran
 ===================================================================
 --- petran	(.../tags/orig)	(revision 0)
-+++ petran	(.../trunk)	(revision 4301)
++++ petran	(.../trunk)	(revision 4315)
 @@ -0,0 +1,12 @@
 +#! /bin/bash
 +#
@@ -6363,7 +6363,7 @@ Index: petran
 Index: makmake
 ===================================================================
 --- makmake	(.../tags/orig)	(revision 0)
-+++ makmake	(.../trunk)	(revision 4301)
++++ makmake	(.../trunk)	(revision 4315)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -6379,8 +6379,8 @@ Index: makmake
 +perl -S makmake.pl "$@"
 Index: armutl.pm
 ===================================================================
---- armutl.pm	(.../tags/orig)	(revision 4179)
-+++ armutl.pm	(.../trunk)	(revision 4301)
+--- armutl.pm	(.../tags/orig)	(revision 4313)
++++ armutl.pm	(.../trunk)	(revision 4315)
 @@ -15,7 +15,7 @@
  # 
  #
@@ -6440,8 +6440,8 @@ Index: armutl.pm
                {
 Index: epocrc.pl
 ===================================================================
---- epocrc.pl	(.../tags/orig)	(revision 4179)
-+++ epocrc.pl	(.../trunk)	(revision 4301)
+--- epocrc.pl	(.../tags/orig)	(revision 4313)
++++ epocrc.pl	(.../trunk)	(revision 4315)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  # Copyright (c) 2000-2009 Nokia Corporation and/or its subsidiary(-ies).
@@ -6476,7 +6476,7 @@ Index: epocrc.pl
 Index: elftran
 ===================================================================
 --- elftran	(.../tags/orig)	(revision 0)
-+++ elftran	(.../trunk)	(revision 4301)
++++ elftran	(.../trunk)	(revision 4315)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -6495,8 +6495,8 @@ Index: elftran
 +wine $ROOT/$PGM.exe "$@"
 Index: checkgcc.pm
 ===================================================================
---- checkgcc.pm	(.../tags/orig)	(revision 4179)
-+++ checkgcc.pm	(.../trunk)	(revision 4301)
+--- checkgcc.pm	(.../tags/orig)	(revision 4313)
++++ checkgcc.pm	(.../trunk)	(revision 4315)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  # Copyright (c) 1997-2009 Nokia Corporation and/or its subsidiary(-ies).
@@ -6545,7 +6545,7 @@ Index: checkgcc.pm
 Index: makekeys
 ===================================================================
 --- makekeys	(.../tags/orig)	(revision 0)
-+++ makekeys	(.../trunk)	(revision 4301)
++++ makekeys	(.../trunk)	(revision 4315)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -6565,7 +6565,7 @@ Index: makekeys
 Index: epoc
 ===================================================================
 --- epoc	(.../tags/orig)	(revision 0)
-+++ epoc	(.../trunk)	(revision 4301)
++++ epoc	(.../trunk)	(revision 4315)
 @@ -0,0 +1,12 @@
 +#!/bin/sh
 +#
@@ -6581,8 +6581,8 @@ Index: epoc
 +perl -S epoc.pl "$@"
 Index: cl_tools.pm
 ===================================================================
---- cl_tools.pm	(.../tags/orig)	(revision 4179)
-+++ cl_tools.pm	(.../trunk)	(revision 4301)
+--- cl_tools.pm	(.../tags/orig)	(revision 4313)
++++ cl_tools.pm	(.../trunk)	(revision 4315)
 @@ -253,7 +253,7 @@
  		"\n",
  		"CLEANLIBRARY :\n"
@@ -6595,7 +6595,7 @@ Index: cl_tools.pm
 Index: aiftool
 ===================================================================
 --- aiftool	(.../tags/orig)	(revision 0)
-+++ aiftool	(.../trunk)	(revision 4301)
++++ aiftool	(.../trunk)	(revision 4315)
 @@ -0,0 +1,74 @@
 +#! /bin/bash
 +#
@@ -6673,8 +6673,8 @@ Index: aiftool
 +# EOF - aiftool
 Index: checksource.pl
 ===================================================================
---- checksource.pl	(.../tags/orig)	(revision 4179)
-+++ checksource.pl	(.../trunk)	(revision 4301)
+--- checksource.pl	(.../tags/orig)	(revision 4313)
++++ checksource.pl	(.../trunk)	(revision 4315)
 @@ -19,10 +19,10 @@
  use Cwd;
  use Getopt::Long qw(:config posix_default);		#permits "+" in arguments, rather than as an option identifier
@@ -6691,8 +6691,8 @@ Index: checksource.pl
  
 Index: checksource.pm
 ===================================================================
---- checksource.pm	(.../tags/orig)	(revision 4179)
-+++ checksource.pm	(.../trunk)	(revision 4301)
+--- checksource.pm	(.../tags/orig)	(revision 4313)
++++ checksource.pm	(.../trunk)	(revision 4315)
 @@ -16,7 +16,7 @@
  #
  
@@ -6841,8 +6841,8 @@ Index: checksource.pm
  		if ($referenceDOSSlash =~ /^$quotemetaExclusion$/i)
 Index: bpabiutl.pm
 ===================================================================
---- bpabiutl.pm	(.../tags/orig)	(revision 4179)
-+++ bpabiutl.pm	(.../trunk)	(revision 4301)
+--- bpabiutl.pm	(.../tags/orig)	(revision 4313)
++++ bpabiutl.pm	(.../trunk)	(revision 4315)
 @@ -15,7 +15,7 @@
  # 
  #
@@ -6925,7 +6925,7 @@ Index: bpabiutl.pm
 Index: signsis
 ===================================================================
 --- signsis	(.../tags/orig)	(revision 0)
-+++ signsis	(.../trunk)	(revision 4301)
++++ signsis	(.../trunk)	(revision 4315)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -6944,8 +6944,8 @@ Index: signsis
 +wine $ROOT/$PGM.exe "$@"
 Index: defutl.pm
 ===================================================================
---- defutl.pm	(.../tags/orig)	(revision 4179)
-+++ defutl.pm	(.../trunk)	(revision 4301)
+--- defutl.pm	(.../tags/orig)	(revision 4313)
++++ defutl.pm	(.../trunk)	(revision 4315)
 @@ -16,7 +16,7 @@
  # 
  #
@@ -6957,8 +6957,8 @@ Index: defutl.pm
  @ISA=qw(Exporter);
 Index: preprocessor.pm
 ===================================================================
---- preprocessor.pm	(.../tags/orig)	(revision 4179)
-+++ preprocessor.pm	(.../trunk)	(revision 4301)
+--- preprocessor.pm	(.../tags/orig)	(revision 4313)
++++ preprocessor.pm	(.../trunk)	(revision 4315)
 @@ -16,7 +16,7 @@
  # 
  #
@@ -6987,7 +6987,7 @@ Index: preprocessor.pm
 Index: tranasm
 ===================================================================
 --- tranasm	(.../tags/orig)	(revision 0)
-+++ tranasm	(.../trunk)	(revision 4301)
++++ tranasm	(.../trunk)	(revision 4315)
 @@ -0,0 +1,4 @@
 +#!/bin/sh
 +DIR=`dirname $0`
@@ -6995,8 +6995,8 @@ Index: tranasm
 +perl $DIR/$TOOL.pl "$@"
 Index: makedef.pl
 ===================================================================
---- makedef.pl	(.../tags/orig)	(revision 4179)
-+++ makedef.pl	(.../trunk)	(revision 4301)
+--- makedef.pl	(.../tags/orig)	(revision 4313)
++++ makedef.pl	(.../trunk)	(revision 4315)
 @@ -38,9 +38,9 @@
  }
  use lib $PerlBinPath;
@@ -7036,8 +7036,8 @@ Index: makedef.pl
  				$Comment = $1;
 Index: output.pm
 ===================================================================
---- output.pm	(.../tags/orig)	(revision 4179)
-+++ output.pm	(.../trunk)	(revision 4301)
+--- output.pm	(.../tags/orig)	(revision 4313)
++++ output.pm	(.../trunk)	(revision 4315)
 @@ -15,7 +15,7 @@
  # 
  #
@@ -7069,8 +7069,8 @@ Index: output.pm
  
 Index: abld.pl
 ===================================================================
---- abld.pl	(.../tags/orig)	(revision 4179)
-+++ abld.pl	(.../trunk)	(revision 4301)
+--- abld.pl	(.../tags/orig)	(revision 4313)
++++ abld.pl	(.../trunk)	(revision 4315)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  # Copyright (c) 1997-2009 Nokia Corporation and/or its subsidiary(-ies).
@@ -7410,7 +7410,7 @@ Index: abld.pl
 Index: rcomp
 ===================================================================
 --- rcomp	(.../tags/orig)	(revision 0)
-+++ rcomp	(.../trunk)	(revision 4301)
++++ rcomp	(.../trunk)	(revision 4315)
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -7429,8 +7429,8 @@ Index: rcomp
 +wine $ROOT/$PGM.exe "$@"
 Index: e32tpver.pm
 ===================================================================
---- e32tpver.pm	(.../tags/orig)	(revision 4179)
-+++ e32tpver.pm	(.../trunk)	(revision 4301)
+--- e32tpver.pm	(.../tags/orig)	(revision 4313)
++++ e32tpver.pm	(.../trunk)	(revision 4315)
 @@ -15,7 +15,7 @@
  # 
  #
@@ -7442,8 +7442,8 @@ Index: e32tpver.pm
  @EXPORT=qw(
 Index: pathutl.pm
 ===================================================================
---- pathutl.pm	(.../tags/orig)	(revision 4179)
-+++ pathutl.pm	(.../trunk)	(revision 4301)
+--- pathutl.pm	(.../tags/orig)	(revision 4313)
++++ pathutl.pm	(.../trunk)	(revision 4315)
 @@ -17,7 +17,7 @@
  # 
  #
@@ -7734,8 +7734,8 @@ Index: pathutl.pm
  
 Index: memtrace.pl
 ===================================================================
---- memtrace.pl	(.../tags/orig)	(revision 4179)
-+++ memtrace.pl	(.../trunk)	(revision 4301)
+--- memtrace.pl	(.../tags/orig)	(revision 4313)
++++ memtrace.pl	(.../trunk)	(revision 4315)
 @@ -242,7 +242,7 @@
  	{
  	my $build;
@@ -7747,8 +7747,8 @@ Index: memtrace.pl
  	&usage;
 Index: epocaif.pl
 ===================================================================
---- epocaif.pl	(.../tags/orig)	(revision 4179)
-+++ epocaif.pl	(.../trunk)	(revision 4301)
+--- epocaif.pl	(.../tags/orig)	(revision 4313)
++++ epocaif.pl	(.../trunk)	(revision 4315)
 @@ -1,3 +1,4 @@
 +#!/usr/bin/perl -w
  # Copyright (c) 2001-2009 Nokia Corporation and/or its subsidiary(-ies).
@@ -7993,8 +7993,8 @@ Index: epocaif.pl
  		$curdrive="";
 Index: e32variant.pm
 ===================================================================
---- e32variant.pm	(.../tags/orig)	(revision 4179)
-+++ e32variant.pm	(.../trunk)	(revision 4301)
+--- e32variant.pm	(.../tags/orig)	(revision 4313)
++++ e32variant.pm	(.../trunk)	(revision 4315)
 @@ -13,7 +13,7 @@
  # Description:
  #
@@ -8094,8 +8094,8 @@ Index: e32variant.pm
  		push @macros, $3;
 Index: makhelp.pm
 ===================================================================
---- makhelp.pm	(.../tags/orig)	(revision 4179)
-+++ makhelp.pm	(.../trunk)	(revision 4301)
+--- makhelp.pm	(.../tags/orig)	(revision 4313)
++++ makhelp.pm	(.../trunk)	(revision 4315)
 @@ -14,7 +14,7 @@
  #
  
@@ -8134,8 +8134,8 @@ Index: makhelp.pm
  DOCUMENT               [sourcepath-relative_documents]
 Index: makdeps.pm
 ===================================================================
---- makdeps.pm	(.../tags/orig)	(revision 4179)
-+++ makdeps.pm	(.../trunk)	(revision 4301)
+--- makdeps.pm	(.../tags/orig)	(revision 4313)
++++ makdeps.pm	(.../trunk)	(revision 4315)
 @@ -16,7 +16,7 @@
  # 
  #
@@ -8270,7 +8270,7 @@ Index: makdeps.pm
 Index: mifconv
 ===================================================================
 --- mifconv	(.../tags/orig)	(revision 0)
-+++ mifconv	(.../trunk)	(revision 4301)
++++ mifconv	(.../trunk)	(revision 4315)
 @@ -0,0 +1,36 @@
 +#!/usr/bin/env perl
 +#
@@ -8311,7 +8311,7 @@ Index: mifconv
 Index: abld
 ===================================================================
 --- abld	(.../tags/orig)	(revision 0)
-+++ abld	(.../trunk)	(revision 4301)
++++ abld	(.../trunk)	(revision 4315)
 @@ -0,0 +1,19 @@
 +#!/bin/sh
 +#
