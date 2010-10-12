@@ -1,0 +1,60 @@
+#!/bin/sh
+
+set -e
+
+if test $# -lt 3 -o $0 != "./install_qt_mobility"; then
+  echo "Usage: ./install_qt_mobility <path-to-zip> [-qt <target-qt-dir>] [-sdk <target-sdk-dir>] [-sdk <another-sdk-dir>]"
+  echo " e.g.: ./install_qt_mobility qt-mobility-symbian-opensource-1.0.2.zip -qt ~/symbian-sdks/qt -sdk ~/symbian-sdks/s60_31"
+  exit 1
+fi
+
+SRC=$1
+shift
+
+QTDIRS=""
+
+while [ $# -gt 1 ]; do
+	if [ "$1" = "-qt" ]; then
+		QTDIRS="$QTDIRS $2"
+		shift 2
+	else if [ "$1" = "-sdk" ]; then
+		SDKS="$SDKS $2"
+		shift 2
+	else
+		echo Unknown parameter $1
+		exit 1
+	fi; fi
+done
+if [ $# -gt 0 ]; then
+	echo Unknown parameter $1
+	exit 1
+fi
+
+QTDIRS=`echo $QTDIRS | sed s:/\$:: | sed 's:/ : :'`
+SDKS=`echo $SDKS | sed s:/\$:: | sed 's:/ : :'`
+
+set -x
+
+### Unzip
+mkdir -p qt_temp
+unzip -dqt_temp $SRC
+DIR=qt_temp/qt-mobility-*
+for q in $QTDIRS; do
+	cp $DIR/features/mobility.prf.template $q/mkspecs/features/mobility.prf
+	cp $DIR/*.sis $q
+done
+for s in $SDKS; do
+	if [ -f $s/epoc32/include/variant/symbian_os_v9.2.hrh ]; then
+		unzip -d$s $DIR/qt-mobility-*-epoc32-3.1.zip
+	else if [ -f $s/epoc32/include/variant/symbian_os_v9.3.hrh ]; then
+		unzip -d$s $DIR/qt-mobility-*-epoc32-3.2.zip
+	else if [ -f $s/epoc32/include/variant/symbian_os.hrh ]; then
+		if [ -f $s/epoc32/tools/checklib.exe ] && [ -f $DIR/qt-mobility-*-epoc32-symbian3.zip ]; then
+			unzip -d$s $DIR/qt-mobility-*-epoc32-symbian3.zip
+		else
+			unzip -d$s $DIR/qt-mobility-*-epoc32-5.0.zip
+		fi
+	fi; fi; fi
+done
+rm -rf qt_temp
+
