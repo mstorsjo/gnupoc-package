@@ -16,10 +16,16 @@ index 7f4375f..65db28d 100755
  # Check some pre-conditions and print error messages if needed.
  unless (length($templatepkg)) {
 diff --git a/mkspecs/common/symbian/symbian.conf b/mkspecs/common/symbian/symbian.conf
-index ba31116..f5161c8 100644
+index ba31116..7e3784c 100644
 --- a/mkspecs/common/symbian/symbian.conf
 +++ b/mkspecs/common/symbian/symbian.conf
-@@ -100,9 +100,9 @@ contains(QMAKE_HOST.os,Windows) {
+@@ -95,14 +95,14 @@ contains(QMAKE_HOST.os,Windows) {
+     QMAKE_COPY_DIR       = cp -r
+     QMAKE_MOVE           = mv
+     QMAKE_DEL_FILE       = rm -f
+-    QMAKE_MKDIR          = mkdir
++    QMAKE_MKDIR          = mkdir -p
+     QMAKE_DEL_DIR        = rmdir
      QMAKE_CHK_DIR_EXISTS = test -d
  }
  

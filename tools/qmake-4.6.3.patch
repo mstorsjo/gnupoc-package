@@ -52,7 +52,7 @@ index 84f0be4..8ac810a 100644
                    .arg(fixedTarget)
                    .arg("pkg");
 diff --git a/qmake/generators/symbian/symmake_abld.cpp b/qmake/generators/symbian/symmake_abld.cpp
-index 70264a5..79d54dc 100644
+index 70264a5..c1c7c95 100644
 --- a/qmake/generators/symbian/symmake_abld.cpp
 +++ b/qmake/generators/symbian/symmake_abld.cpp
 @@ -206,16 +206,17 @@ void SymbianAbldMakefileGenerator::writeWrapperMakefile(QFile& wrapperFile, bool
@@ -61,7 +61,7 @@ index 70264a5..79d54dc 100644
      t << "MKDIR             = " << var("QMAKE_MKDIR") << endl;
 -    t << "XCOPY             = xcopy /d /f /h /r /y /i" << endl;
 -    t << "ABLD              = ABLD.BAT" << endl;
-+    t << "XCOPY             = cp -R" << endl;
++    t << "XCOPY             = cp -R -v" << endl;
 +    t << "ABLD              = abld" << endl;
      t << "DEBUG_PLATFORMS   = " << debugPlatforms.join(" ") << endl;
      t << "RELEASE_PLATFORMS = " << releasePlatforms.join(" ") << endl;
@@ -88,7 +88,23 @@ index 70264a5..79d54dc 100644
                  }
              }
          }
-@@ -468,16 +469,15 @@ bool SymbianAbldMakefileGenerator::writeDeploymentTargets(QTextStream &t, bool i
+@@ -440,8 +441,14 @@ bool SymbianAbldMakefileGenerator::writeDeploymentTargets(QTextStream &t, bool i
+         // Xcopy prompts for selecting file or directory if target doesn't exist,
+         // and doesn't provide switch to force file selection. It does provide dir forcing, though,
+         // so strip the last part of the destination.
++        QString dir = Option::fixPathToLocalOS(depList.at(i).to.left(depList.at(i).to.lastIndexOf("\\") + 1));
++        QString dirExists = var("QMAKE_CHK_DIR_EXISTS");
++        QString mkdir = var("QMAKE_MKDIR");
++        t << "\t-@ " << dirExists << " \""  << dir << "\" "
++                      << (isWindowsShell() ? "" : "|| ")
++                      << mkdir << " \"" << dir << "\"" << endl;
+         t << "\t-$(XCOPY) \"" << depList.at(i).from << "\" \""
+-          << depList.at(i).to.left(depList.at(i).to.lastIndexOf("\\") + 1) << "\"" << endl;
++          << dir << "\"" << endl;
+     }
+ 
+     t << endl;
+@@ -468,16 +475,15 @@ bool SymbianAbldMakefileGenerator::writeDeploymentTargets(QTextStream &t, bool i
  void SymbianAbldMakefileGenerator::writeStoreBuildTarget(QTextStream &t)
  {
      t << STORE_BUILD_TARGET ":" << endl;

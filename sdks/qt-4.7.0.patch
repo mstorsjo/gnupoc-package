@@ -1,3 +1,16 @@
+diff --git a/mkspecs/common/symbian/symbian.conf b/mkspecs/common/symbian/symbian.conf
+index 7ec5c6c..d41aa00 100644
+--- a/mkspecs/common/symbian/symbian.conf
++++ b/mkspecs/common/symbian/symbian.conf
+@@ -95,7 +95,7 @@ contains(QMAKE_HOST.os,Windows) {
+     QMAKE_COPY_DIR       = cp -r
+     QMAKE_MOVE           = mv
+     QMAKE_DEL_FILE       = rm -f
+-    QMAKE_MKDIR          = mkdir
++    QMAKE_MKDIR          = mkdir -p
+     QMAKE_DEL_DIR        = rmdir
+     QMAKE_DEL_TREE       = rm -rf
+     QMAKE_CHK_DIR_EXISTS = test -d
 diff --git a/mkspecs/features/sis_targets.prf b/mkspecs/features/sis_targets.prf
 index bcfdf8f..6566ec6 100644
 --- a/mkspecs/features/sis_targets.prf
