@@ -64,7 +64,7 @@ chmod a+x qt_temp/\$OUTDIR/bin/bin/createpackage.pl
 ./dos2unix qt_temp/\$OUTDIR/bin/src/corelib/global/qglobal.h
 for i in qt_temp/\$OUTDIR/bin/config.tests/unix/*.test qt_temp/\$OUTDIR/bin/config.tests/x11/*.test qt_temp/\$OUTDIR/bin/config.tests/mac/*.test; do ./dos2unix $i; chmod a+x $i; done
 for i in configure config.tests/unix/makeabs config.tests/unix/padstring; do ./dos2unix qt_temp/\$OUTDIR/bin/$i; chmod a+x qt_temp/\$OUTDIR/bin/$i; done
-if [ "$QTDEST" != "" ]; then ./mergedir qt_temp/\$OUTDIR/bin $QTDEST; fi
+if [ "x$QTDEST" != "x" ]; then ./mergedir qt_temp/\$OUTDIR/bin $QTDEST; fi
 rm -rf qt_temp
 
 set +x
