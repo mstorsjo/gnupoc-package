@@ -65,7 +65,7 @@ mv Symbian_tools $DEST/symbiantools
 ./fixexamples $DEST/examples
 for i in \`find $DEST/epoc32/tools -name \\\*.pl -or -name \\\*.pm\`; do ./dos2unix \$i; done
 cp -pR $DEST/epoc32/tools $DEST/epoc32/tools_orig
-cat gnupoc-symbian3-patch | (cd $DEST/epoc32/tools; patch -p0 )
+cat gnupoc-symbian3-patch | (cd $DEST/epoc32/tools; patch -p1 )
 find $DEST/epoc32/tools -name \\\*.orig -exec rm {} \\\\;
 cd $DEST/epoc32/tools; chmod a+x \*.pl bldmake abld makmake bmconv rcomp makesis epoc eshell petran pfsdump elf2e32 mifconv makekeys signsis extmake def2dll elftran genstubs getexports tranasm checklib
 
