@@ -309,6 +309,8 @@ int parseOptions(char** argv, int argc, E32ImageHeader* header, E32ImageHeaderCo
 		} else if (!strcmp(argv[i], "-defaultpaged")) {
 		} else if (!strcmp(argv[i], "-unpaged")) {
 			header->flags |= KImageUnpaged;
+		} else if (!strcmp(argv[i], "-paged")) {
+			header->flags |= KImagePaged;
 		} else if (!strcmp(argv[i], "-sym_name_lkup")) {
 			// FIXME?
 		} else if (!strcmp(argv[i], "-debuggable")) {
