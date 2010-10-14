@@ -59,3 +59,72 @@ index bcfdf8f..6566ec6 100644
                  && echo QT_SIS_TARGET ?= $(QT_SIS_TARGET) >> $$make_cache_name
  
              QMAKE_EXTRA_TARGETS += store_build_target
+diff --git a/qmake/generators/symbian/symbiancommon.cpp b/qmake/generators/symbian/symbiancommon.cpp
+index 58d2edd..a3606bd 100644
+--- a/qmake/generators/symbian/symbiancommon.cpp
++++ b/qmake/generators/symbian/symbiancommon.cpp
+@@ -390,9 +390,9 @@ void SymbianCommonGenerator::generatePkgFile(const QString &iconFile, bool epocB
+                     t << QString("\"%1epoc32/data/z%2\" - \"!:%3\"")
+                          .arg(epocRoot())
+                          .arg(iconFile)
+-                         .arg(QDir::toNativeSeparators(iconFile)) << endl << endl;
++                         .arg(QString(iconFile).replace("/", "\\")) << endl << endl;
+                     ts << QString("\"\" - \"%1\"")
+-                         .arg(romPath(QDir::toNativeSeparators(iconFile))) << endl << endl;
++                         .arg(romPath(QString(iconFile).replace("/", "\\"))) << endl << endl;
+                 } else {
+                     QDir mifIconDir(project->first("DESTDIR"));
+                     QFileInfo mifIcon(mifIconDir.relativeFilePath(project->first("TARGET")));
+@@ -401,9 +401,9 @@ void SymbianCommonGenerator::generatePkgFile(const QString &iconFile, bool epocB
+                     t << QString("\"%1/%2\" - \"!:%3\"")
+                          .arg(mifIcon.path())
+                          .arg(mifIconFileName)
+-                         .arg(QDir::toNativeSeparators(iconFile)) << endl << endl;
++                         .arg(QString(iconFile).replace("/", "\\")) << endl << endl;
+                     ts << QString("\"\" - \"%1\"")
+-                         .arg(romPath(QDir::toNativeSeparators(iconFile))) << endl << endl;
++                         .arg(romPath(QString(iconFile).replace("/", "\\"))) << endl << endl;
+                 }
+             }
+         }
+diff --git a/qmake/generators/symbian/symmake_abld.cpp b/qmake/generators/symbian/symmake_abld.cpp
+index 03d1a18..4fbe6f7 100644
+--- a/qmake/generators/symbian/symmake_abld.cpp
++++ b/qmake/generators/symbian/symmake_abld.cpp
+@@ -209,8 +209,11 @@ void SymbianAbldMakefileGenerator::writeWrapperMakefile(QFile& wrapperFile, bool
+ #ifdef Q_OS_WIN32
+     t << "XCOPY             = xcopy /d /f /h /r /y /i" << endl;
+     t << "ABLD              = ABLD.BAT" << endl;
++#elif defined(Q_OS_MAC)
++    t << "XCOPY             = cp -R -v" << endl;
++    t << "ABLD              = abld" << endl;
+ #else
+-    t << "XCOPY             = cp -u -v" << endl;
++    t << "XCOPY             = cp -R -u -v" << endl;
+     t << "ABLD              = abld" << endl;
+ #endif
+     t << "DEBUG_PLATFORMS   = " << debugPlatforms.join(" ") << endl;
+@@ -327,6 +330,7 @@ void SymbianAbldMakefileGenerator::writeWrapperMakefile(QFile& wrapperFile, bool
+                     QString fixedValue(QDir::toNativeSeparators(values.at(i)));
+                     dirsToClean << fixedValue;
+                     t << "\t-@ " << dirExists << " \""  << fixedValue << "\" "
++                      << (isWindowsShell() ? "" : "|| ")
+                       << mkdir << " \"" << fixedValue << "\"" << endl;
+                 }
+             }
+@@ -445,8 +449,14 @@ bool SymbianAbldMakefileGenerator::writeDeploymentTargets(QTextStream &t, bool i
+         // Xcopy prompts for selecting file or directory if target doesn't exist,
+         // and doesn't provide switch to force file selection. It does provide dir forcing, though,
+         // so strip the last part of the destination.
++        QString dir = Option::fixPathToLocalOS(depList.at(i).to.left(depList.at(i).to.lastIndexOf("\\") + 1));
++        QString dirExists = var("QMAKE_CHK_DIR_EXISTS");
++        QString mkdir = var("QMAKE_MKDIR");
++        t << "\t-@ " << dirExists << " \""  << dir << "\" "
++                      << (isWindowsShell() ? "" : "|| ")
++                      << mkdir << " \"" << dir << "\"" << endl;
+         t << "\t-$(XCOPY) \"" << depList.at(i).from << "\" \""
+-          << depList.at(i).to.left(depList.at(i).to.lastIndexOf("\\") + 1) << "\"" << endl;
++          << dir << "\"" << endl;
+     }
+ 
+     t << endl;
