@@ -37,7 +37,7 @@ fi
 QTDEST=`echo $QTDIR | sed s:/\$::`
 SDKS=`echo $SDKS | sed s:/\$:: | sed 's:/ : :'`
 
-if [ "$QTDEST" != "" ]; then mkdir -p $QTDEST; fi
+if [ "x$QTDEST" != "x" ]; then mkdir -p $QTDEST; fi
 
 export PATH=7z:$PATH
 # 7z must find the path to 7z.so
@@ -75,7 +75,7 @@ rm -rf qt_temp
 
 set +x
 
-if [ "$QTDEST" != "" ]; then
+if [ "x$QTDEST" != "x" ]; then
 	cat > $QTDEST/bin/qt.conf <<EOF
 [Paths]
 Prefix = $QTDEST
