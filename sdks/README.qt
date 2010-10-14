@@ -39,7 +39,6 @@ variables as for normal use of the Symbian SDKs, as described in README.
 Add the qt bin directory to the path, and set the default makespec:
 
 export PATH=~/symbian-sdks/qt_4.7.0/bin:$PATH
-export QMAKESPEC=symbian-abld
 
 Then to build, just enter the qt project directory (e.g.
 ~/symbian-sdks/qt_4.7.0/examples/widgets/analogclock) and build as

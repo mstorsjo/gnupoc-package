@@ -25,6 +25,8 @@ do
     cp .qmake.cache.orig .qmake.cache
     rm -f src/corelib/global/qconfig.h
     cp src/corelib/global/qconfig.h.orig src/corelib/global/qconfig.h
+    rm -rf mkspecs/default
+    ln -s symbian-abld mkspecs/default
     exit 1
   fi
 done << __END
@@ -36,6 +38,8 @@ $MAKE sub-tools-bootstrap sub-moc sub-rcc sub-uic
 cp .qmake.cache.orig .qmake.cache
 rm -f src/corelib/global/qconfig.h
 cp src/corelib/global/qconfig.h.orig src/corelib/global/qconfig.h
+rm -rf mkspecs/default
+ln -s symbian-abld mkspecs/default
 
 __END
 

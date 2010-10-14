@@ -68,6 +68,8 @@ for i in configure config.tests/unix/makeabs config.tests/unix/padstring; do
 	./dos2unix qt_temp/\$OUTDIR/bin/$i
 	chmod a+x qt_temp/\$OUTDIR/bin/$i
 done
+rm -rf qt_temp/\$OUTDIR/bin/mkspecs/default
+ln -s symbian-abld qt_temp/\$OUTDIR/bin/mkspecs/default
 if [ "x$QTDEST" != "x" ]; then
 	./mergedir qt_temp/\$OUTDIR/bin $QTDEST
 fi
