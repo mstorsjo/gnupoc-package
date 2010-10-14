@@ -54,10 +54,7 @@ for sdk in $SDKS; do ./mergedir -copy qt_temp/\$OUTDIR/epoc32/epoc32 $sdk/epoc32
 ./dos2unix qt_temp/\$OUTDIR/bin/bin/createpackage.pl
 ./dos2unix qt_temp/\$OUTDIR/bin/src/gui/s60framework/qs60maindocument.h
 find qt_temp/\$OUTDIR/bin/mkspecs -type f | xargs -n 1 ./dos2unix
-./dos2unix qt_temp/\$OUTDIR/bin/qmake/project.cpp
-./dos2unix qt_temp/\$OUTDIR/bin/qmake/generators/makefile.cpp
-./dos2unix qt_temp/\$OUTDIR/bin/qmake/generators/symbian/symmake.cpp
-./dos2unix qt_temp/\$OUTDIR/bin/qmake/generators/symbian/symmake_abld.cpp
+find qt_temp/\$OUTDIR/bin/qmake -type f -name \*.cpp | xargs -n 1 ./dos2unix
 cat qt-4.6.3.patch | (cd qt_temp/\$OUTDIR/bin && patch -p1)
 chmod a+x qt_temp/\$OUTDIR/bin/bin/createpackage.pl
 ./dos2unix qt_temp/\$OUTDIR/bin/src/corelib/global/qglobal.h
