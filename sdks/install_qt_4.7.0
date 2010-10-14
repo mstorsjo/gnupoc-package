@@ -50,7 +50,9 @@ mkdir -p qt_temp
 $P7ZIP x -y -oqt_temp $SRC
 mkdir -p qt_temp/\$OUTDIR/epoc32/epoc32/release/gcce/urel
 cp qt_temp/\$OUTDIR/epoc32/epoc32/release/armv5/urel/qtmain.lib qt_temp/\$OUTDIR/epoc32/epoc32/release/gcce/urel
-for sdk in $SDKS; do ./mergedir -copy qt_temp/\$OUTDIR/epoc32/epoc32 $sdk/epoc32; done
+for sdk in $SDKS; do
+	./mergedir -copy qt_temp/\$OUTDIR/epoc32/epoc32 $sdk/epoc32
+done
 ./dos2unix qt_temp/\$OUTDIR/bin/bin/createpackage.pl
 ./dos2unix qt_temp/\$OUTDIR/bin/bin/createpackage
 ./dos2unix qt_temp/\$OUTDIR/bin/bin/patch_capabilities.pl
@@ -63,9 +65,17 @@ chmod a+x qt_temp/\$OUTDIR/bin/bin/createpackage
 chmod a+x qt_temp/\$OUTDIR/bin/bin/patch_capabilities.pl
 chmod a+x qt_temp/\$OUTDIR/bin/bin/patch_capabilities
 ./dos2unix qt_temp/\$OUTDIR/bin/src/corelib/global/qglobal.h
-for i in qt_temp/\$OUTDIR/bin/config.tests/unix/*.test qt_temp/\$OUTDIR/bin/config.tests/x11/*.test qt_temp/\$OUTDIR/bin/config.tests/mac/*.test; do ./dos2unix $i; chmod a+x $i; done
-for i in configure config.tests/unix/makeabs config.tests/unix/padstring; do ./dos2unix qt_temp/\$OUTDIR/bin/$i; chmod a+x qt_temp/\$OUTDIR/bin/$i; done
-if [ "x$QTDEST" != "x" ]; then ./mergedir qt_temp/\$OUTDIR/bin $QTDEST; fi
+for i in qt_temp/\$OUTDIR/bin/config.tests/unix/*.test qt_temp/\$OUTDIR/bin/config.tests/x11/*.test qt_temp/\$OUTDIR/bin/config.tests/mac/*.test; do
+	./dos2unix $i
+	chmod a+x $i
+done
+for i in configure config.tests/unix/makeabs config.tests/unix/padstring; do
+	./dos2unix qt_temp/\$OUTDIR/bin/$i
+	chmod a+x qt_temp/\$OUTDIR/bin/$i
+done
+if [ "x$QTDEST" != "x" ]; then
+	./mergedir qt_temp/\$OUTDIR/bin $QTDEST
+fi
 rm -rf qt_temp
 
 set +x
