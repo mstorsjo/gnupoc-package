@@ -8,3 +8,7 @@ libelf.a: libelf/lib/libelf.a
 libelf/lib/libelf.a:
 	cd libelf-elftoolchain && $(MAKE) install PREFIX=`pwd`/../libelf
 
+clean-libelf:
+	rm -rf libelf
+	cd libelf-elftoolchain && $(MAKE) clean
+
