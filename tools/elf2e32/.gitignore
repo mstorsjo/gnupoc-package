@@ -1,0 +1,14 @@
+*.o
+*.a
+libelf
+elf2e32
+elftran
+gendirective
+genstubs
+getexports
+bindiff
+e32-ref*
+e32-test*
+e32info*
+ref-out.txt
+test-out.txt
