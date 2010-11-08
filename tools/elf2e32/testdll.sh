@@ -11,8 +11,8 @@ mv e32-ref.dso e32-ref.dso.orig
 ./elf2e32 --output=e32-test.dll --defoutput=e32-test.def --dso=e32-ref.dso $ARGS
 mv e32-ref.dso e32-test.dso
 mv e32-ref.dso.orig e32-ref.dso
-./bindiff -i 0x14,0x18 -i 0x24,0x28 e32-ref.dll e32-test.dll
-diff -u e32-ref.def e32-test.def
+./bindiff -i 0x14,0x18 -i 0x24,0x28 e32-ref.dll e32-test.dll || exit 1
+diff -u e32-ref.def e32-test.def || exit 1
 wine $EPOCROOT/epoc32/tools/elf2e32.exe --e32input=e32-test.dll > e32info-test.txt
 rm e32-test.dll e32-ref.dll
 
@@ -21,7 +21,7 @@ compare() {
 	ARGS=$2
 	$CMD $ARGS e32-ref.dso > ref-out.txt
 	$CMD $ARGS e32-test.dso | sed s/e32-test.dso/e32-ref.dso/ > test-out.txt
-	diff -u ref-out.txt test-out.txt
+	diff -u ref-out.txt test-out.txt || exit 1
 }
 
 # objdump -s produces differences in .dynamic and .hash (and in .version sometimes)
