@@ -44,78 +44,54 @@ struct msize {
 
 
 static struct msize msize[ELF_T_NUM] = {
-#if	LIBELF_CONFIG_ADDR
-    [ELF_T_ADDR] = { .msz32 = sizeof(Elf32_Addr), .msz64 = sizeof(Elf64_Addr) },
-#endif
-#if	LIBELF_CONFIG_BYTE
-    [ELF_T_BYTE] = { .msz32 = 1, .msz64 = 1 },
-#endif
-#if	LIBELF_CONFIG_CAP
-    [ELF_T_CAP] = { .msz32 = sizeof(Elf32_Cap), .msz64 = sizeof(Elf64_Cap) },
-#endif
-#if	LIBELF_CONFIG_DYN
-    [ELF_T_DYN] = { .msz32 = sizeof(Elf32_Dyn), .msz64 = sizeof(Elf64_Dyn) },
-#endif
-#if	LIBELF_CONFIG_EHDR
-    [ELF_T_EHDR] = { .msz32 = sizeof(Elf32_Ehdr), .msz64 = sizeof(Elf64_Ehdr) },
-#endif
-#if	LIBELF_CONFIG_GNUHASH
-    [ELF_T_GNUHASH] = { .msz32 = 1, .msz64 = 1 },
-#endif
-#if	LIBELF_CONFIG_HALF
-    [ELF_T_HALF] = { .msz32 = sizeof(Elf32_Half), .msz64 = sizeof(Elf64_Half) },
-#endif
-#if	LIBELF_CONFIG_LWORD
-    [ELF_T_LWORD] = { .msz32 = sizeof(Elf32_Lword), .msz64 = sizeof(Elf64_Lword) },
-#endif
-#if	LIBELF_CONFIG_MOVE
-    [ELF_T_MOVE] = { .msz32 = sizeof(Elf32_Move), .msz64 = sizeof(Elf64_Move) },
-#endif
-#if	LIBELF_CONFIG_MOVEP
-    [ELF_T_MOVEP] = { .msz32 = 0, .msz64 = 0 },
-#endif
-#if	LIBELF_CONFIG_NOTE
-    [ELF_T_NOTE] = { .msz32 = 1, .msz64 = 1 },
-#endif
-#if	LIBELF_CONFIG_OFF
-    [ELF_T_OFF] = { .msz32 = sizeof(Elf32_Off), .msz64 = sizeof(Elf64_Off) },
-#endif
-#if	LIBELF_CONFIG_PHDR
-    [ELF_T_PHDR] = { .msz32 = sizeof(Elf32_Phdr), .msz64 = sizeof(Elf64_Phdr) },
-#endif
-#if	LIBELF_CONFIG_REL
-    [ELF_T_REL] = { .msz32 = sizeof(Elf32_Rel), .msz64 = sizeof(Elf64_Rel) },
-#endif
-#if	LIBELF_CONFIG_RELA
-    [ELF_T_RELA] = { .msz32 = sizeof(Elf32_Rela), .msz64 = sizeof(Elf64_Rela) },
-#endif
-#if	LIBELF_CONFIG_SHDR
-    [ELF_T_SHDR] = { .msz32 = sizeof(Elf32_Shdr), .msz64 = sizeof(Elf64_Shdr) },
-#endif
-#if	LIBELF_CONFIG_SWORD
-    [ELF_T_SWORD] = { .msz32 = sizeof(Elf32_Sword), .msz64 = sizeof(Elf64_Sword) },
-#endif
-#if	LIBELF_CONFIG_SXWORD
-    [ELF_T_SXWORD] = { .msz32 = 0, .msz64 = sizeof(Elf64_Sxword) },
-#endif
-#if	LIBELF_CONFIG_SYMINFO
-    [ELF_T_SYMINFO] = { .msz32 = sizeof(Elf32_Syminfo), .msz64 = sizeof(Elf64_Syminfo) },
-#endif
-#if	LIBELF_CONFIG_SYM
-    [ELF_T_SYM] = { .msz32 = sizeof(Elf32_Sym), .msz64 = sizeof(Elf64_Sym) },
-#endif
-#if	LIBELF_CONFIG_VDEF
-    [ELF_T_VDEF] = { .msz32 = 1, .msz64 = 1 },
-#endif
-#if	LIBELF_CONFIG_VNEED
-    [ELF_T_VNEED] = { .msz32 = 1, .msz64 = 1 },
-#endif
-#if	LIBELF_CONFIG_WORD
-    [ELF_T_WORD] = { .msz32 = sizeof(Elf32_Word), .msz64 = sizeof(Elf64_Word) },
-#endif
-#if	LIBELF_CONFIG_XWORD
-    [ELF_T_XWORD] = { .msz32 = 0, .msz64 = sizeof(Elf64_Xword) },
-#endif
+[ELF_T_ADDR] = { .msz32 = sizeof(Elf32_Addr), .msz64 = sizeof(Elf64_Addr) },
+
+[ELF_T_BYTE] = { .msz32 = 1, .msz64 = 1 },
+
+[ELF_T_CAP] = { .msz32 = sizeof(Elf32_Cap), .msz64 = sizeof(Elf64_Cap) },
+
+[ELF_T_DYN] = { .msz32 = sizeof(Elf32_Dyn), .msz64 = sizeof(Elf64_Dyn) },
+
+[ELF_T_EHDR] = { .msz32 = sizeof(Elf32_Ehdr), .msz64 = sizeof(Elf64_Ehdr) },
+
+[ELF_T_GNUHASH] = { .msz32 = 1, .msz64 = 1 },
+
+[ELF_T_HALF] = { .msz32 = sizeof(Elf32_Half), .msz64 = sizeof(Elf64_Half) },
+
+[ELF_T_LWORD] = { .msz32 = sizeof(Elf32_Lword), .msz64 = sizeof(Elf64_Lword) },
+
+[ELF_T_MOVE] = { .msz32 = sizeof(Elf32_Move), .msz64 = sizeof(Elf64_Move) },
+
+[ELF_T_MOVEP] = { .msz32 = 0, .msz64 = 0 },
+
+[ELF_T_NOTE] = { .msz32 = 1, .msz64 = 1 },
+
+[ELF_T_OFF] = { .msz32 = sizeof(Elf32_Off), .msz64 = sizeof(Elf64_Off) },
+
+[ELF_T_PHDR] = { .msz32 = sizeof(Elf32_Phdr), .msz64 = sizeof(Elf64_Phdr) },
+
+[ELF_T_REL] = { .msz32 = sizeof(Elf32_Rel), .msz64 = sizeof(Elf64_Rel) },
+
+[ELF_T_RELA] = { .msz32 = sizeof(Elf32_Rela), .msz64 = sizeof(Elf64_Rela) },
+
+[ELF_T_SHDR] = { .msz32 = sizeof(Elf32_Shdr), .msz64 = sizeof(Elf64_Shdr) },
+
+[ELF_T_SWORD] = { .msz32 = sizeof(Elf32_Sword), .msz64 = sizeof(Elf64_Sword) },
+
+[ELF_T_SXWORD] = { .msz32 = 0, .msz64 = sizeof(Elf64_Sxword) },
+
+[ELF_T_SYMINFO] = { .msz32 = sizeof(Elf32_Syminfo), .msz64 = sizeof(Elf64_Syminfo) },
+
+[ELF_T_SYM] = { .msz32 = sizeof(Elf32_Sym), .msz64 = sizeof(Elf64_Sym) },
+
+[ELF_T_VDEF] = { .msz32 = 1, .msz64 = 1 },
+
+[ELF_T_VNEED] = { .msz32 = 1, .msz64 = 1 },
+
+[ELF_T_WORD] = { .msz32 = sizeof(Elf32_Word), .msz64 = sizeof(Elf64_Word) },
+
+[ELF_T_XWORD] = { .msz32 = 0, .msz64 = sizeof(Elf64_Xword) },
+
 
 };
 

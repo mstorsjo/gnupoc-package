@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2006,2008 Joseph Koshy
+ * Copyright (c) 2006,2008-2010 Joseph Koshy
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -69,7 +69,7 @@ extern struct _libelf_globals _libelf;
  * Flags for library internal use.  These use the upper 16 bits of a
  * flags field.
  */
-#define	LIBELF_F_MALLOCED	0x010000 /* whether data was malloc'ed */
+#define	LIBELF_F_DATA_MALLOCED	0x010000 /* whether data was malloc'ed */
 #define	LIBELF_F_MMAP		0x020000 /* whether e_rawfile was mmap'ed */
 #define	LIBELF_F_SHDRS_LOADED	0x040000 /* whether all shdrs were read in */
 
@@ -180,7 +180,7 @@ int	(*_libelf_get_translator(Elf_Type _t, int _direction, int _elfclass))
 void	*_libelf_getphdr(Elf *_e, int _elfclass);
 void	*_libelf_getshdr(Elf_Scn *_scn, int _elfclass);
 void	_libelf_init_elf(Elf *_e, Elf_Kind _kind);
-int	_libelf_load_scn(Elf *e, void *ehdr);
+int	_libelf_load_section_headers(Elf *e, void *ehdr);
 int	_libelf_malign(Elf_Type _t, int _elfclass);
 size_t	_libelf_msize(Elf_Type _t, int _elfclass, unsigned int _version);
 void	*_libelf_newphdr(Elf *_e, int _elfclass, size_t _count);

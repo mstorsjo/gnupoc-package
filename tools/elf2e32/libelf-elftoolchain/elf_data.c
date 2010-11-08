@@ -43,11 +43,13 @@ elf_getdata(Elf_Scn *s, Elf_Data *d)
 	uint64_t sh_align, sh_offset, sh_size;
 	int (*xlate)(char *_d, size_t _dsz, char *_s, size_t _c, int _swap);
 
-	if (s == NULL || (e = s->s_elf) == NULL || e->e_kind != ELF_K_ELF ||
+	if (s == NULL || (e = s->s_elf) == NULL ||
 	    (d != NULL && s != d->d_scn)) {
 		LIBELF_SET_ERROR(ARGUMENT, 0);
 		return (NULL);
 	}
+
+	assert(e->e_kind == ELF_K_ELF);
 
 	if (d == NULL && (d = STAILQ_FIRST(&s->s_data)) != NULL)
 		return (d);
@@ -56,7 +58,7 @@ elf_getdata(Elf_Scn *s, Elf_Data *d)
 		return (STAILQ_NEXT(d, d_next));
 
 	if (e->e_rawfile == NULL) {
-		LIBELF_SET_ERROR(SEQUENCE, 0);
+		LIBELF_SET_ERROR(ARGUMENT, 0);
 		return (NULL);
 	}
 
@@ -122,7 +124,7 @@ elf_getdata(Elf_Scn *s, Elf_Data *d)
 		return (NULL);
 	}
 
-	d->d_flags  |= LIBELF_F_MALLOCED;
+	d->d_flags  |= LIBELF_F_DATA_MALLOCED;
 
 	xlate = _libelf_get_translator(elftype, ELF_TOMEMORY, elfclass);
 	if (!(*xlate)(d->d_buf, d->d_size, e->e_rawfile + sh_offset, count,
@@ -143,11 +145,12 @@ elf_newdata(Elf_Scn *s)
 	Elf *e;
 	Elf_Data *d;
 
-	if (s == NULL || (e = s->s_elf) == NULL ||
-	    e->e_kind != ELF_K_ELF) {
+	if (s == NULL || (e = s->s_elf) == NULL) {
 		LIBELF_SET_ERROR(ARGUMENT, 0);
 		return (NULL);
 	}
+
+	assert(e->e_kind == ELF_K_ELF);
 
 	/*
 	 * elf_newdata() has to append a data descriptor, so
@@ -187,11 +190,12 @@ elf_rawdata(Elf_Scn *s, Elf_Data *d)
 	uint32_t sh_type;
 	uint64_t sh_align, sh_offset, sh_size;
 
-	if (s == NULL || (e = s->s_elf) == NULL ||
-	    e->e_kind != ELF_K_ELF || e->e_rawfile == NULL) {
+	if (s == NULL || (e = s->s_elf) == NULL || e->e_rawfile == NULL) {
 		LIBELF_SET_ERROR(ARGUMENT, 0);
 		return (NULL);
 	}
+
+	assert(e->e_kind == ELF_K_ELF);
 
 	if (d == NULL && (d = STAILQ_FIRST(&s->s_rawdata)) != NULL)
 		return (d);

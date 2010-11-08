@@ -592,18 +592,14 @@ define(`MAKE_VER_HELPERS',
    MAKE_VERHLP_TO_M($1,64)')
 
 define(`MAKE_VER_CONVERTERS',
-  `#if	LIBELF_CONFIG_VDEF
-   MAKE_VER_HELPERS(Verdef)dnl
+  `MAKE_VER_HELPERS(Verdef)dnl
    MAKE_VER_HELPERS(Verdaux)dnl
    MAKE_VER(VDEF,Verdef,Verdaux,vd,32)dnl
    MAKE_VER(VDEF,Verdef,Verdaux,vd,64)dnl
-#endif	/* LIBELF_CONFIG_VDEF */
-#if	LIBELF_CONFIG_VNEED
    MAKE_VER_HELPERS(Verneed)dnl
    MAKE_VER_HELPERS(Vernaux)dnl
    MAKE_VER(VNEED,Verneed,Vernaux,vn,32)dnl
    MAKE_VER(VNEED,Verneed,Vernaux,vn,64)dnl
-#endif	/* LIBELF_CONFIG_VNEED */
 ')
 
 /*
@@ -620,8 +616,7 @@ define(`MAKE_VER_CONVERTERS',
  */
 
 define(`MAKE_TYPE_CONVERTER',
-  `#if	LIBELF_CONFIG_$1
-ifdef(`BASE'_$1,
+  `ifdef(`BASE'_$1,
     `ifdef(`IGNORE_'$1,`',
       `MAKEPRIM_TO_F($1,$2,`',64)
        MAKEPRIM_TO_M($1,$2,`',64)')',
@@ -634,7 +629,6 @@ ifdef(`BASE'_$1,
        MAKE_TO_F($1,$2,64)dnl
        MAKE_TO_M($1,$2,32)dnl
        MAKE_TO_M($1,$2,64)')')
-#endif /* LIBELF_CONFIG_$1 */
 ')
 
 define(`MAKE_TYPE_CONVERTERS',
@@ -662,7 +656,6 @@ libelf_cvt_BYTE_tox(char *dst, size_t dsz, char *src, size_t count,
 
 MAKE_TYPE_CONVERTERS(ELF_TYPE_LIST)
 
-#if	LIBELF_CONFIG_GNUHASH
 /*
  * Sections of type ELF_T_GNUHASH start with a header containing 4 32-bit
  * words.  Bloom filter data comes next, followed by hash buckets and the
@@ -856,9 +849,7 @@ libelf_cvt64_GNUHASH_tof(char *dst, size_t dsz, char *src, size_t srcsz,
 
 	return (1);
 }
-#endif	/* LIBELF_CONFIG_GNUHASH */
 
-#if	LIBELF_CONFIG_NOTE
 /*
  * Elf_Note structures comprise a fixed size header followed by variable
  * length strings.  The fixed size header needs to be byte swapped, but
@@ -979,7 +970,6 @@ libelf_cvt_NOTE_tof(char *dst, size_t dsz, char *src, size_t count,
 
 	return (1);
 }
-#endif	/* LIBELF_CONFIG_NOTE */
 
 MAKE_VER_CONVERTERS()
 
@@ -1006,11 +996,9 @@ define(`CONV',
 
 define(`CONVERTER_NAME',
   `ifdef(`IGNORE_'$1,`',
-    `#if LIBELF_CONFIG_$1
-    [ELF_T_$1] = {
+    `[ELF_T_$1] = {
         CONV($1,32,tof), CONV($1,32,tom),
         CONV($1,64,tof), CONV($1,64,tom) },
-#endif
 ')')
 
 define(`CONVERTER_NAMES',
@@ -1041,32 +1029,26 @@ CONVERTER_NAMES(ELF_TYPE_LIST)
 		.tom64 = libelf_cvt64_GNUHASH_tom
 	},
 
-#if	LIBELF_CONFIG_NOTE
 	[ELF_T_NOTE] = {
 		.tof32 = libelf_cvt_NOTE_tof,
 		.tom32 = libelf_cvt_NOTE_tom,
 		.tof64 = libelf_cvt_NOTE_tof,
 		.tom64 = libelf_cvt_NOTE_tom
 	},
-#endif	/* LIBELF_CONFIG_NOTE */
 
-#if	LIBELF_CONFIG_VDEF
 	[ELF_T_VDEF] = {
 		.tof32 = libelf_cvt32_VDEF_tof,
 		.tom32 = libelf_cvt32_VDEF_tom,
 		.tof64 = libelf_cvt64_VDEF_tof,
 		.tom64 = libelf_cvt64_VDEF_tom
 	},
-#endif	/* LIBELF_CONFIG_VDEF */
 
-#if	LIBELF_CONFIG_VNEED
 	[ELF_T_VNEED] = {
 		.tof32 = libelf_cvt32_VNEED_tof,
 		.tom32 = libelf_cvt32_VNEED_tom,
 		.tof64 = libelf_cvt64_VNEED_tof,
 		.tom64 = libelf_cvt64_VNEED_tom
 	}
-#endif	/* LIBELF_CONFIG_VNEED */
 };
 
 int (*_libelf_get_translator(Elf_Type t, int direction, int elfclass))

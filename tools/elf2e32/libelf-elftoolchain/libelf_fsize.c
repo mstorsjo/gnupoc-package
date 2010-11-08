@@ -44,78 +44,54 @@ struct fsize {
 };
 
 static struct fsize fsize[ELF_T_NUM] = {
-#if	LIBELF_CONFIG_ADDR
-    [ELF_T_ADDR] = { .fsz32 = sizeof(Elf32_Addr), .fsz64 = sizeof(Elf64_Addr) },
-#endif
-#if	LIBELF_CONFIG_BYTE
-    [ELF_T_BYTE] = { .fsz32 = 1, .fsz64 = 1 },
-#endif
-#if	LIBELF_CONFIG_CAP
-    [ELF_T_CAP] = { .fsz32 = sizeof(Elf32_Word)+sizeof(Elf32_Word)+0, .fsz64 = sizeof(Elf64_Xword)+sizeof(Elf64_Xword)+0 },
-#endif
-#if	LIBELF_CONFIG_DYN
-    [ELF_T_DYN] = { .fsz32 = sizeof(Elf32_Sword)+sizeof(Elf32_Word)+0, .fsz64 = sizeof(Elf64_Sxword)+sizeof(Elf64_Xword)+0 },
-#endif
-#if	LIBELF_CONFIG_EHDR
-    [ELF_T_EHDR] = { .fsz32 = EI_NIDENT+sizeof(Elf32_Half)+sizeof(Elf32_Half)+sizeof(Elf32_Word)+sizeof(Elf32_Addr)+sizeof(Elf32_Off)+sizeof(Elf32_Off)+sizeof(Elf32_Word)+sizeof(Elf32_Half)+sizeof(Elf32_Half)+sizeof(Elf32_Half)+sizeof(Elf32_Half)+sizeof(Elf32_Half)+sizeof(Elf32_Half)+0, .fsz64 = EI_NIDENT+sizeof(Elf64_Half)+sizeof(Elf64_Half)+sizeof(Elf64_Word)+sizeof(Elf64_Addr)+sizeof(Elf64_Off)+sizeof(Elf64_Off)+sizeof(Elf64_Word)+sizeof(Elf64_Half)+sizeof(Elf64_Half)+sizeof(Elf64_Half)+sizeof(Elf64_Half)+sizeof(Elf64_Half)+sizeof(Elf64_Half)+0 },
-#endif
-#if	LIBELF_CONFIG_GNUHASH
-    [ELF_T_GNUHASH] = { .fsz32 = 1, .fsz64 = 1 },
-#endif
-#if	LIBELF_CONFIG_HALF
-    [ELF_T_HALF] = { .fsz32 = sizeof(Elf32_Half), .fsz64 = sizeof(Elf64_Half) },
-#endif
-#if	LIBELF_CONFIG_LWORD
-    [ELF_T_LWORD] = { .fsz32 = sizeof(Elf32_Lword), .fsz64 = sizeof(Elf64_Lword) },
-#endif
-#if	LIBELF_CONFIG_MOVE
-    [ELF_T_MOVE] = { .fsz32 = sizeof(Elf32_Lword)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Half)+sizeof(Elf32_Half)+0, .fsz64 = sizeof(Elf64_Lword)+sizeof(Elf64_Xword)+sizeof(Elf64_Xword)+sizeof(Elf64_Half)+sizeof(Elf64_Half)+0 },
-#endif
-#if	LIBELF_CONFIG_MOVEP
-    [ELF_T_MOVEP] = { .fsz32 = 0, .fsz64 = 0 },
-#endif
-#if	LIBELF_CONFIG_NOTE
-    [ELF_T_NOTE] = { .fsz32 = 1, .fsz64 = 1 },
-#endif
-#if	LIBELF_CONFIG_OFF
-    [ELF_T_OFF] = { .fsz32 = sizeof(Elf32_Off), .fsz64 = sizeof(Elf64_Off) },
-#endif
-#if	LIBELF_CONFIG_PHDR
-    [ELF_T_PHDR] = { .fsz32 = sizeof(Elf32_Word)+sizeof(Elf32_Off)+sizeof(Elf32_Addr)+sizeof(Elf32_Addr)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+0, .fsz64 = sizeof(Elf64_Word)+sizeof(Elf64_Word)+sizeof(Elf64_Off)+sizeof(Elf64_Addr)+sizeof(Elf64_Addr)+sizeof(Elf64_Xword)+sizeof(Elf64_Xword)+sizeof(Elf64_Xword)+0 },
-#endif
-#if	LIBELF_CONFIG_REL
-    [ELF_T_REL] = { .fsz32 = sizeof(Elf32_Addr)+sizeof(Elf32_Word)+0, .fsz64 = sizeof(Elf64_Addr)+sizeof(Elf64_Xword)+0 },
-#endif
-#if	LIBELF_CONFIG_RELA
-    [ELF_T_RELA] = { .fsz32 = sizeof(Elf32_Addr)+sizeof(Elf32_Word)+sizeof(Elf32_Sword)+0, .fsz64 = sizeof(Elf64_Addr)+sizeof(Elf64_Xword)+sizeof(Elf64_Sxword)+0 },
-#endif
-#if	LIBELF_CONFIG_SHDR
-    [ELF_T_SHDR] = { .fsz32 = sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Addr)+sizeof(Elf32_Off)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+0, .fsz64 = sizeof(Elf64_Word)+sizeof(Elf64_Word)+sizeof(Elf64_Xword)+sizeof(Elf64_Addr)+sizeof(Elf64_Off)+sizeof(Elf64_Xword)+sizeof(Elf64_Word)+sizeof(Elf64_Word)+sizeof(Elf64_Xword)+sizeof(Elf64_Xword)+0 },
-#endif
-#if	LIBELF_CONFIG_SWORD
-    [ELF_T_SWORD] = { .fsz32 = sizeof(Elf32_Sword), .fsz64 = sizeof(Elf64_Sword) },
-#endif
-#if	LIBELF_CONFIG_SXWORD
-    [ELF_T_SXWORD] = { .fsz32 = 0, .fsz64 = sizeof(Elf64_Sxword) },
-#endif
-#if	LIBELF_CONFIG_SYMINFO
-    [ELF_T_SYMINFO] = { .fsz32 = sizeof(Elf32_Half)+sizeof(Elf32_Half)+0, .fsz64 = sizeof(Elf64_Half)+sizeof(Elf64_Half)+0 },
-#endif
-#if	LIBELF_CONFIG_SYM
-    [ELF_T_SYM] = { .fsz32 = sizeof(Elf32_Word)+sizeof(Elf32_Addr)+sizeof(Elf32_Word)+1+1+sizeof(Elf32_Half)+0, .fsz64 = sizeof(Elf64_Word)+1+1+sizeof(Elf64_Half)+sizeof(Elf64_Addr)+sizeof(Elf64_Xword)+0 },
-#endif
-#if	LIBELF_CONFIG_VDEF
-    [ELF_T_VDEF] = { .fsz32 = 1, .fsz64 = 1 },
-#endif
-#if	LIBELF_CONFIG_VNEED
-    [ELF_T_VNEED] = { .fsz32 = 1, .fsz64 = 1 },
-#endif
-#if	LIBELF_CONFIG_WORD
-    [ELF_T_WORD] = { .fsz32 = sizeof(Elf32_Word), .fsz64 = sizeof(Elf64_Word) },
-#endif
-#if	LIBELF_CONFIG_XWORD
-    [ELF_T_XWORD] = { .fsz32 = 0, .fsz64 = sizeof(Elf64_Xword) },
-#endif
+[ELF_T_ADDR] = { .fsz32 = sizeof(Elf32_Addr), .fsz64 = sizeof(Elf64_Addr) },
+
+[ELF_T_BYTE] = { .fsz32 = 1, .fsz64 = 1 },
+
+[ELF_T_CAP] = { .fsz32 = sizeof(Elf32_Word)+sizeof(Elf32_Word)+0, .fsz64 = sizeof(Elf64_Xword)+sizeof(Elf64_Xword)+0 },
+
+[ELF_T_DYN] = { .fsz32 = sizeof(Elf32_Sword)+sizeof(Elf32_Word)+0, .fsz64 = sizeof(Elf64_Sxword)+sizeof(Elf64_Xword)+0 },
+
+[ELF_T_EHDR] = { .fsz32 = EI_NIDENT+sizeof(Elf32_Half)+sizeof(Elf32_Half)+sizeof(Elf32_Word)+sizeof(Elf32_Addr)+sizeof(Elf32_Off)+sizeof(Elf32_Off)+sizeof(Elf32_Word)+sizeof(Elf32_Half)+sizeof(Elf32_Half)+sizeof(Elf32_Half)+sizeof(Elf32_Half)+sizeof(Elf32_Half)+sizeof(Elf32_Half)+0, .fsz64 = EI_NIDENT+sizeof(Elf64_Half)+sizeof(Elf64_Half)+sizeof(Elf64_Word)+sizeof(Elf64_Addr)+sizeof(Elf64_Off)+sizeof(Elf64_Off)+sizeof(Elf64_Word)+sizeof(Elf64_Half)+sizeof(Elf64_Half)+sizeof(Elf64_Half)+sizeof(Elf64_Half)+sizeof(Elf64_Half)+sizeof(Elf64_Half)+0 },
+
+[ELF_T_GNUHASH] = { .fsz32 = 1, .fsz64 = 1 },
+
+[ELF_T_HALF] = { .fsz32 = sizeof(Elf32_Half), .fsz64 = sizeof(Elf64_Half) },
+
+[ELF_T_LWORD] = { .fsz32 = sizeof(Elf32_Lword), .fsz64 = sizeof(Elf64_Lword) },
+
+[ELF_T_MOVE] = { .fsz32 = sizeof(Elf32_Lword)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Half)+sizeof(Elf32_Half)+0, .fsz64 = sizeof(Elf64_Lword)+sizeof(Elf64_Xword)+sizeof(Elf64_Xword)+sizeof(Elf64_Half)+sizeof(Elf64_Half)+0 },
+
+[ELF_T_MOVEP] = { .fsz32 = 0, .fsz64 = 0 },
+
+[ELF_T_NOTE] = { .fsz32 = 1, .fsz64 = 1 },
+
+[ELF_T_OFF] = { .fsz32 = sizeof(Elf32_Off), .fsz64 = sizeof(Elf64_Off) },
+
+[ELF_T_PHDR] = { .fsz32 = sizeof(Elf32_Word)+sizeof(Elf32_Off)+sizeof(Elf32_Addr)+sizeof(Elf32_Addr)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+0, .fsz64 = sizeof(Elf64_Word)+sizeof(Elf64_Word)+sizeof(Elf64_Off)+sizeof(Elf64_Addr)+sizeof(Elf64_Addr)+sizeof(Elf64_Xword)+sizeof(Elf64_Xword)+sizeof(Elf64_Xword)+0 },
+
+[ELF_T_REL] = { .fsz32 = sizeof(Elf32_Addr)+sizeof(Elf32_Word)+0, .fsz64 = sizeof(Elf64_Addr)+sizeof(Elf64_Xword)+0 },
+
+[ELF_T_RELA] = { .fsz32 = sizeof(Elf32_Addr)+sizeof(Elf32_Word)+sizeof(Elf32_Sword)+0, .fsz64 = sizeof(Elf64_Addr)+sizeof(Elf64_Xword)+sizeof(Elf64_Sxword)+0 },
+
+[ELF_T_SHDR] = { .fsz32 = sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Addr)+sizeof(Elf32_Off)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+sizeof(Elf32_Word)+0, .fsz64 = sizeof(Elf64_Word)+sizeof(Elf64_Word)+sizeof(Elf64_Xword)+sizeof(Elf64_Addr)+sizeof(Elf64_Off)+sizeof(Elf64_Xword)+sizeof(Elf64_Word)+sizeof(Elf64_Word)+sizeof(Elf64_Xword)+sizeof(Elf64_Xword)+0 },
+
+[ELF_T_SWORD] = { .fsz32 = sizeof(Elf32_Sword), .fsz64 = sizeof(Elf64_Sword) },
+
+[ELF_T_SXWORD] = { .fsz32 = 0, .fsz64 = sizeof(Elf64_Sxword) },
+
+[ELF_T_SYMINFO] = { .fsz32 = sizeof(Elf32_Half)+sizeof(Elf32_Half)+0, .fsz64 = sizeof(Elf64_Half)+sizeof(Elf64_Half)+0 },
+
+[ELF_T_SYM] = { .fsz32 = sizeof(Elf32_Word)+sizeof(Elf32_Addr)+sizeof(Elf32_Word)+1+1+sizeof(Elf32_Half)+0, .fsz64 = sizeof(Elf64_Word)+1+1+sizeof(Elf64_Half)+sizeof(Elf64_Addr)+sizeof(Elf64_Xword)+0 },
+
+[ELF_T_VDEF] = { .fsz32 = 1, .fsz64 = 1 },
+
+[ELF_T_VNEED] = { .fsz32 = 1, .fsz64 = 1 },
+
+[ELF_T_WORD] = { .fsz32 = sizeof(Elf32_Word), .fsz64 = sizeof(Elf64_Word) },
+
+[ELF_T_XWORD] = { .fsz32 = 0, .fsz64 = sizeof(Elf64_Xword) },
+
 
 };
 

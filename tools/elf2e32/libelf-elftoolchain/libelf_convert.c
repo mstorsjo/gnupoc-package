@@ -214,7 +214,6 @@ libelf_cvt_BYTE_tox(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#if	LIBELF_CONFIG_ADDR
 
 static int
 libelf_cvt_ADDR32_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -310,11 +309,7 @@ libelf_cvt_ADDR64_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_ADDR */
-#if	LIBELF_CONFIG_BYTE
 
-#endif /* LIBELF_CONFIG_BYTE */
-#if	LIBELF_CONFIG_CAP
 
 static int
 libelf_cvt32_CAP_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -436,8 +431,6 @@ libelf_cvt64_CAP_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_CAP */
-#if	LIBELF_CONFIG_DYN
 
 static int
 libelf_cvt32_DYN_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -559,8 +552,6 @@ libelf_cvt64_DYN_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_DYN */
-#if	LIBELF_CONFIG_EHDR
 
 static int
 libelf_cvt32_EHDR_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -774,11 +765,7 @@ libelf_cvt64_EHDR_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_EHDR */
-#if	LIBELF_CONFIG_GNUHASH
                      
-#endif /* LIBELF_CONFIG_GNUHASH */
-#if	LIBELF_CONFIG_HALF
 
 static int
 libelf_cvt_HALF_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -828,8 +815,6 @@ libelf_cvt_HALF_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_HALF */
-#if	LIBELF_CONFIG_LWORD
 
 static int
 libelf_cvt_LWORD_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -879,8 +864,6 @@ libelf_cvt_LWORD_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_LWORD */
-#if	LIBELF_CONFIG_MOVE
 
 static int
 libelf_cvt32_MOVE_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -1026,14 +1009,8 @@ libelf_cvt64_MOVE_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_MOVE */
-#if	LIBELF_CONFIG_MOVEP
                      
-#endif /* LIBELF_CONFIG_MOVEP */
-#if	LIBELF_CONFIG_NOTE
 
-#endif /* LIBELF_CONFIG_NOTE */
-#if	LIBELF_CONFIG_OFF
 
 static int
 libelf_cvt_OFF32_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -1129,8 +1106,6 @@ libelf_cvt_OFF64_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_OFF */
-#if	LIBELF_CONFIG_PHDR
 
 static int
 libelf_cvt32_PHDR_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -1300,8 +1275,6 @@ libelf_cvt64_PHDR_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_PHDR */
-#if	LIBELF_CONFIG_REL
 
 static int
 libelf_cvt32_REL_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -1423,8 +1396,6 @@ libelf_cvt64_REL_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_REL */
-#if	LIBELF_CONFIG_RELA
 
 static int
 libelf_cvt32_RELA_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -1554,8 +1525,6 @@ libelf_cvt64_RELA_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_RELA */
-#if	LIBELF_CONFIG_SHDR
 
 static int
 libelf_cvt32_SHDR_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -1741,8 +1710,6 @@ libelf_cvt64_SHDR_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_SHDR */
-#if	LIBELF_CONFIG_SWORD
 
 static int
 libelf_cvt_SWORD_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -1792,8 +1759,6 @@ libelf_cvt_SWORD_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_SWORD */
-#if	LIBELF_CONFIG_SXWORD
 
 static int
 libelf_cvt_SXWORD_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -1843,8 +1808,6 @@ libelf_cvt_SXWORD_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_SXWORD */
-#if	LIBELF_CONFIG_SYMINFO
 
 static int
 libelf_cvt32_SYMINFO_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -1966,8 +1929,6 @@ libelf_cvt64_SYMINFO_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_SYMINFO */
-#if	LIBELF_CONFIG_SYM
 
 static int
 libelf_cvt32_SYM_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -2113,14 +2074,8 @@ libelf_cvt64_SYM_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_SYM */
-#if	LIBELF_CONFIG_VDEF
                      
-#endif /* LIBELF_CONFIG_VDEF */
-#if	LIBELF_CONFIG_VNEED
                      
-#endif /* LIBELF_CONFIG_VNEED */
-#if	LIBELF_CONFIG_WORD
 
 static int
 libelf_cvt_WORD_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -2170,8 +2125,6 @@ libelf_cvt_WORD_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_WORD */
-#if	LIBELF_CONFIG_XWORD
 
 static int
 libelf_cvt_XWORD_tof(char *dst, size_t dsz, char *src, size_t count,
@@ -2221,10 +2174,8 @@ libelf_cvt_XWORD_tom(char *dst, size_t dsz, char *src, size_t count,
 	return (1);
 }
 
-#endif /* LIBELF_CONFIG_XWORD */
 
 
-#if	LIBELF_CONFIG_GNUHASH
 /*
  * Sections of type ELF_T_GNUHASH start with a header containing 4 32-bit
  * words.  Bloom filter data comes next, followed by hash buckets and the
@@ -2418,9 +2369,7 @@ libelf_cvt64_GNUHASH_tof(char *dst, size_t dsz, char *src, size_t srcsz,
 
 	return (1);
 }
-#endif	/* LIBELF_CONFIG_GNUHASH */
 
-#if	LIBELF_CONFIG_NOTE
 /*
  * Elf_Note structures comprise a fixed size header followed by variable
  * length strings.  The fixed size header needs to be byte swapped, but
@@ -2541,10 +2490,8 @@ libelf_cvt_NOTE_tof(char *dst, size_t dsz, char *src, size_t count,
 
 	return (1);
 }
-#endif	/* LIBELF_CONFIG_NOTE */
 
-#if	LIBELF_CONFIG_VDEF
-   
+
 static void
 libelf_cvt32_Verdef_tof(char *dst, char *src, int byteswap)
 {
@@ -2904,8 +2851,6 @@ libelf_cvt64_VDEF_tom(char *dst, size_t dsz, char *src, size_t count,
 
 	return (1);
 }
-#endif	/* LIBELF_CONFIG_VDEF */
-#if	LIBELF_CONFIG_VNEED
    
 static void
 libelf_cvt32_Verneed_tof(char *dst, char *src, int byteswap)
@@ -3274,7 +3219,6 @@ libelf_cvt64_VNEED_tom(char *dst, size_t dsz, char *src, size_t count,
 
 	return (1);
 }
-#endif	/* LIBELF_CONFIG_VNEED */
 
 
 struct converters {
@@ -3291,101 +3235,63 @@ struct converters {
 
 
 static struct converters cvt[ELF_T_NUM] = {
-#if LIBELF_CONFIG_ADDR
-    [ELF_T_ADDR] = {
+[ELF_T_ADDR] = {
         .tof32 = libelf_cvt_ADDR32_tof, .tom32 = libelf_cvt_ADDR32_tom,
         .tof64 = libelf_cvt_ADDR64_tof, .tom64 = libelf_cvt_ADDR64_tom },
-#endif
-#if LIBELF_CONFIG_CAP
-    [ELF_T_CAP] = {
+[ELF_T_CAP] = {
         .tof32 = libelf_cvt32_CAP_tof, .tom32 = libelf_cvt32_CAP_tom,
         .tof64 = libelf_cvt64_CAP_tof, .tom64 = libelf_cvt64_CAP_tom },
-#endif
-#if LIBELF_CONFIG_DYN
-    [ELF_T_DYN] = {
+[ELF_T_DYN] = {
         .tof32 = libelf_cvt32_DYN_tof, .tom32 = libelf_cvt32_DYN_tom,
         .tof64 = libelf_cvt64_DYN_tof, .tom64 = libelf_cvt64_DYN_tom },
-#endif
-#if LIBELF_CONFIG_EHDR
-    [ELF_T_EHDR] = {
+[ELF_T_EHDR] = {
         .tof32 = libelf_cvt32_EHDR_tof, .tom32 = libelf_cvt32_EHDR_tom,
         .tof64 = libelf_cvt64_EHDR_tof, .tom64 = libelf_cvt64_EHDR_tom },
-#endif
-#if LIBELF_CONFIG_HALF
-    [ELF_T_HALF] = {
+[ELF_T_HALF] = {
         .tof32 = libelf_cvt_HALF_tof, .tom32 = libelf_cvt_HALF_tom,
         .tof64 = libelf_cvt_HALF_tof, .tom64 = libelf_cvt_HALF_tom },
-#endif
-#if LIBELF_CONFIG_LWORD
-    [ELF_T_LWORD] = {
+[ELF_T_LWORD] = {
         .tof32 = libelf_cvt_LWORD_tof, .tom32 = libelf_cvt_LWORD_tom,
         .tof64 = libelf_cvt_LWORD_tof, .tom64 = libelf_cvt_LWORD_tom },
-#endif
-#if LIBELF_CONFIG_MOVE
-    [ELF_T_MOVE] = {
+[ELF_T_MOVE] = {
         .tof32 = libelf_cvt32_MOVE_tof, .tom32 = libelf_cvt32_MOVE_tom,
         .tof64 = libelf_cvt64_MOVE_tof, .tom64 = libelf_cvt64_MOVE_tom },
-#endif
-#if LIBELF_CONFIG_MOVEP
-    [ELF_T_MOVEP] = {
+[ELF_T_MOVEP] = {
         .tof32 = NULL, .tom32 = NULL,
         .tof64 = NULL, .tom64 = NULL },
-#endif
-#if LIBELF_CONFIG_OFF
-    [ELF_T_OFF] = {
+[ELF_T_OFF] = {
         .tof32 = libelf_cvt_OFF32_tof, .tom32 = libelf_cvt_OFF32_tom,
         .tof64 = libelf_cvt_OFF64_tof, .tom64 = libelf_cvt_OFF64_tom },
-#endif
-#if LIBELF_CONFIG_PHDR
-    [ELF_T_PHDR] = {
+[ELF_T_PHDR] = {
         .tof32 = libelf_cvt32_PHDR_tof, .tom32 = libelf_cvt32_PHDR_tom,
         .tof64 = libelf_cvt64_PHDR_tof, .tom64 = libelf_cvt64_PHDR_tom },
-#endif
-#if LIBELF_CONFIG_REL
-    [ELF_T_REL] = {
+[ELF_T_REL] = {
         .tof32 = libelf_cvt32_REL_tof, .tom32 = libelf_cvt32_REL_tom,
         .tof64 = libelf_cvt64_REL_tof, .tom64 = libelf_cvt64_REL_tom },
-#endif
-#if LIBELF_CONFIG_RELA
-    [ELF_T_RELA] = {
+[ELF_T_RELA] = {
         .tof32 = libelf_cvt32_RELA_tof, .tom32 = libelf_cvt32_RELA_tom,
         .tof64 = libelf_cvt64_RELA_tof, .tom64 = libelf_cvt64_RELA_tom },
-#endif
-#if LIBELF_CONFIG_SHDR
-    [ELF_T_SHDR] = {
+[ELF_T_SHDR] = {
         .tof32 = libelf_cvt32_SHDR_tof, .tom32 = libelf_cvt32_SHDR_tom,
         .tof64 = libelf_cvt64_SHDR_tof, .tom64 = libelf_cvt64_SHDR_tom },
-#endif
-#if LIBELF_CONFIG_SWORD
-    [ELF_T_SWORD] = {
+[ELF_T_SWORD] = {
         .tof32 = libelf_cvt_SWORD_tof, .tom32 = libelf_cvt_SWORD_tom,
         .tof64 = libelf_cvt_SWORD_tof, .tom64 = libelf_cvt_SWORD_tom },
-#endif
-#if LIBELF_CONFIG_SXWORD
-    [ELF_T_SXWORD] = {
+[ELF_T_SXWORD] = {
         .tof32 = NULL, .tom32 = NULL,
         .tof64 = libelf_cvt_SXWORD_tof, .tom64 = libelf_cvt_SXWORD_tom },
-#endif
-#if LIBELF_CONFIG_SYMINFO
-    [ELF_T_SYMINFO] = {
+[ELF_T_SYMINFO] = {
         .tof32 = libelf_cvt32_SYMINFO_tof, .tom32 = libelf_cvt32_SYMINFO_tom,
         .tof64 = libelf_cvt64_SYMINFO_tof, .tom64 = libelf_cvt64_SYMINFO_tom },
-#endif
-#if LIBELF_CONFIG_SYM
-    [ELF_T_SYM] = {
+[ELF_T_SYM] = {
         .tof32 = libelf_cvt32_SYM_tof, .tom32 = libelf_cvt32_SYM_tom,
         .tof64 = libelf_cvt64_SYM_tof, .tom64 = libelf_cvt64_SYM_tom },
-#endif
-#if LIBELF_CONFIG_WORD
-    [ELF_T_WORD] = {
+[ELF_T_WORD] = {
         .tof32 = libelf_cvt_WORD_tof, .tom32 = libelf_cvt_WORD_tom,
         .tof64 = libelf_cvt_WORD_tof, .tom64 = libelf_cvt_WORD_tom },
-#endif
-#if LIBELF_CONFIG_XWORD
-    [ELF_T_XWORD] = {
+[ELF_T_XWORD] = {
         .tof32 = NULL, .tom32 = NULL,
         .tof64 = libelf_cvt_XWORD_tof, .tom64 = libelf_cvt_XWORD_tom },
-#endif
 
 
 	/*
@@ -3406,32 +3312,26 @@ static struct converters cvt[ELF_T_NUM] = {
 		.tom64 = libelf_cvt64_GNUHASH_tom
 	},
 
-#if	LIBELF_CONFIG_NOTE
 	[ELF_T_NOTE] = {
 		.tof32 = libelf_cvt_NOTE_tof,
 		.tom32 = libelf_cvt_NOTE_tom,
 		.tof64 = libelf_cvt_NOTE_tof,
 		.tom64 = libelf_cvt_NOTE_tom
 	},
-#endif	/* LIBELF_CONFIG_NOTE */
 
-#if	LIBELF_CONFIG_VDEF
 	[ELF_T_VDEF] = {
 		.tof32 = libelf_cvt32_VDEF_tof,
 		.tom32 = libelf_cvt32_VDEF_tom,
 		.tof64 = libelf_cvt64_VDEF_tof,
 		.tom64 = libelf_cvt64_VDEF_tom
 	},
-#endif	/* LIBELF_CONFIG_VDEF */
 
-#if	LIBELF_CONFIG_VNEED
 	[ELF_T_VNEED] = {
 		.tof32 = libelf_cvt32_VNEED_tof,
 		.tom32 = libelf_cvt32_VNEED_tom,
 		.tof64 = libelf_cvt64_VNEED_tof,
 		.tom64 = libelf_cvt64_VNEED_tom
 	}
-#endif	/* LIBELF_CONFIG_VNEED */
 };
 
 int (*_libelf_get_translator(Elf_Type t, int direction, int elfclass))

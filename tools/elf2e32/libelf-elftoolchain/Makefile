@@ -155,7 +155,7 @@ PREFIX=/usr/local
 
 install: all
 	mkdir -p $(PREFIX)/include
-	cp libelf.h elf32.h elf64.h elf_common.h $(PREFIX)/include
+	cp libelf.h elfdefinitions.h $(PREFIX)/include
 	mkdir -p $(PREFIX)/lib
 	cp libelf.a $(PREFIX)/lib
 
