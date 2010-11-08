@@ -1070,7 +1070,7 @@ _ELF_DEFINE_SHT(SHT_HIUSER,          0xFFFFFFFFUL,			\
 
 #undef	_ELF_DEFINE_SHT
 #define	_ELF_DEFINE_SHT(N, V, DESCR)	N = V ,
-enum { _ELF_DEFINE_SECTION_TYPES() SHT_LAST };
+enum { _ELF_DEFINE_SECTION_TYPES() SHT_LAST = 0 };
 
 /*
  * Symbol binding information.
