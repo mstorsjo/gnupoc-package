@@ -1,0 +1,101 @@
+#!/bin/sh
+
+set -e
+
+if test $# -lt 3 -o $0 != "./install_qt_4.7.1"; then
+  echo "Usage: ./install_qt_4.7.1 <path-to-qt-exe> [-nocompile] [-qt <target-qt-dir>] [-sdk <target-sdk-dir>] [-sdk <another-sdk-dir>]"
+  echo " e.g.: ./install_qt_4.7.1 qt-symbian-opensource-4.7.1-s60.exe -qt ~/symbian-sdks/qt -sdk ~/symbian-sdks/s60_31"
+  exit 1
+fi
+
+SRC=$1
+shift
+
+QTDIR=""
+COMPILE=1
+
+while [ $# -gt 1 ]; do
+	if [ "$1" = "-qt" ]; then
+		QTDIR=$2
+		shift 2
+	else if [ "$1" = "-sdk" ]; then
+		SDKS="$SDKS $2"
+		shift 2
+	else if [ "$1" = "-nocompile" ]; then
+		COMPILE=0
+		shift
+	else
+		echo Unknown parameter $1
+		exit 1
+	fi; fi; fi
+done
+if [ $# -gt 0 ]; then
+	echo Unknown parameter $1
+	exit 1
+fi
+
+QTDEST=`echo $QTDIR | sed s:/\$::`
+SDKS=`echo $SDKS | sed s:/\$:: | sed 's:/ : :'`
+
+if [ "x$QTDEST" != "x" ]; then mkdir -p $QTDEST; fi
+
+export PATH=7z:$PATH
+# 7z must find the path to 7z.so
+P7ZIP=`which 7z`
+
+set -x
+
+### Unzip
+mkdir -p qt_temp
+$P7ZIP x -y -oqt_temp $SRC
+mkdir -p qt_temp/\$OUTDIR/epoc32/epoc32/release/gcce/urel
+cp qt_temp/\$OUTDIR/epoc32/epoc32/release/armv5/urel/qtmain.lib qt_temp/\$OUTDIR/epoc32/epoc32/release/gcce/urel
+for sdk in $SDKS; do
+	./mergedir -copy qt_temp/\$OUTDIR/epoc32/epoc32 $sdk/epoc32
+done
+./dos2unix qt_temp/\$OUTDIR/bin/bin/createpackage.pl
+./dos2unix qt_temp/\$OUTDIR/bin/bin/createpackage
+./dos2unix qt_temp/\$OUTDIR/bin/bin/patch_capabilities.pl
+./dos2unix qt_temp/\$OUTDIR/bin/bin/patch_capabilities
+find qt_temp/\$OUTDIR/bin/mkspecs -type f | xargs -n 1 ./dos2unix
+find qt_temp/\$OUTDIR/bin/qmake -type f -name \*.cpp | xargs -n 1 ./dos2unix
+cat qt-4.7.1.patch | (cd qt_temp/\$OUTDIR/bin && patch -p1)
+chmod a+x qt_temp/\$OUTDIR/bin/bin/createpackage.pl
+chmod a+x qt_temp/\$OUTDIR/bin/bin/createpackage
+chmod a+x qt_temp/\$OUTDIR/bin/bin/patch_capabilities.pl
+chmod a+x qt_temp/\$OUTDIR/bin/bin/patch_capabilities
+./dos2unix qt_temp/\$OUTDIR/bin/src/corelib/global/qglobal.h
+for i in qt_temp/\$OUTDIR/bin/config.tests/unix/*.test qt_temp/\$OUTDIR/bin/config.tests/x11/*.test qt_temp/\$OUTDIR/bin/config.tests/mac/*.test; do
+	./dos2unix $i
+	chmod a+x $i
+done
+for i in configure config.tests/unix/makeabs config.tests/unix/padstring; do
+	./dos2unix qt_temp/\$OUTDIR/bin/$i
+	chmod a+x qt_temp/\$OUTDIR/bin/$i
+done
+rm -rf qt_temp/\$OUTDIR/bin/mkspecs/default
+ln -s symbian-abld qt_temp/\$OUTDIR/bin/mkspecs/default
+if [ "x$QTDEST" != "x" ]; then
+	./mergedir qt_temp/\$OUTDIR/bin $QTDEST
+fi
+rm -rf qt_temp
+
+set +x
+
+if [ "x$QTDEST" != "x" ]; then
+	cat > $QTDEST/bin/qt.conf <<EOF
+[Paths]
+Prefix = $QTDEST
+EOF
+
+	cat > $QTDEST/.qmake.cache <<EOF
+QT_BUILD_TREE   = $QTDEST
+QT_SOURCE_TREE  = $QTDEST
+EOF
+
+	if [ $COMPILE == 1 ]; then
+		../tools/compile_qt_cross_tools $QTDEST
+	fi
+fi
+
+exit 0

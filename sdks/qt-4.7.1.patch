@@ -1,0 +1,130 @@
+diff --git a/mkspecs/common/symbian/symbian.conf b/mkspecs/common/symbian/symbian.conf
+index cc5b788..9b02f39 100644
+--- a/mkspecs/common/symbian/symbian.conf
++++ b/mkspecs/common/symbian/symbian.conf
+@@ -100,7 +100,7 @@ contains(QMAKE_HOST.os,Windows) {
+     QMAKE_COPY_DIR       = cp -r
+     QMAKE_MOVE           = mv
+     QMAKE_DEL_FILE       = rm -f
+-    QMAKE_MKDIR          = mkdir
++    QMAKE_MKDIR          = mkdir -p
+     QMAKE_DEL_DIR        = rmdir
+     QMAKE_DEL_TREE       = rm -rf
+     QMAKE_CHK_DIR_EXISTS = test -d
+diff --git a/mkspecs/features/symbian/sis_targets.prf b/mkspecs/features/symbian/sis_targets.prf
+index b145263..e838e10 100644
+--- a/mkspecs/features/symbian/sis_targets.prf
++++ b/mkspecs/features/symbian/sis_targets.prf
+@@ -37,7 +37,7 @@ equals(GENERATE_SIS_TARGETS, true) {
+                               )
+ 
+         ok_sis_target.target = ok_sis
+-        ok_sis_target.commands = createpackage.bat $$CONVERT_GCCE_PARAM $(QT_SIS_OPTIONS) $${baseTarget}_template.pkg \
++        ok_sis_target.commands = createpackage $$CONVERT_GCCE_PARAM $(QT_SIS_OPTIONS) $${baseTarget}_template.pkg \
+                                      $(QT_SIS_TARGET) $(QT_SIS_CERTIFICATE) $(QT_SIS_KEY) $(QT_SIS_PASSPHRASE)
+ 
+         unsigned_sis_target.target = unsigned_sis
+@@ -56,7 +56,7 @@ equals(GENERATE_SIS_TARGETS, true) {
+                               )
+ 
+         ok_unsigned_sis_target.target = ok_unsigned_sis
+-        ok_unsigned_sis_target.commands = createpackage.bat $$CONVERT_GCCE_PARAM $(QT_SIS_OPTIONS) -o $${baseTarget}_template.pkg $(QT_SIS_TARGET)
++        ok_unsigned_sis_target.commands = createpackage $$CONVERT_GCCE_PARAM $(QT_SIS_OPTIONS) -o $${baseTarget}_template.pkg $(QT_SIS_TARGET)
+ 
+         target_sis_target.target = $${baseTarget}.sis
+         target_sis_target.commands = $(MAKE) -f $(MAKEFILE) sis
+@@ -70,7 +70,7 @@ equals(GENERATE_SIS_TARGETS, true) {
+         installer_sis_target.depends = sis
+ 
+         ok_installer_sis_target.target = ok_installer_sis
+-        ok_installer_sis_target.commands = createpackage.bat $(QT_SIS_OPTIONS) $${baseTarget}_installer.pkg - \
++        ok_installer_sis_target.commands = createpackage $(QT_SIS_OPTIONS) $${baseTarget}_installer.pkg - \
+                                                $(QT_SIS_CERTIFICATE) $(QT_SIS_KEY) $(QT_SIS_PASSPHRASE)
+ 
+         unsigned_installer_sis_target.target = unsigned_installer_sis
+@@ -106,7 +106,7 @@ equals(GENERATE_SIS_TARGETS, true) {
+                                    )
+ 
+         ok_stub_sis_target.target = ok_stub_sis
+-        ok_stub_sis_target.commands = createpackage.bat -s $(QT_SIS_OPTIONS) $${baseTarget}_stub.pkg \
++        ok_stub_sis_target.commands = createpackage -s $(QT_SIS_OPTIONS) $${baseTarget}_stub.pkg \
+                                           $(QT_SIS_TARGET) $(QT_SIS_CERTIFICATE) $(QT_SIS_KEY) $(QT_SIS_PASSPHRASE)
+ 
+         QMAKE_EXTRA_TARGETS += sis_target \
+@@ -140,7 +140,6 @@ equals(GENERATE_SIS_TARGETS, true) {
+                 && echo $${shellFixedHash}  Version     :  >> $$make_cache_name \
+                 && echo $${shellFixedHash} >> $$make_cache_name \
+                 && echo $${shellFixedHash} ============================================================================== >> $$make_cache_name \
+-                && echo. >> $$make_cache_name \
+                 && echo QT_SIS_TARGET ?= $(QT_SIS_TARGET) >> $$make_cache_name
+ 
+             QMAKE_EXTRA_TARGETS += store_build_target
+diff --git a/qmake/generators/symbian/symbiancommon.cpp b/qmake/generators/symbian/symbiancommon.cpp
+index f00ab6b..2ef7459 100644
+--- a/qmake/generators/symbian/symbiancommon.cpp
++++ b/qmake/generators/symbian/symbiancommon.cpp
+@@ -428,9 +428,9 @@ void SymbianCommonGenerator::generatePkgFile(const QString &iconFile, bool epocB
+                     t << QString("\"%1epoc32/data/z%2\" - \"!:%3\"")
+                          .arg(epocRoot())
+                          .arg(iconFile)
+-                         .arg(QDir::toNativeSeparators(iconFile)) << endl << endl;
++                         .arg(QString(iconFile).replace("/", "\\")) << endl << endl;
+                     ts << QString("\"\" - \"%1\"")
+-                         .arg(romPath(QDir::toNativeSeparators(iconFile))) << endl << endl;
++                         .arg(romPath(QString(iconFile).replace("/", "\\"))) << endl << endl;
+                 } else {
+                     QDir mifIconDir(project->first("DESTDIR"));
+                     QFileInfo mifIcon(mifIconDir.relativeFilePath(project->first("TARGET")));
+@@ -439,9 +439,9 @@ void SymbianCommonGenerator::generatePkgFile(const QString &iconFile, bool epocB
+                     t << QString("\"%1/%2\" - \"!:%3\"")
+                          .arg(mifIcon.path())
+                          .arg(mifIconFileName)
+-                         .arg(QDir::toNativeSeparators(iconFile)) << endl << endl;
++                         .arg(QString(iconFile).replace("/", "\\")) << endl << endl;
+                     ts << QString("\"\" - \"%1\"")
+-                         .arg(romPath(QDir::toNativeSeparators(iconFile))) << endl << endl;
++                         .arg(romPath(QString(iconFile).replace("/", "\\"))) << endl << endl;
+                 }
+             }
+         }
+diff --git a/qmake/generators/symbian/symmake_abld.cpp b/qmake/generators/symbian/symmake_abld.cpp
+index c4914e7..152f3fb 100644
+--- a/qmake/generators/symbian/symmake_abld.cpp
++++ b/qmake/generators/symbian/symmake_abld.cpp
+@@ -205,8 +205,11 @@ void SymbianAbldMakefileGenerator::writeWrapperMakefile(QFile& wrapperFile, bool
+ #ifdef Q_OS_WIN32
+     t << "XCOPY             = xcopy /d /f /h /r /y /i" << endl;
+     t << "ABLD              = ABLD.BAT" << endl;
++#elif defined(Q_OS_MAC)
++    t << "XCOPY             = cp -R -v" << endl;
++    t << "ABLD              = abld" << endl;
+ #else
+-    t << "XCOPY             = cp -u -v" << endl;
++    t << "XCOPY             = cp -R -u -v" << endl;
+     t << "ABLD              = abld" << endl;
+ #endif
+     t << "DEBUG_PLATFORMS   = " << debugPlatforms.join(" ") << endl;
+@@ -323,6 +326,7 @@ void SymbianAbldMakefileGenerator::writeWrapperMakefile(QFile& wrapperFile, bool
+                     QString fixedValue(QDir::toNativeSeparators(values.at(i)));
+                     dirsToClean << fixedValue;
+                     t << "\t-@ " << dirExists << " \""  << fixedValue << "\" "
++                      << (isWindowsShell() ? "" : "|| ")
+                       << mkdir << " \"" << fixedValue << "\"" << endl;
+                 }
+             }
+@@ -441,8 +445,14 @@ bool SymbianAbldMakefileGenerator::writeDeploymentTargets(QTextStream &t, bool i
+         // Xcopy prompts for selecting file or directory if target doesn't exist,
+         // and doesn't provide switch to force file selection. It does provide dir forcing, though,
+         // so strip the last part of the destination.
++        QString dir = Option::fixPathToLocalOS(depList.at(i).to.left(depList.at(i).to.lastIndexOf("\\") + 1));
++        QString dirExists = var("QMAKE_CHK_DIR_EXISTS");
++        QString mkdir = var("QMAKE_MKDIR");
++        t << "\t-@ " << dirExists << " \""  << dir << "\" "
++                      << (isWindowsShell() ? "" : "|| ")
++                      << mkdir << " \"" << dir << "\"" << endl;
+         t << "\t-$(XCOPY) \"" << depList.at(i).from << "\" \""
+-          << depList.at(i).to.left(depList.at(i).to.lastIndexOf("\\") + 1) << "\"" << endl;
++          << dir << "\"" << endl;
+     }
+ 
+     t << endl;
