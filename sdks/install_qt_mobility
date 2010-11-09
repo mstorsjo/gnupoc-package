@@ -45,14 +45,14 @@ for q in $QTDIRS; do
 done
 for s in $SDKS; do
 	if [ -f $s/epoc32/include/variant/symbian_os_v9.2.hrh ]; then
-		unzip -d$s $DIR/qt-mobility-*-epoc32-3.1.zip
+		unzip -o -d$s $DIR/qt-mobility-*-epoc32-3.1.zip
 	else if [ -f $s/epoc32/include/variant/symbian_os_v9.3.hrh ]; then
-		unzip -d$s $DIR/qt-mobility-*-epoc32-3.2.zip
+		unzip -o -d$s $DIR/qt-mobility-*-epoc32-3.2.zip
 	else if [ -f $s/epoc32/include/variant/symbian_os.hrh ]; then
 		if [ -f $s/epoc32/tools/checklib.exe ] && [ -f $DIR/qt-mobility-*-epoc32-symbian3.zip ]; then
-			unzip -d$s $DIR/qt-mobility-*-epoc32-symbian3.zip
+			unzip -o -d$s $DIR/qt-mobility-*-epoc32-symbian3.zip
 		else
-			unzip -d$s $DIR/qt-mobility-*-epoc32-5.0.zip
+			unzip -o -d$s $DIR/qt-mobility-*-epoc32-5.0.zip
 		fi
 	fi; fi; fi
 done
