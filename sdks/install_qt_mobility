@@ -3,8 +3,8 @@
 set -e
 
 if test $# -lt 3 -o $0 != "./install_qt_mobility"; then
-  echo "Usage: ./install_qt_mobility <path-to-zip> [-qt <target-qt-dir>] [-sdk <target-sdk-dir>] [-sdk <another-sdk-dir>]"
-  echo " e.g.: ./install_qt_mobility qt-mobility-symbian-opensource-1.1.0.zip -qt ~/symbian-sdks/qt -sdk ~/symbian-sdks/s60_31"
+  echo "Usage: ./install_qt_mobility <path-to-zip> [-qt <target-qt-dir>] [-sdk <target-sdk-dir>] [-sdk <another-sdk-dir>] [-mobility <target-mobility-dir>]"
+  echo " e.g.: ./install_qt_mobility qt-mobility-symbian-opensource-1.1.0.zip -qt ~/symbian-sdks/qt -sdk ~/symbian-sdks/s60_31 -mobility ~/symbian-sdks/qt_mobility"
   exit 1
 fi
 
@@ -12,6 +12,7 @@ SRC=$1
 shift
 
 QTDIRS=""
+MOBILITY=""
 
 while [ $# -gt 1 ]; do
 	if [ "$1" = "-qt" ]; then
@@ -20,10 +21,13 @@ while [ $# -gt 1 ]; do
 	else if [ "$1" = "-sdk" ]; then
 		SDKS="$SDKS $2"
 		shift 2
+	else if [ "$1" = "-mobility" ]; then
+		MOBILITY="$2"
+		shift 2
 	else
 		echo Unknown parameter $1
 		exit 1
-	fi; fi
+	fi; fi; fi
 done
 if [ $# -gt 0 ]; then
 	echo Unknown parameter $1
@@ -31,6 +35,7 @@ if [ $# -gt 0 ]; then
 fi
 
 QTDIRS=`echo $QTDIRS | sed s:/\$:: | sed 's:/ : :'`
+MOBILITY=`echo $MOBILITY | sed s:/\$:: | sed 's:/ : :'`
 SDKS=`echo $SDKS | sed s:/\$:: | sed 's:/ : :'`
 
 set -x
@@ -56,5 +61,8 @@ for s in $SDKS; do
 		fi
 	fi; fi; fi
 done
+if [ "x$MOBILITY" != "x" ]; then
+	mv $DIR $MOBILITY
+fi
 rm -rf qt_temp
 
