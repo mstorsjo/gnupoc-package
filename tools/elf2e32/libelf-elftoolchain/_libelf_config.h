@@ -26,5 +26,7 @@
 
 #define	LIBELF_VCSID(ID)
 
+#ifndef roundup2
 #define	roundup2	roundup
+#endif
 
