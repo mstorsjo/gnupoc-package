@@ -63,10 +63,10 @@ Note, the smart installer currently available only seems to install Qt 4.6.3.
 Qt Mobility
 -----------
 
-Download qt-mobility-symbian-opensource-1.0.2.zip from this URL:
-http://qt.nokia.com/products/appdev/add-on-products/catalog/4/new-qt-apis/mobility
+Download qt-mobility-symbian-opensource-1.1.0.zip from this URL:
+http://qt.nokia.com/products/qt-addons/mobility
 
 Then install it with the following command:
 
-./install_qt_mobility qt-mobility-symbian-opensource-1.0.2.zip -qt ~/symbian-sdks/qt_4.7.1 -sdk ~/symbian-sdks/s60_31
+./install_qt_mobility qt-mobility-symbian-opensource-1.1.0.zip -qt ~/symbian-sdks/qt_4.7.1 -sdk ~/symbian-sdks/s60_31
 

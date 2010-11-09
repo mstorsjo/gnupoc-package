@@ -4,7 +4,7 @@ set -e
 
 if test $# -lt 3 -o $0 != "./install_qt_mobility"; then
   echo "Usage: ./install_qt_mobility <path-to-zip> [-qt <target-qt-dir>] [-sdk <target-sdk-dir>] [-sdk <another-sdk-dir>]"
-  echo " e.g.: ./install_qt_mobility qt-mobility-symbian-opensource-1.0.2.zip -qt ~/symbian-sdks/qt -sdk ~/symbian-sdks/s60_31"
+  echo " e.g.: ./install_qt_mobility qt-mobility-symbian-opensource-1.1.0.zip -qt ~/symbian-sdks/qt -sdk ~/symbian-sdks/s60_31"
   exit 1
 fi
 
