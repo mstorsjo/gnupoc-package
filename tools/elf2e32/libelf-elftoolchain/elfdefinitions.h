@@ -981,12 +981,6 @@ _ELF_DEFINE_SHT(SHT_SUNW_verneed,    0x6FFFFFFEUL,			\
 	"symbol versioning requirements")				\
 _ELF_DEFINE_SHT(SHT_SUNW_versym,     0x6FFFFFFFUL,			\
 	"symbol versioning table")					\
-_ELF_DEFINE_SHT(SHT_GNU_verdef,     0x6FFFFFFDUL,			\
-	"symbol versioning information")				\
-_ELF_DEFINE_SHT(SHT_GNU_verneed,    0x6FFFFFFEUL,			\
-	"symbol versioning requirements")				\
-_ELF_DEFINE_SHT(SHT_GNU_versym,     0x6FFFFFFFUL,			\
-	"symbol versioning table")					\
 _ELF_DEFINE_SHT(SHT_HIOS,            0x6FFFFFFFUL,			\
 	"end of OS-specific range")					\
 _ELF_DEFINE_SHT(SHT_LOPROC,          0x70000000UL,			\
@@ -1071,6 +1065,11 @@ _ELF_DEFINE_SHT(SHT_HIUSER,          0xFFFFFFFFUL,			\
 #undef	_ELF_DEFINE_SHT
 #define	_ELF_DEFINE_SHT(N, V, DESCR)	N = V ,
 enum { _ELF_DEFINE_SECTION_TYPES() SHT_LAST = 0 };
+
+/* Aliases for section types. */
+#define	SHT_GNU_verdef		SHT_SUNW_verdef
+#define	SHT_GNU_verneed		SHT_SUNW_verneed
+#define	SHT_GNU_versym		SHT_SUNW_versym
 
 /*
  * Symbol binding information.
