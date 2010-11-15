@@ -93,7 +93,7 @@ QT_BUILD_TREE   = $QTDEST
 QT_SOURCE_TREE  = $QTDEST
 EOF
 
-	if [ $COMPILE == 1 ]; then
+	if [ $COMPILE = 1 ]; then
 		../tools/compile_qt_cross_tools $QTDEST
 	fi
 fi
