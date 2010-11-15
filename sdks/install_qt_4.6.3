@@ -14,11 +14,13 @@ shift
 QTDIR=""
 COMPILE=1
 
-while [ $# -gt 1 ]; do
+while [ $# -ge 1 ]; do
 	if [ "$1" = "-qt" ]; then
+		if [ $# = 1 ]; then echo The -qt parameter requires an argument; exit; fi
 		QTDIR=$2
 		shift 2
 	else if [ "$1" = "-sdk" ]; then
+		if [ $# = 1 ]; then echo The -sdk parameter requires an argument; exit; fi
 		SDKS="$SDKS $2"
 		shift 2
 	else if [ "$1" = "-nocompile" ]; then
