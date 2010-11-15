@@ -37,7 +37,7 @@ fi
 QTDEST=`echo $QTDIR | sed s:/\$::`
 SDKS=`echo $SDKS | sed s:/\$:: | sed 's:/ : :'`
 
-if [ "x$QTDEST" != "x" ]; then mkdir -p $QTDEST; fi
+if [ "$QTDEST" != "" ]; then mkdir -p $QTDEST; fi
 
 export PATH=7z:$PATH
 # 7z must find the path to 7z.so
@@ -70,14 +70,14 @@ for i in configure config.tests/unix/makeabs config.tests/unix/padstring; do
 done
 rm -rf qt_temp/\$OUTDIR/bin/mkspecs/default
 ln -s symbian-abld qt_temp/\$OUTDIR/bin/mkspecs/default
-if [ "x$QTDEST" != "x" ]; then
+if [ "$QTDEST" != "" ]; then
 	./mergedir qt_temp/\$OUTDIR/bin $QTDEST
 fi
 rm -rf qt_temp
 
 set +x
 
-if [ "x$QTDEST" != "x" ]; then
+if [ "$QTDEST" != "" ]; then
 	cat > $QTDEST/bin/qt.conf <<EOF
 [Paths]
 Prefix = $QTDEST
