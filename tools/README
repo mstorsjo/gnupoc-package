@@ -64,7 +64,9 @@ or
 ./install_eka2_tools ~/csl-gcc
 
 depending on which toolchain they're for. (EKA1 is for S60 1st and 2nd ed,
-EKA2 is for S60 3rd/5th and UIQ 3.0 onwards.)
+EKA2 is for S60 3rd/5th and UIQ 3.0 onwards.) Note, both EKA1 and EKA2
+tools require zlib, the EKA2 tools also require openssl libraries.
+
 
 
 The tools for eka2 includes a hacked version of gnu make, to handle
@@ -93,9 +95,6 @@ syntax compared to the original makekeys).
 If you have problem with any of these native tools, just remove it from
 the toolchain directory, and the build scripts will use the original exe
 with wine instead, and let me know about the problems.
-
-Note, both EKA1 and EKA2 tools require zlib, the EKA2 tools also require
-openssl libraries.
 
 
 
