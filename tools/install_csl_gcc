@@ -9,7 +9,8 @@ fi
 SRC=$1
 DEST=`echo $2 | sed s:/\$::`
 
-mkdir -p $DEST
+mkdir -p $DEST || exit 1
+DEST=`cd $DEST && pwd`
 
 MAKE=make
 if [ "`which gmake`" != "" ]; then

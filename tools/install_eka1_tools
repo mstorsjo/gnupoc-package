@@ -8,7 +8,8 @@ fi
 
 DEST=`echo $1 | sed s:/\$::`
 
-mkdir -p $DEST/bin
+mkdir -p $DEST/bin || exit 1
+DEST=`cd $DEST && pwd`
 
 MAKE=make
 if [ "`which gmake`" != "" ]; then
