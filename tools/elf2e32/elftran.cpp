@@ -241,19 +241,19 @@ void parseDynamic(Elf* elf, Elf32_Phdr* phdr, FILE* out, E32ImageHeader* header)
 int parseOptions(char** argv, int argc, E32ImageHeader* header, E32ImageHeaderComp* headerComp, E32ImageHeaderV* headerV, int* dlldata, const char** elfinput, const char** output, int* dumpFlags, bool* headersModified) {
 	for (int i = 1; i < argc; i++) {
 		if (!strcmp(argv[i], "-sid")) {
-			headerV->secureId = strtol(argv[i + 1], NULL, 0);
+			headerV->secureId = strtoul(argv[i + 1], NULL, 0);
 			i++;
 		} else if (!strcmp(argv[i], "-uid1")) {
-			header->uid1 = strtol(argv[i + 1], NULL, 0);
+			header->uid1 = strtoul(argv[i + 1], NULL, 0);
 			i++;
 		} else if (!strcmp(argv[i], "-uid2")) {
-			header->uid2 = strtol(argv[i + 1], NULL, 0);
+			header->uid2 = strtoul(argv[i + 1], NULL, 0);
 			i++;
 		} else if (!strcmp(argv[i], "-uid3")) {
-			header->uid3 = strtol(argv[i + 1], NULL, 0);
+			header->uid3 = strtoul(argv[i + 1], NULL, 0);
 			i++;
 		} else if (!strcmp(argv[i], "-vid")) {
-			headerV->vendorId = strtol(argv[i + 1], NULL, 0);
+			headerV->vendorId = strtoul(argv[i + 1], NULL, 0);
 			i++;
 		} else if (!strcmp(argv[i], "-capability")) {
 			getCapabilities(argv[i + 1], headerV->caps);
@@ -270,15 +270,15 @@ int parseOptions(char** argv, int argc, E32ImageHeader* header, E32ImageHeaderCo
 			i++;
 		} else if (!strcmp(argv[i], "-heap")) {
 			if (i + 2 < argc) {
-				header->heapSizeMin = strtol(argv[i + 1], NULL, 0);
-				header->heapSizeMax = strtol(argv[i + 2], NULL, 0);
+				header->heapSizeMin = strtoul(argv[i + 1], NULL, 0);
+				header->heapSizeMax = strtoul(argv[i + 2], NULL, 0);
 				i += 2;
 			} else {
 				fprintf(stderr, "Not enough arguments for -heap\n");
 				return 1;
 			}
 		} else if (!strcmp(argv[i], "-stack")) {
-			header->stackSize = strtol(argv[i + 1], NULL, 0);
+			header->stackSize = strtoul(argv[i + 1], NULL, 0);
 			i++;
 		} else if (!strcmp(argv[i], "-nocompress")) {
 			header->compressionType = 0;

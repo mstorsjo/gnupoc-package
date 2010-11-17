@@ -367,15 +367,15 @@ int main(int argc, char *argv[]) {
 		case 0:
 			name = long_options[option_index].name;
 			if (!strcmp(name, "sid")) {
-				headerV.secureId = strtol(optarg, NULL, 0);
+				headerV.secureId = strtoul(optarg, NULL, 0);
 			} else if (!strcmp(name, "uid1")) {
-				header.uid1 = strtol(optarg, NULL, 0);
+				header.uid1 = strtoul(optarg, NULL, 0);
 			} else if (!strcmp(name, "uid2")) {
-				header.uid2 = strtol(optarg, NULL, 0);
+				header.uid2 = strtoul(optarg, NULL, 0);
 			} else if (!strcmp(name, "uid3")) {
-				header.uid3 = strtol(optarg, NULL, 0);
+				header.uid3 = strtoul(optarg, NULL, 0);
 			} else if (!strcmp(name, "vid")) {
-				headerV.vendorId = strtol(optarg, NULL, 0);
+				headerV.vendorId = strtoul(optarg, NULL, 0);
 			} else if (!strcmp(name, "capability")) {
 				getCapabilities(optarg, headerV.caps);
 			} else if (!strcmp(name, "fpu")) {
@@ -414,11 +414,11 @@ int main(int argc, char *argv[]) {
 					*ptr = '\0';
 					strncpy(buf2, ptr + 1, sizeof(buf2));
 					buf2[sizeof(buf2) - 1] = '\0';
-					header.heapSizeMax = strtol(buf2, NULL, 0);
+					header.heapSizeMax = strtoul(buf2, NULL, 0);
 				}
-				header.heapSizeMin = strtol(buf1, NULL, 0);
+				header.heapSizeMin = strtoul(buf1, NULL, 0);
 			} else if (!strcmp(name, "stack")) {
-				header.stackSize = strtol(optarg, NULL, 0);
+				header.stackSize = strtoul(optarg, NULL, 0);
 			} else if (!strcmp(name, "defoutput")) {
 				defoutput = optarg;
 			} else if (!strcmp(name, "sysdef")) {
