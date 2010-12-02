@@ -113,6 +113,7 @@ char* outname = NULL;
 char* headername = NULL;
 
 uint32_t colorType = 0;
+uint32_t colorTypeHeader = 0;
 uint32_t maskType = 0;
 uint32_t animType = 0;
 
@@ -140,6 +141,7 @@ public:
 		name = strdup(obj.name);
 		size = obj.size;
 		colorType = obj.colorType;
+		colorTypeHeader = obj.colorTypeHeader;
 		maskType = obj.maskType;
 		animType = obj.animType;
 	}
@@ -147,6 +149,7 @@ public:
 		free(name);
 		name = strdup(obj.name);
 		colorType = obj.colorType;
+		colorTypeHeader = obj.colorTypeHeader;
 		maskType = obj.maskType;
 		animType = obj.animType;
 		return *this;
@@ -154,6 +157,7 @@ public:
 	char* name;
 	uint32_t size;
 	uint32_t colorType;
+	uint32_t colorTypeHeader;
 	uint32_t maskType;
 	uint32_t animType;
 };
@@ -185,6 +189,7 @@ void handleFileArgument(const char* arg) {
 	} else {
 		ImageFile image(arg);
 		image.colorType = colorType;
+		image.colorTypeHeader = colorTypeHeader;
 		image.maskType = maskType;
 		image.animType = animType;
 		printf("Checking: %s\n", image.name);
@@ -198,7 +203,7 @@ void handleFileArgument(const char* arg) {
 		fclose(in);
 		images.push_back(image);
 		colorType = 0;
-		maskType = 0;
+		// colorTypeHeader isn't reset between files, maskType isn't either
 		animType = 0;
 	}
 }
@@ -237,7 +242,8 @@ void processArgument(const char* arg) {
 		while (type->name) {
 			int len = strlen(type->name);
 			if (!strncmp(type->name, param, len)) {
-				colorType = type->code;
+				colorType = colorTypeHeader = type->code;
+				maskType = 0;
 				const char* mask = strchr(param, ',');
 				if (mask) {
 					mask++;
@@ -430,10 +436,9 @@ int main(int argc, char *argv[]) {
 		writeUint32(1, out);
 		writeUint32(images[i].colorType, out);
 		writeUint32(images[i].animType, out);
-		if (images[i].colorType == 0)
-			writeUint32(0x7b8a7fe0, out); // mifconv.exe seems to write an uninitialized value
-		else
-			writeUint32(images[i].maskType, out);
+//		if (images[i].colorType == 0)
+//			writeUint32(0x7b8a7fe0, out); // mifconv.exe seems to write an uninitialized value
+		writeUint32(images[i].maskType, out);
 		printf("Loading file: %s\n", images[i].name);
 		FILE* in = fopen(images[i].name, "rb");
 		if (!in) {
@@ -477,7 +482,7 @@ int main(int argc, char *argv[]) {
 			char* curname = toName(images[i].name);
 			fprintf(out, "\tEMbm%s%s = %d,\r\n", base, curname, val);
 			val++;
-			if (images[i].colorType == 0 || images[i].maskType != 0) {
+			if (images[i].colorTypeHeader == 0 || images[i].maskType != 0) {
 				fprintf(out, "\tEMbm%s%s_mask = %d,\r\n", base, curname, val);
 			}
 			val++;
