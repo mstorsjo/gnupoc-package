@@ -16,4 +16,8 @@
 ./dotest.sh /c24 red.bmp green.bmp blue.bmp || exit 1
 ./dotest.sh /c24,1 red.bmp green.bmp blue.bmp || exit 1
 ./dotest.sh /c24,1 redrect.svg red.bmp /c24 green.bmp || exit 1
+./dotest.sh /c24,1 red.bmp /c24,1 green.bmp || exit 1
+./dotest.sh /c24,8 red.bmp /c24,1 green.bmp || exit 1
+# This test uses an uninitialized value, making it unreliable
+#./dotest.sh red.bmp /c24 green.bmp || exit 1
 

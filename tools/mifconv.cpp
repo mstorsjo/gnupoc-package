@@ -186,6 +186,21 @@ struct ColorType {
 	{ NULL, 0 },
 };
 
+void catColorType(char* str, uint32_t colorType) {
+	if (colorType == 0)
+		return;
+	ColorType* type = colors;
+	while (type->name) {
+		if (type->code == colorType)
+			break;
+		type++;
+	}
+	if (!type->name)
+		return;
+	strcat(str, "/");
+	strcat(str, type->name);
+}
+
 void handleFileArgument(const char* arg) {
 	if (!outname) {
 		outname = strdup(arg);
@@ -429,6 +444,7 @@ int main(int argc, char *argv[]) {
 
 	uint32_t offset = 0x10 + 0x10*images.size();
 	uint32_t bmpOffset = 0;
+	int bitmaps = 0;
 	for (unsigned int i = 0; i < images.size(); i++) {
 		if (images[i].bitmap) {
 			writeUint32(bmpOffset, out);
@@ -438,6 +454,7 @@ int main(int argc, char *argv[]) {
 			writeUint32(bmpOffset, out);
 			writeUint32(0, out);
 			bmpOffset--;
+			bitmaps++;
 		} else {
 			writeUint32(offset, out);
 			writeUint32(images[i].size + 0x20, out);
@@ -486,6 +503,64 @@ int main(int argc, char *argv[]) {
 
 	printf("Writing mif: %s\n", outname);
 	fclose(out);
+	if (bitmaps) {
+		char* mbmname = (char*) malloc(strlen(outname) + 4);
+		strcpy(mbmname, outname);
+		char* ptr = strrchr(mbmname, '.');
+		if (ptr)
+			*ptr = '\0';
+		strcat(mbmname, ".mbm");
+		printf("Loading mbm icons...\n");
+		int cmdlinelen = 50 + strlen(mbmname);
+		char* cmdline = (char*) malloc(cmdlinelen);
+		snprintf(cmdline, cmdlinelen, "bmconv /q %s", mbmname);
+		for (unsigned int i = 0; i < images.size(); i++) {
+			if (!images[i].bitmap)
+				continue;
+			printf("Loading file: %s\n", images[i].name);
+			cmdlinelen += 2*strlen(images[i].name) + 30;
+			cmdline = (char*) realloc(cmdline, cmdlinelen);
+			strcat(cmdline, " ");
+			catColorType(cmdline, images[i].colorTypeHeader);
+			strcat(cmdline, images[i].name);
+			if (images[i].colorTypeHeader == 0 || images[i].maskType != 0) {
+				uint32_t maskType = images[i].maskType;
+				if (maskType == 0)
+					maskType = 8;
+				if (maskType == 4)
+					maskType = 8;
+				char* maskname = (char*) malloc(strlen(images[i].name) + 20);
+				strcpy(maskname, images[i].name);
+				char* ptr = strrchr(maskname, '.');
+				if (ptr)
+					*ptr = '\0';
+				strcat(maskname, "_mask_soft.bmp");
+				if (maskType == 1) {
+					FILE* in = fopen(maskname, "rb");
+					if (in) {
+						fclose(in);
+						maskType = 8;
+					} else {
+						// _mask_soft not found, use _mask instead
+						if (ptr)
+							*ptr = '\0';
+						strcat(maskname, "_mask.bmp");
+					}
+				}
+				strcat(cmdline, " ");
+				char param[10];
+				sprintf(param, "/%d", maskType);
+				strcat(cmdline, param);
+				strcat(cmdline, maskname);
+				printf("Loading file: %s\n", maskname);
+				free(maskname);
+			}
+		}
+		system(cmdline);
+		free(cmdline);
+		printf("Writing mbm: %s\n", mbmname);
+		free(mbmname);
+	}
 
 	if (headername) {
 		printf("Writing mbg: %s\n", headername);
