@@ -12,4 +12,8 @@
 ./dotest.sh /c24 redrect.svg greenrect.svg bluerect.svg || exit 1
 ./dotest.sh /c24,1 redrect.svg greenrect.svg bluerect.svg || exit 1
 ./dotest.sh /c24,1 redrect.svg /a greenrect.svg bluerect.svg || exit 1
+./dotest.sh /c24 redrect.svg /c24 red.bmp /c24 green.bmp /c24 greenrect.svg || exit 1
+./dotest.sh /c24 red.bmp green.bmp blue.bmp || exit 1
+./dotest.sh /c24,1 red.bmp green.bmp blue.bmp || exit 1
+./dotest.sh /c24,1 redrect.svg red.bmp /c24 green.bmp || exit 1
 

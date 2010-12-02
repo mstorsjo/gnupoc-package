@@ -132,6 +132,7 @@ class ImageFile {
 public:
 	ImageFile(const char* n) {
 		name = strdup(n);
+		bitmap = false;
 		fixDirSep(name);
 	}
 	~ImageFile() {
@@ -139,6 +140,7 @@ public:
 	}
 	ImageFile(const ImageFile& obj) {
 		name = strdup(obj.name);
+		bitmap = obj.bitmap;
 		size = obj.size;
 		colorType = obj.colorType;
 		colorTypeHeader = obj.colorTypeHeader;
@@ -148,6 +150,7 @@ public:
 	ImageFile& operator=(const ImageFile& obj) {
 		free(name);
 		name = strdup(obj.name);
+		bitmap = obj.bitmap;
 		colorType = obj.colorType;
 		colorTypeHeader = obj.colorTypeHeader;
 		maskType = obj.maskType;
@@ -155,6 +158,7 @@ public:
 		return *this;
 	}
 	char* name;
+	bool bitmap;
 	uint32_t size;
 	uint32_t colorType;
 	uint32_t colorTypeHeader;
@@ -198,6 +202,10 @@ void handleFileArgument(const char* arg) {
 			perror(image.name);
 			exit(1);
 		}
+		char header[2];
+		if (fread(header, 1, 2, in) == 2)
+			if (!memcmp(header, "BM", 2))
+				image.bitmap = true;
 		fseek(in, 0, SEEK_END);
 		image.size = ftell(in);
 		fclose(in);
@@ -420,15 +428,29 @@ int main(int argc, char *argv[]) {
 	writeUint32(2*images.size(), out);
 
 	uint32_t offset = 0x10 + 0x10*images.size();
+	uint32_t bmpOffset = 0;
 	for (unsigned int i = 0; i < images.size(); i++) {
-		writeUint32(offset, out);
-		writeUint32(images[i].size + 0x20, out);
-		writeUint32(offset, out);
-		writeUint32(images[i].size + 0x20, out);
-		offset += images[i].size + 0x20;
+		if (images[i].bitmap) {
+			writeUint32(bmpOffset, out);
+			writeUint32(0, out);
+			if (images[i].colorTypeHeader == 0 || images[i].maskType != 0)
+				bmpOffset--;
+			writeUint32(bmpOffset, out);
+			writeUint32(0, out);
+			bmpOffset--;
+		} else {
+			writeUint32(offset, out);
+			writeUint32(images[i].size + 0x20, out);
+			writeUint32(offset, out);
+			writeUint32(images[i].size + 0x20, out);
+			offset += images[i].size + 0x20;
+		}
 	}
 
+	printf("Loading mif icons...\n");
 	for (unsigned int i = 0; i < images.size(); i++) {
+		if (images[i].bitmap)
+			continue;
 		writeUint32(0x34232343, out);
 		writeUint32(1, out);
 		writeUint32(0x20, out);
