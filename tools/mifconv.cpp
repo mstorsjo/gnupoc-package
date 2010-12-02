@@ -430,8 +430,8 @@ int main(int argc, char *argv[]) {
 		writeUint32(1, out);
 		writeUint32(images[i].colorType, out);
 		writeUint32(images[i].animType, out);
-		if (i == 0 && images[i].colorType == 0)
-			writeUint32(0x7b8a7fe0, out);
+		if (images[i].colorType == 0)
+			writeUint32(0x7b8a7fe0, out); // mifconv.exe seems to write an uninitialized value
 		else
 			writeUint32(images[i].maskType, out);
 		printf("Loading file: %s\n", images[i].name);

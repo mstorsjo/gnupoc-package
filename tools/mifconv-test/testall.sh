@@ -6,4 +6,6 @@
 ./dotest.sh /8 redrect.svg /4 greenrect.svg /2 bluerect.svg || exit 1
 ./dotest.sh /1 redrect.svg /1,1 greenrect.svg /1,8 bluerect.svg || exit 1
 ./dotest.sh /c32,1 redrect.svg /c24,8 greenrect.svg /a /c24 bluerect.svg || exit 1
+# This test uses an uninitialized value, making it unreliable
+#./dotest.sh redrect.svg greenrect.svg || exit 1
 
