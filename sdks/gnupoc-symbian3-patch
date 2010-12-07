@@ -1502,10 +1502,10 @@ index 9f011e5..4af73e0 100644
  		}
 diff --git a/checklib b/checklib
 new file mode 100644
-index 0000000..70066da
+index 0000000..7f432dc
 --- /dev/null
 +++ b/checklib
-@@ -0,0 +1,15 @@
+@@ -0,0 +1,19 @@
 +#!/bin/sh
 +#
 +# checklib - bash frontend for checklib.exe, part of GnuPoc project
@@ -1517,6 +1517,10 @@ index 0000000..70066da
 +#    published by the Free Software Foundation.
 +#
 +
++if [ "`which wine`" = "" ]; then
++	echo Wine not available, skipping the checklib step
++	exit 0
++fi
 +PGM=`basename $0`
 +echo "executing $PGM.exe"
 +ROOT=$EPOCROOT/epoc32/tools
