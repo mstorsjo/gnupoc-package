@@ -44,11 +44,13 @@ sub mergedir($$) {
   return 1;
 }
 
+my @paths;
 foreach my $arg (@ARGV) {
 	if ($arg eq "-copy") {
 		$copy = 1;
+	} else {
+		push @paths, $arg;
 	}
 }
-@ARGV = grep { $_ ne "-copy" } @ARGV;
-die("Usage: mergedir [-copy] source target\n") if(@ARGV != 2);
-mergedir($ARGV[0], $ARGV[1]);
+die("Usage: mergedir [-copy] source target\n") if(@paths != 2);
+mergedir($paths[0], $paths[1]);
