@@ -2,6 +2,23 @@
 
 use strict;
 
+require File::Spec::Unix;
+
+my $do_symlink = 0;
+
+sub do_rename($$$) {
+  my $src = shift;
+  my $destdir = shift;
+  my $destname = shift;
+  my $dest = "$destdir/$destname";
+  if ($do_symlink) {
+    # Ignore errors, which occur on case insensitive file systems
+    symlink(File::Spec::Unix->abs2rel($src, $destdir), "$dest");
+  } else {
+    rename("$src", "$dest") || die("Rename: $!\n");
+  }
+}
+
 sub mergedir($$) {
   my $src = shift;
   my $dest = shift;
@@ -17,13 +34,13 @@ sub mergedir($$) {
       if(-e "$dest/$i") {
         mergedir("$src/$i", "$dest/$i");
       } else {
-	rename("$src/$i", "$dest/$i") || die("Rename: $!\n");
+        do_rename("$src/$i", $dest, $i);
       }
     } else {
-      rename("$src/$i", "$dest/$i") || die("Rename: $!\n");
+      do_rename("$src/$i", $dest, $i);
     }
   }
-  rmdir($src);
+  rmdir($src) if (!$do_symlink);
   return 1;
 }
 
@@ -46,7 +63,7 @@ sub dodir($) {
       $new =~ s/libOpenVG/libOpenVG/i;
       if($i ne $new) {
         #print "FILE: $i -> $new\n";
-        rename("$dir/$i", "$dir/$new") || die("Rename: $!\n");
+        do_rename("$dir/$i", $dir, $new);
       }
     }
   }
@@ -59,19 +76,29 @@ sub dodir($) {
   $newname = uc($ldir) if (uc($ldir) eq "EGL");
   if($ldir ne $newname) {
     my $ndir = join('/', @dirs);
+    my $parent = $ndir;
     if($ndir) {
       $ndir .= "/" . $newname;
     } else {
+      $parent = ".";
       $ndir = $newname;
     }
     #print "DIR:  $dir -> $ndir\n";
     if(-d $ndir) {
       mergedir($dir, $ndir) || die("Merge: $!\n");
     } else {
-      rename($dir, $ndir) || die("Rename: $!\n");
+      do_rename("$dir", $parent, $newname);
     }
   }
 }
 
-die("Usage: lowercase dir\n") if(@ARGV != 1);
-dodir($ARGV[0]);
+my @paths;
+foreach my $arg (@ARGV) {
+        if ($arg eq "-symlink") {
+                $do_symlink = 1;
+        } else {
+                push @paths, $arg;
+        }
+}
+die("Usage: lowercase dir\n") if(@paths != 1);
+dodir($paths[0]);
