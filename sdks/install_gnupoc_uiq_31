@@ -32,9 +32,11 @@ rm -rf $DEST/\\\\\$*
 
 ### Fixing
 ./lowercase $DEST/epoc32/tools
-./lowercase $DEST/epoc32/include
-./lowercase $DEST/epoc32/release
-./lowercase $DEST/epoc32/RELEASE
+./lowercase -map_paths headers $DEST/epoc32/include
+./lowercase -symlink $DEST/epoc32/include
+./lowercase -map_files libraries $DEST/epoc32/RELEASE
+./lowercase -map_files libraries $DEST/epoc32/release
+./lowercase -symlink $DEST/epoc32/release
 ./lowercase $DEST/epoc32/data
 ./fixinclude $DEST/epoc32/include
 ./lowercase $DEST/Examples
