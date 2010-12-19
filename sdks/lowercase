@@ -6,6 +6,10 @@ require File::Spec::Unix;
 
 my $do_symlink = 0;
 
+my $map_files = 0;
+my $map_paths = 0;
+my %mapping;
+
 sub do_rename($$$) {
   my $src = shift;
   my $destdir = shift;
@@ -17,6 +21,20 @@ sub do_rename($$$) {
   } else {
     rename("$src", "$dest") || die("Rename: $!\n");
   }
+}
+
+sub remapName($) {
+  my $path = shift;
+  $path =~ s/\/$//; # Trim the trailing slash, for directories
+  my $name = $path;
+  $name =~ s/.*\///;
+  $name = lc($name);
+  if ($map_paths) {
+    if (exists $mapping{lc($path)}) { return $mapping{lc($path)}; }
+  } elsif ($map_files) {
+    if (exists $mapping{$name}) { return $mapping{$name}; }
+  }
+  return $name;
 }
 
 sub mergedir($$) {
@@ -44,8 +62,9 @@ sub mergedir($$) {
   return 1;
 }
 
-sub dodir($) {
+sub dodir($$) {
   my $dir = shift;
+  my $relpath = shift;
 
   opendir(IN, $dir) || die("$dir: $!\n");
   my @dir = readdir IN;
@@ -54,10 +73,11 @@ sub dodir($) {
   foreach my $i (@dir) {
     next if($i eq ".");
     next if($i eq "..");
+    my $relname = "$relpath$i";
     if(-d "$dir/$i") {
-      dodir("$dir/$i");
+      dodir("$dir/$i", "$relname/");
     } else {
-      my $new = lc($i);
+      my $new = remapName($relname);
       $new =~ s/libGLES_CM/libGLES_CM/i;
       $new =~ s/libGLESv2/libGLESv2/i;
       $new =~ s/libOpenVG/libOpenVG/i;
@@ -70,7 +90,8 @@ sub dodir($) {
 
   my @dirs = split('/', $dir);
   my $ldir = pop(@dirs);
-  my $newname = lc($ldir);
+  my $newname = remapName($relpath);
+  $newname = lc($ldir) if ($relpath eq "");
   $newname = uc($ldir) if (uc($ldir) eq "GLES");
   $newname = uc($ldir) if (uc($ldir) eq "GLES2");
   $newname = uc($ldir) if (uc($ldir) eq "EGL");
@@ -92,13 +113,35 @@ sub dodir($) {
   }
 }
 
+sub readMapping($) {
+  my $file = shift;
+  open FILE, $file;
+  foreach my $line (<FILE>) {
+    chomp $line;
+    my $name = $line;
+    $name =~ s/.*\///;
+    next if (exists $mapping{lc($line)});
+    $mapping{lc($line)} = $name;
+  }
+  close FILE;
+}
+
 my @paths;
-foreach my $arg (@ARGV) {
+for (my $i = 0; $i < @ARGV; $i++) {
+	my $arg = $ARGV[$i];
         if ($arg eq "-symlink") {
                 $do_symlink = 1;
+        } elsif ($arg eq "-map_paths") {
+		if ($i + 1 < @ARGV) { readMapping($ARGV[$i+1]); }
+		$map_paths = 1;
+                $i += 1;
+        } elsif ($arg eq "-map_files") {
+		if ($i + 1 < @ARGV) { readMapping($ARGV[$i+1]); }
+		$map_files = 1;
+                $i += 1;
         } else {
                 push @paths, $arg;
         }
 }
 die("Usage: lowercase dir\n") if(@paths != 1);
-dodir($paths[0]);
+dodir($paths[0], "");
