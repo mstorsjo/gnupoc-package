@@ -21,6 +21,7 @@ sub dodir($) {
     next if($i =~ /\.mbm/);
     next if($i =~ /\.gif/);
     next if($i =~ /\.wav/);
+    next if(-l "$dir/$i");
 
     if(-d "$dir/$i") {
       dodir("$dir/$i");
