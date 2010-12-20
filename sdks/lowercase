@@ -78,9 +78,6 @@ sub dodir($$) {
       dodir("$dir/$i", "$relname/");
     } else {
       my $new = remapName($relname);
-      $new =~ s/libGLES_CM/libGLES_CM/i;
-      $new =~ s/libGLESv2/libGLESv2/i;
-      $new =~ s/libOpenVG/libOpenVG/i;
       if($i ne $new) {
         #print "FILE: $i -> $new\n";
         do_rename("$dir/$i", $dir, $new);
@@ -92,9 +89,6 @@ sub dodir($$) {
   my $ldir = pop(@dirs);
   my $newname = remapName($relpath);
   $newname = lc($ldir) if ($relpath eq "");
-  $newname = uc($ldir) if (uc($ldir) eq "GLES");
-  $newname = uc($ldir) if (uc($ldir) eq "GLES2");
-  $newname = uc($ldir) if (uc($ldir) eq "EGL");
   if($ldir ne $newname) {
     my $ndir = join('/', @dirs);
     my $parent = $ndir;
