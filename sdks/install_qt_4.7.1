@@ -59,6 +59,7 @@ done
 ./dos2unix qt_temp/\$OUTDIR/bin/bin/createpackage
 ./dos2unix qt_temp/\$OUTDIR/bin/bin/patch_capabilities.pl
 ./dos2unix qt_temp/\$OUTDIR/bin/bin/patch_capabilities
+./dos2unix qt_temp/\$OUTDIR/bin/bin/elf2e32_qtwrapper
 find qt_temp/\$OUTDIR/bin/mkspecs -type f | xargs -n 1 ./dos2unix
 find qt_temp/\$OUTDIR/bin/qmake -type f -name \*.cpp | xargs -n 1 ./dos2unix
 cat qt-4.7.1.patch | (cd qt_temp/\$OUTDIR/bin && patch -p1)
@@ -66,6 +67,7 @@ chmod a+x qt_temp/\$OUTDIR/bin/bin/createpackage.pl
 chmod a+x qt_temp/\$OUTDIR/bin/bin/createpackage
 chmod a+x qt_temp/\$OUTDIR/bin/bin/patch_capabilities.pl
 chmod a+x qt_temp/\$OUTDIR/bin/bin/patch_capabilities
+chmod a+x qt_temp/\$OUTDIR/bin/bin/elf2e32_qtwrapper
 ./dos2unix qt_temp/\$OUTDIR/bin/src/corelib/global/qglobal.h
 for i in qt_temp/\$OUTDIR/bin/config.tests/unix/*.test qt_temp/\$OUTDIR/bin/config.tests/x11/*.test qt_temp/\$OUTDIR/bin/config.tests/mac/*.test; do
 	./dos2unix $i
