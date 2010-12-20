@@ -36,7 +36,7 @@ extracted code.
 
 Then, to build using this SDK, first set up the PATH and EPOCROOT environment
 variables as for normal use of the Symbian SDKs, as described in README.
-Add the qt bin directory to the path, and set the default makespec:
+Add the qt bin directory to the path:
 
 export PATH=~/symbian-sdks/qt_4.7.1/bin:$PATH
 
