@@ -63,7 +63,7 @@ void fixImportRelocation(uint32_t offset, FILE* out, uint32_t ordinal) {
 	writeUint32(ordinal, out);
 }
 
-void fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const char* lib, const char* libpath) {
+bool fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const char* lib, const char* libpath) {
 	char buffer[1000];
 	sprintf(buffer, "%s/%s", libpath, lib);
 	int fd = open(buffer, O_RDONLY);
@@ -83,8 +83,7 @@ void fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const c
 			fd = open(buffer, O_RDONLY);
 	}
 	if (fd < 0) {
-		printf("file not found %s\n", lib);
-		return;
+		return false;
 	}
 	Elf* elf = elf_begin(fd, ELF_C_READ, NULL);
 
@@ -94,7 +93,7 @@ void fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const c
 		printf("fixImportRelocation SHT_DYNSYM not found\n");
 		elf_end(elf);
 		close(fd);
-		return;
+		return false;
 	}
 	Elf32_Sym* sym;
 	Elf32_Addr addr;
@@ -102,7 +101,7 @@ void fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const c
 		printf("fixImportRelocation symbol %s not found\n", symbol);
 		elf_end(elf);
 		close(fd);
-		return;
+		return false;
 	}
 	addr = sym->st_value;
 
@@ -110,7 +109,7 @@ void fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const c
 		printf("fixImportRelocation section SHT_PROGBITS not found\n");
 		elf_end(elf);
 		close(fd);
-		return;
+		return false;
 	}
 
 	addr -= shdr->sh_addr;
@@ -121,7 +120,7 @@ void fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const c
 		printf("fixImportRelocation addr past d_size\n");
 		elf_end(elf);
 		close(fd);
-		return;
+		return false;
 	}
 //	uint32_t ordinal = *((uint32_t*) (((uint8_t*)data->d_buf) + addr));
 	uint8_t* dataptr = (uint8_t*) data->d_buf;
@@ -131,6 +130,15 @@ void fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const c
 	close(fd);
 
 	fixImportRelocation(offset, out, ordinal);
+	return true;
+}
+
+void fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const char* lib, std::vector<const char*> libpath) {
+	for (std::vector<const char*>::iterator it = libpath.begin(); it != libpath.end(); it++) {
+		if (fixImportRelocation(offset, out, symbol, lib, *it))
+			return;
+	}
+	printf("file not found %s\n", lib);
 }
 
 uint32_t fixRelocation(uint32_t offset, FILE* out, uint32_t value) {

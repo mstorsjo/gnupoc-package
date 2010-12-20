@@ -36,11 +36,12 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <vector>
 
 struct E32ImageHeader;
 
 void fixImportRelocation(uint32_t offset, FILE* out, uint32_t value);
-void fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const char* lib, const char* libpath);
+void fixImportRelocation(uint32_t offset, FILE* out, const char* symbol, const char* lib, std::vector<const char*> libpath);
 
 uint32_t fixRelocation(uint32_t offset, FILE* out, uint32_t value);
 

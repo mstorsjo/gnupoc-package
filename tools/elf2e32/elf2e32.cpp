@@ -69,7 +69,7 @@ RelocationList relocationList;
 RelocationList dataRelocationList;
 ExportList exportList;
 
-void checkRelocations(Elf* elf, Elf_Scn* relocationSection, Elf32_Shdr* relocationHeader, RelocSections* sections, E32ImageHeader* header, FILE* out, const char* libpath) {
+void checkRelocations(Elf* elf, Elf_Scn* relocationSection, Elf32_Shdr* relocationHeader, RelocSections* sections, E32ImageHeader* header, FILE* out, std::vector<const char*> libpath) {
 	Elf_Data* relocations = NULL;
 	Elf_Data* dynsyms = NULL;
 	Elf_Data* symver = NULL;
@@ -351,7 +351,7 @@ int main(int argc, char *argv[]) {
 
 	const char* output = NULL;
 	const char* elfinput = NULL;
-	const char* libpath = NULL;
+	std::vector<const char*> libpath;
 	const char* defoutput = NULL;
 	char* dso = NULL;
 	const char* linkas = NULL;
@@ -403,7 +403,7 @@ int main(int argc, char *argv[]) {
 			} else if (!strcmp(name, "linkas")) {
 				linkas = optarg;
 			} else if (!strcmp(name, "libpath")) {
-				libpath = optarg;
+				libpath.push_back(optarg);
 			} else if (!strcmp(name, "heap")) {
 				char buf1[50];
 				char buf2[50];
