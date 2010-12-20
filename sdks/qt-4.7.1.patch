@@ -59,6 +59,46 @@ index b145263..e838e10 100644
                  && echo QT_SIS_TARGET ?= $(QT_SIS_TARGET) >> $$make_cache_name
  
              QMAKE_EXTRA_TARGETS += store_build_target
+diff --git a/mkspecs/features/symbian/symbian_building.prf b/mkspecs/features/symbian/symbian_building.prf
+index 539609d..31adb88 100644
+--- a/mkspecs/features/symbian/symbian_building.prf
++++ b/mkspecs/features/symbian/symbian_building.prf
+@@ -224,7 +224,7 @@ symbian_resources_INCLUDES = $$replace(symbian_resources_INCLUDES, ",", " -I")
+ symbian_resources_INCLUDES += $$join(INCLUDEPATH, " -I", "-I")
+ symbian_resources_DEFINES = $$join(DEFINES, " -D", "-D")
+ symbian_resources_RCC_DIR = $$replace(RCC_DIR, "/$", "")
+-symbian_resources_INCLUDES += "-I $$symbian_resources_RCC_DIR"
++symbian_resources_INCLUDES += "-I$$symbian_resources_RCC_DIR"
+ 
+ for(symbian_resource, SYMBIAN_RESOURCES) {
+     symbian_resource = $$basename(symbian_resource)
+@@ -240,7 +240,7 @@ symbianresources.commands = cpp -nostdinc -undef \
+                             $$symbian_resources_INCLUDES \
+                             $$symbian_resources_DEFINES \
+                             ${QMAKE_FILE_NAME} \
+-                            -o $${symbian_resources_RCC_DIR}/${QMAKE_FILE_BASE}.rpp \
++                            > $${symbian_resources_RCC_DIR}/${QMAKE_FILE_BASE}.rpp \
+                             && rcomp -u -m045,046,047 \
+                             -s$${symbian_resources_RCC_DIR}/${QMAKE_FILE_BASE}.rpp \
+                             -o$${symbianDestdir}/${QMAKE_FILE_BASE}$${QT_LIBINFIX}.rsc \
+@@ -260,7 +260,7 @@ contains(TEMPLATE, "app"):!contains(CONFIG, "no_icon") {
+                                   $$symbian_resources_INCLUDES \
+                                   $$symbian_resources_DEFINES \
+                                   $${baseTarget}.rss \
+-                                  -o $${symbian_resources_RCC_DIR}/$${baseTarget}.rpp \
++                                  > $${symbian_resources_RCC_DIR}/$${baseTarget}.rpp \
+                                   && rcomp -u -m045,046,047 \
+                                   -s$${symbian_resources_RCC_DIR}/$${baseTarget}.rpp \
+                                   -o$${symbianDestdir}/$${baseTarget}.rsc \
+@@ -279,7 +279,7 @@ contains(TEMPLATE, "app"):!contains(CONFIG, "no_icon") {
+                                      $$symbian_resources_INCLUDES \
+                                      $$symbian_resources_DEFINES \
+                                      $${baseTarget}_reg.rss \
+-                                     -o $${symbian_resources_RCC_DIR}/$${baseTarget}_reg.rpp \
++                                     > $${symbian_resources_RCC_DIR}/$${baseTarget}_reg.rpp \
+                                      && rcomp -u -m045,046,047 \
+                                      -s$${symbian_resources_RCC_DIR}/$${baseTarget}_reg.rpp \
+                                      -o$${symbianDestdir}/$${baseTarget}_reg.rsc \
 diff --git a/qmake/generators/symbian/symbiancommon.cpp b/qmake/generators/symbian/symbiancommon.cpp
 index f00ab6b..2ef7459 100644
 --- a/qmake/generators/symbian/symbiancommon.cpp
