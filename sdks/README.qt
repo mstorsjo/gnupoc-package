@@ -60,6 +60,27 @@ in the example above), and make installer_sis should work.
 
 Note, the smart installer currently available only seems to install Qt 4.6.3.
 
+
+If using Qt 4.7.1 or newer, you can use another makespec, which doesn't
+use the traditional abld toolchain, and thus has much less overhead. To
+use this, add the toolchain directory to the path, too, and set the makespec:
+
+export PATH=~/csl-gcc/bin:$PATH
+export QMAKESPEC=symbian/linux-gcce
+
+(Note, this makespec works on OS X, too, even if it is named "linux".)
+Then build with slightly different targets:
+
+qmake
+make
+make sis
+
+If using this makespec, make sure you compiled the compiler using the
+script install_csl_gcc and didn't extract prebuilt binaries - using
+this makespec with the normal csl-gcc version requires a backported
+feature from newer ld versions.
+
+
 Qt Mobility
 -----------
 
