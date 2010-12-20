@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ $# != 1 ]; then
+if [ $# = 0 ]; then
   echo "Usage: ./compile_qt_cross_tools <qt-dir>"
   echo " e.g.: ./compile_qt_cross_tools ~/symbian-sdks/qt_4.6.3"
   exit 1
@@ -8,6 +8,11 @@ fi
 
 DIR=$1
 cd $DIR || exit 1
+
+DEF_SPEC=$2
+if [ "$DEF_SPEC" = "" ]; then
+	DEF_SPEC=symbian-abld
+fi
 
 MAKE=make
 if [ "`which gmake`" != "" ]; then
@@ -26,7 +31,7 @@ do
     rm -f src/corelib/global/qconfig.h
     cp src/corelib/global/qconfig.h.orig src/corelib/global/qconfig.h
     rm -rf mkspecs/default
-    ln -s symbian-abld mkspecs/default
+    ln -s $DEF_SPEC mkspecs/default
     exit 1
   fi
 done << __END
@@ -39,7 +44,7 @@ cp .qmake.cache.orig .qmake.cache
 rm -f src/corelib/global/qconfig.h
 cp src/corelib/global/qconfig.h.orig src/corelib/global/qconfig.h
 rm -rf mkspecs/default
-ln -s symbian-abld mkspecs/default
+ln -s $DEF_SPEC mkspecs/default
 
 __END
 
