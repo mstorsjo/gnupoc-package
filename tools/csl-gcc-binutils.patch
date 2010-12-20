@@ -1,6 +1,6 @@
 diff -urN binutils-csl-arm-2005q1-orig/bfd/archive.c binutils-csl-arm-2005q1/bfd/archive.c
---- binutils-csl-arm-2005q1-orig/bfd/archive.c	2005-03-03 13:40:56.000000000 +0200
-+++ binutils-csl-arm-2005q1/bfd/archive.c	2008-11-15 22:18:16.000000000 +0200
+--- binutils-csl-arm-2005q1-orig/bfd/archive.c	2005-03-03 12:40:56.000000000 +0100
++++ binutils-csl-arm-2005q1/bfd/archive.c	2010-12-20 14:24:33.775571307 +0100
 @@ -121,7 +121,7 @@
  
   Regular files with long names (or embedded spaces, for BSD variants):
@@ -239,8 +239,8 @@ diff -urN binutils-csl-arm-2005q1-orig/bfd/archive.c binutils-csl-arm-2005q1/bfd
    /* Write the ar header for this item and the number of symbols.  */
    if (bfd_bwrite (&hdr, sizeof (struct ar_hdr), arch)
 diff -urN binutils-csl-arm-2005q1-orig/binutils/configure binutils-csl-arm-2005q1/binutils/configure
---- binutils-csl-arm-2005q1-orig/binutils/configure	2005-03-10 12:38:56.000000000 +0200
-+++ binutils-csl-arm-2005q1/binutils/configure	2008-11-15 22:18:02.000000000 +0200
+--- binutils-csl-arm-2005q1-orig/binutils/configure	2005-03-10 11:38:56.000000000 +0100
++++ binutils-csl-arm-2005q1/binutils/configure	2010-12-20 14:24:33.775571307 +0100
 @@ -1654,31 +1654,31 @@
  
  
@@ -299,8 +299,8 @@ diff -urN binutils-csl-arm-2005q1-orig/binutils/configure binutils-csl-arm-2005q
  EXEEXT=""
  test x"${ac_cv_exeext}" != xno && EXEEXT=${ac_cv_exeext}
 diff -urN binutils-csl-arm-2005q1-orig/ld/configure binutils-csl-arm-2005q1/ld/configure
---- binutils-csl-arm-2005q1-orig/ld/configure	2005-02-21 13:49:47.000000000 +0200
-+++ binutils-csl-arm-2005q1/ld/configure	2008-11-15 22:18:02.000000000 +0200
+--- binutils-csl-arm-2005q1-orig/ld/configure	2005-02-21 12:49:47.000000000 +0100
++++ binutils-csl-arm-2005q1/ld/configure	2010-12-20 14:24:33.775571307 +0100
 @@ -1658,31 +1658,31 @@
  
  
@@ -358,3 +358,21 @@ diff -urN binutils-csl-arm-2005q1-orig/ld/configure binutils-csl-arm-2005q1/ld/c
  
  EXEEXT=""
  test x"${ac_cv_exeext}" != xno && EXEEXT=${ac_cv_exeext}
+diff -urN binutils-csl-arm-2005q1-orig/ld/ldlang.c binutils-csl-arm-2005q1/ld/ldlang.c
+--- binutils-csl-arm-2005q1-orig/ld/ldlang.c	2005-05-19 19:15:59.000000000 +0200
++++ binutils-csl-arm-2005q1/ld/ldlang.c	2010-12-20 14:25:01.259570437 +0100
+@@ -400,6 +400,14 @@
+   lang_has_input_file = TRUE;
+   p->target = target;
+   p->sysrooted = FALSE;
++
++  if (file_type == lang_input_file_is_l_enum
++      && name[0] == ':' && name[1] != '\0')
++    {
++      file_type = lang_input_file_is_search_file_enum;
++      name = name + 1;
++    }
++
+   switch (file_type)
+     {
+     case lang_input_file_is_symbols_only_enum:
