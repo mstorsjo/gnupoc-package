@@ -2483,7 +2483,7 @@ index e5d3c97..5ed6d09 100644
  			);
  	}
 diff --git a/cl_bpabi.pm b/cl_bpabi.pm
-index aae0fa5..25d5b80 100644
+index aae0fa5..c850456 100644
 --- a/cl_bpabi.pm
 +++ b/cl_bpabi.pm
 @@ -14,7 +14,7 @@
@@ -2728,7 +2728,7 @@ index aae0fa5..25d5b80 100644
  		#Create a make variable for the libraries.
  		main::Output("\nUSER_ADDED_ARCHIVES_$Bld=");
 -		PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCSTATLINK$Bld\)\\\\\$_\"\)", @StatLibList);
-+		PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCSTATLINK$Bld\)/\$_\"\)", @StatLibList);
++		PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCBSFSTATLINK$Bld\)/\$_\"\)", @StatLibList);
  		main::Output("\n\n");
  	}
  
