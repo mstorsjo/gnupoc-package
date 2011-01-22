@@ -2,14 +2,13 @@
 The included binary is for linux/x86. If it doesn't work for you, you can
 either remove it (and let the install script use unshield from somewhere
 else in your PATH) or compile it from source.
-For S60 3.2 and newer, though, you need specifically this version (an
-unpatched unshield doesn't work).
+For S60 3.2 and newer, though, you need specifically this version (the
+0.6 release version doesn't work).
 
 To compile it from source:
 
-tar -zxvf unshield-0.6.tar.gz
-cd unshield-0.6
-patch -p1 < ../unshield-patch
+tar -zxvf unshield-svn-3953.tar.gz
+cd unshield-svn
 ./configure --enable-shared=no
 make
 cp src/unshield ..
