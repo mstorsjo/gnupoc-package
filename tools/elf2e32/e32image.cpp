@@ -78,48 +78,48 @@ uint8_t readUint8(FILE* in) {
 }
 
 void writeHeaders(FILE* out, const E32ImageHeader* header, const E32ImageHeaderComp* headerComp, const E32ImageHeaderV* headerV) {
-	writeUint32(header->uid1, out);
-	writeUint32(header->uid2, out);
-	writeUint32(header->uid3, out);
-	writeUint32(header->uidChecksum, out);
-	writeUint32(header->signature, out);
-	writeUint32(header->headerCrc, out);
-	writeUint32(header->moduleVersion, out);
-	writeUint32(header->compressionType, out);
-	writeUint32(header->toolsVersion, out);
-	writeUint32(header->timeLo, out);
-	writeUint32(header->timeHi, out);
-	writeUint32(header->flags, out);
-	writeUint32(header->codeSize, out);
-	writeUint32(header->dataSize, out);
-	writeUint32(header->heapSizeMin, out);
-	writeUint32(header->heapSizeMax, out);
-	writeUint32(header->stackSize, out);
-	writeUint32(header->bssSize, out);
-	writeUint32(header->entryPoint, out);
-	writeUint32(header->codeBase, out);
-	writeUint32(header->dataBase, out);
-	writeUint32(header->dllRefTableCount, out);
-	writeUint32(header->exportDirOffset, out);
-	writeUint32(header->exportDirCount, out);
-	writeUint32(header->textSize, out);
-	writeUint32(header->codeOffset, out);
-	writeUint32(header->dataOffset, out);
-	writeUint32(header->importOffset, out);
-	writeUint32(header->codeRelocOffset, out);
-	writeUint32(header->dataRelocOffset, out);
-	writeUint16(header->processPriority, out);
-	writeUint16(header->cpuIdentifier, out);
-	writeUint32(headerComp->uncompressedSize, out);
-	writeUint32(headerV->secureId, out);
-	writeUint32(headerV->vendorId, out);
-	writeUint32(headerV->caps[0], out);
-	writeUint32(headerV->caps[1], out);
-	writeUint32(headerV->exceptionDescriptor, out);
-	writeUint32(headerV->spare2, out);
-	writeUint16(headerV->exportDescSize, out);
-	writeUint8(headerV->exportDescType, out);
-	writeUint8(headerV->exportDesc[0], out);
+	writeUint32(header->uid1, out);		// 0
+	writeUint32(header->uid2, out);		// 4
+	writeUint32(header->uid3, out);		// 8
+	writeUint32(header->uidChecksum, out);	// c
+	writeUint32(header->signature, out);	// 10
+	writeUint32(header->headerCrc, out);	// 14
+	writeUint32(header->moduleVersion, out);	// 18
+	writeUint32(header->compressionType, out);	// 1c
+	writeUint32(header->toolsVersion, out);	// 20
+	writeUint32(header->timeLo, out);	// 24
+	writeUint32(header->timeHi, out);	// 28
+	writeUint32(header->flags, out);	// 2c
+	writeUint32(header->codeSize, out);	// 30
+	writeUint32(header->dataSize, out);	// 34
+	writeUint32(header->heapSizeMin, out);	// 38
+	writeUint32(header->heapSizeMax, out);	// 3c
+	writeUint32(header->stackSize, out);	// 40
+	writeUint32(header->bssSize, out);	// 44
+	writeUint32(header->entryPoint, out);	// 48
+	writeUint32(header->codeBase, out);	// 4c
+	writeUint32(header->dataBase, out);	// 50
+	writeUint32(header->dllRefTableCount, out);	// 54
+	writeUint32(header->exportDirOffset, out);	// 58
+	writeUint32(header->exportDirCount, out);	// 5c
+	writeUint32(header->textSize, out);	// 60
+	writeUint32(header->codeOffset, out);	// 64
+	writeUint32(header->dataOffset, out);	// 68
+	writeUint32(header->importOffset, out);	// 6c
+	writeUint32(header->codeRelocOffset, out);	// 70
+	writeUint32(header->dataRelocOffset, out);	// 74
+	writeUint16(header->processPriority, out);	// 78
+	writeUint16(header->cpuIdentifier, out);	// 7a
+	writeUint32(headerComp->uncompressedSize, out);	// 7c
+	writeUint32(headerV->secureId, out);	// 80
+	writeUint32(headerV->vendorId, out);	// 84
+	writeUint32(headerV->caps[0], out);	// 88
+	writeUint32(headerV->caps[1], out);	// 8c
+	writeUint32(headerV->exceptionDescriptor, out);	// 90
+	writeUint32(headerV->spare2, out);	// 94
+	writeUint16(headerV->exportDescSize, out);	// 98
+	writeUint8(headerV->exportDescType, out);	// 9a
+	writeUint8(headerV->exportDesc[0], out);	// 9b
 }
 
 void readHeaders(FILE* in, E32ImageHeader* header, E32ImageHeaderComp* headerComp, E32ImageHeaderV* headerV) {
