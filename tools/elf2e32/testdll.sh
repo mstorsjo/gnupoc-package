@@ -11,9 +11,9 @@ mv e32-ref.dso e32-ref.dso.orig
 ./elf2e32 --output=e32-test.dll --defoutput=e32-test.def --dso=e32-ref.dso $ARGS
 mv e32-ref.dso e32-test.dso
 mv e32-ref.dso.orig e32-ref.dso
+wine $EPOCROOT/epoc32/tools/elf2e32.exe --e32input=e32-test.dll > e32info-test.txt
 ./bindiff -i 0x14,0x18 -i 0x24,0x28 e32-ref.dll e32-test.dll || exit 1
 diff -u e32-ref.def e32-test.def || exit 1
-wine $EPOCROOT/epoc32/tools/elf2e32.exe --e32input=e32-test.dll > e32info-test.txt
 rm e32-test.dll e32-ref.dll
 
 compare() {
