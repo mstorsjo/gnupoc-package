@@ -131,6 +131,8 @@ void getCapabilities(const char* str, uint32_t* caps);
 #define ECpuArmV5		0x2001
 #define KImageHdr_ExpD_NoHoles		0x00
 #define KImageHdr_ExpD_FullBitmap	0x01
+#define KImageHdr_ExpD_SparseBitmap8	0x02
+#define KImageHdr_ExpD_Xip		0xff
 #define KImageCrcInitialiser	0xc90fdaa2
 #define KTextRelocType		0x1000
 #define KDataRelocType		0x2000
