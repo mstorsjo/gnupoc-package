@@ -391,10 +391,8 @@ int main(int argc, char *argv[]) {
 				if (!stricmp(optarg, "EXE")) {
 				} else if (!stricmp(optarg, "PLUGIN")) {
 					header.flags |= KImageDll | KImageOldJFlag;
-					headerV.exportDescType = KImageHdr_ExpD_NoHoles;
 				} else if (!stricmp(optarg, "DLL")) {
 					header.flags |= KImageDll | KImageOldJFlag;
-					headerV.exportDescType = KImageHdr_ExpD_NoHoles;
 				}
 			} else if (!strcmp(name, "output")) {
 				output = optarg;
@@ -557,8 +555,11 @@ int main(int argc, char *argv[]) {
 	findSection(elf, SHT_DYNSYM, &relocSections.dynsymSection, &relocSections.dynsymHeader);
 	findSection(elf, SHT_GNU_versym, &relocSections.symverSection, &relocSections.symverHeader);
 	findSection(elf, SHT_GNU_verneed, &relocSections.verneedSection, &relocSections.verneedHeader);
-	if (header.flags & KImageDll)
+	if (header.flags & KImageDll) {
 		findExports(elf, &exportList);
+		if (exportList.numExports() > 0)
+			headerV.exportDescType = KImageHdr_ExpD_NoHoles;
+	}
 	if (exportList.warnMissing(elfinput)) {
 		elf_end(elf);
 		close(fd);
@@ -624,7 +625,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	if (header.flags & KImageDll) {
+	if (header.flags & KImageDll && exportList.numExports() > 0) {
 		exportList.doSort();
 		if (defoutput)
 			exportList.writeDef(defoutput);
