@@ -552,7 +552,7 @@ int main(int argc, char *argv[]) {
 		close(fd);
 		return 1;
 	}
-	RelocSections relocSections;
+	RelocSections relocSections = { NULL };
 	getDynamicValue(elf, DT_VERNEEDNUM, &relocSections.verneedNum);
 	findSection(elf, SHT_DYNSYM, &relocSections.dynsymSection, &relocSections.dynsymHeader);
 	findSection(elf, SHT_GNU_versym, &relocSections.symverSection, &relocSections.symverHeader);
