@@ -36,6 +36,8 @@
 #include <stdint.h>
 
 bool getLibraryName(Elf_Data* verneed, Elf32_Word verneedNum, Elf32_Half index, Elf32_Verneed** needPtr, Elf32_Vernaux** auxPtr) {
+	if (!verneed)
+		return false;
 	Elf32_Verneed* need = (Elf32_Verneed*) verneed->d_buf;
 	Elf32_Verneed* end = (Elf32_Verneed*) ((uint8_t*)verneed->d_buf + verneed->d_size);
 	for (uint32_t i = 0; i < verneedNum && need < end; i++) {
