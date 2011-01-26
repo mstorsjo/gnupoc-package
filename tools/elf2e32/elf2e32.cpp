@@ -625,19 +625,21 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	if (header.flags & KImageDll && exportList.numExports() > 0) {
+	if (header.flags & KImageDll) {
 		exportList.doSort();
 		if (defoutput)
 			exportList.writeDef(defoutput);
 		if (dso && !noexportlibrary)
 			exportList.writeDso(dso, linkas);
-		header.exportDirOffset = ftell(out) + 4;
-		header.exportDirCount = exportList.numExports();
-		uint32_t start = ftell(out);
-		exportList.write(out, &header, &relocationList);
-		uint32_t end = ftell(out);
-		header.codeSize += end - start;
-		header.textSize += end - start;
+		if (exportList.numExports() > 0) {
+			header.exportDirOffset = ftell(out) + 4;
+			header.exportDirCount = exportList.numExports();
+			uint32_t start = ftell(out);
+			exportList.write(out, &header, &relocationList);
+			uint32_t end = ftell(out);
+			header.codeSize += end - start;
+			header.textSize += end - start;
+		}
 	}
 
 
