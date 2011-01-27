@@ -50,6 +50,7 @@ cd csl-build/gcc-build && $MAKE $MAKEOPTS
 cd csl-build/gcc-build && $MAKE installdirs install-target
 cd csl-build/gcc-build/gcc && $MAKE install-common install-headers install-mkheaders install-cpp install-driver
 rm -rf csl-build
+./fix_csl_gcc_div $DEST
 
 __END
 

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ $# -lt 1 -o $0 != "./fix_csl_gcc_div" ]; then
+  echo "Usage: ./fix_csl_gcc_div <target-dir>"
+  echo " e.g.: ./fix_csl_gcc_div ~/csl-gcc"
+  exit 1
+fi
+
+PATH=$1/bin:$PATH
+arm-none-symbianelf-gcc -c gcce4-division.c
+arm-none-symbianelf-ar rs `arm-none-symbianelf-gcc -print-libgcc-file-name` gcce4-division.o
+
