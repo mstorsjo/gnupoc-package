@@ -49,6 +49,33 @@ In this case, compile it using the install_csl_gcc script:
 This requires that you have flex and bison installed.
 
 
+Experimental GCC 4.x for S60 3rd/5th ed, UIQ 3 and Symbian^3
+------------------------------------------------------------
+
+If you for some reason want to use a newer GCC version, there
+is experimental support for this. The only currently supported
+release is CodeSourcery 2009q1-162, in addition to the standard
+one above, which can be downloaded from
+http://www.codesourcery.com/sgpp/lite/arm/portal/release822.
+Select IA32 GNU/Linux TAR, or Source TAR for other platforms.
+
+If using the IA32 GNU/Linux TAR package, just extract it:
+tar -jxvf arm-2009q1-162-arm-none-symbianelf-i686-pc-linux-gnu.tar.bz2
+Then fix libgcc.a in the extracted directory:
+./fix_csl_gcc_div ~/arm-2009q1
+(This command should be executed in the gnupoc-package/tools
+directory, and ~/arm-2009q1 is where the toolchain was
+extracted above).
+
+For other platforms, compile it using the install_csl_gcc_2009q1
+script:
+./install_csl_gcc_2009q1 arm-2009q1-162-arm-none-symbianelf.src.tar.bz2 ~/csl-gcc-2009q1
+
+See more info about using the newer GCC versions on
+http://wiki.forum.nokia.com/index.php/How_to_use_GCCE_4_with_Symbian_SDKs.
+Most of the issues mentioned there should be automatically worked
+around by the gnupoc SDK patches.
+
 
 The rest of the toolchain
 -------------------------
