@@ -1,0 +1,26 @@
+diff --git a/bitmap.h b/bitmap.h
+index 011dafb..41b4b3e 100644
+--- a/bitmap.h
++++ b/bitmap.h
+@@ -356,7 +356,7 @@ inline void CBitwiseBitmap::TSettings::SetDirtyBitmap()
+ 
+ inline TBool CBitwiseBitmap::TSettings::IsDirtyBitmap() const
+ 	{
+-	return iData & EBitmapFlagDirty ? ETrue : EFalse;
++	return iData & EBitmapFlagDirty;
+ 	}
+ 
+ #endif
+diff --git a/eikmenup.h b/eikmenup.h
+index bad4bee..7a57260 100644
+--- a/eikmenup.h
++++ b/eikmenup.h
+@@ -239,7 +239,7 @@ inline void CEikMenuPaneItem::CreateExtendedDataBlock()
+ 
+ inline TBool CEikMenuPaneItem::IsScaleableText(const TDesC& aText) const
+     {
+-    return (aText.Locate(TChar(KScaleableTextSeparator)) == KErrNotFound ? EFalse : ETrue);
++    return aText.Locate(TChar(KScaleableTextSeparator)) != KErrNotFound;
+     }
+ 
+ 

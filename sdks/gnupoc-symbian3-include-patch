@@ -1,0 +1,13 @@
+diff --git a/textcursor.h b/textcursor.h
+index 0b3677a..7ee8ebe 100644
+--- a/textcursor.h
++++ b/textcursor.h
+@@ -72,7 +72,7 @@ used.
+         
+         WARNING: Enum for internal use ONLY. Compatibility is not guaranteed in future releases. */        
+         ETypeLast=ETypeHollowRectangle,
+-        /** Reserved for future use.
++        /** Reserved for future use. */
+ 		
+ 		/** All custom text cursors must have a type value greater than this. */
+ 		ETypeLastBasic = 1000,	

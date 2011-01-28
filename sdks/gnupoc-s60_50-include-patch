@@ -1,0 +1,13 @@
+diff --git a/eikmenup.h b/eikmenup.h
+index a0b96a3..17fe991 100644
+--- a/eikmenup.h
++++ b/eikmenup.h
+@@ -239,7 +239,7 @@ inline void CEikMenuPaneItem::CreateExtendedDataBlock()
+ 
+ inline TBool CEikMenuPaneItem::IsScaleableText(const TDesC& aText) const
+     {
+-    return (aText.Locate(TChar(KScaleableTextSeparator)) == KErrNotFound ? EFalse : ETrue);
++    return aText.Locate(TChar(KScaleableTextSeparator)) != KErrNotFound;
+     }
+ 
+ 
