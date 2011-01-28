@@ -23,8 +23,8 @@ If there are build problems, make sure curses development libraries are
 installed, the errors if this is missing aren't too descriptive.
 
 
-GCC for S60 3rd ed and UIQ 3
-----------------------------
+GCC for S60 3rd/5th ed, UIQ 3 and Symbian^3
+-------------------------------------------
 
 On linux, you can use the prebuilt binaries from CodeSourcery,
 http://www.codesourcery.com/gnu_toolchains/arm/releases/2005Q1C,
