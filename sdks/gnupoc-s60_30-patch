@@ -1870,7 +1870,7 @@ index 9f98cf0..93d796b 100644
  			);
  	}
 diff --git a/cl_bpabi.pm b/cl_bpabi.pm
-index a2958df..7739ebe 100644
+index a2958df..5c9d396 100644
 --- a/cl_bpabi.pm
 +++ b/cl_bpabi.pm
 @@ -4,7 +4,7 @@
@@ -1961,21 +1961,27 @@ index a2958df..7739ebe 100644
  	if ($BasicTrgType=~/^(DLL|EXE)/o) 
  	{
  
-@@ -218,11 +201,10 @@ sub PMStartBldList($) {
+@@ -217,13 +200,15 @@ sub PMStartBldList($) {
+ 			}
  		# Incase of GCCE, the following paths should be provided to the linker
  
++		my $libpath = &GCCLibPath;
  		my $gccinstallpath = &GCCInstallPath;
 -		$gccinstallpath .= "\\\.\.";
  			&main::Output(
  				"ifndef CC_INSTALL_PATH\n",
 - 				"\tCC_INSTALL_PATH=",$gccinstallpath,"\n",
 -				"\tSTATIC_LIBS = \$(STATIC_LIBS_PATH)\"\$(CC_INSTALL_PATH)\\arm-none-symbianelf\\lib\" \$(STATIC_LIBS_PATH)\"\$(CC_INSTALL_PATH)\\lib\\gcc\\arm-none-symbianelf\\3.4.3\"",
+-				"\nendif\n"
 + 				"    CC_INSTALL_PATH=",$gccinstallpath,"\n",
-+				"    STATIC_LIBS = \$(STATIC_LIBS_PATH)\"\$(CC_INSTALL_PATH)/arm-none-symbianelf/lib\" \$(STATIC_LIBS_PATH)\"\$(CC_INSTALL_PATH)/lib/gcc/arm-none-symbianelf/3.4.3\"",
- 				"\nendif\n"
++				"\nendif\n",
++				"    GCC_LIB_PATH=",$libpath,"\n",
++				"    STATIC_LIBS = \$(STATIC_LIBS_PATH)\"\$(CC_INSTALL_PATH)/arm-none-symbianelf/lib\" \$(STATIC_LIBS_PATH)\"\$(GCC_LIB_PATH)\"",
++				"\n"
  			);
  
-@@ -232,11 +214,11 @@ sub PMStartBldList($) {
+ 		}
+@@ -232,11 +217,11 @@ sub PMStartBldList($) {
  		# when the MAP option is supplied
  		&main::Output(
  			"ifdef LINKER_SYMBOLS_MAP_OPTION\n",
@@ -1991,7 +1997,7 @@ index a2958df..7739ebe 100644
  			"endif\n\n"
  		);
  
-@@ -437,7 +419,7 @@ sub PMStartBldList($) {
+@@ -437,7 +422,7 @@ sub PMStartBldList($) {
  		if ($BasicTrgType !~ /IMPLIB/io) {
  			&main::Output (
  				" \\\n\t",
@@ -2000,7 +2006,7 @@ index a2958df..7739ebe 100644
  			);
  		}
  
-@@ -472,7 +454,7 @@ sub PMStartBldList($) {
+@@ -472,7 +457,7 @@ sub PMStartBldList($) {
  		unless (&main::ExportUnfrozen) {
  			if (-e $DefFile) { # effectively "if project frozen ..."
  				&main::Output(
@@ -2009,7 +2015,7 @@ index a2958df..7739ebe 100644
  				);
  			}
  			else {
-@@ -485,32 +467,34 @@ sub PMStartBldList($) {
+@@ -485,32 +470,34 @@ sub PMStartBldList($) {
  		} else {
  			&main::Output(
  				"\n",
@@ -2053,7 +2059,7 @@ index a2958df..7739ebe 100644
  			);
  		}
  	}
-@@ -546,7 +530,7 @@ sub PMStartBldList($) {
+@@ -546,7 +533,7 @@ sub PMStartBldList($) {
  	if ($DefFile and $BasicTrgType!~/^IMPLIB$/io) {
  # 	    call perl on the script here so make will die if there are errors 
  #           - this doesn't happen if calling perl in a batch file
@@ -2062,7 +2068,7 @@ index a2958df..7739ebe 100644
  	}
  	&main::Output(
  		"\n",
-@@ -554,11 +538,11 @@ sub PMStartBldList($) {
+@@ -554,11 +541,11 @@ sub PMStartBldList($) {
  	);
  	if ($DefFile and !$NoExportLibrary) {
  		&main::Output(
@@ -2076,7 +2082,7 @@ index a2958df..7739ebe 100644
  			);
  		}
  	}
-@@ -682,19 +666,19 @@ sub PMBld {
+@@ -682,19 +669,19 @@ sub PMBld {
  	if ($BasicTrgType=~/^DLL$/o) { # Add the DLL stub library
  		&main::Output(
  			" \\\n\t",
@@ -2100,7 +2106,7 @@ index a2958df..7739ebe 100644
  	) unless ($Trg =~ /(U|K)SRT/i || ($BasicTrgType=~/^LIB$/o));
  
  	unless ($ArmRT || ($BasicTrgType=~/^LIB$/o)) {
-@@ -704,7 +688,7 @@ sub PMBld {
+@@ -704,7 +691,7 @@ sub PMBld {
  			foreach (@RTLibList) {
  				&main::Output(
  					" \\\n\t",
@@ -2109,7 +2115,7 @@ index a2958df..7739ebe 100644
  				) unless ($_ =~ /$TargLib/i);
  			}
  	    }
-@@ -737,7 +721,7 @@ sub PMBld {
+@@ -737,7 +724,7 @@ sub PMBld {
  
  	        &main::Output(
  		        " \\\n\t",
@@ -2118,7 +2124,7 @@ index a2958df..7739ebe 100644
  		      );
  
  		    $objectFiles .= &main::BldPath.$BaseSrc.".o\n";
-@@ -748,7 +732,7 @@ sub PMBld {
+@@ -748,7 +735,7 @@ sub PMBld {
  	);
  
             &main::Output(
@@ -2127,7 +2133,7 @@ index a2958df..7739ebe 100644
  		     " : \$(OBJECTS$Bld)"
  		);
  
-@@ -759,7 +743,7 @@ sub PMBld {
+@@ -759,7 +746,7 @@ sub PMBld {
  	}
  #	if ($BasicTrgType=~/^(EXE|DLL)$/o) {
  #		&main::Output(
@@ -2136,7 +2142,7 @@ index a2958df..7739ebe 100644
  #		);
  #	}
  #	&main::Output(
-@@ -769,7 +753,7 @@ sub PMBld {
+@@ -769,7 +756,7 @@ sub PMBld {
  	my $IsCustomDll = IsCustomDllUseCase($Trg);
  	if($BasicTrgType=~/^DLL$/o && $IsCustomDll eq 1)
  	{
@@ -2145,7 +2151,7 @@ index a2958df..7739ebe 100644
  	}
  
      &main::Output("\n");
-@@ -778,7 +762,7 @@ sub PMBld {
+@@ -778,7 +765,7 @@ sub PMBld {
  #       get rid of any -symbols produced .map file
          if ($BasicTrgType=~/^(DLL|EXE)/o) {
  	        &main::Output(
@@ -2154,7 +2160,7 @@ index a2958df..7739ebe 100644
  		);	
  		}
  
-@@ -843,7 +827,7 @@ sub PMBld {
+@@ -843,7 +830,7 @@ sub PMBld {
  	            }
  
  	            &main::Output(
@@ -2163,7 +2169,7 @@ index a2958df..7739ebe 100644
  					"$ObjFile",
  					" \\\n"
  				);
-@@ -855,14 +839,14 @@ sub PMBld {
+@@ -855,14 +842,14 @@ sub PMBld {
  			    }
  				
  			    &main::Output(
@@ -2180,7 +2186,7 @@ index a2958df..7739ebe 100644
  #				"\t\t\$(OBJECTS$Bld) \\\n"
  			);
  		
-@@ -877,7 +861,7 @@ sub PMBld {
+@@ -877,7 +864,7 @@ sub PMBld {
  
  			if($BasicTrgType=~/^DLL$/o && $IsCustomDll eq 1)
  			{
@@ -2189,7 +2195,7 @@ index a2958df..7739ebe 100644
  			}
  
  	        &main::Output(
-@@ -887,12 +871,12 @@ sub PMBld {
+@@ -887,12 +874,12 @@ sub PMBld {
  
  	        if ($Bld=~/^U?DEB$/o) {
  	               &main::Output(
@@ -2204,7 +2210,7 @@ index a2958df..7739ebe 100644
  			);
  		}
  				
-@@ -995,16 +979,18 @@ sub PMBld {
+@@ -995,16 +982,18 @@ sub PMBld {
  		if ($BasicTrgType=~/^DLL$/o || $TrgType=~/^EXEXP$/o || $TrgType=~/^EXEDLL$/o) {
  			if (-e $DefFile) {
  				&main::Output(
@@ -2226,7 +2232,7 @@ index a2958df..7739ebe 100644
  				);
  				if(&main::ExportUnfrozen) {
  					&main::Output( ' --unfrozen ');
-@@ -1012,13 +998,13 @@ sub PMBld {
+@@ -1012,13 +1001,13 @@ sub PMBld {
  			}
  		#the input elf file - as the last arg
  		&main::Output(
@@ -2242,7 +2248,7 @@ index a2958df..7739ebe 100644
   		);
  
  		if($BasicTrgType=~/^DLL/ && $TrgType!~/^DLL/){
-@@ -1044,7 +1030,7 @@ sub PMBld {
+@@ -1044,7 +1033,7 @@ sub PMBld {
  	        &main::Output(
  			"\t\$(ARCHIVER) ",
  				" \$(ARCHIVER_CREATE_OPTION) ",
@@ -2251,7 +2257,7 @@ index a2958df..7739ebe 100644
  			);
           }
  
-@@ -1054,20 +1040,20 @@ sub PMBld {
+@@ -1054,20 +1043,20 @@ sub PMBld {
  
  	if ($BasicTrgType=~/^DLL$/o || $TrgType=~/^EXEXP$/o || $TrgType=~/^EXEDLL$/o) {
  		&main::Output(
@@ -2277,7 +2283,7 @@ index a2958df..7739ebe 100644
  				  "\n"
  				 ) if ($ExtraExportLibrary); 
  
-@@ -1077,17 +1063,17 @@ sub PMBld {
+@@ -1077,17 +1066,17 @@ sub PMBld {
  	if($BasicTrgType=~/^DLL$/o && $IsCustomDll eq 1)
  	{
  		&main::Output(
@@ -2300,7 +2306,7 @@ index a2958df..7739ebe 100644
  		);
  	}
  
-@@ -1218,16 +1204,16 @@ sub PMSrcDepend {
+@@ -1218,16 +1207,16 @@ sub PMSrcDepend {
  		if ($tranasm)
  		{
  			&main::Output(
@@ -2321,7 +2327,7 @@ index a2958df..7739ebe 100644
  		);
  	}
  	&main::Output(
-@@ -1276,17 +1262,17 @@ sub PMSrcBldDepend {
+@@ -1276,17 +1265,17 @@ sub PMSrcBldDepend {
  	if ($tranasm)
  	{
  		&main::Output(
@@ -2343,7 +2349,7 @@ index a2958df..7739ebe 100644
  	);
  
  	my $prefix_file=getConfigVariable('PREFIXFILE');
-@@ -1317,7 +1303,7 @@ my $curdrive = "x";
+@@ -1317,7 +1306,7 @@ my $curdrive = "x";
  sub quoted_path
      {
      my ($arg) = @_;
@@ -2352,7 +2358,7 @@ index a2958df..7739ebe 100644
      if ($curdrive eq "x")
  		{
  		$curdrive="";
-@@ -1344,7 +1330,7 @@ sub PMEndSrcBld {
+@@ -1344,7 +1333,7 @@ sub PMEndSrcBld {
  	my $ABI=&main::ABI;
  	my $BaseSrc=&main::BaseSrc;
  	my $Bld=&main::Bld;
@@ -2361,7 +2367,7 @@ index a2958df..7739ebe 100644
  	my $SrcPath=&main::SrcPath;
  	my $Ext = &main::Path_Split('Ext', $Src);
  	my $LangOptions = &SelectLangOptions($Ext);
-@@ -1359,10 +1345,10 @@ sub PMEndSrcBld {
+@@ -1359,10 +1348,10 @@ sub PMEndSrcBld {
  	if ($AsmFilep || $Ext =~ /cia/i) {
  		&main::Output(
  # compile the translated, preprocessed source
@@ -2375,7 +2381,7 @@ index a2958df..7739ebe 100644
  			"\n"
  			);
  # rule to translate the preprocessed source
-@@ -1370,59 +1356,59 @@ sub PMEndSrcBld {
+@@ -1370,59 +1359,59 @@ sub PMEndSrcBld {
  			if ($tranasm)
  			{
  		&main::Output(
@@ -2456,7 +2462,7 @@ index a2958df..7739ebe 100644
  			"\n"
  			);
  	}
-@@ -1434,7 +1420,7 @@ sub MultiFileEndSrcBld {
+@@ -1434,7 +1423,7 @@ sub MultiFileEndSrcBld {
  	my $BaseSrc=&main::BaseSrc;
  	my $Bld=&main::Bld;
          my $KeyFile = &main::Src;
@@ -2465,7 +2471,7 @@ index a2958df..7739ebe 100644
  	my $SrcPath=&main::SrcPath;
  	my $Ext = &main::Path_Split('Ext', $Src);
  #	my $LangOptions = &main::SelectLangOptions($Ext);
-@@ -1453,12 +1439,12 @@ sub MultiFileEndSrcBld {
+@@ -1453,12 +1442,12 @@ sub MultiFileEndSrcBld {
  # compile the translated, preprocessed source
  		       &main::Output( "OBJECTS$MFVarN = ");
  		       foreach my $obj (@{$CompilationGroups{$KeyFile}{Objects}}) {
@@ -2480,7 +2486,7 @@ index a2958df..7739ebe 100644
  		       }
         		       &main::Output( "\n\n");
  		       &main::Output( "\$(OBJECTS$MFVarN) : \$(SOURCES$MFVarN) \n");
-@@ -1473,21 +1459,21 @@ sub MultiFileEndSrcBld {
+@@ -1473,21 +1462,21 @@ sub MultiFileEndSrcBld {
  		}
  		&main::Output(
  # rule to translate the preprocessed source
@@ -2511,7 +2517,7 @@ index a2958df..7739ebe 100644
  			"\n"
  			);
  	} else {
-@@ -1499,7 +1485,7 @@ sub MultiFileEndSrcBld {
+@@ -1499,7 +1488,7 @@ sub MultiFileEndSrcBld {
  #                      compile the source
  		       &main::Output( "OBJECTS$MFVarN = ");
  		       foreach my $obj (@{$CompilationGroups{$KeyFile}{Objects}}) {
@@ -2520,7 +2526,7 @@ index a2958df..7739ebe 100644
  		       }
         		       &main::Output( "\n\n");
  		       &main::Output( "SOURCES$MFVarN = ");
-@@ -1519,12 +1505,12 @@ sub MultiFileEndSrcBld {
+@@ -1519,12 +1508,12 @@ sub MultiFileEndSrcBld {
  		}
  #		generate an assembly listing target too
  		&main::Output(
@@ -2536,7 +2542,7 @@ index a2958df..7739ebe 100644
  			"\n"
  			);
  	}
-@@ -1663,14 +1649,13 @@ sub GCCInstallPath {
+@@ -1663,14 +1652,29 @@ sub GCCInstallPath {
  	while(<PIPE>)
  	{
  		$gccInstallPath = $_;
@@ -2547,18 +2553,36 @@ index a2958df..7739ebe 100644
  #	Extract the path till the occurence of bin directory.
 -	my @Installpath = split(/\\\.\./, $gccInstallPath);
 +	my @Installpath = split(/\/lib\/gcc/, $gccInstallPath);
++
++	return $Installpath[0];
++}
++
++sub GCCLibPath {
++	my $gccLibPath;
++
++	open PIPE, "arm-none-symbianelf-g++ -print-libgcc-file-name 2>&1 | ";
++	while(<PIPE>)
++	{
++		$gccLibPath = $_;
++	}
++	close PIPE;
++
++#	Extract the path till the occurence of libgcc.a directory.
++	my @libpath = split(/\/libgcc.a/, $gccLibPath);
  
 -	return @Installpath[0];
-+	return $Installpath[0];
++	return $libpath[0];
  }
  
  my %BSF_keywords = (
-@@ -1762,7 +1747,7 @@ sub GetToolChainIncDir {
+@@ -1761,8 +1765,8 @@ sub GetToolChainIncDir {
+ 	}
  	if($Plat eq "GCCE")
  	{
- 		my $gcc_install_path=GCCInstallPath;
+-		my $gcc_install_path=GCCInstallPath;
 -		return "$gcc_install_path\\..\\lib\\gcc\\arm-none-symbianelf\\3.4.3\\include";
-+		return "$gcc_install_path/lib/gcc/arm-none-symbianelf/3.4.3/include";
++		my @includePath = &GCCLibPath;
++		return "$includePath[0]/include";
  	}
  	else
  	{
