@@ -1,0 +1,321 @@
+diff --git a/agmentry.h b/agmentry.h
+index 4aa10c9..93cc29c 100644
+--- a/agmentry.h
++++ b/agmentry.h
+@@ -542,7 +542,7 @@ public:
+ 	IMPORT_C virtual TType Type() const;
+ 	IMPORT_C virtual TTime InstanceStartDate() const;
+ 	IMPORT_C virtual TTime InstanceEndDate() const;
+-	inline const TAgnBasicEvent& CAgnEvent::BasicEvent() const;
++	inline const TAgnBasicEvent& BasicEvent() const;
+ 	void SetDisplayTimeOnly(TTimeIntervalMinutes aDisplayTime);
+ protected:
+ 	CAgnEvent();
+diff --git a/asn1dec.h b/asn1dec.h
+index a85e016..5948130 100644
+--- a/asn1dec.h
++++ b/asn1dec.h
+@@ -144,7 +144,7 @@ public:
+ protected:
+ 	IMPORT_C TInt CheckValid(const TDesC8& aSource);
+ private:
+-	HBufC* TASN1DecGraphicString::DecodeContentsL(const TDesC8& aSource);
++	HBufC* DecodeContentsL(const TDesC8& aSource);
+ 	};
+ 
+ /**
+diff --git a/attrlut.h b/attrlut.h
+index 93f3e26..13b2369 100644
+--- a/attrlut.h
++++ b/attrlut.h
+@@ -36,7 +36,7 @@ public:
+ 	//##ModelId=3B666BC701E3
+ 	IMPORT_C ~CAttributeLookupTable();
+ 	//##ModelId=3B666BC701DC
+-	IMPORT_C static CAttributeLookupTable* CAttributeLookupTable::NewL();
++	IMPORT_C static CAttributeLookupTable* NewL();
+ 	//##ModelId=3B666BC701DA
+ 	IMPORT_C const HBufC* Des2IDL( const TDesC& ); // map descriptor to ID
+ 	//##ModelId=3B666BC701D3
+diff --git a/d32locd.h b/d32locd.h
+index ffe1747..266519f 100644
+--- a/d32locd.h
++++ b/d32locd.h
+@@ -177,8 +177,8 @@ public:
+ 	TInt iMaxBytesPerFormat;
+     };
+ //The following ASSERTs checks for offset of any TInt64 member be a multiple of 8 as per DEF045510
+-__ASSERT_COMPILE(_FOFF(TLocalDriveCaps,iSize)%8 == 0);
+-__ASSERT_COMPILE(_FOFF(TLocalDriveCapsV3,iFormatInfo.iCapacity) % 8 == 0);
++//__ASSERT_COMPILE(_FOFF(TLocalDriveCaps,iSize)%8 == 0);
++//__ASSERT_COMPILE(_FOFF(TLocalDriveCapsV3,iFormatInfo.iCapacity) % 8 == 0);
+ 
+ 
+ typedef TPckgBuf<TLocalDriveCapsV3> TLocalDriveCapsV3Buf;
+diff --git a/damdbms.h b/damdbms.h
+index d76f017..c8aa29a 100644
+--- a/damdbms.h
++++ b/damdbms.h
+@@ -86,7 +86,7 @@ public:
+ public:
+ 	// Constructors, destructors
+ 	IMPORT_C static CDaModel* NewL();
+-	IMPORT_C static CDaModel* CDaModel::NewL(CFileStore& fileStore);
++	IMPORT_C static CDaModel* NewL(CFileStore& fileStore);
+ 	~CDaModel();
+ 	void Attach(MDaObserver *aObserver)
+ 	/** Sets a database application engine observer.
+diff --git a/eikchkbx.h b/eikchkbx.h
+index 86cb902..ad26dcd 100644
+--- a/eikchkbx.h
++++ b/eikchkbx.h
+@@ -96,8 +96,8 @@ private: // framework
+ 	IMPORT_C TInt CountComponentControls() const;
+ 	IMPORT_C CCoeControl* ComponentControl(TInt aIndex) const;
+ public:
+-	IMPORT_C CEikCheckBox& CEikLabeledCheckBox::CheckBox();
+-	IMPORT_C const CEikCheckBox& CEikLabeledCheckBox::CheckBox() const;
++	IMPORT_C CEikCheckBox& CheckBox();
++	IMPORT_C const CEikCheckBox& CheckBox() const;
+ 	IMPORT_C CEikButtonBase::TState State() const;
+ 	IMPORT_C void SetState(CEikButtonBase::TState state);
+ 	// from MCoeControlObserver 
+diff --git a/eikrted.h b/eikrted.h
+index 820f928..4345468 100644
+--- a/eikrted.h
++++ b/eikrted.h
+@@ -180,7 +180,7 @@ private:
+ 	TBool UpdateParserHighlightL(TCursorPosition::TMovementType aDirection);
+ 	void AddCommandsL(); 
+ 	void DeleteCommands(); 
+-	CEikRichTextPicture* CEikRichTextEditor::Picture(TInt aPos) const; 
++	CEikRichTextPicture* Picture(TInt aPos) const; 
+ 	void ChangeDisplayModeL(); 
+ 	void HighlightControlBorder(TBool aHighlight);
+ 	void UpdateCutCopySelectCommands();
+diff --git a/gcce/gcce.h b/gcce/gcce.h
+index 2bfb88a..679ee7a 100644
+--- a/gcce/gcce.h
++++ b/gcce/gcce.h
+@@ -93,7 +93,11 @@ typedef unsigned long long Uint64;
+         extern "C" {
+ #endif  /* __cplusplus */
+ 
++#if __GNUC__ < 4
+ typedef struct __va_list { void *__ap; } va_list;
++#else
++typedef __builtin_va_list va_list;
++#endif
+ 
+ 
+ #ifdef __cplusplus
+@@ -103,9 +107,15 @@ typedef struct __va_list { void *__ap; } va_list;
+     using ::std::va_list;
+ #endif
+ 
++#if __GNUC__ < 4
+ #define va_start(ap, parmN) __builtin_va_start(ap.__ap, parmN)
+ #define va_arg(ap, type) __builtin_va_arg(ap.__ap, type)
+ #define va_end(ap) __builtin_va_end(ap.__ap)
++#else
++#define va_start(v,l)   __builtin_va_start(v,l)
++#define va_arg(v,l)     __builtin_va_arg(v,l)
++#define va_end(v)       __builtin_va_end(v)
++#endif
+ 
+ 
+ #define VA_LIST va_list
+diff --git a/gsmuset.h b/gsmuset.h
+index c6e0c20..4c54edf 100644
+--- a/gsmuset.h
++++ b/gsmuset.h
+@@ -17,7 +17,7 @@ class TSmsUserDataSettings
+ /** Operations on TP-UD User Data. */
+ 	{
+ public:
+-	IMPORT_C TSmsUserDataSettings::TSmsUserDataSettings();
++	IMPORT_C TSmsUserDataSettings();
+ 
+ 	inline TSmsDataCodingScheme::TSmsAlphabet Alphabet() const;
+ 	inline void SetAlphabet(TSmsDataCodingScheme::TSmsAlphabet aAlphabet);
+diff --git a/http/rhttpsession.h b/http/rhttpsession.h
+index 06bbda8..c2911b5 100644
+--- a/http/rhttpsession.h
++++ b/http/rhttpsession.h
+@@ -213,7 +213,7 @@ is actually to do anything.
+ 		Calling code can safely cast to CWTLSCertificate if using  "WSP/WSP".
+ 		NULL returned if certificate information not found.
+ 	*/
+-	IMPORT_C const CCertificate* RHTTPSession::ServerCert();
++	IMPORT_C const CCertificate* ServerCert();
+ 
+ 	/** Connect this WSP session. This function does nothing when called for text-mode.
+ 	*/
+diff --git a/icl/imagedisplayplugin.h b/icl/imagedisplayplugin.h
+index d6ee99b..e480561 100644
+--- a/icl/imagedisplayplugin.h
++++ b/icl/imagedisplayplugin.h
+@@ -160,7 +160,7 @@ protected:
+ 	   returns requested content data Id that should be used to open content
+ 	   @return const TDesC& a desired data unique Id
+ 	*/
+-	IMPORT_C const TDesC& CImageDisplayPlugin::SourceDataId() const;
++	IMPORT_C const TDesC& SourceDataId() const;
+ 
+ 	/**
+ 	   returns an image source MIME type or KNullDesC8 if not defined
+diff --git a/in_chk.h b/in_chk.h
+index dcb68d0..22aec5d 100644
+--- a/in_chk.h
++++ b/in_chk.h
+@@ -26,7 +26,7 @@ Raw Internet Checksum computation from RMBufChain.
+ class TChecksum {
+ public:
+         // TChecksum can be initialized with an old inverted checksum
+-        TChecksum::TChecksum(TUint16 aSum = ~0) : iSum((TUint16)~aSum) {}
++        TChecksum(TUint16 aSum = ~0) : iSum((TUint16)~aSum) {}
+ 	inline void Init(TUint16 aSum = ~0);
+ 
+ 	inline TUint32 Sum();
+diff --git a/messaging/sms/smsmessagewrappers.h b/messaging/sms/smsmessagewrappers.h
+index 8544e78..a804f3f 100644
+--- a/messaging/sms/smsmessagewrappers.h
++++ b/messaging/sms/smsmessagewrappers.h
+@@ -39,7 +39,7 @@ protected:
+ 
+ private:
+ 	TMsvMessageBio(const TMsvMessageBio&); // Disable copying
+-	TMsvMessageBio& TMsvMessageBio::operator=(const TMsvMessageBio&); // Disable copying
++	TMsvMessageBio& operator=(const TMsvMessageBio&); // Disable copying
+ 
+ 
+ protected:
+@@ -78,7 +78,7 @@ protected:
+ 
+ private:
+ 	TMsvMessageSms(const TMsvMessageSms&); // Disable copying
+-	TMsvMessageSms& TMsvMessageSms::operator=(const TMsvMessageSms&); // Disable copying
++	TMsvMessageSms& operator=(const TMsvMessageSms&); // Disable copying
+ };
+ 
+ /**
+@@ -113,7 +113,7 @@ public:
+ 
+ private:
+ 	TMsvMessageGsm(const TMsvMessageGsm&); // Disable copying
+-	TMsvMessageGsm& TMsvMessageGsm::operator=(const TMsvMessageGsm&); // Disable copying
++	TMsvMessageGsm& operator=(const TMsvMessageGsm&); // Disable copying
+ };
+ 
+ /**
+@@ -176,7 +176,7 @@ public:
+ 
+ private:
+ 	TMsvMessageCdma(const TMsvMessageCdma&); // Disable copying
+-	TMsvMessageCdma& TMsvMessageCdma::operator=(const TMsvMessageCdma&); // Disable copying
++	TMsvMessageCdma& operator=(const TMsvMessageCdma&); // Disable copying
+ };
+ 
+ #endif // __SMS_MESSAGE_WRAPPERS_H__
+diff --git a/miutmsg.h b/miutmsg.h
+index aaa5a66..60241ba 100644
+--- a/miutmsg.h
++++ b/miutmsg.h
+@@ -846,7 +846,7 @@ class CImHtmlConverter : public CBase
+ */
+ 	{
+ public:
+-	static CImHtmlConverter* CImHtmlConverter::NewL(CMsvEntry& aMsvEntry, 
++	static CImHtmlConverter* NewL(CMsvEntry& aMsvEntry, 
+ 								   CParaFormatLayer& aParaLayer, CCharFormatLayer& aCharLayer);
+ 	~CImHtmlConverter();
+ 	void PrepareToStoreHTMLEntryTextL(TMsvId& aHtmlId, const TMsvId aTextId);
+diff --git a/mmf/server/mmfaudiooutput.h b/mmf/server/mmfaudiooutput.h
+index 733250d..12f2799 100644
+--- a/mmf/server/mmfaudiooutput.h
++++ b/mmf/server/mmfaudiooutput.h
+@@ -108,7 +108,7 @@ class CMMFAudioOutput : public CBase, public MMMFAudioOutput, public MDevSoundOb
+ 	{
+ public:
+ 	static MDataSink* NewSinkL() ;
+-	virtual CMMFAudioOutput::~CMMFAudioOutput();
++	virtual ~CMMFAudioOutput();
+ 	void ConstructL();
+ 
+ 	//MDataSink mixin implementations
+diff --git a/openfont.h b/openfont.h
+index ccf59d6..f52bd2a 100644
+--- a/openfont.h
++++ b/openfont.h
+@@ -933,11 +933,11 @@ private:
+ 		};
+ 	static TInt ScoreByName(const TOpenFontSpec& aDesiredFontSpec, const TAttrib& aAttrib);
+ 	static TInt ScoreByStyle(const TOpenFontSpec& aDesiredFontSpec, const TAttrib& aAttrib);
+-	void COpenFontFile::GetNearestFontToDesignHeightInPixelsAndAddToListL(
++	void GetNearestFontToDesignHeightInPixelsAndAddToListL(
+ 		RHeap* aHeap, COpenFontSessionCacheList* aSessionCacheList,
+ 		const TOpenFontSpec& aDesiredFontSpec, TInt aPixelWidth, TInt aPixelHeight,
+ 		COpenFont*& aFont, TOpenFontSpec& aActualFontSpec);
+-	void COpenFontFile::GetNearestFontToMaxHeightInPixelsAndAddToListL(
++	void GetNearestFontToMaxHeightInPixelsAndAddToListL(
+ 		RHeap* aHeap, COpenFontSessionCacheList* aSessionCacheList,
+ 		const TOpenFontSpec& aDesiredFontSpec, TInt aPixelWidth, TInt aPixelHeight,
+ 		COpenFont*& aFont, TOpenFontSpec& aActualFontSpec, TInt aMaxHeight);
+diff --git a/vstaticutils.h b/vstaticutils.h
+index 2939b3f..1985baa 100644
+--- a/vstaticutils.h
++++ b/vstaticutils.h
+@@ -55,7 +55,7 @@ public:
+ 
+ private:
+ 	static void AddEscapedString(TBool aIsShiftJis,TDes& aDestination,const TDesC& aTextToEscape);
+-	static const TDesC &VersitUtils::EscapeChar(TBool aIsShiftJis);
++	static const TDesC &EscapeChar(TBool aIsShiftJis);
+ 	};
+ 
+ inline TBool VersitUtils::IsWhiteSpace(TUint aChar)
+diff --git a/w32std.h b/w32std.h
+index 629d840..f211461 100644
+--- a/w32std.h
++++ b/w32std.h
+@@ -2246,7 +2246,7 @@ private: // Private code
+ 	TInt doDrawPolygon(const CArrayFix<TPoint> *aPointArray,const TPoint* aPointList,TInt aNumPoints,TFillRule aFillRule);
+ 	void WriteTextPos(TInt aOpcode,TInt aOpcodePtr,const TPoint &aPos,const TDesC &aBuf) const;
+ 	void WriteTextCommand(TAny *aCmd, TInt aLen,const TDesC &aBuf,TInt aOpcode,TInt aOpcodePtr) const;
+-	void CWindowGc::APIEGetUnderlineMetrics(TAny*& aOutput);
++	void APIEGetUnderlineMetrics(TAny*& aOutput);
+ private: // Private data
+ 	CFbsFont *iFont;
+ 	CWsScreenDevice *iDevice;
+diff --git a/wbconverter.h b/wbconverter.h
+index 3ef8d33..bd3672d 100644
+--- a/wbconverter.h
++++ b/wbconverter.h
+@@ -257,11 +257,11 @@ public:	// Methods
+ 
+ 	// NOTE: input data really is 8bit bytecode
+ 	//##ModelId=3B6678E300F9
+-	IMPORT_C static CWbxmlConverter* CWbxmlConverter::NewL(RFs& aFs, MWbxmlConverterObserver* aObserver);
++	IMPORT_C static CWbxmlConverter* NewL(RFs& aFs, MWbxmlConverterObserver* aObserver);
+ 	//##ModelId=3B6678E300BD
+-	IMPORT_C static CWbxmlConverter* CWbxmlConverter::NewLC(RFs& aFs, MWbxmlConverterObserver* aObserver);
++	IMPORT_C static CWbxmlConverter* NewLC(RFs& aFs, MWbxmlConverterObserver* aObserver);
+ 	//##ModelId=3B6678E30135
+-	IMPORT_C static CWbxmlConverter* CWbxmlConverter::NewL(RFs& aFs, MWbxmlConverterObserver* aObserver, const TDesC* aCharacterEncoding);
++	IMPORT_C static CWbxmlConverter* NewL(RFs& aFs, MWbxmlConverterObserver* aObserver, const TDesC* aCharacterEncoding);
+ 	//##ModelId=3B6678E3009F
+ 	IMPORT_C void ProcessDataL(HBufC8& aBuffer);
+ 	//##ModelId=3B6678E3009E
+diff --git a/x509certchain.h b/x509certchain.h
+index 1fa0289..27bef1a 100644
+--- a/x509certchain.h
++++ b/x509certchain.h
+@@ -63,7 +63,7 @@ public:
+ 	* 
+ 	* @param aBinaryData	The encoded binary representation.
+ 	* @return				The certificate objects. */
+-	IMPORT_C CArrayPtrFlat<CX509Certificate>* CX509CertChain::DecodeCertsL(const TDesC8& aBinaryData);
++	IMPORT_C CArrayPtrFlat<CX509Certificate>* DecodeCertsL(const TDesC8& aBinaryData);
+ 	
+ 	/** Destructor.
+ 	* 

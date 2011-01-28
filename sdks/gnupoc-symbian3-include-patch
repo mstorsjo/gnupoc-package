@@ -1,3 +1,264 @@
+diff --git a/app/CVPbkVCardEng.h b/app/CVPbkVCardEng.h
+index 3afd2d2..d82407a 100644
+--- a/app/CVPbkVCardEng.h
++++ b/app/CVPbkVCardEng.h
+@@ -322,7 +322,7 @@ class CVPbkVCardEng : public CBase
+          * @return A new operation handle owned by the client.
+          * @asynchronous
+          */   
+-        IMPORT_C MVPbkContactOperationBase* CVPbkVCardEng::ImportVCardMergeL(
++        IMPORT_C MVPbkContactOperationBase* ImportVCardMergeL(
+             const MVPbkContactLink& aReplaceContact,
+             MVPbkContactStore& aTargetStore, 
+             RReadStream& aSourceStream,
+diff --git a/app/vstaticutils.h b/app/vstaticutils.h
+index e620801..67aa628 100644
+--- a/app/vstaticutils.h
++++ b/app/vstaticutils.h
+@@ -66,7 +66,7 @@ public:
+ 
+ private:
+ 	static void AddEscapedString(TBool aIsShiftJis,TDes& aDestination,const TDesC& aTextToEscape);
+-	static const TDesC &VersitUtils::EscapeChar(TBool aIsShiftJis);
++	static const TDesC &EscapeChar(TBool aIsShiftJis);
+ 	};
+ 
+ inline TBool VersitUtils::IsWhiteSpace(TUint aChar)
+diff --git a/graphics/streammap.h b/graphics/streammap.h
+index b8a3d58..42be3f0 100644
+--- a/graphics/streammap.h
++++ b/graphics/streammap.h
+@@ -177,7 +177,7 @@ NONSHARABLE_CLASS(COpenWfcStreamMap): public CBase
+ 		*/
+ 		static TUint32 HashFunction(const TSurfaceId& aHashKey);
+ 		
+-		static TInt COpenWfcStreamMap::DeleteSingleton(TAny* aData);
++		static TInt DeleteSingleton(TAny* aData);
+ 	private:
+ 		/**
+ 		 * Mutex used for controlling the access to the native streams map
+diff --git a/mw/AiwVariant.h b/mw/AiwVariant.h
+index fdc3a1a..4eccb13 100644
+--- a/mw/AiwVariant.h
++++ b/mw/AiwVariant.h
+@@ -112,7 +112,7 @@ class TAiwVariant
+         *
+         * @param aValue The source object.
+         */
+-        IMPORT_C TAiwVariant& TAiwVariant::operator=(const TAiwVariant& aValue);
++        IMPORT_C TAiwVariant& operator=(const TAiwVariant& aValue);
+ 
+         // This class does not need a destructor because memory allocation
+         // policy for variant class has been implemented by TAiwGenericParam
+diff --git a/mw/AknBidiTextUtils.h b/mw/AknBidiTextUtils.h
+index cd92153..3f2ba4b 100644
+--- a/mw/AknBidiTextUtils.h
++++ b/mw/AknBidiTextUtils.h
+@@ -422,7 +422,7 @@ class AknBidiTextUtils
+     * @param aOrder Whether the text provided is in visual or logical order
+     * @return       width of the text in pixels.
+     */
+-    IMPORT_C static TInt AknBidiTextUtils::MeasureTextBoundsWidth(
++    IMPORT_C static TInt MeasureTextBoundsWidth(
+         const CFont& aFont,
+         const TDesC& aText,
+         CFont::TMeasureTextInput::TFlags aOrder);
+diff --git a/mw/Aknvolumecontrol.h b/mw/Aknvolumecontrol.h
+index db29f06..048b570 100644
+--- a/mw/Aknvolumecontrol.h
++++ b/mw/Aknvolumecontrol.h
+@@ -270,7 +270,7 @@ class CAknVolumeControl : public CAknControl, public MAknNaviDecoratorObserver
+         *
+         * @return Colume value scaled to range of [0-10].
+         */
+-        TInt CAknVolumeControl::ScaledValue() const;
++        TInt ScaledValue() const;
+ 
+        /*
+         * Set extended touch area to be used 
+diff --git a/mw/MemoryManager.h b/mw/MemoryManager.h
+index ca89f7f..8cff1ca 100644
+--- a/mw/MemoryManager.h
++++ b/mw/MemoryManager.h
+@@ -306,7 +306,7 @@ class MemoryManager
+         * @param
+         * @return
+         */        
+-        IMPORT_C static void MemoryManager::CreateFastAllocator();
++        IMPORT_C static void CreateFastAllocator();
+ 
+         /**
+         * Initialize MemoryManager library. Special case if CreateFastAllocator is
+@@ -316,7 +316,7 @@ class MemoryManager
+         * @param
+         * @return
+         */
+-        IMPORT_C static void MemoryManager::InitFastAllocator();
++        IMPORT_C static void InitFastAllocator();
+ 
+         /**
+         * initialize the OOM handler in the memorypool
+diff --git a/mw/SenSoapMessage.h b/mw/SenSoapMessage.h
+index 03091bb..a1dcdf2 100644
+--- a/mw/SenSoapMessage.h
++++ b/mw/SenSoapMessage.h
+@@ -96,7 +96,7 @@ class CSenSoapMessage : public CSenSoapEnvelope
+         /**
+          *    C++ default constructor.
+          */
+-        IMPORT_C CSenSoapMessage::CSenSoapMessage();
++        IMPORT_C CSenSoapMessage();
+ 
+         // New functions
+         
+diff --git a/mw/SenSoapMessage2.h b/mw/SenSoapMessage2.h
+index 1aeba04..487fca3 100644
+--- a/mw/SenSoapMessage2.h
++++ b/mw/SenSoapMessage2.h
+@@ -157,7 +157,7 @@ class CSenSoapMessage2 : public CSenSoapEnvelope2
+         /**
+          *  C++ default constructor.
+          */
+-        IMPORT_C CSenSoapMessage2::CSenSoapMessage2();
++        IMPORT_C CSenSoapMessage2();
+ 
+         // New functions
+ 
+diff --git a/mw/SenXmlServiceDescription.h b/mw/SenXmlServiceDescription.h
+index 607d6bd..1277efb 100644
+--- a/mw/SenXmlServiceDescription.h
++++ b/mw/SenXmlServiceDescription.h
+@@ -530,7 +530,7 @@ class CSenXmlServiceDescription : public CSenDomFragment,
+         *         of retry attempts (each showing a dialog) is service invocation
+         *         framework spesific; typically 3 retries are permitted.     
+         */
+-        IMPORT_C void CSenXmlServiceDescription::SetPromptUserInfoL( TBool aPromptUserInfoMode );
++        IMPORT_C void SetPromptUserInfoL( TBool aPromptUserInfoMode );
+ 
+         /**
+         * Getter for current userinfo mode (KSenAttrPromptUserInfo attribute).
+diff --git a/mw/cmdefconnvalues.h b/mw/cmdefconnvalues.h
+index 9cb6cee..fb5cd9a 100644
+--- a/mw/cmdefconnvalues.h
++++ b/mw/cmdefconnvalues.h
+@@ -56,7 +56,7 @@ struct TCmDefConnValue
+     // TCmDefConnValue::operator==
+     // -----------------------------------------------------------------------------
+     //
+-    inline TBool TCmDefConnValue::operator==( TCmDefConnValue& aDCSettingSelection ) const
++    inline TBool operator==( TCmDefConnValue& aDCSettingSelection ) const
+         {
+         return ( (iType == aDCSettingSelection.iType) && ( iId == aDCSettingSelection.iId ) );
+         };
+@@ -65,7 +65,7 @@ struct TCmDefConnValue
+     // TCmDefConnValue::operator!=
+     // -----------------------------------------------------------------------------
+     //
+-    inline TBool TCmDefConnValue::operator!=( TCmDefConnValue& aDCSettingSelection ) const
++    inline TBool operator!=( TCmDefConnValue& aDCSettingSelection ) const
+         {
+         return (!( (iType == aDCSettingSelection.iType) && ( iId == aDCSettingSelection.iId ) ));
+         };     
+diff --git a/mw/eikedwin.h b/mw/eikedwin.h
+index 6cedd57..9b562b8 100644
+--- a/mw/eikedwin.h
++++ b/mw/eikedwin.h
+@@ -1578,7 +1578,7 @@ public:
+          * @return editor flags if existed
+          * @or return KErrNotFound
+          */
+-    IMPORT_C TInt CEikEdwin::AknEditorFlags();
++    IMPORT_C TInt AknEditorFlags();
+     
+ 
+ 	
+diff --git a/mw/lbtstartuptrigger.h b/mw/lbtstartuptrigger.h
+index 98f510e..f2fa32d 100644
+--- a/mw/lbtstartuptrigger.h
++++ b/mw/lbtstartuptrigger.h
+@@ -355,7 +355,7 @@ private:
+     /**
+      * Symbian 2nd phase constructor
+      */    
+-    void CLbtStartupTrigger::ConstructL( const TDesC& aName,
++    void ConstructL( const TDesC& aName,
+         CLbtTriggerEntry::TLbtTriggerState aState,
+         const RRequestorStack& aRequestors,
+         TUid aManagerUi,
+diff --git a/platform/audiooutput.h b/platform/audiooutput.h
+index aa32779..efde3e6 100644
+--- a/platform/audiooutput.h
++++ b/platform/audiooutput.h
+@@ -65,49 +65,49 @@ class CAudioOutput : public CBase
+         * @param CMdaAudioRecorderUtility& - a reference to CMdaAudioRecorderUtility object
+         * @return pointer to CAudioOutput object
+         */		
+-		IMPORT_C static CAudioOutput* CAudioOutput::NewL(CMdaAudioRecorderUtility& aUtility, TBool aRecordStream);
++		IMPORT_C static CAudioOutput* NewL(CMdaAudioRecorderUtility& aUtility, TBool aRecordStream);
+ 		/**
+         * Factory function for creating audio output object.
+         * @since 3.0
+         * @param CMdaAudioOutputStream& - a reference to CMdaAudioOutputStream object
+         * @return pointer to CAudioOutput object
+         */		
+-		IMPORT_C static CAudioOutput* CAudioOutput::NewL(CMdaAudioOutputStream& aUtility);
++		IMPORT_C static CAudioOutput* NewL(CMdaAudioOutputStream& aUtility);
+ 		/**
+         * Factory function for creating audio output object.
+         * @since 3.0
+         * @param CMdaAudioToneUtility& - a reference to CMdaAudioToneUtility object
+         * @return pointer to CAudioOutput object
+         */		
+-		IMPORT_C static CAudioOutput* CAudioOutput::NewL(CMdaAudioToneUtility& aUtility);
++		IMPORT_C static CAudioOutput* NewL(CMdaAudioToneUtility& aUtility);
+ 		/**
+         * Factory function for creating audio output object.
+         * @since 3.0
+         * @param CMMFDevSound& - a reference to CMMFDevSound object
+         * @return pointer to CAudioOutput object
+         */		
+-		IMPORT_C static CAudioOutput* CAudioOutput::NewL(CMMFDevSound& aDevSound);
++		IMPORT_C static CAudioOutput* NewL(CMMFDevSound& aDevSound);
+ 		/**
+         * Factory function for creating audio output object.
+         * @since 3.0
+         * @param MCustomInterface& - a reference to MCustomInterface object
+         * @return pointer to CAudioOutput object
+         */		
+-		IMPORT_C static CAudioOutput* CAudioOutput::NewL(MCustomInterface& aUtility);
++		IMPORT_C static CAudioOutput* NewL(MCustomInterface& aUtility);
+ 		/**
+         * Factory function for creating audio output object.
+         * @since 3.0
+         * @param MCustomCommand& - a reference to MCustomCommand object
+         * @return pointer to CAudioOutput object
+         */		
+-		IMPORT_C static CAudioOutput* CAudioOutput::NewL(MCustomCommand& aUtility);
++		IMPORT_C static CAudioOutput* NewL(MCustomCommand& aUtility);
+ 		/**
+         * Factory function for creating audio output object.
+         * @since 3.0
+         * @param CMidiClientUtility& - a reference to CMidiClientUtility object
+         * @return pointer to CAudioOutput object
+         */		
+-		IMPORT_C static CAudioOutput* CAudioOutput::NewL(CMidiClientUtility& aUtility);
++		IMPORT_C static CAudioOutput* NewL(CMidiClientUtility& aUtility);
+ 		/**
+         * Factory function for creating audio output object.
+         * @since 3.0
+diff --git a/platform/comms-infras/ss_nodemessages_internal.h b/platform/comms-infras/ss_nodemessages_internal.h
+index 8bebcb3..b6014b3 100644
+--- a/platform/comms-infras/ss_nodemessages_internal.h
++++ b/platform/comms-infras/ss_nodemessages_internal.h
+@@ -136,7 +136,7 @@ public:
+ 		}
+ 
+ private:
+-	inline TMetaExtensionContainerMetaType::TMetaExtensionContainerMetaType(const RMetaExtensionContainerC* aData)
++	inline TMetaExtensionContainerMetaType(const RMetaExtensionContainerC* aData)
+ 		: iData(aData)
+ 		{
+ 		__ASSERT_DEBUG(iData!=NULL, User::Panic(_L("RMECMeta"),KErrArgument));
 diff --git a/textcursor.h b/textcursor.h
 index 0b3677a..7ee8ebe 100644
 --- a/textcursor.h
@@ -11,3 +272,16 @@ index 0b3677a..7ee8ebe 100644
  		
  		/** All custom text cursors must have a type value greater than this. */
  		ETypeLastBasic = 1000,	
+diff --git a/zipfilememberinputstream.h b/zipfilememberinputstream.h
+index f7a1852..67cd9cf 100644
+--- a/zipfilememberinputstream.h
++++ b/zipfilememberinputstream.h
+@@ -76,7 +76,7 @@ private:
+ 	RZipFileMemberReaderStream(CZipFile&, TUint32, TUint32, TUint32, TUint32);
+ 	
+ 	static RZipFileMemberReaderStream* NewL(CZipFile&, TUint32, TUint32, TUint32, TUint32);
+-	void RZipFileMemberReaderStream::ConstructL();
++	void ConstructL();
+ 	
+ 	virtual TInt Read(void);
+ 	virtual TInt Read(TByte*, TUint32, TUint32*);

@@ -1,3 +1,81 @@
+diff --git a/AiwVariant.h b/AiwVariant.h
+index b5ea427..e940531 100644
+--- a/AiwVariant.h
++++ b/AiwVariant.h
+@@ -111,7 +111,7 @@ class TAiwVariant
+         *
+         * @param aValue The source object.
+         */
+-        IMPORT_C TAiwVariant& TAiwVariant::operator=(const TAiwVariant& aValue);
++        IMPORT_C TAiwVariant& operator=(const TAiwVariant& aValue);
+ 
+         // This class does not need a destructor because memory allocation
+         // policy for variant class has been implemented by TAiwGenericParam
+diff --git a/AknBidiTextUtils.h b/AknBidiTextUtils.h
+index c69b70b..258df6b 100644
+--- a/AknBidiTextUtils.h
++++ b/AknBidiTextUtils.h
+@@ -424,7 +424,7 @@ class AknBidiTextUtils
+     * @param aOrder Whether the text provided is in visual or logical order
+     * @return       width of the text in pixels.
+     */
+-    IMPORT_C static TInt AknBidiTextUtils::MeasureTextBoundsWidth(
++    IMPORT_C static TInt MeasureTextBoundsWidth(
+         const CFont& aFont,
+         const TDesC& aText,
+         CFont::TMeasureTextInput::TFlags aOrder);
+diff --git a/Aknvolumecontrol.h b/Aknvolumecontrol.h
+index b7b87fb..7e7fc63 100644
+--- a/Aknvolumecontrol.h
++++ b/Aknvolumecontrol.h
+@@ -261,7 +261,7 @@ class CAknVolumeControl : public CAknControl, public MAknNaviDecoratorObserver
+         *
+         * @return Colume value scaled to range of [0-10].
+         */
+-        TInt CAknVolumeControl::ScaledValue() const;
++        TInt ScaledValue() const;
+         
+ 
+     private:        
+diff --git a/SenSoapMessage.h b/SenSoapMessage.h
+index ce9813d..59e200a 100644
+--- a/SenSoapMessage.h
++++ b/SenSoapMessage.h
+@@ -76,7 +76,7 @@ class CSenSoapMessage : public CSenSoapEnvelope
+ 		/**
+ 		 *	C++ default constructor.
+ 		 */
+-		IMPORT_C CSenSoapMessage::CSenSoapMessage();
++		IMPORT_C CSenSoapMessage();
+ 
+ 		// New functions
+ 		
+diff --git a/asn1dec.h b/asn1dec.h
+index f4159e0..a5eb95c 100644
+--- a/asn1dec.h
++++ b/asn1dec.h
+@@ -150,7 +150,7 @@ public:
+ protected:
+ 	IMPORT_C TInt CheckValid(const TDesC8& aSource);
+ private:
+-	HBufC* TASN1DecGraphicString::DecodeContentsL(const TDesC8& aSource);
++	HBufC* DecodeContentsL(const TDesC8& aSource);
+ 	};
+ 
+ /**
+diff --git a/attrlut.h b/attrlut.h
+index 8d61953..b195ab7 100644
+--- a/attrlut.h
++++ b/attrlut.h
+@@ -36,7 +36,7 @@ public:
+ 	//##ModelId=3B666BC701E3
+ 	IMPORT_C ~CAttributeLookupTable();
+ 	//##ModelId=3B666BC701DC
+-	IMPORT_C static CAttributeLookupTable* CAttributeLookupTable::NewL();
++	IMPORT_C static CAttributeLookupTable* NewL();
+ 	//##ModelId=3B666BC701DA
+ 	IMPORT_C const HBufC* Des2IDL( const TDesC& ); // map descriptor to ID
+ 	//##ModelId=3B666BC701D3
 diff --git a/bitmap.h b/bitmap.h
 index 011dafb..41b4b3e 100644
 --- a/bitmap.h
@@ -11,6 +89,43 @@ index 011dafb..41b4b3e 100644
  	}
  
  #endif
+diff --git a/cmdefconnvalues.h b/cmdefconnvalues.h
+index 404365e..d12d6a0 100644
+--- a/cmdefconnvalues.h
++++ b/cmdefconnvalues.h
+@@ -49,7 +49,7 @@ struct TCmDefConnValue
+     // TCmDefConnValue::operator==
+     // -----------------------------------------------------------------------------
+     //
+-    inline TBool TCmDefConnValue::operator==( TCmDefConnValue& aDCSettingSelection ) const
++    inline TBool operator==( TCmDefConnValue& aDCSettingSelection ) const
+         {
+         return ( (iType == aDCSettingSelection.iType) && ( iId == aDCSettingSelection.iId ) );
+         };
+@@ -58,7 +58,7 @@ struct TCmDefConnValue
+     // TCmDefConnValue::operator!=
+     // -----------------------------------------------------------------------------
+     //
+-    inline TBool TCmDefConnValue::operator!=( TCmDefConnValue& aDCSettingSelection ) const
++    inline TBool operator!=( TCmDefConnValue& aDCSettingSelection ) const
+         {
+         return (!( (iType == aDCSettingSelection.iType) && ( iId == aDCSettingSelection.iId ) ));
+         };     
+diff --git a/cntdb.h b/cntdb.h
+index affbb52..bc93cc5 100644
+--- a/cntdb.h
++++ b/cntdb.h
+@@ -963,8 +963,8 @@ public:
+ 	static void CleanupLastLockedContact(TAny *aDatabase);
+ 
+ private:
+-	CContactConverter& CContactDatabase::ConverterL(const TUid& aFormat);
+-	CContactConverter& CContactDatabase::ConverterL(const TUid& aFormat, const TInt64 aContactFieldFilter, MConverterCallBack* aCallback, const TVCardVersion aVersion,const TBool aExportTel);
++	CContactConverter& ConverterL(const TUid& aFormat);
++	CContactConverter& ConverterL(const TUid& aFormat, const TInt64 aContactFieldFilter, MConverterCallBack* aCallback, const TVCardVersion aVersion,const TBool aExportTel);
+ 	static void CleanupDatabaseRollback(TAny *aDatabase);
+ 
+ 	CContactIdArray* SortLC(const CArrayFix<TSortPref>* aSortOrder, const CContactIdArray* aIdArray);
 diff --git a/eikmenup.h b/eikmenup.h
 index bad4bee..7a57260 100644
 --- a/eikmenup.h
@@ -24,3 +139,157 @@ index bad4bee..7a57260 100644
      }
  
  
+diff --git a/fntstore.h b/fntstore.h
+index ca57f65..30ba511 100644
+--- a/fntstore.h
++++ b/fntstore.h
+@@ -225,7 +225,7 @@ public:
+ 	void DecNumShaperCaches();
+ 	TInt GetNumShaperCaches();
+ 	IMPORT_C TInt CreateLinkedTypeface(const TLinkedTypefaceSpecArgs &aLinkedTypefaceSpec, TInt aSession, TInt& aId);
+-	IMPORT_C void CFontStore::RemoveLinkedFont(CBitmapFont *aFont);		
++	IMPORT_C void RemoveLinkedFont(CBitmapFont *aFont);		
+ 	IMPORT_C TBool IsValidLinkedFontSpecification(TInt aHandle);
+ private:
+ 	CFontStore(RHeap* aHeap);
+diff --git a/gcce/gcce.h b/gcce/gcce.h
+index ffde03a..d3d1ee6 100644
+--- a/gcce/gcce.h
++++ b/gcce/gcce.h
+@@ -93,7 +93,11 @@ typedef unsigned long long Uint64;
+         extern "C" {
+ #endif  /* __cplusplus */
+ 
++#if __GNUC__ < 4
+ typedef struct __va_list { void *__ap; } va_list;
++#else
++typedef __builtin_va_list va_list;
++#endif
+ 
+ 
+ #ifdef __cplusplus
+@@ -103,9 +107,15 @@ typedef struct __va_list { void *__ap; } va_list;
+     using ::std::va_list;
+ #endif
+ 
++#if __GNUC__ < 4
+ #define va_start(ap, parmN) __builtin_va_start(ap.__ap, parmN)
+ #define va_arg(ap, type) __builtin_va_arg(ap.__ap, type)
+ #define va_end(ap) __builtin_va_end(ap.__ap)
++#else
++#define va_start(v,l)   __builtin_va_start(v,l)
++#define va_arg(v,l)     __builtin_va_arg(v,l)
++#define va_end(v)       __builtin_va_end(v)
++#endif
+ 
+ 
+ #define VA_LIST va_list
+diff --git a/http/rhttpsession.h b/http/rhttpsession.h
+index cc98028..3d15e38 100644
+--- a/http/rhttpsession.h
++++ b/http/rhttpsession.h
+@@ -213,7 +213,7 @@ is actually to do anything.
+ 		Calling code can safely cast to CWTLSCertificate if using  "WSP/WSP".
+ 		NULL returned if certificate information not found.
+ 	*/
+-	IMPORT_C const CCertificate* RHTTPSession::ServerCert();
++	IMPORT_C const CCertificate* ServerCert();
+ 
+ 	/** Connect this WSP session. This function does nothing when called for text-mode.
+ 	*/
+diff --git a/irs.h b/irs.h
+index ee1fb47..52cee9a 100644
+--- a/irs.h
++++ b/irs.h
+@@ -72,7 +72,7 @@ private:
+ 	 * @param aEntry Context on which to operate.
+ 	 */
+ 
+-	CIrSrvMtm::CIrSrvMtm(CRegisteredMtmDll& aRegisteredMtmDll, CMsvServerEntry* aEntry);
++	CIrSrvMtm(CRegisteredMtmDll& aRegisteredMtmDll, CMsvServerEntry* aEntry);
+ 	
+ 	/**
+ 	 * Creates a server send operation to perform the send
+diff --git a/miutmsg.h b/miutmsg.h
+index 37bf09a..8201baf 100644
+--- a/miutmsg.h
++++ b/miutmsg.h
+@@ -846,7 +846,7 @@ class CImHtmlConverter : public CBase
+ */
+ 	{
+ public:
+-	static CImHtmlConverter* CImHtmlConverter::NewL(CMsvEntry& aMsvEntry, 
++	static CImHtmlConverter* NewL(CMsvEntry& aMsvEntry, 
+ 								   CParaFormatLayer& aParaLayer, CCharFormatLayer& aCharLayer);
+ 	~CImHtmlConverter();
+ 	void PrepareToStoreHTMLEntryTextL(TMsvId& aHtmlId, const TMsvId aTextId);
+diff --git a/obexbase.h b/obexbase.h
+index 26796e7..698f854 100644
+--- a/obexbase.h
++++ b/obexbase.h
+@@ -202,7 +202,7 @@ protected:
+ 	void ForcedTransportDown();
+ 	void ControlledTransportDown();
+ 	void RemoteInfoCleanup();
+-	void CObex::CancelObexConnection();
++	void CancelObexConnection();
+ protected:
+ 	TConnectState iConnectState;
+ 	CObexTransportControllerBase* iTransportController;
+diff --git a/openfont.h b/openfont.h
+index 3e9927c..4dc851e 100644
+--- a/openfont.h
++++ b/openfont.h
+@@ -945,11 +945,11 @@ private:
+ 		};
+ 	static TInt ScoreByName(const TOpenFontSpec& aDesiredFontSpec, const TAttrib& aAttrib);
+ 	static TInt ScoreByStyle(const TOpenFontSpec& aDesiredFontSpec, const TAttrib& aAttrib);
+-	void COpenFontFile::GetNearestFontToDesignHeightInPixelsAndAddToListL(
++	void GetNearestFontToDesignHeightInPixelsAndAddToListL(
+ 		RHeap* aHeap, COpenFontSessionCacheList* aSessionCacheList,
+ 		const TOpenFontSpec& aDesiredFontSpec, TInt aPixelWidth, TInt aPixelHeight,
+ 		COpenFont*& aFont, TOpenFontSpec& aActualFontSpec);
+-	void COpenFontFile::GetNearestFontToMaxHeightInPixelsAndAddToListL(
++	void GetNearestFontToMaxHeightInPixelsAndAddToListL(
+ 		RHeap* aHeap, COpenFontSessionCacheList* aSessionCacheList,
+ 		const TOpenFontSpec& aDesiredFontSpec, TInt aPixelWidth, TInt aPixelHeight,
+ 		COpenFont*& aFont, TOpenFontSpec& aActualFontSpec, TInt aMaxHeight);
+diff --git a/vstaticutils.h b/vstaticutils.h
+index 7ce8033..0b28337 100644
+--- a/vstaticutils.h
++++ b/vstaticutils.h
+@@ -55,7 +55,7 @@ public:
+ 
+ private:
+ 	static void AddEscapedString(TBool aIsShiftJis,TDes& aDestination,const TDesC& aTextToEscape);
+-	static const TDesC &VersitUtils::EscapeChar(TBool aIsShiftJis);
++	static const TDesC &EscapeChar(TBool aIsShiftJis);
+ 	};
+ 
+ inline TBool VersitUtils::IsWhiteSpace(TUint aChar)
+diff --git a/w32std.h b/w32std.h
+index fe6f798..8490c5b 100644
+--- a/w32std.h
++++ b/w32std.h
+@@ -2246,7 +2246,7 @@ private: // Private code
+ 	TInt doDrawPolygon(const CArrayFix<TPoint> *aPointArray,const TPoint* aPointList,TInt aNumPoints,TFillRule aFillRule);
+ 	void WriteTextPos(TInt aOpcode,TInt aOpcodePtr,const TPoint &aPos,const TDesC &aBuf) const;
+ 	void WriteTextCommand(TAny *aCmd, TInt aLen,const TDesC &aBuf,TInt aOpcode,TInt aOpcodePtr) const;
+-	void CWindowGc::APIEGetUnderlineMetrics(TAny*& aOutput);
++	void APIEGetUnderlineMetrics(TAny*& aOutput);
+ private: // Private data
+ 	CFbsFont *iFont;
+ 	CWsScreenDevice *iDevice;
+diff --git a/x509certchain.h b/x509certchain.h
+index 5dc6253..d6e0729 100644
+--- a/x509certchain.h
++++ b/x509certchain.h
+@@ -69,7 +69,7 @@ public:
+ 	* 
+ 	* @param aBinaryData	The encoded binary representation.
+ 	* @return				The certificate objects. */
+-	IMPORT_C CArrayPtrFlat<CX509Certificate>* CX509CertChain::DecodeCertsL(const TDesC8& aBinaryData);
++	IMPORT_C CArrayPtrFlat<CX509Certificate>* DecodeCertsL(const TDesC8& aBinaryData);
+ 	
+ 	/** Destructor.
+ 	* 

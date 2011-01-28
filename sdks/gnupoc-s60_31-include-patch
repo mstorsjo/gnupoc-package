@@ -1,3 +1,96 @@
+diff --git a/AknBidiTextUtils.h b/AknBidiTextUtils.h
+index 4b9b1be..e276a92 100644
+--- a/AknBidiTextUtils.h
++++ b/AknBidiTextUtils.h
+@@ -424,7 +424,7 @@ class AknBidiTextUtils
+     * @param aOrder Whether the text provided is in visual or logical order
+     * @return       width of the text in pixels.
+     */
+-    IMPORT_C static TInt AknBidiTextUtils::MeasureTextBoundsWidth(
++    IMPORT_C static TInt MeasureTextBoundsWidth(
+         const CFont& aFont,
+         const TDesC& aText,
+         CFont::TMeasureTextInput::TFlags aOrder);
+diff --git a/AknQueryDialog.h b/AknQueryDialog.h
+index 1f375f4..6bb1761 100644
+--- a/AknQueryDialog.h
++++ b/AknQueryDialog.h
+@@ -459,7 +459,7 @@ class CAknQueryDialog : public CAknDialog , public MAknQueryControlObserver
+      *
+      * @return 
+      */  
+-        CCoeControl* CAknQueryDialog::FindControlOnAnyPageWithControlType(TInt aControlType, TInt* aLineIndex=0, TInt* aPageIndex=0) const;
++        CCoeControl* FindControlOnAnyPageWithControlType(TInt aControlType, TInt* aLineIndex=0, TInt* aPageIndex=0) const;
+ 
+     protected:
+         
+diff --git a/DocumentHandler.h b/DocumentHandler.h
+index 87b783b..0b4f466 100644
+--- a/DocumentHandler.h
++++ b/DocumentHandler.h
+@@ -721,7 +721,7 @@ NONSHARABLE_CLASS(CDocumentHandler) : public CBase
+         *   data type. Otherwise EFalse.
+         * @since Series 60 3.1
+         */
+-        IMPORT_C TBool CDocumentHandler::CanHandleProgressivelyL( 
++        IMPORT_C TBool CanHandleProgressivelyL( 
+             const TDataType& aDataType, 
+             TUid& aUid );
+             
+diff --git a/SenSoapMessage.h b/SenSoapMessage.h
+index 02bad41..6a2e789 100644
+--- a/SenSoapMessage.h
++++ b/SenSoapMessage.h
+@@ -76,7 +76,7 @@ class CSenSoapMessage : public CSenSoapEnvelope
+ 		/**
+ 		 *	C++ default constructor.
+ 		 */
+-		IMPORT_C CSenSoapMessage::CSenSoapMessage();
++		IMPORT_C CSenSoapMessage();
+ 
+ 		// New functions
+ 		
+diff --git a/asn1dec.h b/asn1dec.h
+index 1aceec1..e011474 100644
+--- a/asn1dec.h
++++ b/asn1dec.h
+@@ -144,7 +144,7 @@ public:
+ protected:
+ 	IMPORT_C TInt CheckValid(const TDesC8& aSource);
+ private:
+-	HBufC* TASN1DecGraphicString::DecodeContentsL(const TDesC8& aSource);
++	HBufC* DecodeContentsL(const TDesC8& aSource);
+ 	};
+ 
+ /**
+diff --git a/attrlut.h b/attrlut.h
+index b4a3891..402eaac 100644
+--- a/attrlut.h
++++ b/attrlut.h
+@@ -36,7 +36,7 @@ public:
+ 	//##ModelId=3B666BC701E3
+ 	IMPORT_C ~CAttributeLookupTable();
+ 	//##ModelId=3B666BC701DC
+-	IMPORT_C static CAttributeLookupTable* CAttributeLookupTable::NewL();
++	IMPORT_C static CAttributeLookupTable* NewL();
+ 	//##ModelId=3B666BC701DA
+ 	IMPORT_C const HBufC* Des2IDL( const TDesC& ); // map descriptor to ID
+ 	//##ModelId=3B666BC701D3
+diff --git a/d32locd.h b/d32locd.h
+index ba8020e..c67519f 100644
+--- a/d32locd.h
++++ b/d32locd.h
+@@ -176,8 +176,8 @@ public:
+ 	TInt iMaxBytesPerFormat;
+     };
+ //The following ASSERTs checks for offset of any TInt64 member be a multiple of 8 as per DEF045510
+-__ASSERT_COMPILE(_FOFF(TLocalDriveCaps,iSize)%8 == 0);
+-__ASSERT_COMPILE(_FOFF(TLocalDriveCapsV3,iFormatInfo.iCapacity) % 8 == 0);
++//__ASSERT_COMPILE(_FOFF(TLocalDriveCaps,iSize)%8 == 0);
++//__ASSERT_COMPILE(_FOFF(TLocalDriveCapsV3,iFormatInfo.iCapacity) % 8 == 0);
+ 
+ 
+ typedef TPckgBuf<TLocalDriveCapsV3> TLocalDriveCapsV3Buf;
 diff --git a/eikmenup.h b/eikmenup.h
 index 17f65df..e0cb56b 100644
 --- a/eikmenup.h
@@ -11,3 +104,126 @@ index 17f65df..e0cb56b 100644
      }
  
  
+diff --git a/gcce/gcce.h b/gcce/gcce.h
+index 95b8c29..19d0b08 100644
+--- a/gcce/gcce.h
++++ b/gcce/gcce.h
+@@ -93,7 +93,11 @@ typedef unsigned long long Uint64;
+         extern "C" {
+ #endif  /* __cplusplus */
+ 
++#if __GNUC__ < 4
+ typedef struct __va_list { void *__ap; } va_list;
++#else
++typedef __builtin_va_list va_list;
++#endif
+ 
+ 
+ #ifdef __cplusplus
+@@ -103,9 +107,15 @@ typedef struct __va_list { void *__ap; } va_list;
+     using ::std::va_list;
+ #endif
+ 
++#if __GNUC__ < 4
+ #define va_start(ap, parmN) __builtin_va_start(ap.__ap, parmN)
+ #define va_arg(ap, type) __builtin_va_arg(ap.__ap, type)
+ #define va_end(ap) __builtin_va_end(ap.__ap)
++#else
++#define va_start(v,l)   __builtin_va_start(v,l)
++#define va_arg(v,l)     __builtin_va_arg(v,l)
++#define va_end(v)       __builtin_va_end(v)
++#endif
+ 
+ 
+ #define VA_LIST va_list
+diff --git a/http/rhttpsession.h b/http/rhttpsession.h
+index 5504e03..3ed6e9d 100644
+--- a/http/rhttpsession.h
++++ b/http/rhttpsession.h
+@@ -212,7 +212,7 @@ is actually to do anything.
+ 		Calling code can safely cast to CWTLSCertificate if using  "WSP/WSP".
+ 		NULL returned if certificate information not found.
+ 	*/
+-	IMPORT_C const CCertificate* RHTTPSession::ServerCert();
++	IMPORT_C const CCertificate* ServerCert();
+ 
+ 	/** Connect this WSP session. This function does nothing when called for text-mode.
+ 	*/
+diff --git a/imcvrecv.h b/imcvrecv.h
+index 3a69e85..ac0f241 100644
+--- a/imcvrecv.h
++++ b/imcvrecv.h
+@@ -118,7 +118,7 @@ public:
+ 												TUid aMsgType, TMsvId aEmailServiceId);
+ 	IMPORT_C ~CImRecvConvert();
+ 
+-	IMPORT_C void CImRecvConvert::Cancel();
++	IMPORT_C void Cancel();
+ 
+ 	IMPORT_C void ResetL();
+ 	IMPORT_C void ResetForHeadersL();
+diff --git a/irs.h b/irs.h
+index 11b9355..e526f73 100644
+--- a/irs.h
++++ b/irs.h
+@@ -72,7 +72,7 @@ private:
+ 	 * @param aEntry Context on which to operate.
+ 	 */
+ 
+-	CIrSrvMtm::CIrSrvMtm(CRegisteredMtmDll& aRegisteredMtmDll, CMsvServerEntry* aEntry);
++	CIrSrvMtm(CRegisteredMtmDll& aRegisteredMtmDll, CMsvServerEntry* aEntry);
+ 	
+ 	/**
+ 	 * Creates a server send operation to perform the send
+diff --git a/miutmsg.h b/miutmsg.h
+index 17ac531..79468f3 100644
+--- a/miutmsg.h
++++ b/miutmsg.h
+@@ -846,7 +846,7 @@ class CImHtmlConverter : public CBase
+ */
+ 	{
+ public:
+-	static CImHtmlConverter* CImHtmlConverter::NewL(CMsvEntry& aMsvEntry, 
++	static CImHtmlConverter* NewL(CMsvEntry& aMsvEntry, 
+ 								   CParaFormatLayer& aParaLayer, CCharFormatLayer& aCharLayer);
+ 	~CImHtmlConverter();
+ 	void PrepareToStoreHTMLEntryTextL(TMsvId& aHtmlId, const TMsvId aTextId);
+diff --git a/obexbase.h b/obexbase.h
+index 8639c0f..f979725 100644
+--- a/obexbase.h
++++ b/obexbase.h
+@@ -202,7 +202,7 @@ protected:
+ 	void ForcedTransportDown();
+ 	void ControlledTransportDown();
+ 	void RemoteInfoCleanup();
+-	void CObex::CancelObexConnection();
++	void CancelObexConnection();
+ protected:
+ 	TConnectState iConnectState;
+ 	CObexTransportControllerBase* iTransportController;
+diff --git a/vstaticutils.h b/vstaticutils.h
+index 2939b3f..1985baa 100644
+--- a/vstaticutils.h
++++ b/vstaticutils.h
+@@ -55,7 +55,7 @@ public:
+ 
+ private:
+ 	static void AddEscapedString(TBool aIsShiftJis,TDes& aDestination,const TDesC& aTextToEscape);
+-	static const TDesC &VersitUtils::EscapeChar(TBool aIsShiftJis);
++	static const TDesC &EscapeChar(TBool aIsShiftJis);
+ 	};
+ 
+ inline TBool VersitUtils::IsWhiteSpace(TUint aChar)
+diff --git a/x509certchain.h b/x509certchain.h
+index 1fa0289..27bef1a 100644
+--- a/x509certchain.h
++++ b/x509certchain.h
+@@ -63,7 +63,7 @@ public:
+ 	* 
+ 	* @param aBinaryData	The encoded binary representation.
+ 	* @return				The certificate objects. */
+-	IMPORT_C CArrayPtrFlat<CX509Certificate>* CX509CertChain::DecodeCertsL(const TDesC8& aBinaryData);
++	IMPORT_C CArrayPtrFlat<CX509Certificate>* DecodeCertsL(const TDesC8& aBinaryData);
+ 	
+ 	/** Destructor.
+ 	* 

@@ -1,3 +1,83 @@
+diff --git a/AknQueryDialog.h b/AknQueryDialog.h
+index 1f51131..b6fcc7c 100644
+--- a/AknQueryDialog.h
++++ b/AknQueryDialog.h
+@@ -310,7 +310,7 @@ class CAknQueryDialog : public CAknDialog , public MAknQueryControlObserver
+ 
+         CAknKeySoundSystem* SoundSystem() const { return iSoundSystem; }
+     protected: // collected code for accessing Dialog state.
+-        CCoeControl* CAknQueryDialog::FindControlOnAnyPageWithControlType(TInt aControlType, TInt* aLineIndex=0, TInt* aPageIndex=0) const;
++        CCoeControl* FindControlOnAnyPageWithControlType(TInt aControlType, TInt* aLineIndex=0, TInt* aPageIndex=0) const;
+ 
+     protected:
+         /**
+diff --git a/SenSoapMessage.h b/SenSoapMessage.h
+index 30f9d0d..e2492e3 100644
+--- a/SenSoapMessage.h
++++ b/SenSoapMessage.h
+@@ -76,7 +76,7 @@ class CSenSoapMessage : public CSenSoapEnvelope
+ 		/**
+ 		 *	C++ default constructor.
+ 		 */
+-		IMPORT_C CSenSoapMessage::CSenSoapMessage();
++		IMPORT_C CSenSoapMessage();
+ 
+ 		// New functions
+ 		
+diff --git a/asn1dec.h b/asn1dec.h
+index ea8805c..06a6eeb 100644
+--- a/asn1dec.h
++++ b/asn1dec.h
+@@ -144,7 +144,7 @@ public:
+ protected:
+ 	IMPORT_C TInt CheckValid(const TDesC8& aSource);
+ private:
+-	HBufC* TASN1DecGraphicString::DecodeContentsL(const TDesC8& aSource);
++	HBufC* DecodeContentsL(const TDesC8& aSource);
+ 	};
+ 
+ /**
+diff --git a/attrlut.h b/attrlut.h
+index 93f3e26..13b2369 100644
+--- a/attrlut.h
++++ b/attrlut.h
+@@ -36,7 +36,7 @@ public:
+ 	//##ModelId=3B666BC701E3
+ 	IMPORT_C ~CAttributeLookupTable();
+ 	//##ModelId=3B666BC701DC
+-	IMPORT_C static CAttributeLookupTable* CAttributeLookupTable::NewL();
++	IMPORT_C static CAttributeLookupTable* NewL();
+ 	//##ModelId=3B666BC701DA
+ 	IMPORT_C const HBufC* Des2IDL( const TDesC& ); // map descriptor to ID
+ 	//##ModelId=3B666BC701D3
+diff --git a/coecntrl.h b/coecntrl.h
+index 492de0e..f8ef19f 100644
+--- a/coecntrl.h
++++ b/coecntrl.h
+@@ -491,7 +491,7 @@ public:
+ 	IMPORT_C CCoeControl* Parent();
+ 	IMPORT_C const CCoeControl* Parent() const;
+     IMPORT_C TInt SetGc(CWindowGc* aGraphicsContext) const;
+-	IMPORT_C CWindowGc* CCoeControl::GetGc() const;	
++	IMPORT_C CWindowGc* GetGc() const;	
+ 	IMPORT_C void DrawBackground(const TRect& aRect) const;
+ 	IMPORT_C void DrawForeground(const TRect& aRect) const;
+ 	IMPORT_C TInt SetHitTest(const MCoeControlHitTest* aHitTestControl);
+diff --git a/d32locd.h b/d32locd.h
+index 3b30318..9ae00e2 100644
+--- a/d32locd.h
++++ b/d32locd.h
+@@ -185,8 +185,8 @@ public:
+ 	TInt iMaxBytesPerFormat;
+     };
+ //The following ASSERTs checks for offset of any TInt64 member be a multiple of 8 as per DEF045510
+-__ASSERT_COMPILE(_FOFF(TLocalDriveCaps,iSize)%8 == 0);
+-__ASSERT_COMPILE(_FOFF(TLocalDriveCapsV3,iFormatInfo.iCapacity) % 8 == 0);
++//__ASSERT_COMPILE(_FOFF(TLocalDriveCaps,iSize)%8 == 0);
++//__ASSERT_COMPILE(_FOFF(TLocalDriveCapsV3,iFormatInfo.iCapacity) % 8 == 0);
+ 
+ 
+ typedef TPckgBuf<TLocalDriveCapsV3> TLocalDriveCapsV3Buf;
 diff --git a/eikmenup.h b/eikmenup.h
 index 4d75f26..2451407 100644
 --- a/eikmenup.h
@@ -10,4 +90,75 @@ index 4d75f26..2451407 100644
 +    return aText.Locate(TChar(KScaleableTextSeparator)) != KErrNotFound;
      }
  
+ 
+diff --git a/gcce/gcce.h b/gcce/gcce.h
+index 71dffe3..a4f192b 100644
+--- a/gcce/gcce.h
++++ b/gcce/gcce.h
+@@ -59,7 +59,11 @@ typedef unsigned long long Uint64;
+         extern "C" {
+ #endif  /* __cplusplus */
+ 
++#if __GNUC__ < 4
+ typedef struct __va_list { void *__ap; } va_list;
++#else
++typedef __builtin_va_list va_list;
++#endif
+ 
+ 
+ #ifdef __cplusplus
+@@ -69,9 +73,15 @@ typedef struct __va_list { void *__ap; } va_list;
+     using ::std::va_list;
+ #endif
+ 
++#if __GNUC__ < 4
+ #define va_start(ap, parmN) __builtin_va_start(ap.__ap, parmN)
+ #define va_arg(ap, type) __builtin_va_arg(ap.__ap, type)
+ #define va_end(ap) __builtin_va_end(ap.__ap)
++#else
++#define va_start(v,l)   __builtin_va_start(v,l)
++#define va_arg(v,l)     __builtin_va_arg(v,l)
++#define va_end(v)       __builtin_va_end(v)
++#endif
+ 
+ 
+ #define VA_LIST va_list
+diff --git a/imageconversion.h b/imageconversion.h
+index 4c71729..6bd1082 100644
+--- a/imageconversion.h
++++ b/imageconversion.h
+@@ -491,7 +491,7 @@ interface implementation registration data.
+ NONSHARABLE_CLASS( CIclRecognizerUtil ) : public CBase
+ 	{
+ public:
+-	IMPORT_C static CIclRecognizerUtil* CIclRecognizerUtil::NewL();
++	IMPORT_C static CIclRecognizerUtil* NewL();
+ 	~CIclRecognizerUtil();
+ 	IMPORT_C TBool GetMimeTypeL(const TDesC8& aImageData, const TDesC& aFileName, TDes8& aMimeType);
+ 
+diff --git a/miutmsg.h b/miutmsg.h
+index 059f92a..dc5287b 100644
+--- a/miutmsg.h
++++ b/miutmsg.h
+@@ -829,7 +829,7 @@ class CImHtmlConverter : public CBase
+ */
+ 	{
+ public:
+-	static CImHtmlConverter* CImHtmlConverter::NewL(CMsvEntry& aMsvEntry, 
++	static CImHtmlConverter* NewL(CMsvEntry& aMsvEntry, 
+ 								   CParaFormatLayer& aParaLayer, CCharFormatLayer& aCharLayer);
+ 	~CImHtmlConverter();
+ 	void PrepareToStoreHTMLEntryTextL(TMsvId& aHtmlId, const TMsvId aTextId);
+diff --git a/mmf/common/mmfcontrollerpluginresolver.h b/mmf/common/mmfcontrollerpluginresolver.h
+index b39ff35..d76cfab 100644
+--- a/mmf/common/mmfcontrollerpluginresolver.h
++++ b/mmf/common/mmfcontrollerpluginresolver.h
+@@ -1074,7 +1074,7 @@ public:
+ public:
+ 	IMPORT_C static void GetMimeTypesL(CDesC8Array* aMimeTypes);
+ 
+-	IMPORT_C static CMmfRecognizerUtil* CMmfRecognizerUtil::NewL();
++	IMPORT_C static CMmfRecognizerUtil* NewL();
+ 	~CMmfRecognizerUtil();
+ 	IMPORT_C TMatchLevel GetMimeTypeL(const TDesC& aFileName, const TDesC8& aImageData, TDes8& aMimeType);
  
