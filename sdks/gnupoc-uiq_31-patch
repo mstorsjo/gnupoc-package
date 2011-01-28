@@ -2234,7 +2234,7 @@ index dcbc52d..7c5f593 100644
  			);
  	}
 diff --git a/cl_bpabi.pm b/cl_bpabi.pm
-index 5f4e801..6499fab 100644
+index 5f4e801..fe63633 100644
 --- a/cl_bpabi.pm
 +++ b/cl_bpabi.pm
 @@ -4,7 +4,7 @@
@@ -2539,6 +2539,15 @@ index 5f4e801..6499fab 100644
  		      );
  
  		    $objectFiles .= &main::BldPath.$BaseSrc.".o\n";
+@@ -914,7 +898,7 @@ sub PMBld {
+ 		# The command file can be directly passed to the GCCE compiler
+ 		# There is no separate option to pass in the file, hence the flag is set
+ 		# to indicate that command file is used to pass in the object files.
+-		$viaoption=1;
++		$viaoption=0;
+ 		$objectsViaFile = &main::MakeFilePath.$BaseTrg."_".$Bld."_objects.via";
+ 		my $Text = join('',"INPUT(\n",$objectFiles,")\n");
+ 		&main::CreateExtraFile($objectsViaFile, $Text);
 @@ -925,7 +909,7 @@ sub PMBld {
  	}
  	
