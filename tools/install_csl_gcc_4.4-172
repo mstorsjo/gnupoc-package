@@ -1,0 +1,54 @@
+#!/bin/sh
+
+if [ $# -lt 2 -o $0 != "./install_csl_gcc_4.4-172" ]; then
+  echo "Usage: ./install_csl_gcc_4.4-172 <path-to-gcc-package> <target-dir>"
+  echo " e.g.: ./install_csl_gcc_4.4-172 symbian-adt-4.4-172-arm-none-symbianelf.src.tar.bz2  ~/csl-gcc"
+  exit 1
+fi
+
+SRC=$1
+DEST=`echo $2 | sed s:/\$::`
+MAKEOPTS=$3
+
+mkdir -p $DEST || exit 1
+DEST=`cd $DEST && pwd`
+
+MAKE=make
+if [ "`which gmake`" != "" ]; then
+        MAKE=gmake
+fi
+
+TEMPLIBS=`pwd`/csl-build/libs
+
+while read a
+do
+  echo "$a"
+  sh -c "$a"
+  if test $? != 0; then
+    echo "Unexpected error: aborting."
+    exit 1
+  fi
+done << __END
+
+tar -jxvf $SRC
+mv symbian-adt-4.4-172-arm-none-symbianelf csl-build
+cd csl-build && tar -jxvf binutils-4.4-172.tar.bz2
+cd csl-build/binutils-stable && ./configure --target=arm-none-symbianelf --prefix=$DEST --disable-werror
+cd csl-build/binutils-stable && $MAKE $MAKEOPTS
+cd csl-build/binutils-stable && $MAKE installdirs install-host install-target
+cd csl-build && tar -jxvf gmp-4.4-172.tar.bz2
+cd csl-build/gmp-stable && ./configure --prefix=$TEMPLIBS --disable-shared
+cd csl-build/gmp-stable && $MAKE $MAKEOPTS && $MAKE install
+cd csl-build && tar -jxvf mpfr-4.4-172.tar.bz2
+cd csl-build/mpfr-stable && ./configure --prefix=$TEMPLIBS --with-gmp=$TEMPLIBS --disable-shared
+cd csl-build/mpfr-stable && $MAKE $MAKEOPTS && $MAKE install
+cd csl-build && tar -jxvf gcc-4.4-172.tar.bz2
+mkdir -p csl-build/gcc-build
+cd csl-build/gcc-build && ../gcc-4.4/configure --target=arm-none-symbianelf --enable-languages=c,c++ --prefix=$DEST --with-gmp=$TEMPLIBS --disable-libmudflap --disable-libssp --disable-libstdcxx-pch
+cd csl-build/gcc-build && $MAKE $MAKEOPTS
+cd csl-build/gcc-build && $MAKE installdirs install-target
+cd csl-build/gcc-build/gcc && $MAKE install-common install-headers install-mkheaders install-cpp install-driver
+rm -rf csl-build
+
+__END
+
