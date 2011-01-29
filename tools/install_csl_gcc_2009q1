@@ -32,7 +32,7 @@ done << __END
 
 tar -jxvf $SRC
 mv arm-2009q1-162-arm-none-symbianelf csl-build
-cd csl-build && tar -jxvf binutils-2009q1-162.tar.bz2 
+cd csl-build && tar -jxvf binutils-2009q1-162.tar.bz2
 cd csl-build/binutils-stable && ./configure --target=arm-none-symbianelf --prefix=$DEST --disable-werror
 cd csl-build/binutils-stable && $MAKE $MAKEOPTS
 cd csl-build/binutils-stable && $MAKE installdirs install-host install-target
