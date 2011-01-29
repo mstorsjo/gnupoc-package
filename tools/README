@@ -53,23 +53,31 @@ Experimental GCC 4.x for S60 3rd/5th ed, UIQ 3 and Symbian^3
 ------------------------------------------------------------
 
 If you for some reason want to use a newer GCC version, there
-is experimental support for this. The only currently supported
-release is CodeSourcery 2009q1-162, in addition to the standard
-one above, which can be downloaded from
-http://www.codesourcery.com/sgpp/lite/arm/portal/release822.
-Select IA32 GNU/Linux TAR, or Source TAR for other platforms.
+is experimental support for this. The currently supported
+releases are CodeSourcery 2009q1-162 and 4.4-172, in addition
+to the standard one above. They can be downloaded from
+http://www.codesourcery.com/sgpp/lite/arm/portal/release822 (for 2009q1-162)
+and http://www.codesourcery.com/sgpp/lite/arm/portal/release1258 (for 4.4-172).
+Select IA32 GNU/Linux TAR, IA32 GNU/Linux Installer, IA32 Mac
+OS X Installer, or Source TAR for other platforms, depending
+on which ones are available for the release you chose.
 
 If using the IA32 GNU/Linux TAR package, just extract it:
 tar -jxvf arm-2009q1-162-arm-none-symbianelf-i686-pc-linux-gnu.tar.bz2
-Then fix libgcc.a in the extracted directory:
+If using the installer version, just download the installer,
+make it executable (using chmod +x) and launch it.
+
+For the 2009q1-162 version, fix libgcc.a in the extracted directory:
 ./fix_csl_gcc_div ~/arm-2009q1
 (This command should be executed in the gnupoc-package/tools
 directory, and ~/arm-2009q1 is where the toolchain was
-extracted above).
+extracted above). This step isn't required for the 4.4-172 release.
 
-For other platforms, compile it using the install_csl_gcc_2009q1
-script:
+
+In order to build from source:
 ./install_csl_gcc_2009q1 arm-2009q1-162-arm-none-symbianelf.src.tar.bz2 ~/csl-gcc-2009q1
+or:
+./install_csl_gcc_4.4-172 symbian-adt-4.4-172-arm-none-symbianelf.src.tar.bz2 ~/csl-gcc-4.4-172
 
 See more info about using the newer GCC versions on
 http://wiki.forum.nokia.com/index.php/How_to_use_GCCE_4_with_Symbian_SDKs.
