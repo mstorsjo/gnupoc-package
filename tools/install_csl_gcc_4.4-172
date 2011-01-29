@@ -43,6 +43,7 @@ cd csl-build && tar -jxvf mpfr-4.4-172.tar.bz2
 cd csl-build/mpfr-stable && ./configure --prefix=$TEMPLIBS --with-gmp=$TEMPLIBS --disable-shared
 cd csl-build/mpfr-stable && $MAKE $MAKEOPTS && $MAKE install
 cd csl-build && tar -jxvf gcc-4.4-172.tar.bz2
+cd csl-build && patch -p0 < ../csl-gcc-4.4-172.patch
 mkdir -p csl-build/gcc-build
 cd csl-build/gcc-build && ../gcc-4.4/configure --target=arm-none-symbianelf --enable-languages=c,c++ --prefix=$DEST --with-gmp=$TEMPLIBS --disable-libmudflap --disable-libssp --disable-libstdcxx-pch
 cd csl-build/gcc-build && $MAKE $MAKEOPTS
