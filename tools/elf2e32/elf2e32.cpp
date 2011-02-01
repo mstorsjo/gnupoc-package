@@ -496,6 +496,7 @@ int main(int argc, char *argv[]) {
 	header.uidChecksum = uidCrc(header.uid1, header.uid2, header.uid3);
 
 	if (!elfinput && (exportList.numExports() == 0 || !dso)) {
+		printf("GnuPoc native elf2e32 replacement\n");
 		printf("nothing to do\n");
 		free(dso);
 		return 1;

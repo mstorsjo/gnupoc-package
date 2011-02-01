@@ -465,6 +465,7 @@ int main(int argc, char *argv[]) {
 	header.uidChecksum = uidCrc(header.uid1, header.uid2, header.uid3);
 
 	if (!elfinput) {
+		printf("GnuPoc native elftran replacement\n");
 		printf("nothing to do\n");
 		return 1;
 	}
