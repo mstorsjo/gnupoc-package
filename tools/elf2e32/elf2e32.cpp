@@ -193,6 +193,10 @@ void parseDefFile(const char* filename, ExportList* exportList) {
 		int len = strlen(ptr);
 		if (ptr[len-1] == '\r' || ptr[len-1] == '\n') ptr[--len] = '\0';
 		if (ptr[len-1] == '\r' || ptr[len-1] == '\n') ptr[--len] = '\0';
+		if (ptr[0] == ';') // Skip comments
+			continue;
+		if (!ptr[0]) // Skip empty lines
+			continue;
 		if (!header) {
 			if (strcmp(ptr, "EXPORTS")) {
 				fprintf(stderr, "Def file %s has bad header\n", filename);
