@@ -2000,13 +2000,38 @@ BOOL CParsePkg::DoesExist(LPWSTR pszFile, DWORD *pdwSize)
 	BOOL fFound = FALSE;		
 	*pdwSize = 0;
 	
-	/* Convert to Unix filename */
-	LPWSTR tmp = pszFile;
+	/* Convert to Unix filename, do variable substitution */
+	WCHAR tempStr[MAX_PATH];
+	LPWSTR tmp = pszFile, out = tempStr;
 	while(*tmp) {
 		if(*tmp == '\\')
-			*tmp = '/';
+			*out++ = '/';
+		else if (*tmp == '$' && *(tmp + 1) == '(') {
+			char varName[MAX_PATH];
+			const char* var;
+			int i = 0;
+			tmp += 2;
+			while (*tmp && *tmp != ')')
+				varName[i++] = *tmp++;
+			varName[i++] = '\0';
+			i = 0;
+			var = getenv(varName);
+			if (var) {
+				while (var[i])
+					*out++ = var[i++];
+			} else {
+				*out++ = '$';
+				*out++ = '(';
+				while (varName[i])
+					*out++ = varName[i++];
+				*out++ = ')';
+			}
+		} else
+			*out++ = *tmp;
 		tmp++;
 	}
+	*out = '\0';
+	wcscpy(pszFile, tempStr);
 
 	try
 		{
