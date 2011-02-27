@@ -2021,6 +2021,7 @@ BOOL CParsePkg::DoesExist(LPWSTR pszFile, DWORD *pdwSize)
 				while (var[i])
 					*out++ = var[i++];
 			} else {
+				printf("Environment variable %s not set, unable to substitute\n", varName);
 				*out++ = '$';
 				*out++ = '(';
 				while (varName[i])
