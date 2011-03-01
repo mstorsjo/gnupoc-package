@@ -4339,10 +4339,10 @@ index 0000000..2720be0
 +wine $ROOT/$PGM.exe "$@"
 diff --git a/elftran b/elftran
 new file mode 100755
-index 0000000..af9dde5
+index 0000000..9d5dc27
 --- /dev/null
 +++ b/elftran
-@@ -0,0 +1,15 @@
+@@ -0,0 +1,22 @@
 +#!/bin/sh
 +#
 +# elftran - bash frontend for elftran.exe, part of GnuPoc project
@@ -4355,9 +4355,16 @@ index 0000000..af9dde5
 +#
 +
 +PGM=`basename $0`
-+echo "executing $PGM.exe"
-+ROOT=$EPOCROOT/epoc32/tools
-+wine $ROOT/$PGM.exe "$@"
++# Workaround for Qt createpackage.pl and patch_capabilities.pl, which call
++# $epocroot/epoc32/tools/$PGM explicitly instead of just "$PGM" using the
++# path. Try to use a proper native version, if available.
++if [ "`which $PGM`" != "$0" ] && [ -x "`which $PGM`" ]; then
++	exec $PGM "$@"
++else
++	echo "executing $PGM.exe"
++	ROOT=$EPOCROOT/epoc32/tools
++	wine $ROOT/$PGM.exe "$@"
++fi
 diff --git a/epoc b/epoc
 new file mode 100644
 index 0000000..7f7c19a
@@ -5353,7 +5360,7 @@ index 0000000..d16d37b
 +wine $ROOT/$PGM.exe "$@"
 diff --git a/makesis b/makesis
 new file mode 100644
-index 0000000..23270fa
+index 0000000..f8bee9d
 --- /dev/null
 +++ b/makesis
 @@ -0,0 +1,22 @@
@@ -5369,9 +5376,9 @@ index 0000000..23270fa
 +#
 +
 +PGM=`basename $0`
-+# Workaround for Qt createpackage.pl, which calls $epocroot/epoc32/tools/makesis
-+# explicitly instead of just "makesis" from the path. Try to use a proper
-+# native version, if available.
++# Workaround for Qt createpackage.pl and patch_capabilities.pl, which call
++# $epocroot/epoc32/tools/$PGM explicitly instead of just "$PGM" using the
++# path. Try to use a proper native version, if available.
 +if [ "`which $PGM`" != "$0" ] && [ -x "`which $PGM`" ]; then
 +	exec $PGM "$@"
 +else
@@ -7633,10 +7640,10 @@ index 0000000..7e0d917
 +perl -S setupcomms.pl "$@"
 diff --git a/signsis b/signsis
 new file mode 100644
-index 0000000..0332317
+index 0000000..2944624
 --- /dev/null
 +++ b/signsis
-@@ -0,0 +1,15 @@
+@@ -0,0 +1,22 @@
 +#!/bin/sh
 +#
 +# signsis - bash frontend for signsis.exe, part of GnuPoc project
@@ -7649,9 +7656,16 @@ index 0000000..0332317
 +#
 +
 +PGM=`basename $0`
-+echo "executing $PGM.exe"
-+ROOT=$EPOCROOT/epoc32/tools
-+wine $ROOT/$PGM.exe "$@"
++# Workaround for Qt createpackage.pl and patch_capabilities.pl, which call
++# $epocroot/epoc32/tools/$PGM explicitly instead of just "$PGM" using the
++# path. Try to use a proper native version, if available.
++if [ "`which $PGM`" != "$0" ] && [ -x "`which $PGM`" ]; then
++	exec $PGM "$@"
++else
++	echo "executing $PGM.exe"
++	ROOT=$EPOCROOT/epoc32/tools
++	wine $ROOT/$PGM.exe "$@"
++fi
 diff --git a/tranasm b/tranasm
 new file mode 100755
 index 0000000..706c7c3
