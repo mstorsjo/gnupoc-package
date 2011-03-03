@@ -90,7 +90,7 @@ for s in $SDKS; do
 		echo No suitable package found for SDK $s
 	fi
 done
-if [ "x$MOBILITY" != "x" ]; then
+if [ "$MOBILITY" != "" ]; then
 	mv $DIR $MOBILITY
 fi
 rm -rf qt_temp
