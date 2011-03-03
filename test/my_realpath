@@ -1,0 +1,13 @@
+#!/bin/sh
+cwd=`pwd`
+if [ -d $1 ]; then
+	cd $1
+	pwd
+	cd $cwd
+	exit 0
+fi
+name=`basename $1`
+dir=`dirname $1`
+cd $dir 2> /dev/null && dir=`pwd`
+cd $cwd
+echo $dir/$name

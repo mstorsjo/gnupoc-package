@@ -1,0 +1,42 @@
+#!/bin/sh
+
+if [ $# -lt 3 -o $0 != "./install_toolchain" ]; then
+	echo "Usage: ./install_toolchain <source-dir> <toolchain> <target-dir>"
+	echo "Valid toolchain names: EKA1, EKA2, EKA2-2009q1, EKA2-4.4-172"
+	exit 1
+fi
+
+SRC=`./my_realpath $1`
+TOOLCHAIN=$2
+DEST=`./my_realpath $3`
+MAKEOPTS=$4
+
+set -xe
+cd ../tools
+case $TOOLCHAIN in
+EKA1)
+	./install_eka1_tools $DEST
+	./install_gcc_539 $SRC/gcc-539-2aeh-source.tar.bz2 $DEST
+	;;
+EKA1-thumb)
+	./install_eka1_tools $DEST
+	./install_gcc_539_thumb $SRC/gcc-539-2aeh-source.tar.bz2 $DEST
+	;;
+EKA2)
+	./install_eka2_tools $DEST
+	./install_csl_gcc $SRC/gnu-csl-arm-2005Q1C-arm-none-symbianelf.src.tar.bz2 $DEST $MAKEOPTS
+	;;
+EKA2-2009q1)
+	./install_eka2_tools $DEST
+	./install_csl_gcc_2009q1 $SRC/arm-2009q1-162-arm-none-symbianelf.src.tar.bz2 $DEST $MAKEOPTS
+	;;
+EKA2-4.4-172)
+	./install_eka2_tools $DEST
+	./install_csl_gcc_4.4-172 $SRC/symbian-adt-4.4-172-arm-none-symbianelf.src.tar.bz2 $DEST $MAKEOPTS
+	;;
+*)
+	echo Unsupported toolchain $TOOLCHAIN
+	exit 1
+esac
+
+
