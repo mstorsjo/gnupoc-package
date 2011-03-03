@@ -59,6 +59,19 @@ index bcfdf8f..6566ec6 100644
                  && echo QT_SIS_TARGET ?= $(QT_SIS_TARGET) >> $$make_cache_name
  
              QMAKE_EXTRA_TARGETS += store_build_target
+diff --git a/mkspecs/symbian/linux-gcce/qmake.conf b/mkspecs/symbian/linux-gcce/qmake.conf
+index faac2f1..648a591 100644
+--- a/mkspecs/symbian/linux-gcce/qmake.conf
++++ b/mkspecs/symbian/linux-gcce/qmake.conf
+@@ -54,7 +54,7 @@ DEFINES		+= __GCCE__ \
+                    _STLP_NO_EXCEPTION_HEADER
+ 
+ QMAKE_LFLAGS_APP        += --entry=_E32Startup -u _E32Startup
+-QMAKE_LFLAGS_SHLIB      += --default-symver --entry _E32Dll
++QMAKE_LFLAGS_SHLIB      += --default-symver --entry=_E32Dll -u _E32Dll
+ QMAKE_LFLAGS_PLUGIN     += $$QMAKE_LFLAGS_SHLIB
+ 
+ gcceExtraFlags = --include=${EPOCROOT}/epoc32/include/gcce/gcce.h -march=armv5t -mapcs -mthumb-interwork -nostdinc -c -msoft-float -T script
 diff --git a/qmake/generators/symbian/symbiancommon.cpp b/qmake/generators/symbian/symbiancommon.cpp
 index 58d2edd..a3606bd 100644
 --- a/qmake/generators/symbian/symbiancommon.cpp
