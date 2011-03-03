@@ -14,17 +14,17 @@ Then install it:
 ./install_openc_175_s60 s60_open_c_cpp_plug_in_v1_7_en.zip ~/symbian-sdks/s60_31
 
 Then download the Qt SDK for symbian you want to use - currently, the
-4.6.3, 4.7.0 and 4.7.1 versions are tested, newer ones probably won't work
-without further tweaking.
+4.6.3, 4.7.0, 4.7.1 and 4.7.2 versions are tested, newer ones probably
+won't work without further tweaking.
 
 Download "Qt libraries for Symbian" from http://qt.nokia.com/downloads,
-or get http://get.qt.nokia.com/qt/source/qt-symbian-opensource-4.7.1-s60.exe.
+or get http://get.qt.nokia.com/qt/source/qt-symbian-opensource-4.7.2-s60.exe.
 
 Install the Qt SDK:
 
-./install_qt_4.7.1 qt-symbian-opensource-4.7.1-s60.exe -qt ~/symbian-sdks/qt_4.7.1 -sdk ~/symbian-sdks/s60_31
+./install_qt_4.7.2 qt-symbian-opensource-4.7.2-s60.exe -qt ~/symbian-sdks/qt_4.7.2 -sdk ~/symbian-sdks/s60_31
 
-This installs the Qt library into ~/symbian-sdks/qt_4.7.1 and adds the
+This installs the Qt library into ~/symbian-sdks/qt_4.7.2 and adds the
 link libraries and other needed files into the S60 SDK at
 ~/symbian-sdks/s60_31. You can install it into more than one SDK if you want
 to (or to none, too), and you can omit the -qt parameter if you already
@@ -38,10 +38,10 @@ Then, to build using this SDK, first set up the PATH and EPOCROOT environment
 variables as for normal use of the Symbian SDKs, as described in README.
 Add the qt bin directory to the path:
 
-export PATH=~/symbian-sdks/qt_4.7.1/bin:$PATH
+export PATH=~/symbian-sdks/qt_4.7.2/bin:$PATH
 
 Then to build, just enter the qt project directory (e.g.
-~/symbian-sdks/qt_4.7.1/examples/widgets/analogclock) and build as
+~/symbian-sdks/qt_4.7.2/examples/widgets/analogclock) and build as
 normally when using Qt for Symbian, e.g.:
 
 qmake
@@ -53,9 +53,9 @@ http://doc.qt.nokia.com/4.7/symbian-with-qt-introduction.html. The make
 targets with tighter system integration, such as runonphone, don't work
 at the moment. And for the installer_sis target, the required
 smartinstaller.sis file doesn't seem to be included in
-qt-symbian-opensource-4.7.1-s60.exe, but it can be downloaded separately from
+qt-symbian-opensource-4.7.2-s60.exe, but it can be downloaded separately from
 http://wiki.forum.nokia.com/index.php/Nokia_Smart_Installer_for_Symbian.
-Place smartinstaller.sis in the qt directory (~/symbian-sdks/qt_4.7.1
+Place smartinstaller.sis in the qt directory (~/symbian-sdks/qt_4.7.2
 in the example above), and make installer_sis should work.
 
 Note, the smart installer currently available only seems to install Qt 4.6.3.
@@ -84,10 +84,10 @@ feature from newer ld versions.
 Qt Mobility
 -----------
 
-Download qt-mobility-symbian-opensource-1.1.0.zip from this URL:
+Download qt-mobility-symbian-opensource-1.1.1.zip from this URL:
 http://qt.nokia.com/products/qt-addons/mobility
 
 Then install it with the following command:
 
-./install_qt_mobility qt-mobility-symbian-opensource-1.1.0.zip -qt ~/symbian-sdks/qt_4.7.1 -sdk ~/symbian-sdks/s60_31 -mobility ~/symbian-sdks/qt_mobility_1.1.0
+./install_qt_mobility qt-mobility-symbian-opensource-1.1.1.zip -qt ~/symbian-sdks/qt_4.7.2 -sdk ~/symbian-sdks/s60_31 -mobility ~/symbian-sdks/qt_mobility_1.1.1
 
