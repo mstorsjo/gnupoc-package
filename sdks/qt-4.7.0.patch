@@ -59,8 +59,48 @@ index bcfdf8f..6566ec6 100644
                  && echo QT_SIS_TARGET ?= $(QT_SIS_TARGET) >> $$make_cache_name
  
              QMAKE_EXTRA_TARGETS += store_build_target
+diff --git a/mkspecs/features/symbian/symbian_building.prf b/mkspecs/features/symbian/symbian_building.prf
+index ce124ec..13748a2 100644
+--- a/mkspecs/features/symbian/symbian_building.prf
++++ b/mkspecs/features/symbian/symbian_building.prf
+@@ -221,7 +221,7 @@ symbian_resources_INCLUDES = $$replace(symbian_resources_INCLUDES, ",", " -I")
+ symbian_resources_INCLUDES += $$join(INCLUDEPATH, " -I", "-I")
+ symbian_resources_DEFINES = $$join(DEFINES, " -D", "-D")
+ symbian_resources_RCC_DIR = $$replace(RCC_DIR, "/$", "")
+-symbian_resources_INCLUDES += "-I $$symbian_resources_RCC_DIR"
++symbian_resources_INCLUDES += "-I$$symbian_resources_RCC_DIR"
+ 
+ for(symbian_resource, SYMBIAN_RESOURCES) {
+     symbian_resource = $$basename(symbian_resource)
+@@ -237,7 +237,7 @@ symbianresources.commands = cpp -nostdinc -undef \
+                             $$symbian_resources_INCLUDES \
+                             $$symbian_resources_DEFINES \
+                             ${QMAKE_FILE_NAME} \
+-                            -o $${symbian_resources_RCC_DIR}/${QMAKE_FILE_BASE}.rpp \
++                            > $${symbian_resources_RCC_DIR}/${QMAKE_FILE_BASE}.rpp \
+                             && rcomp -u -m045,046,047 \
+                             -s$${symbian_resources_RCC_DIR}/${QMAKE_FILE_BASE}.rpp \
+                             -o$${symbianDestdir}/${QMAKE_FILE_BASE}$${QT_LIBINFIX}.rsc \
+@@ -260,7 +260,7 @@ contains(TEMPLATE, "app"):!contains(CONFIG, "no_icon") {
+                                   $$symbian_resources_INCLUDES \
+                                   $$symbian_resources_DEFINES \
+                                   $${baseResourceTarget}.rss \
+-                                  -o $${symbian_resources_RCC_DIR}/$${baseResourceTarget}.rpp \
++                                  > $${symbian_resources_RCC_DIR}/$${baseResourceTarget}.rpp \
+                                   && rcomp -u -m045,046,047 \
+                                   -s$${symbian_resources_RCC_DIR}/$${baseResourceTarget}.rpp \
+                                   -o$${symbianDestdir}/$${baseResourceTarget}.rsc \
+@@ -278,7 +278,7 @@ contains(TEMPLATE, "app"):!contains(CONFIG, "no_icon") {
+                                      $$symbian_resources_INCLUDES \
+                                      $$symbian_resources_DEFINES \
+                                      $${baseResourceTarget}_reg.rss \
+-                                     -o $${symbian_resources_RCC_DIR}/$${baseResourceTarget}_reg.rpp \
++                                     > $${symbian_resources_RCC_DIR}/$${baseResourceTarget}_reg.rpp \
+                                      && rcomp -u -m045,046,047 \
+                                      -s$${symbian_resources_RCC_DIR}/$${baseResourceTarget}_reg.rpp \
+                                      -o$${symbianDestdir}/$${baseResourceTarget}_reg.rsc \
 diff --git a/mkspecs/symbian/linux-gcce/qmake.conf b/mkspecs/symbian/linux-gcce/qmake.conf
-index faac2f1..648a591 100644
+index faac2f1..09852ca 100644
 --- a/mkspecs/symbian/linux-gcce/qmake.conf
 +++ b/mkspecs/symbian/linux-gcce/qmake.conf
 @@ -54,7 +54,7 @@ DEFINES		+= __GCCE__ \
@@ -72,6 +112,13 @@ index faac2f1..648a591 100644
  QMAKE_LFLAGS_PLUGIN     += $$QMAKE_LFLAGS_SHLIB
  
  gcceExtraFlags = --include=${EPOCROOT}/epoc32/include/gcce/gcce.h -march=armv5t -mapcs -mthumb-interwork -nostdinc -c -msoft-float -T script
+@@ -90,6 +90,5 @@ INCLUDEPATH = ${EPOCROOT}/epoc32/include/ \
+     $${EPOCROOT}/epoc32/include/stdapis \
+     $${EPOCROOT}/epoc32/include/gcce \
+     ${EPOCROOT}/epoc32/include/stdapis/sys \
+-    ${EPOCROOT}/epoc32/include/stdapis/stlport \
+     $$INCLUDEPATH
+ 
 diff --git a/qmake/generators/symbian/symbiancommon.cpp b/qmake/generators/symbian/symbiancommon.cpp
 index 58d2edd..a3606bd 100644
 --- a/qmake/generators/symbian/symbiancommon.cpp

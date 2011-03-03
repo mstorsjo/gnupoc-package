@@ -100,7 +100,7 @@ index 539609d..31adb88 100644
                                       -s$${symbian_resources_RCC_DIR}/$${baseTarget}_reg.rpp \
                                       -o$${symbianDestdir}/$${baseTarget}_reg.rsc \
 diff --git a/mkspecs/symbian/linux-gcce/qmake.conf b/mkspecs/symbian/linux-gcce/qmake.conf
-index faac2f1..648a591 100644
+index faac2f1..09852ca 100644
 --- a/mkspecs/symbian/linux-gcce/qmake.conf
 +++ b/mkspecs/symbian/linux-gcce/qmake.conf
 @@ -54,7 +54,7 @@ DEFINES		+= __GCCE__ \
@@ -112,6 +112,13 @@ index faac2f1..648a591 100644
  QMAKE_LFLAGS_PLUGIN     += $$QMAKE_LFLAGS_SHLIB
  
  gcceExtraFlags = --include=${EPOCROOT}/epoc32/include/gcce/gcce.h -march=armv5t -mapcs -mthumb-interwork -nostdinc -c -msoft-float -T script
+@@ -90,6 +90,5 @@ INCLUDEPATH = ${EPOCROOT}/epoc32/include/ \
+     $${EPOCROOT}/epoc32/include/stdapis \
+     $${EPOCROOT}/epoc32/include/gcce \
+     ${EPOCROOT}/epoc32/include/stdapis/sys \
+-    ${EPOCROOT}/epoc32/include/stdapis/stlport \
+     $$INCLUDEPATH
+ 
 diff --git a/qmake/generators/symbian/symbiancommon.cpp b/qmake/generators/symbian/symbiancommon.cpp
 index f00ab6b..2ef7459 100644
 --- a/qmake/generators/symbian/symbiancommon.cpp
