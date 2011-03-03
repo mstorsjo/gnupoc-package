@@ -1,0 +1,36 @@
+#!/bin/sh
+
+if [ $# -lt 2 -o $0 != "./test_all_qtm" ]; then
+	echo "Usage: ./test_all_qtm <source-dir> <target-dir>"
+	exit 1
+fi
+
+SRC=$1
+DEST=$2
+MAKEOPTS=$3
+
+do_test() {
+	./test_qtm $SRC $1 $2 $3 $DEST $MAKEOPTS
+}
+
+set -xe
+
+do_test s60_31 4.6.3 1.0.2
+do_test s60_31 4.6.3 1.1.0
+do_test s60_31 4.6.3 1.1.1
+do_test s60_32 4.6.3 1.0.2
+do_test s60_32 4.6.3 1.1.0
+do_test s60_50 4.6.3 1.0.2
+do_test s60_50 4.6.3 1.1.0
+do_test symbian3 4.6.3 1.1.0
+do_test symbian3 4.6.3 1.1.1
+
+do_test s60_31 4.7.0 1.0.2
+do_test s60_31 4.7.1 1.0.2
+do_test s60_31 4.7.2 1.0.2
+
+do_test s60_50 4.7.2 1.0.2
+do_test s60_50 4.7.2 1.1.0
+
+do_test symbian3 4.7.2 1.1.1
+
