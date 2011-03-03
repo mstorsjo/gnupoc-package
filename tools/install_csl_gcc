@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ $# != 2 -o $0 != "./install_csl_gcc" ]; then
+if [ $# -lt 2 -o $0 != "./install_csl_gcc" ]; then
   echo "Usage: ./install_csl_gcc <path-to-gcc-package> <target-dir>"
   echo " e.g.: ./install_csl_gcc gnu-csl-arm-2005Q1C-arm-none-symbianelf.src.tar.bz2  ~/csl-gcc"
   exit 1
@@ -8,6 +8,7 @@ fi
 
 SRC=$1
 DEST=`echo $2 | sed s:/\$::`
+MAKEOPTS=$3
 
 mkdir -p $DEST || exit 1
 DEST=`cd $DEST && pwd`
@@ -32,13 +33,13 @@ tar -jxvf $SRC -C csl-build
 cd csl-build && tar -jxvf binutils-csl-arm-2005Q1C.tar.bz2
 cd csl-build && patch -p0 < ../csl-gcc-binutils.patch
 cd csl-build/binutils-csl-arm-2005q1 && ./configure --target=arm-none-symbianelf --prefix=$DEST
-cd csl-build/binutils-csl-arm-2005q1 && $MAKE
+cd csl-build/binutils-csl-arm-2005q1 && $MAKE $MAKEOPTS
 cd csl-build/binutils-csl-arm-2005q1 && $MAKE install
 for i in \`find $DEST/bin -name \*.dSYM\`; do mv \$i \`echo \$i | sed s/.dSYM//\`; done
 cd csl-build && tar -jxvf gcc-csl-arm-2005Q1C.tar.bz2
 cd csl-build && patch -p0 < ../csl-gcc.patch
 cd csl-build/gcc-csl-arm && ./configure --target=arm-none-symbianelf --enable-languages=c,c++ --prefix=$DEST
-cd csl-build/gcc-csl-arm && PATH=$DEST/bin:$PATH SHELL=/bin/sh DEFAULT_LINKER=$DEST/bin/arm-none-symbianelf-ld $MAKE
+cd csl-build/gcc-csl-arm && PATH=$DEST/bin:$PATH SHELL=/bin/sh DEFAULT_LINKER=$DEST/bin/arm-none-symbianelf-ld $MAKE $MAKEOPTS
 cd csl-build/gcc-csl-arm && PATH=$DEST/bin:$PATH $MAKE install
 rm -rf csl-build
 
