@@ -1,0 +1,62 @@
+#!/bin/sh
+
+if [ $# -lt 4 -o $0 != "./test_qt" ]; then
+	echo "Usage: ./test_sdk <source-dir> <sdkname> <qt-version> <target-dir>"
+	exit 1
+fi
+
+SRC=`./my_realpath $1`
+SDK=$2
+VERSION=$3
+DEST=`./my_realpath $4`
+MAKEOPTS=$5
+QTDIR=$DEST/qt_$VERSION
+
+case $VERSION in
+4.6.3)
+	PKG=qt-symbian-opensource-4.6.3.exe
+	;;
+4.7.*)
+	PKG=qt-symbian-opensource-$VERSION-s60.exe
+	;;
+*)
+	echo Unsupported Qt version $VERSION
+	exit 1
+	;;
+esac
+
+set -xe
+
+./test_sdk $SRC $SDK $DEST $MAKEOPTS
+cd ../sdks
+if [ ! -f $DEST/$SDK/epoc32/include/stdapis/stlport/list ]; then
+	./install_openc_175_s60 $SRC/s60_open_c_cpp_plug_in_v1_7_en.zip $DEST/$SDK
+fi
+if [ ! -d $QTDIR ]; then
+	./install_qt_$VERSION $SRC/$PKG -qt $QTDIR -sdk $DEST/$SDK
+else if [ ! -d $DEST/$SDK/epoc32/data/z/resource/qt ]; then
+	# The symbian3 SDK has Qt libraries out of the box, but we still
+	# need to run the installer to put e.g. qtmain.lib into gcce/urel.
+	# Therefore, check for resource/qt which only is in the Qt SDK
+	# package, not in the symbian3 SDK originally.
+	./install_qt_$VERSION $SRC/$PKG -sdk $DEST/$SDK
+fi; fi
+
+export EPOCROOT=$DEST/$SDK/
+export PATH=$QTDIR/bin:$DEST/gnupoc:$PATH
+cd $QTDIR/examples/widgets/analogclock
+rm -f analogclock.sis
+qmake
+make release-gcce
+make sis
+test -f analogclock.sis || (echo Failed; exit 1)
+if [ -d $QTDIR/mkspecs/symbian/linux-gcce ]; then
+	rm -f analogclock.sis
+	export PATH=$DEST/csl-gcc/bin:$PATH
+	export QMAKESPEC=symbian/linux-gcce
+	qmake
+	make
+	make sis
+	test -f analogclock.sis || (echo Failed; exit 1)
+fi
+
