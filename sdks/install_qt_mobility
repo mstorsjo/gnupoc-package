@@ -47,19 +47,48 @@ DIR=qt_temp/qt-mobility-*
 for q in $QTDIRS; do
 	cp $DIR/features/mobility.prf.template $q/mkspecs/features/mobility.prf
 	cp $DIR/*.sis $q
+	QTVER=`echo $q/changes-*`
+	QTVER=`basename $QTVER | sed s/changes-//`
+	if [ "$QTVER" = "*" ]; then
+		QTVER=""
+	fi
 done
+if [ "$QTVER" != "" ]; then
+	# Strip the last digit from the version number, assuming compatibility
+	# between e.g. 4.7.x
+	QTVER=`echo $QTVER | sed 's/\..$//'`
+fi
 for s in $SDKS; do
+	PKG=
 	if [ -f $s/epoc32/include/variant/symbian_os_v9.2.hrh ]; then
-		unzip -o -d$s $DIR/qt-mobility-*-epoc32-3.1.zip
+		PKG=`echo $DIR/qt-mobility-*-s60-qt-$QTVER.?-epoc32-3.1.zip`
+		if [ ! -f $PKG ]; then
+			PKG=`echo $DIR/qt-mobility-*-epoc32-3.1.zip`
+		fi
 	else if [ -f $s/epoc32/include/variant/symbian_os_v9.3.hrh ]; then
-		unzip -o -d$s $DIR/qt-mobility-*-epoc32-3.2.zip
+		PKG=`echo $DIR/qt-mobility-*-s60-qt-$QTVER.?-epoc32-3.2.zip`
+		if [ ! -f $PKG ]; then
+			PKG=`echo $DIR/qt-mobility-*-epoc32-3.2.zip`
+		fi
 	else if [ -f $s/epoc32/include/variant/symbian_os.hrh ]; then
-		if [ -f $s/epoc32/tools/checklib.exe ] && [ -f $DIR/qt-mobility-*-epoc32-symbian3.zip ]; then
-			unzip -o -d$s $DIR/qt-mobility-*-epoc32-symbian3.zip
+		if [ -f $s/epoc32/tools/checklib.exe ]; then
+			PKG=`echo $DIR/qt-mobility-*-symbian3-qt-$QTVER.?-epoc32.zip`
+			if [ ! -f $PKG ]; then
+				PKG=`echo $DIR/qt-mobility-*-epoc32-symbian3.zip`
+			fi
 		else
-			unzip -o -d$s $DIR/qt-mobility-*-epoc32-5.0.zip
+			PKG=`echo $DIR/qt-mobility-*-s60-qt-$QTVER.?-epoc32-5.0.zip`
+			if [ ! -f $PKG ]; then
+				PKG=`echo $DIR/qt-mobility-*-epoc32-5.0.zip`
+			fi
 		fi
 	fi; fi; fi
+	if [ "$PKG" != "" ] && [ -f $PKG ]; then
+		unzip -o -d$s $PKG
+		echo Unpacked $PKG
+	else
+		echo No suitable package found for SDK $s
+	fi
 done
 if [ "x$MOBILITY" != "x" ]; then
 	mv $DIR $MOBILITY
