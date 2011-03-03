@@ -1,0 +1,140 @@
+#!/bin/sh
+
+if [ $# -lt 3 -o $0 != "./test_sdk" ]; then
+	echo "Usage: ./test_sdk <source-dir> <sdk> <target-dir>"
+	echo "Valid sdk names: s60_12"
+	echo "                 s60_20 s60_21 s60_21_cw s60_26 s60_26_cw s60_28"
+	echo "                 s60_30 s60_31 s60_32 s60_50 symbian3"
+	echo "                 uiq_30 uiq_31"
+	exit 1
+fi
+
+SRC=`./my_realpath $1`
+SDK=$2
+DEST=`./my_realpath $3`
+MAKEOPTS=$4
+
+set -xe
+
+case $SDK in
+s60_1*|s60_2*)
+	TOOL=EKA1
+	TOOL2=EKA1-thumb
+	TOOLDIR=symbian-gcc
+	CHECK_TOOL_NAME=arm-epoc-pe-gcc
+	CHECK_TOOL_NAME2=thumb-epoc-pe-gcc
+	TARGET=thumb
+	;;
+s60_3*|s60_5*|symbian3|uiq_3*)
+	TOOL=EKA2
+	TOOLDIR=csl-gcc
+	CHECK_TOOL_NAME=arm-none-symbianelf-gcc
+	TARGET=gcce
+	;;
+esac
+
+case $SDK in
+s60_12)
+	PKG=nS60_sdk_v1_2.zip
+	EXAMPLE=series60ex/helloworld/group
+	EXAMPLEPKG=../sis/helloworld.pkg
+	;;
+s60_20)
+	PKG=s60_sdk_v2_0.zip
+	EXAMPLE=series60ex/helloworldbasic/group
+	EXAMPLEPKG=../sis/helloworldbasic.pkg
+	;;
+s60_21)
+	PKG=S60_SDK_2_1_NET.zip
+	EXAMPLE=series60ex/helloworldbasic/group
+	EXAMPLEPKG=../sis/helloworldbasic.pkg
+	;;
+s60_21_cw)
+	PKG=S60_SDK_v21c_CW.zip
+	EXAMPLE=series60ex/helloworldbasic/group
+	EXAMPLEPKG=../sis/helloworldbasic.pkg
+	;;
+s60_26)
+	PKG=s60_2nd_fp2_sdk_msb.zip
+	EXAMPLE=series60ex/helloworldbasic/group
+	EXAMPLEPKG=../sis/helloworldbasic.pkg
+	;;
+s60_26_cw)
+	PKG=s60_2nd_fp2_sdk.zip
+	EXAMPLE=series60ex/helloworldbasic/group
+	EXAMPLEPKG=../sis/helloworldbasic.pkg
+	;;
+s60_28)
+	PKG=s60_2nd_sdk_fp3.zip
+	EXAMPLE=series60ex/helloworldbasic/group
+	EXAMPLEPKG=../sis/helloworldbasic.pkg
+	;;
+s60_30)
+	PKG=S60-SDK-0616-3.0-mr.3.749.zip
+	EXAMPLE=s60ex/helloworldbasic/group
+	EXAMPLEPKG=../sis/helloworldbasic_gcce.pkg
+	;;
+s60_31)
+	PKG=S60-SDK-200634-3.1-Cpp-f.1090b.zip
+	EXAMPLE=s60ex/helloworldbasic/group
+	EXAMPLEPKG=../sis/helloworldbasic_gcce.pkg
+	;;
+s60_32)
+	PKG=S60-3.2-SDK-f.inc3.2130.zip
+	EXAMPLE=s60cppexamples/helloworldbasic/group
+	EXAMPLEPKG=../sis/helloworldbasic_gcce.pkg
+	;;
+s60_50)
+	PKG=S60_5th_Edition_SDK_v1_0_en.zip
+	EXAMPLE=s60cppexamples/helloworldbasic/group
+	EXAMPLEPKG=../sis/helloworldbasic_gcce.pkg
+	;;
+symbian3)
+	PKG=Symbian_3_SDK_v0_9_en.zip
+	EXAMPLE=examples/symbian/gui/helloworldbasic/group
+	EXAMPLEPKG=../sis/helloworldbasic_gcce.pkg
+	;;
+uiq_30)
+	PKG=UIQ3.0SDK.exe
+	EXAMPLE=examples/uiq/qhelloworld/group
+	EXAMPLEPKG=sis/helloworld_gcce.pkg
+	;;
+uiq_31)
+	PKG=UIQ3.1SDK.exe
+	EXAMPLE=examples/uiq/qhelloworld/group
+	EXAMPLEPKG=sis/helloworld_gcce.pkg
+	;;
+*)
+	echo Unsupported SDK $SDK
+	exit 1
+	;;
+esac
+
+if [ ! -x $DEST/$TOOLDIR/bin/$CHECK_TOOL_NAME ]; then
+	./install_toolchain $SRC $TOOL $DEST/$TOOLDIR $MAKEOPTS
+fi
+if [ "$CHECK_TOOL_NAME2" != "" ] && [ ! -x $DEST/$TOOLDIR/bin/$CHECK_TOOL_NAME2 ]; then
+	./install_toolchain $SRC $TOOL2 $DEST/$TOOLDIR $MAKEOPTS
+fi
+cd ../sdks
+if [ ! -d $DEST/gnupoc ]; then
+	./install_wrapper $DEST/gnupoc
+	cat $DEST/gnupoc/gnupoc-common.sh | sed 's,^EKA1TOOLS=.*$,'EKA1TOOLS=$DEST\/symbian-gcc\/bin, | sed 's,^EKA2TOOLS=.*$,'EKA2TOOLS=$DEST\/csl-gcc\/bin, > $DEST/gnupoc/tmp
+	mv $DEST/gnupoc/tmp $DEST/gnupoc/gnupoc-common.sh
+fi
+
+if [ ! -d $DEST/$SDK ]; then
+	./install_gnupoc_$SDK $SRC/$PKG $DEST/$SDK
+fi
+export EPOCROOT=$DEST/$SDK/
+export PATH=$DEST/gnupoc:$PATH
+cd $EPOCROOT/$EXAMPLE
+bldmake bldfiles
+abld build $TARGET urel
+cd `dirname $EXAMPLEPKG`
+makesis `basename $EXAMPLEPKG`
+if [ "$TOOL" = "EKA2" ]; then
+	signsis `basename $EXAMPLEPKG | sed s/pkg/sis/`
+fi
+test -f `basename $EXAMPLEPKG | sed s/pkg/sis/` || (echo Failed; exit 1)
+
