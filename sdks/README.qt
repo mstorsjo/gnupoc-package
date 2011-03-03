@@ -61,7 +61,7 @@ in the example above), and make installer_sis should work.
 Note, the smart installer currently available only seems to install Qt 4.6.3.
 
 
-If using Qt 4.7.1 or newer, you can use another makespec, which doesn't
+If using Qt 4.7.0 or newer, you can use another makespec, which doesn't
 use the traditional abld toolchain, and thus has much less overhead. To
 use this, add the toolchain directory to the path, too, and set the makespec:
 
