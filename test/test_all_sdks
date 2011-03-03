@@ -1,0 +1,40 @@
+#!/bin/sh
+
+if [ $# -lt 2 -o $0 != "./test_all_sdks" ]; then
+	echo "Usage: ./test_all_sdks <source-dir> <target-dir>"
+	exit 1
+fi
+
+SRC=$1
+DEST=$2
+MAKEOPTS=$3
+
+do_test() {
+	./test_sdk $SRC $1 $DEST $MAKEOPTS
+}
+
+set -xe
+
+# Test all S60 3.x >= SDKs
+do_test s60_30
+do_test s60_31
+do_test s60_32
+do_test s60_50
+do_test symbian3
+
+# Test other commonly used SDKs
+do_test s60_21_cw
+do_test uiq_30
+
+# Test all the rest
+do_test s60_12
+
+do_test s60_20
+do_test s60_21
+do_test s60_26
+do_test s60_26_cw
+do_test s60_28
+
+do_test uiq_31
+
+
