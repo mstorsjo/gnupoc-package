@@ -1,0 +1,41 @@
+#!/bin/sh
+
+if [ $# -lt 5 -o $0 != "./test_qtm" ]; then
+	echo "Usage: ./test_sdk <source-dir> <sdkname> <qt-version> <qtm-version> <target-dir>"
+	exit 1
+fi
+
+SRC=`./my_realpath $1`
+SDK=$2
+QTVERSION=$3
+QTMVERSION=$4
+DEST=`./my_realpath $5`
+MAKEOPTS=$6
+QTDIR=$DEST/qt_$QTVERSION
+MOBILITYDIR=$DEST/qtm_$QTMVERSION
+
+set -xe
+
+./test_qt $SRC $SDK $QTVERSION $DEST $MAKEOPTS
+cd ../sdks
+# Always reinstall this, to make sure the right version is installed in the Qt and symbian SDK
+./install_qt_mobility $SRC/qt-mobility-symbian-opensource-$QTMVERSION.zip -qt $QTDIR -sdk $DEST/$SDK -mobility $MOBILITYDIR
+
+export EPOCROOT=$DEST/$SDK/
+export PATH=$QTDIR/bin:$DEST/gnupoc:$PATH
+cd $MOBILITYDIR/examples/servicebrowser
+rm -f servicebrowser.sis
+qmake
+make release-gcce
+make sis
+test -f servicebrowser.sis || (echo Failed; exit 1)
+if [ -d $QTDIR/mkspecs/symbian/linux-gcce ]; then
+	rm -f servicebrowser.sis
+	export PATH=$DEST/csl-gcc/bin:$PATH
+	export QMAKESPEC=symbian/linux-gcce
+	qmake
+	make
+	make sis
+	test -f servicebrowser.sis || (echo Failed; exit 1)
+fi
+
