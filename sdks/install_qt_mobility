@@ -85,6 +85,13 @@ for s in $SDKS; do
 	fi; fi; fi
 	if [ "$PKG" != "" ] && [ -f $PKG ]; then
 		unzip -o -d$s $PKG
+		PKGNAME=`basename $PKG | sed s/.zip//`
+		if [ -d $s/$PKGNAME/$PKGNAME ]; then
+			./mergedir $s/$PKGNAME/$PKGNAME $s
+			rmdir $s/$PKGNAME
+		else if [ -d $s/$PKGNAME ]; then
+			./mergedir $s/$PKGNAME $s
+		fi; fi
 		echo Unpacked $PKG
 	else
 		echo No suitable package found for SDK $s
