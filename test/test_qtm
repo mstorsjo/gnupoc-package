@@ -18,8 +18,12 @@ set -xe
 
 ./test_qt $SRC $SDK $QTVERSION $DEST $MAKEOPTS
 cd ../sdks
-# Always reinstall this, to make sure the right version is installed in the Qt and symbian SDK
-./install_qt_mobility $SRC/qt-mobility-symbian-opensource-$QTMVERSION.zip -qt $QTDIR -sdk $DEST/$SDK -mobility $MOBILITYDIR
+if [ ! -d $MOBILITYDIR ]; then
+	./install_qt_mobility $SRC/qt-mobility-symbian-opensource-$QTMVERSION.zip -qt $QTDIR -sdk $DEST/$SDK -mobility $MOBILITYDIR
+else
+	# Always reinstall this, to make sure the right version is installed in the Qt and symbian SDK
+	./install_qt_mobility $SRC/qt-mobility-symbian-opensource-$QTMVERSION.zip -qt $QTDIR -sdk $DEST/$SDK
+fi
 
 export EPOCROOT=$DEST/$SDK/
 export PATH=$QTDIR/bin:$DEST/gnupoc:$PATH
