@@ -47,6 +47,7 @@ export PATH=$QTDIR/bin:$DEST/gnupoc:$PATH
 cd $QTDIR/examples/widgets/analogclock
 rm -f analogclock.sis
 qmake
+make clean || true
 make release-gcce
 make sis
 test -f analogclock.sis || (echo Failed; exit 1)
@@ -55,6 +56,7 @@ if [ -d $QTDIR/mkspecs/symbian/linux-gcce ]; then
 	export PATH=$DEST/csl-gcc/bin:$PATH
 	export QMAKESPEC=symbian/linux-gcce
 	qmake
+	make clean || true
 	make
 	make sis
 	test -f analogclock.sis || (echo Failed; exit 1)
