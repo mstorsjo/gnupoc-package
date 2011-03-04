@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ $# -lt 5 -o $0 != "./test_qtm" ]; then
-	echo "Usage: ./test_sdk <source-dir> <sdkname> <qt-version> <qtm-version> <target-dir>"
+	echo "Usage: ./test_qtm <source-dir> <sdkname> <qt-version> <qtm-version> <target-dir>"
 	exit 1
 fi
 
