@@ -34,7 +34,7 @@ make clean || true
 make release-gcce
 make sis
 test -f servicebrowser.sis || (echo Failed; exit 1)
-if [ -d $QTDIR/mkspecs/symbian/linux-gcce ]; then
+if [ -d $QTDIR/mkspecs/symbian/linux-gcce ] && [ "$QTVERSION" != "4.7.0" ]; then
 	rm -f servicebrowser.sis
 	export PATH=$DEST/csl-gcc/bin:$PATH
 	export QMAKESPEC=symbian/linux-gcce
