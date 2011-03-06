@@ -93,7 +93,7 @@ void checkRelocations(Elf* elf, Elf_Scn* relocationSection, Elf32_Shdr* relocati
 		Elf32_Half verIndex = ver[index];
 		if (sym >= symArray && sym < endSym) {
 			const char* name = elf_strptr(elf, sections->dynsymHeader->sh_link, symArray[index].st_name);
-			if (sym->st_value) {
+			if (sym->st_shndx) {
 				Elf32_Addr value = sym->st_value;
 //				if (!strcmp(name, "Image$$ER_RO$$Base"))
 //					value |= 1;
