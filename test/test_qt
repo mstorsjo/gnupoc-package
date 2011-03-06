@@ -39,6 +39,8 @@ else if [ ! -d $DEST/$SDK/epoc32/data/z/resource/qt ]; then
 	# need to run the installer to put e.g. qtmain.lib into gcce/urel.
 	# Therefore, check for resource/qt which only is in the Qt SDK
 	# package, not in the symbian3 SDK originally.
+	# Note, if the Qt link libraries installed in the SDK are from
+	# an older Qt version, we'd need to install new ones over the old ones.
 	./install_qt_$VERSION $SRC/$PKG -sdk $DEST/$SDK
 fi; fi
 
