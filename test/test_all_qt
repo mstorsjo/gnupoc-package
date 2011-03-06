@@ -15,15 +15,19 @@ do_test() {
 
 set -xe
 
+# Test the latest version first - the later tests won't reinstall the
+# Qt libraries into the SDK unless the Qt directory doesn't exist yet
+
+do_test s60_31 4.7.2
+do_test s60_32 4.7.2
+do_test s60_50 4.7.2
+do_test symbian3 4.7.2
+
 do_test s60_31 4.6.3
 do_test s60_32 4.6.3
 do_test s60_50 4.6.3
 do_test symbian3 4.6.3
 
 do_test s60_31 4.7.0
-do_test s60_31 4.7.1
-do_test s60_31 4.7.2
-do_test s60_32 4.7.2
-do_test s60_50 4.7.2
-do_test symbian3 4.7.2
+do_test s60_50 4.7.1
 
