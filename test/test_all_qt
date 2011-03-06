@@ -23,6 +23,7 @@ do_test symbian3 4.6.3
 do_test s60_31 4.7.0
 do_test s60_31 4.7.1
 do_test s60_31 4.7.2
+do_test s60_32 4.7.2
 do_test s60_50 4.7.2
 do_test symbian3 4.7.2
 
