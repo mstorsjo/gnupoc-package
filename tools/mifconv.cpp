@@ -232,7 +232,7 @@ void handleFileArgument(const char* arg) {
 }
 
 void processArgument(const char* arg) {
-	if (arg[0] == '/') {
+	if (arg[0] == '/' || arg[0] == '-') {
 		if (!outname) {
 			// Special case, the first argument starts
 			// with a /, should be interpreted as an absolute
