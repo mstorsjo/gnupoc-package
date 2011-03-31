@@ -33,6 +33,9 @@ unshield -d $TEMP -g opencppepoc32 x $TEMP/s60_open_c_cpp_plug_in_v1_7_en/data1.
 ./fixinclude $TEMP/opencppepoc32/epoc32/include
 ./mergedir $TEMP/opencppepoc32/epoc32 $S60_SDK_DIR/epoc32
 
+# Patch headers
+cat gnupoc-openc_175-include-patch | (cd $S60_SDK_DIR/epoc32/include; patch -p1)
+
 # Install C plugin (incl. SIS files)
 unshield -d $TEMP -g opencnokiaplugin x $TEMP/s60_open_c_cpp_plug_in_v1_7_en/data1.cab
 ./lowercase $TEMP/opencnokiaplugin/nokia_plugin/openc/s60opencsis

@@ -1,0 +1,39 @@
+diff --git a/stdapis/assert.h b/stdapis/assert.h
+index 9e9cf17..5b7d405 100644
+--- a/stdapis/assert.h
++++ b/stdapis/assert.h
+@@ -56,5 +56,8 @@
+ #endif /* NDEBUG */
+ 
+ __BEGIN_DECLS
++#ifndef __ASSERT_H_DECL
++#define __ASSERT_H_DECL
+ IMPORT_C void __assert(const char *, const char *, int, const char *);
++#endif
+ __END_DECLS
+diff --git a/stdapis/math.h b/stdapis/math.h
+index df926c3..7d53303 100644
+--- a/stdapis/math.h
++++ b/stdapis/math.h
+@@ -367,7 +367,6 @@ IMPORT_C double	significand(double);
+ 
+ /* float versions of ANSI/POSIX functions */
+ #if __ISO_C_VISIBLE >= 1999
+-IMPORT_C float	acosf(float);
+ 
+ IMPORT_C float	acosf(float);
+ IMPORT_C float	asinf(float);
+diff --git a/stdapis/sys/cdefs.h b/stdapis/sys/cdefs.h
+index 426b705..0f2040e 100644
+--- a/stdapis/sys/cdefs.h
++++ b/stdapis/sys/cdefs.h
+@@ -364,6 +364,9 @@
+ #endif
+ 
+ /* Compiler-dependent macros that rely on FreeBSD-specific extensions. */
++#ifndef __FreeBSD_cc_version
++#define __FreeBSD_cc_version 0
++#endif
+ #if __FreeBSD_cc_version >= 300001 && defined(__GNUC__) && !defined(__INTEL_COMPILER)
+ #define	__printf0like(fmtarg, firstvararg) \
+ 	    __attribute__((__format__ (__printf0__, fmtarg, firstvararg)))
