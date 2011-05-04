@@ -61,12 +61,12 @@ fi
 for s in $SDKS; do
 	PKG=
 	if [ -f $s/epoc32/include/variant/symbian_os_v9.2.hrh ]; then
-		PKG=`echo $DIR/qt-mobility-*-s60-qt-$QTVER.?-epoc32-3.1.zip`
+		PKG=`echo $DIR/qt-mobility-*-qt-$QTVER.?-epoc32-3.1.zip`
 		if [ ! -f $PKG ]; then
 			PKG=`echo $DIR/qt-mobility-*-epoc32-3.1.zip`
 		fi
 	else if [ -f $s/epoc32/include/variant/symbian_os_v9.3.hrh ]; then
-		PKG=`echo $DIR/qt-mobility-*-s60-qt-$QTVER.?-epoc32-3.2.zip`
+		PKG=`echo $DIR/qt-mobility-*-qt-$QTVER.?-epoc32-3.2.zip`
 		if [ ! -f $PKG ]; then
 			PKG=`echo $DIR/qt-mobility-*-epoc32-3.2.zip`
 		fi
@@ -74,10 +74,13 @@ for s in $SDKS; do
 		if [ -f $s/epoc32/tools/checklib.exe ]; then
 			PKG=`echo $DIR/qt-mobility-*-symbian3-qt-$QTVER.?-epoc32.zip`
 			if [ ! -f $PKG ]; then
+				PKG=`echo $DIR/qt-mobility-*-qt-$QTVER.?-epoc32-symbian3.zip`
+			fi
+			if [ ! -f $PKG ]; then
 				PKG=`echo $DIR/qt-mobility-*-epoc32-symbian3.zip`
 			fi
 		else
-			PKG=`echo $DIR/qt-mobility-*-s60-qt-$QTVER.?-epoc32-5.0.zip`
+			PKG=`echo $DIR/qt-mobility-*-qt-$QTVER.?-epoc32-5.0.zip`
 			if [ ! -f $PKG ]; then
 				PKG=`echo $DIR/qt-mobility-*-epoc32-5.0.zip`
 			fi
