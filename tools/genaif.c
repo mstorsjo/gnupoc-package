@@ -17,9 +17,9 @@
 #define PUTLONG(X) PutLong(&X, fpout)
 #define GETLONG(X) GetLong(&X, fpin)
 
-void GetLong(long* ret_val, FILE *fp)
+void GetLong(unsigned int* ret_val, FILE *fp)
 {
-      long val;
+      unsigned int val;
       val =  (long) (fgetc(fp) & 0xFF);
       val |= ((long) (fgetc(fp) & 0xFF) << 0x08);
       val |= ((long) (fgetc(fp) & 0xFF) << 0x10);
@@ -27,7 +27,7 @@ void GetLong(long* ret_val, FILE *fp)
       *ret_val = val;
 }
 
-void PutLong(long* val, FILE *fp)
+void PutLong(unsigned int* val, FILE *fp)
 {
       fputc(*val & 0xFF, fp);
       fputc((*val >> 0x08) & 0xFF, fp);
@@ -102,8 +102,8 @@ docrc16_1(crc, c)
   return acc & 0xffff;
 }
 
-unsigned long
-uidcsum(unsigned long u[3])
+unsigned int
+uidcsum(unsigned int u[3])
 {
   unsigned int i, crc1 = 0, crc2 = 0;
   
@@ -123,7 +123,7 @@ writeAif(int uni, char *cuid, char *finname, char *foutname)
   char *s, *arg, buf[1024], *caps[128], *mbmfile;
   int len, rd, idx, no, capno, embed, hidden, new, cappos[128];
   unsigned char outchar, caplang[128];
-  unsigned long l[3], uid;
+  unsigned int l[3], uid;
   FILE *fpin, *fpout, *fpfile;
 
   if(!(fpfile = fopen(finname, "rb")))
@@ -308,7 +308,7 @@ writeAif(int uni, char *cuid, char *finname, char *foutname)
 int
 changeAppUid(char *uid3, char *finname, char *foutname)
 {
-  unsigned long l[3], id, oldid, count = 0;
+  int l[3], id, oldid, count = 0;
   FILE *fpin, *fpout;
 
   if(!(fpin = fopen(finname, "rb")))
@@ -334,7 +334,7 @@ changeAppUid(char *uid3, char *finname, char *foutname)
   oldid = l[2];
   l[2] = strtol(uid3, 0, 0);
 
-  fprintf(stderr, "Changing UID from %#lx to %#lx\n", oldid, l[2]);
+  fprintf(stderr, "Changing UID from %#x to %#x\n", oldid, l[2]);
   
   id = uidcsum(l);
   PUTLONG(l[0]);
@@ -354,7 +354,7 @@ changeAppUid(char *uid3, char *finname, char *foutname)
 
   if(count != 2)
     {
-      fprintf(stderr, "Changed UID %ld times (instead of 2).\n", count);
+      fprintf(stderr, "Changed UID %d times (instead of 2).\n", count);
       fprintf(stderr, "The output is very probably unusable.\n");
       return 1;
     }
@@ -366,11 +366,11 @@ main(int ac, char *av[])
 {
   if(ac == 5 && !strcmp(av[1], "-print-checksum"))
     {
-      unsigned long l[3];
+      unsigned int l[3];
       l[0] = strtol(av[2], 0, 0);
       l[1] = strtol(av[3], 0, 0);
       l[2] = strtol(av[4], 0, 0);
-      printf("%#08lx\n", uidcsum(l));
+      printf("%#08x\n", uidcsum(l));
       return 0;
     }
   else if(ac == 5 && !strcmp(av[1], "-change-app-uid3"))
