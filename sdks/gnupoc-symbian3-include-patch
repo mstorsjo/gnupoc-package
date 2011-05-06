@@ -76,28 +76,6 @@ index db29f06..048b570 100644
  
         /*
          * Set extended touch area to be used 
-diff --git a/mw/MemoryManager.h b/mw/MemoryManager.h
-index ca89f7f..8cff1ca 100644
---- a/mw/MemoryManager.h
-+++ b/mw/MemoryManager.h
-@@ -306,7 +306,7 @@ class MemoryManager
-         * @param
-         * @return
-         */        
--        IMPORT_C static void MemoryManager::CreateFastAllocator();
-+        IMPORT_C static void CreateFastAllocator();
- 
-         /**
-         * Initialize MemoryManager library. Special case if CreateFastAllocator is
-@@ -316,7 +316,7 @@ class MemoryManager
-         * @param
-         * @return
-         */
--        IMPORT_C static void MemoryManager::InitFastAllocator();
-+        IMPORT_C static void InitFastAllocator();
- 
-         /**
-         * initialize the OOM handler in the memorypool
 diff --git a/mw/SenSoapMessage.h b/mw/SenSoapMessage.h
 index 03091bb..a1dcdf2 100644
 --- a/mw/SenSoapMessage.h
@@ -160,10 +138,10 @@ index 9cb6cee..fb5cd9a 100644
          return (!( (iType == aDCSettingSelection.iType) && ( iId == aDCSettingSelection.iId ) ));
          };     
 diff --git a/mw/eikedwin.h b/mw/eikedwin.h
-index 6cedd57..9b562b8 100644
+index 7618d96..72fb85e 100644
 --- a/mw/eikedwin.h
 +++ b/mw/eikedwin.h
-@@ -1578,7 +1578,7 @@ public:
+@@ -1583,7 +1583,7 @@ public:
           * @return editor flags if existed
           * @or return KErrNotFound
           */

@@ -1694,7 +1694,7 @@ index ad78c64..1d41144 100644
  
  		if ($referenceDOSSlash =~ /^$quotemetaExclusion$/i)
 diff --git a/cl_arm.pm b/cl_arm.pm
-index e5d3c97..5ed6d09 100644
+index 61846be..462ae70 100644
 --- a/cl_arm.pm
 +++ b/cl_arm.pm
 @@ -14,7 +14,7 @@
@@ -2483,7 +2483,7 @@ index e5d3c97..5ed6d09 100644
  			);
  	}
 diff --git a/cl_bpabi.pm b/cl_bpabi.pm
-index aae0fa5..c850456 100644
+index e8aca8a..221b735 100644
 --- a/cl_bpabi.pm
 +++ b/cl_bpabi.pm
 @@ -14,7 +14,7 @@
@@ -2744,7 +2744,7 @@ index aae0fa5..c850456 100644
  	}
          
  	my $StaticRTLib = "";
-@@ -1107,18 +1093,18 @@ sub PMBld {
+@@ -1107,28 +1093,28 @@ sub PMBld {
  		$StaticRTLib .= "2_2";
  	}
  
@@ -2752,12 +2752,24 @@ index aae0fa5..c850456 100644
 +	&main::Output(" \\\n\$(EPOCSTATLINK$Bld)/$StaticRTLib\.lib");
  
  	&main::Output(" \\\n\t",getConfigVariable('VIA_FILE_PREFIX'));
--	PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCBSFSTATLINK$Bld\)\\\\\$_\"\)", @StatLibList);
-+	PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCBSFSTATLINK$Bld\)/\$_\"\)", @StatLibList);
+ 	if($PlatName =~ /^gcce$/i) {
+-		PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCSTATLINK$Bld\)\\\\\$_\"\)", @StatLibList);
++		PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCSTATLINK$Bld\)/\$_\"\)", @StatLibList);
+ 	}
+ 	else {
+-		PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCBSFSTATLINK$Bld\)\\\\\$_\"\)", @StatLibList);
++		PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\\\$\(EPOCBSFSTATLINK$Bld\)/\$_\"\)", @StatLibList);
+ 	}
  	&main::Output(" \\\n\t",getConfigVariable('VIA_FILE_SUFFIX'));
  	
--	@depLibs = (@depLibs, DepLinkList("\&Generic_Quote\(\"\\\$\(EPOCBSFSTATLINK$Bld\)\\\\\$_\"\)", @StatLibList));
-+	@depLibs = (@depLibs, DepLinkList("\&Generic_Quote\(\"\\\$\(EPOCBSFSTATLINK$Bld\)/\$_\"\)", @StatLibList));
+ 	if($PlatName =~ /^gcce$/i) {
+-		@depLibs = (@depLibs, DepLinkList("\&Generic_Quote\(\"\\\$\(EPOCSTATLINK$Bld\)\\\\\$_\"\)", @StatLibList));
++		@depLibs = (@depLibs, DepLinkList("\&Generic_Quote\(\"\\\$\(EPOCSTATLINK$Bld\)/\$_\"\)", @StatLibList));
+ 	}
+ 	else {
+-		@depLibs = (@depLibs, DepLinkList("\&Generic_Quote\(\"\\\$\(EPOCBSFSTATLINK$Bld\)\\\\\$_\"\)", @StatLibList));
++		@depLibs = (@depLibs, DepLinkList("\&Generic_Quote\(\"\\\$\(EPOCBSFSTATLINK$Bld\)/\$_\"\)", @StatLibList));
+ 	}
  	
  	
  	my @ImportLibList = ImportLibraryList(@LibList);
@@ -2768,7 +2780,7 @@ index aae0fa5..c850456 100644
          
  	if ($TrgType=~/^STDEXE$/o || $TrgType=~/^STDDLL$/o) {
  		$NamedSymLkup = 1;
-@@ -1127,8 +1113,8 @@ sub PMBld {
+@@ -1137,8 +1123,8 @@ sub PMBld {
  		if(not (grep /^libc.dso$/i, @LibList)) {
  				push @OEImportLibraryList, "libc.dso";
  		}
@@ -2779,7 +2791,7 @@ index aae0fa5..c850456 100644
  	}
  
  	unless ($ArmRT || ($BasicTrgType=~/^LIB$/o)) {
-@@ -1143,9 +1129,9 @@ sub PMBld {
+@@ -1153,9 +1139,9 @@ sub PMBld {
    				}
  				&main::Output(
  					" \\\n\t",
@@ -2791,7 +2803,7 @@ index aae0fa5..c850456 100644
  			}
  		}
  	}
-@@ -1155,9 +1141,9 @@ sub PMBld {
+@@ -1165,9 +1151,9 @@ sub PMBld {
  		foreach (@OELibList) {
  			&main::Output(
  				" \\\n\t",
@@ -2803,7 +2815,7 @@ index aae0fa5..c850456 100644
  		}
  	}
  	PrintList("\' \\\n\t\'\.\&Generic_Quote\(\"\$_\"\)", @ToolChainLibList);
-@@ -1207,7 +1193,7 @@ sub PMBld {
+@@ -1217,7 +1203,7 @@ sub PMBld {
  
  			&main::Output(
  				" \\\n\t",
@@ -2812,7 +2824,7 @@ index aae0fa5..c850456 100644
  			  );
  
  			$objectFiles .= &main::BldPath.$BaseSrc.".o ";
-@@ -1228,7 +1214,7 @@ sub PMBld {
+@@ -1238,7 +1224,7 @@ sub PMBld {
  		if((-e $DefFile) && (!&main::ExportUnfrozen))
  		{
  			&main::Output(
@@ -2821,7 +2833,7 @@ index aae0fa5..c850456 100644
  				"\n"
  			);
  		}
-@@ -1257,7 +1243,7 @@ sub PMBld {
+@@ -1267,7 +1253,7 @@ sub PMBld {
  	&main::CreateExtraFile($objectsViaFile, $objectFiles);
  		 
  		   &main::Output(
@@ -2830,7 +2842,7 @@ index aae0fa5..c850456 100644
  			 " : \$(OBJECTS$Bld) \$(LIBS". $Bld . "DEPS)"
              );
  
-@@ -1278,7 +1264,7 @@ sub PMBld {
+@@ -1288,7 +1274,7 @@ sub PMBld {
  #       get rid of any -symbols produced .map file
          if ($BasicTrgType=~/^(DLL|EXE)/o) {
  			&main::Output(
@@ -2839,7 +2851,7 @@ index aae0fa5..c850456 100644
  		);
  		}
  
-@@ -1398,8 +1384,8 @@ sub PMBld {
+@@ -1408,8 +1394,8 @@ sub PMBld {
  				}
  
  				&main::Output(
@@ -2850,7 +2862,7 @@ index aae0fa5..c850456 100644
  				);
  			} elsif ($BasicTrgType=~/^EXE$/o || $TrgType=~/^EXEXP$/o) {
  				# get the right object file for the entry point
-@@ -1409,13 +1395,13 @@ sub PMBld {
+@@ -1419,13 +1405,13 @@ sub PMBld {
  				}
  
  				&main::Output(
@@ -2867,7 +2879,7 @@ index aae0fa5..c850456 100644
  #				"\t\t\$(OBJECTS$Bld) \\\n"
  			);
  
-@@ -1457,18 +1443,18 @@ sub PMBld {
+@@ -1467,18 +1453,18 @@ sub PMBld {
  			if(&main::DebugSwitchUsed() ){
  				if(&main::SymbolicDebugEnabled() ) {
  				&main::Output(
@@ -2889,7 +2901,7 @@ index aae0fa5..c850456 100644
  			);
  		}
  
-@@ -1602,20 +1588,22 @@ sub PMBld {
+@@ -1612,20 +1598,22 @@ sub PMBld {
  		if ($BasicTrgType=~/^DLL$/o || $TrgType=~/^EXEXP$/o || $TrgType=~/^EXEDLL$/o) {
  			if (-e $DefFile) {
  				&main::Output(
@@ -2915,7 +2927,7 @@ index aae0fa5..c850456 100644
  				);
  				if(&main::ExportUnfrozen) {
  					&main::Output( ' --unfrozen ');
-@@ -1623,7 +1611,7 @@ sub PMBld {
+@@ -1633,7 +1621,7 @@ sub PMBld {
  			}
  		#the input elf file - as the last arg
  		&main::Output(
@@ -2924,7 +2936,7 @@ index aae0fa5..c850456 100644
  			" --linkas=$LinkAs"
  			);
  		if (&main::CompressTarget)
-@@ -1659,7 +1647,7 @@ sub PMBld {
+@@ -1669,7 +1657,7 @@ sub PMBld {
  		}
  
  		&main::Output(
@@ -2933,16 +2945,20 @@ index aae0fa5..c850456 100644
  		);
  
  		if($BasicTrgType=~/^DLL/ && $TrgType!~/^DLL/){
-@@ -1707,7 +1695,7 @@ sub PMBld {
- 			&main::Output(
- 			"\t\$(AR) ",
- 				" \$(ARCHIVER_CREATE_OPTION) ",
--				" \$(EPOCBSFSTATLINK$Bld)\\$Trg \\\n"
-+				" \$(EPOCBSFSTATLINK$Bld)/$Trg \\\n"
+@@ -1719,10 +1707,10 @@ sub PMBld {
+ 				" \$(ARCHIVER_CREATE_OPTION) "
  			);
+ 			if($PlatName =~ /^gcce$/i) {
+-				&main::Output(" \$(EPOCSTATLINK$Bld)\\$Trg \\\n");
++				&main::Output(" \$(EPOCSTATLINK$Bld)/$Trg \\\n");
+ 			}
+ 			else {
+-				&main::Output(" \$(EPOCBSFSTATLINK$Bld)\\$Trg \\\n");
++				&main::Output(" \$(EPOCBSFSTATLINK$Bld)/$Trg \\\n");
+ 			}
  		# Pass in the command file if the command file option is passed in
  		if($viaoption) {
-@@ -1741,26 +1729,26 @@ sub PMBld {
+@@ -1756,26 +1744,26 @@ sub PMBld {
  
  	if ($BasicTrgType=~/^DLL$/o || $TrgType=~/^EXEXP$/o || $TrgType=~/^EXEDLL$/o) {
  		&main::Output(
@@ -2976,7 +2992,7 @@ index aae0fa5..c850456 100644
  					"\n"
  				);
  				}
-@@ -1768,15 +1756,15 @@ sub PMBld {
+@@ -1783,15 +1771,15 @@ sub PMBld {
  
  			&main::Output(
  					  "\n",
@@ -2996,7 +3012,7 @@ index aae0fa5..c850456 100644
  				  "\n"
  				 ) if ($ExtraExportLibrary);
  
-@@ -1786,17 +1774,17 @@ sub PMBld {
+@@ -1801,17 +1789,17 @@ sub PMBld {
  	if($IsCustomDll eq 1)
  	{
  		&main::Output(
@@ -3019,7 +3035,7 @@ index aae0fa5..c850456 100644
  		);
  	}
  
-@@ -1927,16 +1915,16 @@ sub PMSrcDepend {
+@@ -1942,16 +1930,16 @@ sub PMSrcDepend {
  		if ($tranasm)
  		{
  			&main::Output(
@@ -3040,7 +3056,7 @@ index aae0fa5..c850456 100644
  		);
  	}
  	&main::Output(
-@@ -1985,17 +1973,17 @@ sub PMSrcBldDepend {
+@@ -2000,17 +1988,17 @@ sub PMSrcBldDepend {
  	if ($tranasm)
  	{
  		&main::Output(
@@ -3062,7 +3078,7 @@ index aae0fa5..c850456 100644
  	);
  
  	my $prefix_file=getConfigVariable('PREFIXFILE');
-@@ -2025,7 +2013,7 @@ sub quoted_path
+@@ -2040,7 +2028,7 @@ sub quoted_path
  {
      my $curdrive="";
      my ($arg) = @_;
@@ -3071,7 +3087,7 @@ index aae0fa5..c850456 100644
  
  		$curdrive=$1 if (cwd =~ /^(.:)/);
      return "\"$curdrive$arg\"";
-@@ -2056,7 +2044,7 @@ sub PMEndSrcBld {
+@@ -2071,7 +2059,7 @@ sub PMEndSrcBld {
  	my $Plat=&main::Plat;
  	my $BaseSrc=&main::BaseSrc;
  	my $Bld=&main::Bld;
@@ -3080,7 +3096,7 @@ index aae0fa5..c850456 100644
  	my $SrcPath=&main::SrcPath;
  	my $BaseTrg=&main::BaseTrg;
  	my $BldPath = &main::BldPath;
-@@ -2086,10 +2074,10 @@ sub PMEndSrcBld {
+@@ -2101,10 +2089,10 @@ sub PMEndSrcBld {
  	if ($AsmFilep || ($Ext =~ /cia/i && ($PlatName ne "GCCE"))) {
  		&main::Output(
  # compile the translated, preprocessed source
@@ -3094,7 +3110,7 @@ index aae0fa5..c850456 100644
  			"\n"
  			);
  # rule to translate the preprocessed source
-@@ -2097,40 +2085,40 @@ sub PMEndSrcBld {
+@@ -2112,40 +2100,40 @@ sub PMEndSrcBld {
  			if ($tranasm)
  			{
  		&main::Output(
@@ -3150,7 +3166,7 @@ index aae0fa5..c850456 100644
  			"\n"
  			);
  			}
-@@ -2139,38 +2127,38 @@ sub PMEndSrcBld {
+@@ -2154,38 +2142,38 @@ sub PMEndSrcBld {
  		#If Function call logging is enabled, add call to function call logger
  		if ($Function_Call_Logger)	{
  			&main::Output(
@@ -3197,7 +3213,7 @@ index aae0fa5..c850456 100644
  				"\n",
  				"\t\@echo $BaseSrc.int.cpp\n",
  				"\t\$(FCLOGGER$Bld) $lfboption \\\n" ,
-@@ -2178,24 +2166,24 @@ sub PMEndSrcBld {
+@@ -2193,24 +2181,24 @@ sub PMEndSrcBld {
  				"\t$logger_preinclude \\\n ",
  				"\t\$(INCDIR_FCLOGGER) \\\n" ,
  				"\t$Dictionary_File_Name $BldPath$BaseTrg.txt \\\n" ,
@@ -3228,7 +3244,7 @@ index aae0fa5..c850456 100644
  			"\n"
  			);
  			# Compiler wrapper support starts...
-@@ -2205,7 +2193,7 @@ sub PMEndSrcBld {
+@@ -2220,7 +2208,7 @@ sub PMEndSrcBld {
  					"COMPWRAP$Bld$BaseSrc : ",
  					&Generic_Quote("$SrcPath$Src"), "\n",
  					"\t\@echo Analysing $Src\n",
@@ -3237,7 +3253,7 @@ index aae0fa5..c850456 100644
  					"\n"
  				);
  			}
-@@ -2220,7 +2208,7 @@ sub MultiFileEndSrcBld {
+@@ -2235,7 +2223,7 @@ sub MultiFileEndSrcBld {
  	my $BaseSrc=&main::BaseSrc;
  	my $Bld=&main::Bld;
          my $KeyFile = &main::Src;
@@ -3246,7 +3262,7 @@ index aae0fa5..c850456 100644
  	my $SrcPath=&main::SrcPath;
  	my $Ext = &main::Path_Split('Ext', $Src);
  	my $LangOptions = &SelectLangOptions($Ext);
-@@ -2235,12 +2223,12 @@ sub MultiFileEndSrcBld {
+@@ -2250,12 +2238,12 @@ sub MultiFileEndSrcBld {
  # compile the translated, preprocessed source
  			   &main::Output( "OBJECTS$MFVarN = ");
  			   foreach my $obj (@{$CompilationGroups{$KeyFile}{Objects}}) {
@@ -3261,7 +3277,7 @@ index aae0fa5..c850456 100644
  			   }
  				   &main::Output( "\n\n");
  			   &main::Output( "\$(OBJECTS$MFVarN) : \$(SOURCES$MFVarN) \n");
-@@ -2255,21 +2243,21 @@ sub MultiFileEndSrcBld {
+@@ -2270,21 +2258,21 @@ sub MultiFileEndSrcBld {
  		}
  		&main::Output(
  # rule to translate the preprocessed source
@@ -3292,7 +3308,7 @@ index aae0fa5..c850456 100644
  			"\n"
  			);
  	} else {
-@@ -2278,7 +2266,7 @@ sub MultiFileEndSrcBld {
+@@ -2293,7 +2281,7 @@ sub MultiFileEndSrcBld {
  #                      compile the source
  			   &main::Output( "OBJECTS$MFVarN = ");
  			   foreach my $obj (@{$CompilationGroups{$KeyFile}{Objects}}) {
@@ -3301,7 +3317,7 @@ index aae0fa5..c850456 100644
  			   }
  				   &main::Output( "\n\n");
  			   &main::Output( "SOURCES$MFVarN = ");
-@@ -2298,12 +2286,12 @@ sub MultiFileEndSrcBld {
+@@ -2313,12 +2301,12 @@ sub MultiFileEndSrcBld {
  		}
  #		generate an assembly listing target too
  		&main::Output(
@@ -3317,7 +3333,7 @@ index aae0fa5..c850456 100644
  			"\n"
  			);
  	}
-@@ -2515,7 +2503,7 @@ sub InitToolChain(@) {
+@@ -2530,7 +2518,7 @@ sub InitToolChain(@) {
  	{
  		my $RVCTBuildNumber;
  
@@ -3326,7 +3342,7 @@ index aae0fa5..c850456 100644
  
  		$RVCTVersion = "${RVCTMajorVersion}_${RVCTMinorVersion}";
  
-@@ -2720,11 +2708,9 @@ sub GetLibList() {
+@@ -2735,11 +2723,9 @@ sub GetLibList() {
  		@LibList=&Armutl_ArmLibList;
  		if(@LibList==0) {
  			my $LibDir = Armutl_ArmLibDir();
@@ -3339,7 +3355,7 @@ index aae0fa5..c850456 100644
  				}
  			}
  		}
-@@ -2816,6 +2802,7 @@ sub checkVMAPFiles
+@@ -2831,6 +2817,7 @@ sub checkVMAPFiles
  {
  	my %srcSet = %{&main::getSrcSet};
  	my %featureVariantInfo = &main::FeatureVariantInfo();
@@ -4171,7 +4187,7 @@ index 506f01b..efa519b 100644
  	&Generic_Releaseables;
  }
 diff --git a/compilation_config/armv5.mk b/compilation_config/armv5.mk
-index b82b8e5..4356848 100644
+index 2a66ed6..3c66b91 100644
 --- a/compilation_config/armv5.mk
 +++ b/compilation_config/armv5.mk
 @@ -38,7 +38,7 @@ ASM=armasm
@@ -4444,19 +4460,18 @@ index 621bdc4..448a54b 100644
  require Exporter;
  @ISA=qw(Exporter);
 diff --git a/e32env.pm b/e32env.pm
-index acce36f..db4c68d 100644
+index 585f0d5..b250bf9 100644
 --- a/e32env.pm
 +++ b/e32env.pm
-@@ -17,7 +17,7 @@
+@@ -17,46 +17,35 @@
  # 
  #
  
 -package E32env;
 +package e32env;
  
- 
  use vars qw(%Data);
-@@ -25,39 +25,28 @@ use vars qw(%Data);
+ 
  BEGIN {
  	my $epocroot = $ENV{EPOCROOT};
  	die "ERROR: Must set the EPOCROOT environment variable\n" if (!defined($epocroot));
@@ -4680,7 +4695,7 @@ index 5312dab..283f0b7 100644
  		die "ERROR: Platform \"$Candidate\" not supported\n";
  	}
 diff --git a/e32tpver.pm b/e32tpver.pm
-index 684133e..2f14e9b 100644
+index 567cb74..d3ba33d 100644
 --- a/e32tpver.pm
 +++ b/e32tpver.pm
 @@ -15,7 +15,7 @@
@@ -4794,10 +4809,10 @@ index 29fc4fb..c426934 100644
  	    if($_ =~ /(\#define)(\s+)(.+)/){
  		push @macros, $3;
 diff --git a/efreeze.pl b/efreeze.pl
-index a386b48..ad3188a 100644
+index 924701c..66a7c19 100644
 --- a/efreeze.pl
 +++ b/efreeze.pl
-@@ -36,9 +36,9 @@ BEGIN {
+@@ -35,9 +35,9 @@ BEGIN {
  }
  
  use lib $PerlLibPath;
@@ -4931,7 +4946,7 @@ index 40e5ced..901320b 100644
  	if (!-d $epocroot);
      return $epocroot;
 diff --git a/epocaif.pl b/epocaif.pl
-index 6709125..af01741 100644
+index 20a3a74..fac3864 100644
 --- a/epocaif.pl
 +++ b/epocaif.pl
 @@ -1,3 +1,4 @@
@@ -4939,7 +4954,7 @@ index 6709125..af01741 100644
  # Copyright (c) 2001-2009 Nokia Corporation and/or its subsidiary(-ies).
  # All rights reserved.
  # This component and the accompanying materials are made available
-@@ -28,12 +29,11 @@ my $curdrive="x";	    	# will be initialised when first needed
+@@ -26,12 +27,11 @@ my $curdrive="x";	    	# will be initialised when first needed
  BEGIN {
  	require 5.005_03;		# check user has a version of perl that will cope
  	$PerlBinPath = $FindBin::Bin;	# X:/epoc32/tools
@@ -4955,7 +4970,7 @@ index 6709125..af01741 100644
  
  sub print_usage
  	{
-@@ -49,9 +49,9 @@ The available options are
+@@ -47,9 +47,9 @@ The available options are
     -Ixxx  -- C++ preprocessor arguments
     -o	  -- output AIF file name including path
     -t	  -- tempory directory for intermediate files
@@ -4967,7 +4982,7 @@ index 6709125..af01741 100644
  
  The aif resource file is then passed through the C++ preprocessor, using any 
  specified preprocessor arguments, and then compiled with RCOMP.EXE to 
-@@ -118,7 +118,7 @@ while (@ARGV)
+@@ -116,7 +116,7 @@ while (@ARGV)
  		next;
  		}
  
@@ -4976,7 +4991,7 @@ index 6709125..af01741 100644
  		{
  		$tmpdir =$1;
  		next;
-@@ -161,8 +161,8 @@ if ($errors || $sourcefile eq "")
+@@ -159,8 +159,8 @@ if ($errors || $sourcefile eq "")
  
  my $rss_base = basename($sourcefile);
  my ($rssfile) = split(/\./, $rss_base);	    # remove extension
@@ -4987,7 +5002,7 @@ index 6709125..af01741 100644
  my $headerfile=$opt_h;
  
  if ($opt_v)
-@@ -186,7 +186,7 @@ if($variantMacroHRHFile){
+@@ -184,7 +184,7 @@ if($variantMacroHRHFile){
      $cpp_spec .= " -I \"" . &Path_RltToWork($variantFilePath) . "\" -include " . &Path_RltToWork($variantMacroHRHFile) . " "; 
  }
  
@@ -4996,7 +5011,7 @@ index 6709125..af01741 100644
  $cpp_spec .= "-D_UNICODE ";
  
  $cpp_spec .= quoted_path($sourcefile) ." -o ". quoted_path($rpp_name);
-@@ -197,7 +197,6 @@ system($cpp_spec);
+@@ -195,7 +195,6 @@ system($cpp_spec);
  my $cpp_status = $?;
  die "* cpp failed\n" if ($cpp_status != 0);
  
@@ -5004,7 +5019,7 @@ index 6709125..af01741 100644
  #-------------------------------------------------------
  # Copy source to epoc32\localisation
  #
-@@ -219,7 +218,8 @@ use lockit_info;
+@@ -217,7 +216,8 @@ use lockit_info;
  #
  
  my $rcomp_spec = "rcomp -u ";
@@ -5014,7 +5029,7 @@ index 6709125..af01741 100644
  $rcomp_spec .= "$opt_o $opt_h -s\"$rpp_name\" -i\"$sourcefile\"";
  
  print "* $rcomp_spec\n" if ($opt_v);
-@@ -240,15 +240,19 @@ unlink $rpp_name;
+@@ -238,15 +238,19 @@ unlink $rpp_name;
  
  if ($opt_b ne "")
  	{
@@ -5038,7 +5053,7 @@ index 6709125..af01741 100644
  	
  	if ($? != 0)
  		{
-@@ -258,23 +262,23 @@ if ($opt_b ne "")
+@@ -256,23 +260,23 @@ if ($opt_b ne "")
  	}
  elsif ($opt_m ne "")
  	{
@@ -5068,7 +5083,7 @@ index 6709125..af01741 100644
  binmode(DUMP_OF_RESOURCE_1);
  my $data;
  my $numberOfBytesRead=read(DUMP_OF_RESOURCE_1, $data, 4);
-@@ -289,8 +293,8 @@ close(DUMP_OF_RESOURCE_1) or die("* Can't close dump file\n");
+@@ -287,8 +291,8 @@ close(DUMP_OF_RESOURCE_1) or die("* Can't close dump file\n");
  # Produce the AIF file from the RSC and MBM files
  #
  
@@ -5079,7 +5094,7 @@ index 6709125..af01741 100644
  
  print "* $uidcrc\n" if ($opt_v);
  system($uidcrc);
-@@ -311,17 +315,17 @@ if ($xipaif ne 0)
+@@ -309,17 +313,17 @@ if ($xipaif ne 0)
  	}
  
  
@@ -5100,7 +5115,7 @@ index 6709125..af01741 100644
  my $numberOfPaddingBytes=(4-($lengthOfRscBlock%4))%4;
  print(OUT_AIF pack('V', $lengthOfRscBlock));
  if ($xipaif ne 0)
-@@ -329,10 +333,10 @@ if ($xipaif ne 0)
+@@ -327,10 +331,10 @@ if ($xipaif ne 0)
  	print(OUTXIP_AIF pack('V', $lengthOfRscBlock));
  	}
  print "* Appending the RSC-block\n" if ($opt_v);
@@ -5113,7 +5128,7 @@ index 6709125..af01741 100644
  	}
  # append any necessary padding bytes so that the file-offset of the start of the MBM-block is a multiple of 4-bytes
  print(OUT_AIF ('_' x $numberOfPaddingBytes));
-@@ -340,15 +344,15 @@ if ($xipaif ne 0)
+@@ -338,15 +342,15 @@ if ($xipaif ne 0)
  	{
  	print(OUTXIP_AIF ('_' x $numberOfPaddingBytes));
  	}
@@ -5133,7 +5148,7 @@ index 6709125..af01741 100644
  	}
  
  close(OUT_AIF) or die("* Can't close temporary file\n");
-@@ -356,23 +360,23 @@ if ($xipaif ne 0)
+@@ -354,23 +358,23 @@ if ($xipaif ne 0)
  	{
  	close(OUTXIP_AIF) or die("* Can't close temporary file\n");
  	}
@@ -5167,7 +5182,7 @@ index 6709125..af01741 100644
  exit 0;
  
  #-------------------------------------------------------
-@@ -382,7 +386,7 @@ exit 0;
+@@ -380,7 +384,7 @@ exit 0;
  sub quoted_path
      {
      my ($arg) = @_;
@@ -5205,7 +5220,7 @@ index 359a929..419c67f 100644
  		{
  		print "* BMCONV failed\n";
 diff --git a/epocrc.pl b/epocrc.pl
-index 4439529..a3e3210 100644
+index 2fa5ae1..6b8f7b1 100644
 --- a/epocrc.pl
 +++ b/epocrc.pl
 @@ -1,3 +1,4 @@
@@ -5213,7 +5228,7 @@ index 4439529..a3e3210 100644
  # Copyright (c) 2000-2009 Nokia Corporation and/or its subsidiary(-ies).
  # All rights reserved.
  # This component and the accompanying materials are made available
-@@ -27,13 +28,12 @@ my $PerlBinPath;	# fully qualified pathname of the directory containing this scr
+@@ -28,13 +29,12 @@ my $PerlBinPath;	# fully qualified pathname of the directory containing this scr
  BEGIN {
  	require 5.005_03;		# check user has a version of perl that will cope
  	$PerlBinPath = $FindBin::Bin;	# X:/epoc32/tools
@@ -5230,7 +5245,7 @@ index 4439529..a3e3210 100644
  
  sub print_usage
  	{
-@@ -190,7 +190,7 @@ while (@ARGV)
+@@ -191,7 +191,7 @@ while (@ARGV)
  		}
  	if ($arg =~ /^-t(.*)\\?$/)
  		{
@@ -5310,10 +5325,10 @@ index 0000000..e2045c1
 +wine make "$@"
 +
 diff --git a/featurevariantparser.pm b/featurevariantparser.pm
-index c528062..2a3ac23 100644
+index 86d878c..ec698c5 100644
 --- a/featurevariantparser.pm
 +++ b/featurevariantparser.pm
-@@ -51,7 +51,7 @@ my $virtual;
+@@ -50,7 +50,7 @@ my $virtual;
  my $childNodeStatus;
  my $varianthrh;
  
@@ -5435,7 +5450,7 @@ index b519944..9160298 100644
  		}
  
 diff --git a/lockit_info.pm b/lockit_info.pm
-index 18ad5c8..7b66349 100644
+index dbcdf77..c0070be 100644
 --- a/lockit_info.pm
 +++ b/lockit_info.pm
 @@ -32,7 +32,7 @@ require Exporter;
@@ -5495,23 +5510,8 @@ index 18ad5c8..7b66349 100644
 +		copy("$RppFile", "$FilePath/$ResrcFile.rpp");
  	}
  
- 	# update bitmaps in epoc32\localisation if -l option and bitmaps specified
-@@ -96,12 +96,12 @@ sub Lockit_SrcFile()
- 
- 		my (@AifBitmaps) = split(/ /, $Bitmaps);
- 		foreach $BmpRef (@AifBitmaps) {
--			$BmpRef =~ /^([^\\]+)(\\.*)$/;
-+			$BmpRef =~ m|^(/[^\/]+)(\/.*)$|i;
- 			my $CDepth = $1;
- 			my $bmp = $2;
- 			Copy_Files($bmp, $FilePath);
- 			my $file_base= basename($bmp);
--			chmod (0666,"$FilePath\\$file_base");
-+			chmod (0666,"$FilePath\/$file_base");
- 		}
- 	}
- 
-@@ -110,7 +110,7 @@ sub Lockit_SrcFile()
+ 	if (defined $ENV{ABLD_TOOLSMOD_COMPATIBILITY_MODE} &&  ($ENV{ABLD_TOOLSMOD_COMPATIBILITY_MODE} eq 'alpha')) {
+@@ -91,7 +91,7 @@ sub Lockit_SrcFile()
  		{
  			Open_InfoFile($ResrcFile . $lang);
  
@@ -5520,7 +5520,7 @@ index 18ad5c8..7b66349 100644
  
  			if($FileType =~ /RSC/i && $RppFile ne "") {
  				WriteTo_Info (
-@@ -129,12 +129,12 @@ sub Lockit_SrcFile()
+@@ -110,12 +110,12 @@ sub Lockit_SrcFile()
  				my $BmpRef;
  				my (@AifBitmaps) = split(/ /, $Bitmaps);
  				foreach $BmpRef (@AifBitmaps) {
@@ -5535,7 +5535,7 @@ index 18ad5c8..7b66349 100644
  					);
  				}
  			}
-@@ -147,7 +147,7 @@ sub Lockit_SrcFile()
+@@ -128,7 +128,7 @@ sub Lockit_SrcFile()
  		{
  			Open_InfoFile($ResrcFile);
  
@@ -5544,7 +5544,7 @@ index 18ad5c8..7b66349 100644
  
  			if($FileType =~ /RSC/i && $RppFile ne "") {
  				WriteTo_Info (
-@@ -166,12 +166,12 @@ sub Lockit_SrcFile()
+@@ -147,12 +147,12 @@ sub Lockit_SrcFile()
  				my $BmpRef;
  				my (@AifBitmaps) = split(/ /, $Bitmaps);
  				foreach $BmpRef (@AifBitmaps) {
@@ -5559,7 +5559,7 @@ index 18ad5c8..7b66349 100644
  					);
  				}
  			}
-@@ -187,7 +187,6 @@ sub Lockit_SrcFile()
+@@ -168,7 +168,6 @@ sub Lockit_SrcFile()
  sub Copy_Files ()
  	{
  	my ($SourceName, $TargetName) = @_;
@@ -5567,10 +5567,10 @@ index 18ad5c8..7b66349 100644
  	copy($SourceName, $TargetName);
  	}
  
-@@ -196,9 +195,9 @@ sub Create_InfoFile ()
+@@ -177,9 +176,9 @@ sub Create_InfoFile ()
  	{
  	my ($CreateLockitPath, $CreateInfoFile, $Datadir) = @_;
- 	if ( !-e "$CreateLockitPath") { mkpath($CreateLockitPath); }
+ 	if (($CreateLockitPath !~ /mbm$/i) && (!-e "$CreateLockitPath")) { mkpath($CreateLockitPath); }
 -	if ( !-e "$epocPath\\group") { mkpath("$epocPath\\group"); }
 -	if ( !-e "$epocPath\\group\\$CreateInfoFile.info") {	
 -		open INFO,">$epocPath\\group\\$CreateInfoFile.info" or die "ERROR: Can not create file \"$CreateInfoFile\"\n"; 
@@ -5580,7 +5580,7 @@ index 18ad5c8..7b66349 100644
  		print INFO "DATADIR: $Datadir\n";
  		close INFO;
  	}
-@@ -208,7 +207,7 @@ sub Create_InfoFile ()
+@@ -189,7 +188,7 @@ sub Create_InfoFile ()
  sub Open_InfoFile ($)
  	{
  	my $FileToOpen = $_[0];
@@ -5589,7 +5589,7 @@ index 18ad5c8..7b66349 100644
  	}
  
  
-@@ -227,7 +226,7 @@ sub LineExists ()
+@@ -208,7 +207,7 @@ sub LineExists ()
  	my $LineCheck = $_[1];
  	my $exists = 0;
  
@@ -5598,7 +5598,7 @@ index 18ad5c8..7b66349 100644
  		while(<INFO>) {
  			if (/$LineCheck/i) { $exists = 1; return $exists; } 
  		}
-@@ -247,17 +246,17 @@ sub Setup_LockitPath
+@@ -228,17 +227,17 @@ sub Setup_LockitPath
  	else {
  		($ComponentSrcPath, $Resrc, $FileType) = @_;
  	}
@@ -5619,7 +5619,7 @@ index 18ad5c8..7b66349 100644
  	}
  
  	my $WorkPath = ""; 
-@@ -266,13 +265,13 @@ sub Setup_LockitPath
+@@ -247,13 +246,13 @@ sub Setup_LockitPath
  		$WorkPath = "$Resrc"; 
  	}
  
@@ -5636,7 +5636,7 @@ index 18ad5c8..7b66349 100644
  	}
  
  	return $FilePath;
-@@ -296,16 +295,16 @@ sub Lockit_Releasables
+@@ -277,16 +276,16 @@ sub Lockit_Releasables
  		($BaseResrc,$FileType) = split(/\./, $Resrc);
  		Check_Epocroot();
  	
@@ -5656,7 +5656,7 @@ index 18ad5c8..7b66349 100644
  		}
  
  	}
-@@ -315,16 +314,16 @@ sub Lockit_Releasables
+@@ -296,13 +295,13 @@ sub Lockit_Releasables
  		$Resrc = basename($ResrcFile);
  		($BaseResrc,$FileType) = split(/\./, $Resrc);
  		Check_Epocroot();
@@ -5671,11 +5671,7 @@ index 18ad5c8..7b66349 100644
 +			$LockitPath .= "/$BaseResrc.rpp";
  		}
  		else {
--			$LockitPath .= "\\$Bitmaps";
-+			$LockitPath .= "/$Bitmaps";
- 		}
- 	}
- 
+ 			undef $LockitPath;
 diff --git a/makdeps.pm b/makdeps.pm
 index 606deaa..b2d5ef1 100644
 --- a/makdeps.pm
@@ -5812,10 +5808,10 @@ index 606deaa..b2d5ef1 100644
  			}
  		}
 diff --git a/makedef.pl b/makedef.pl
-index ef3560b..308e646 100644
+index bf358f5..5b63865 100644
 --- a/makedef.pl
 +++ b/makedef.pl
-@@ -38,9 +38,9 @@ BEGIN {
+@@ -37,9 +37,9 @@ BEGIN {
  }
  use lib $PerlBinPath;
  
@@ -5828,7 +5824,7 @@ index ef3560b..308e646 100644
  use File::Copy;
  
  my %Options;	# command line option information
-@@ -247,6 +247,7 @@ sub ReadInfFileL ($$$) {
+@@ -246,6 +246,7 @@ sub ReadInfFileL ($$$) {
  	my %exports;	# MWLD workaround - record mangled names in case we don't see the demangled ones
  	my $Line;
  	while ($Line=<FILE>) {
@@ -5836,7 +5832,7 @@ index ef3560b..308e646 100644
  	        my $Data=0;
  			my $SymbolSize=0;
  		$LineNum++;
-@@ -305,6 +306,7 @@ sub ReadInfFileL ($$$) {
+@@ -304,6 +305,7 @@ sub ReadInfFileL ($$$) {
  				# Currently for Linux "Unmangled Symbols" section is blank
  				<FILE>; 
  				$Line = <FILE>; 
@@ -5844,7 +5840,7 @@ index ef3560b..308e646 100644
  				$LineNum+=2;
  				if ($^O eq "MSWin32") {
  					if ($Line !~ /^\s*\d+:\s+(\S+)$/o) {
-@@ -318,6 +320,7 @@ sub ReadInfFileL ($$$) {
+@@ -317,6 +319,7 @@ sub ReadInfFileL ($$$) {
  					$Name = $1;
  				}
  				$Line = <FILE>; 
@@ -5902,7 +5898,7 @@ index 0000000..f8bee9d
 +	wine $ROOT/$PGM.exe "$@"
 +fi
 diff --git a/makhelp.pm b/makhelp.pm
-index 48b2f35..efc5fcc 100644
+index 7acdcf4..7331aae 100644
 --- a/makhelp.pm
 +++ b/makhelp.pm
 @@ -14,7 +14,7 @@
@@ -5914,16 +5910,16 @@ index 48b2f35..efc5fcc 100644
  require Exporter;
  @ISA=qw(Exporter);
  @EXPORT=qw(
-@@ -24,7 +24,7 @@ require Exporter;
+@@ -23,7 +23,7 @@ require Exporter;
+ 	Help_Plat
  );
- 
  
 -use E32tpver;
 +use e32tpver;
  use featurevariantparser;
  # also requires main module to have loaded platform module(s) and Modload.pm and Trgtype.pm
  
-@@ -37,7 +37,7 @@ sub Help_Invocation () {
+@@ -36,7 +36,7 @@ sub Help_Invocation () {
  		"MAKMAKE {flags} [{MMPFilePath}MMPFileRoot] [Platform[.Feature Variant]]\n",
  		"\n",
  		"Flags: (case insensitive)\n",
@@ -5932,7 +5928,7 @@ index 48b2f35..efc5fcc 100644
  		" -MMP             -> information - basic mmp syntax\n",
  		" -PLAT [platform] -> information - platform-specific mmp syntax\n",
  		" -V               -> verbose mode\n",
-@@ -122,7 +122,7 @@ DEBUGGABLE_UDEBONLY    [Only Debug (UDEB) executables can be debugged in a runni
+@@ -121,7 +121,7 @@ DEBUGGABLE_UDEBONLY    [Only Debug (UDEB) executables can be debugged in a runni
  DEBUGLIBRARY           [libraries - use in addition to LIBRARY for DEBUG builds]
  
  DEFFILE                [{path}{deffile} (default -
@@ -5960,7 +5956,7 @@ index 0000000..9199434
 +
 +perl -S makmake.pl "$@"
 diff --git a/makmake.pl b/makmake.pl
-index 3904419..e490a8f 100644
+index 816d6c5..4445af3 100644
 --- a/makmake.pl
 +++ b/makmake.pl
 @@ -1,3 +1,4 @@
@@ -6049,15 +6045,6 @@ index 3904419..e490a8f 100644
  # modified by SV end: makefile improvement 
  			$vmap = Path_PrefixWithDrive($vmap);
  			if(-e $vmap){
-@@ -456,7 +456,7 @@ if ($FeatureVariantArg)
- 					@reusedHash = featurevariantmap->CheckOldVmapFile($vmap, \%FeatureVariantInfo);
- 				}
- 			}
--			if(defined(@reusedHash))
-+			if(@reusedHash)
- 			{
- 				$FeatureVariantInfo{$bld."_LABEL"} = $reusedHash[0];
- 				$FeatureVariantInfo{$bld."_FEATURES"} = $reusedHash[1];
 @@ -525,7 +525,7 @@ if ($FeatureVariantArg)
  # Special handling for non-default invariant makefiles without FEATUREVARIANT in the MMP file
  # In this situation the default variant makefle is just included into the variant makefile
@@ -6078,7 +6065,7 @@ index 3904419..e490a8f 100644
 +	$variant_info = &Path_Chop($e32env::Data{BldPath}).$Path{BldInfPath}."/FeatureVariantInfo/".$Plat{Real}."/".$Plat{Real}.".".$FeatureVariantInfo{NAME}.".info" if ! -e $MMPFILE;
  # modified by SV end: makefile improvement 
  	my $variant_key = "VARIANT_PLAT_NAME_".&Path_Split('Base', $MMPFILE);
- 	$variant_info_new = $variant_info.".tmp";
+ 	my $variant_info_new = $variant_info.".tmp";
 @@ -633,12 +633,12 @@ my %CurSrcSet;
      
      ## Add default system include info for TOOLS2
@@ -6207,7 +6194,7 @@ index 3904419..e490a8f 100644
  }
  
  sub generateX86GCCDefFile()
-@@ -1202,33 +1200,33 @@ sub InitLinkPaths() {
+@@ -1202,28 +1200,28 @@ sub InitLinkPaths() {
  	my $UnderlyingABI=$ABI;
  	$UnderlyingABI=&PMUnderlyingABI($ABI) if defined &PMUnderlyingABI;
  
@@ -6244,13 +6231,16 @@ index 3904419..e490a8f 100644
  		}
  	}
  
- #	set up release path
--	$Path{Rel}="$E32env::Data{RelPath}".lc($Plat{Real})."\\";
-+	$Path{Rel}="$e32env::Data{RelPath}".lc($Plat{Real})."/";
+@@ -1233,7 +1231,7 @@ sub InitLinkPaths() {
+ 		$Path{Rel}=$Path{StatLink};
+ 	}
+ 	else {
+-		$Path{Rel}="$E32env::Data{RelPath}".lc($Plat{Real})."\\";
++		$Path{Rel}="$e32env::Data{RelPath}".lc($Plat{Real})."/";
+ 	}
  	
  }
- 
-@@ -1299,10 +1297,10 @@ sub ASSPLinkPath () {
+@@ -1305,10 +1303,10 @@ sub ASSPLinkPath () {
  	my $Path=$Path{ASSPLink};
  	if ($CurBld) {
  		if ($Plat{OS} eq 'EPOC32') {
@@ -6263,7 +6253,7 @@ index 3904419..e490a8f 100644
  		}
  	}
  	$Path;
-@@ -1361,8 +1359,8 @@ sub BldList () {
+@@ -1367,8 +1365,8 @@ sub BldList () {
  sub BldPath () {
  	my $Path=$Path{"Bld"};
  	if ($CurBld) {
@@ -6274,7 +6264,7 @@ index 3904419..e490a8f 100644
  	}
  	$Path;
  }
-@@ -1379,7 +1377,7 @@ sub DataLinkAddress () {
+@@ -1385,7 +1383,7 @@ sub DataLinkAddress () {
  	$DataLinkAddress;
  }
  sub DataPath () {
@@ -6283,7 +6273,7 @@ index 3904419..e490a8f 100644
  }
  sub DebugLibList () {
  	@DebugLibList;
-@@ -1408,22 +1406,22 @@ sub DocList () {
+@@ -1414,22 +1412,22 @@ sub DocList () {
  	sort @DocList;
  }
  sub EPOCPath () {
@@ -6312,7 +6302,7 @@ index 3904419..e490a8f 100644
  }
  sub Exports () {
  	@{$TrgType{Exports}{$Plat{"DefFile"}}};
-@@ -1451,13 +1449,13 @@ sub LibPath () {
+@@ -1457,13 +1455,13 @@ sub LibPath () {
  	my $Path=$Path{Lib};
  	if ($CurBld) {
  		if (($Plat{DefFile} eq 'EABI') || ($Plat{DefFile} eq 'x86gcc') || ($Plat{OS} eq 'TOOLS2')) {
@@ -6329,7 +6319,7 @@ index 3904419..e490a8f 100644
  		}
  	}
  	$Path;
-@@ -1479,13 +1477,13 @@ sub LinkPath () {
+@@ -1485,13 +1483,13 @@ sub LinkPath () {
  	my $Path=$Path{Link};
  	if ($CurBld) {
  		if ($Plat{DefFile} eq 'EABI' || $Plat{DefFile} eq 'x86gcc') {
@@ -6346,7 +6336,7 @@ index 3904419..e490a8f 100644
  		}
  	}
  	$Path;
-@@ -1542,7 +1540,7 @@ sub ProcessPriority () {
+@@ -1548,7 +1546,7 @@ sub ProcessPriority () {
  sub RelPath () {
  	my $Path=$Path{Rel};
  	if ($CurBld) {
@@ -6355,7 +6345,7 @@ index 3904419..e490a8f 100644
  	}
  	$Path;
  }
-@@ -1560,7 +1558,7 @@ sub	SetStdIncPaths (@) {
+@@ -1566,7 +1564,7 @@ sub	SetStdIncPaths (@) {
  	@StdIncPaths=();
  	my $Path;
  	foreach $Path (@_) {
@@ -6364,7 +6354,7 @@ index 3904419..e490a8f 100644
  		push @StdIncPaths, $Path;	# only place drive letters may appear, up to modules to handle
  	}
  }
-@@ -1592,7 +1590,8 @@ sub StatLibList () {
+@@ -1598,7 +1596,8 @@ sub StatLibList () {
  sub StatLinkPath () {
  	my $Path=$Path{StatLink};
  	if ($CurBld) {
@@ -6374,7 +6364,7 @@ index 3904419..e490a8f 100644
  	}
  	$Path;
  }
-@@ -1626,6 +1625,7 @@ sub Trg (;$) {
+@@ -1632,6 +1631,7 @@ sub Trg (;$) {
  	return "" if !$Trg;
  
  	my $localTrg = $Trg;	
@@ -6438,7 +6428,7 @@ index 0000000..1638c76
 +
 +system ($command);
 diff --git a/mmp.pm b/mmp.pm
-index de8772b..4e99c0f 100644
+index e4d66fd..8c20a54 100644
 --- a/mmp.pm
 +++ b/mmp.pm
 @@ -1,3 +1,4 @@
@@ -6473,9 +6463,9 @@ index de8772b..4e99c0f 100644
  	Mmp_SysIncPaths
  	Mmp_Trg
  	Mmp_TrgType
-@@ -91,11 +92,11 @@ require Exporter;
+@@ -90,11 +91,11 @@ require Exporter;
+ 	Mmp_TestedMacros
  );
- 
  
 -use Genutl;
 -use Prepfile;
@@ -6490,7 +6480,7 @@ index de8772b..4e99c0f 100644
  use Cwd;
  
  my %ProcessPriorityNames = (
-@@ -352,12 +353,10 @@ sub Mmp_ProcessL ($$$$) {
+@@ -351,12 +352,10 @@ sub Mmp_ProcessL ($$$$) {
  	}
  
  	my $current = cwd;
@@ -6504,7 +6494,7 @@ index de8772b..4e99c0f 100644
  	push @checkSourceUserIncludePaths, "\.";
  	push @checkSourceUserIncludePaths, $current;
  	my @checkSourceSystemIncludePaths = ();
-@@ -392,7 +391,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -391,7 +390,7 @@ sub Mmp_ProcessL ($$$$) {
  	my ($CurSrcPath, $MmpMacro, $Line);
  	$CurSrcPath=$MmpPath;
  
@@ -6513,7 +6503,7 @@ index de8772b..4e99c0f 100644
  	@{$DocHash{$MmpPath}}=(&Path_Split('File', $MMPFILE));
  	$CheckDoc{$MMPFILE}='zero - specified by default';
  
-@@ -428,7 +427,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -427,7 +426,7 @@ sub Mmp_ProcessL ($$$$) {
  		my $mainElement = $_;
  		
  		if ($PlatTxtSwitch) {
@@ -6522,7 +6512,7 @@ index de8772b..4e99c0f 100644
  				$PlatTxtSwitch=0;
  				next LINE;
  			}
-@@ -436,7 +435,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -435,7 +434,7 @@ sub Mmp_ProcessL ($$$$) {
  			next LINE;
  		}
  		if ($OtherPlatSwitch) {
@@ -6531,7 +6521,7 @@ index de8772b..4e99c0f 100644
  				$OtherPlatSwitch=0;
  				next LINE;
  			}
-@@ -444,15 +443,15 @@ sub Mmp_ProcessL ($$$$) {
+@@ -443,15 +442,15 @@ sub Mmp_ProcessL ($$$$) {
  		}
  		# ----------- handle body of START BITMAP ... END -------------
  		if (%CurBitMap) {
@@ -6550,7 +6540,7 @@ index de8772b..4e99c0f 100644
  						push @MmpDie, "$CurFile($LineNum) : BITMAP color depth \"$_\" - unexpected format\n";
  					}
  				}
-@@ -461,8 +460,8 @@ sub Mmp_ProcessL ($$$$) {
+@@ -460,8 +459,8 @@ sub Mmp_ProcessL ($$$$) {
  					CheckSource_MetaData(%CheckSourceMMPMetaData, $CurFile, "BITMAP SOURCE", $_, $LineNum, $CheckSource_PhysicalCheck, $CurBitMapSrcPath);
  					$_ = &Path_Norm($_);
  					
@@ -6560,7 +6550,7 @@ index de8772b..4e99c0f 100644
  					push @{$CurBitMap{Source}}, { # sources must be kept in order
  						Src=>$bitmap,
  						ClDepth=>shift @ClDepths	# take next color depth from the list
-@@ -473,29 +472,30 @@ sub Mmp_ProcessL ($$$$) {
+@@ -472,29 +471,30 @@ sub Mmp_ProcessL ($$$$) {
  				}
  				next LINE;
  			}
@@ -6595,7 +6585,7 @@ index de8772b..4e99c0f 100644
  				if ($CurBitMap{Hdr}) {
  					push @MmpWarn, "$CurFile($LineNum) : Bitmap HEADER already specified at line $CurBitMap{Hdr}\n";
  					next LINE;
-@@ -508,7 +508,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -507,7 +507,7 @@ sub Mmp_ProcessL ($$$$) {
  			}
  
  
@@ -6604,7 +6594,7 @@ index de8772b..4e99c0f 100644
  				if ($CurBitMap{TrgPath}) {
  					push @MmpWarn, "$CurFile($LineNum) : Bitmap TARGETPATH already specified\n";
  					next LINE;
-@@ -517,12 +517,13 @@ sub Mmp_ProcessL ($$$$) {
+@@ -516,12 +516,13 @@ sub Mmp_ProcessL ($$$$) {
  					push @MmpDie, "$CurFile($LineNum) : No path specified with Bitmap keyword TARGETPATH\n";
  					next LINE;
  				}
@@ -6621,7 +6611,7 @@ index de8772b..4e99c0f 100644
  				if (@$Line) {
  					push @MmpWarn, "$CurFile($LineNum) : Too many arguments for Bitmap keyword TARGETPATH\n";
  				}
-@@ -533,7 +534,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -532,7 +533,7 @@ sub Mmp_ProcessL ($$$$) {
  		
  		# ----------- handle body of START RESOURCE ... END -------------
  		if (%CurResource) {
@@ -6630,7 +6620,7 @@ index de8772b..4e99c0f 100644
  				$CurResource{SrcPath}=$CurSrcPath;
  				my %Resource=%CurResource;
  				undef %CurResource;
-@@ -541,7 +542,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -540,7 +541,7 @@ sub Mmp_ProcessL ($$$$) {
  				undef %ResourceCheckLang;
  				next LINE;
  			}
@@ -6639,7 +6629,7 @@ index de8772b..4e99c0f 100644
  				if ($CurResource{Hdr}) {
  					push @MmpWarn, "$CurFile($LineNum) : Resource HEADER already specified at line $CurResource{Hdr}\n";
  					next LINE;
-@@ -556,7 +557,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -555,7 +556,7 @@ sub Mmp_ProcessL ($$$$) {
  				}
  				next LINE;
  			}
@@ -6648,7 +6638,7 @@ index de8772b..4e99c0f 100644
  				if ($CurResource{Hdronly}) {
  					push @MmpWarn, "$CurFile($LineNum) : Resource HEADERONLY already specified at line $CurResource{Hdr}\n";
  					next LINE;
-@@ -572,7 +573,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -571,7 +572,7 @@ sub Mmp_ProcessL ($$$$) {
  				next LINE;
  			}
  
@@ -6657,7 +6647,7 @@ index de8772b..4e99c0f 100644
  				if (@$Line) {
  					my $Candidate;
  					foreach $Candidate (@$Line) {
-@@ -580,7 +581,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -579,7 +580,7 @@ sub Mmp_ProcessL ($$$$) {
  							push @MmpWarn, "$CurFile($LineNum) : Duplicate Language \"$Candidate\" at line $ResourceCheckLang{$Candidate}\n";
  							next; 
  						}
@@ -6666,7 +6656,7 @@ index de8772b..4e99c0f 100644
  						$ResourceCheckLang{$Candidate}="$CurFile($LineNum)";
  					}
  					next LINE;
-@@ -588,7 +589,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -587,7 +588,7 @@ sub Mmp_ProcessL ($$$$) {
  				push @MmpWarn, "$CurFile($LineNum) : No Languages specified for keyword LANG\n";
  				next LINE;
  			}
@@ -6675,7 +6665,7 @@ index de8772b..4e99c0f 100644
  				if ($CurResource{BaseTrg}) {
  					push @MmpWarn, "$CurFile($LineNum) : Resource TARGET already specified\n";
  					next LINE;
-@@ -607,7 +608,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -606,7 +607,7 @@ sub Mmp_ProcessL ($$$$) {
  				}
  				next LINE;
  			}
@@ -6684,7 +6674,7 @@ index de8772b..4e99c0f 100644
  				if ($CurResource{TrgPath}) {
  					push @MmpWarn, "$CurFile($LineNum) : Resource TARGETPATH already specified\n";
  					next LINE;
-@@ -616,18 +617,19 @@ sub Mmp_ProcessL ($$$$) {
+@@ -615,18 +616,19 @@ sub Mmp_ProcessL ($$$$) {
  					push @MmpDie, "$CurFile($LineNum) : No path specified with Resource keyword TARGETPATH\n";
  					next LINE;
  				}
@@ -6708,7 +6698,7 @@ index de8772b..4e99c0f 100644
  				if (@$Line) {
  					if (scalar @$Line>2) {
  						push @MmpWarn, "$CurFile($LineNum) : Can't specify more than 2 Uids\n";
-@@ -647,7 +649,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -646,7 +648,7 @@ sub Mmp_ProcessL ($$$$) {
  				push @MmpWarn, "$CurFile($LineNum) : No Uids specified for Resource keyword UID\n";
  				next LINE;
  			}
@@ -6717,7 +6707,7 @@ index de8772b..4e99c0f 100644
  				# Note that DEPENDS lines are tolerated, but ignored - these are only relevant to build systems
  				# other than ABLD
  				next LINE;
-@@ -655,7 +657,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -654,7 +656,7 @@ sub Mmp_ProcessL ($$$$) {
  			
  			push @MmpWarn, "$CurFile($LineNum) : Unrecognised Resource Keyword \"$_\"\n";
  		}
@@ -6726,7 +6716,7 @@ index de8772b..4e99c0f 100644
  			if (@$Line) {
  				push @MmpWarn, "$CurFile($LineNum) : Keyword $_ takes no arguments\n";
  			}
-@@ -670,13 +672,13 @@ sub Mmp_ProcessL ($$$$) {
+@@ -669,13 +671,13 @@ sub Mmp_ProcessL ($$$$) {
  		# ----------- handle body of START STRINGTABLE ... END -------------
  		if(%CurStringTable)
  		{	
@@ -6742,7 +6732,7 @@ index de8772b..4e99c0f 100644
  				if (scalar @$Line != 1) {
  					push @MmpDie, "$CurFile($LineNum) : Wrong number of arguments for EXPORTPATH\n";
  				} 
-@@ -684,7 +686,8 @@ sub Mmp_ProcessL ($$$$) {
+@@ -683,7 +685,8 @@ sub Mmp_ProcessL ($$$$) {
  					push @MmpDie, "$CurFile($LineNum) : Redefinition of EXPORTPATH\n";
  				}
  				else {
@@ -6752,7 +6742,7 @@ index de8772b..4e99c0f 100644
  					$CurStringTable{ExportPath} = $src;
  
  					CheckSource_MetaData(%CheckSourceMMPMetaData, $CurFile, "STRINGTABLE EXPORTPATH", $CurStringTable{ExportPath}, $LineNum);
-@@ -697,7 +700,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -696,7 +699,7 @@ sub Mmp_ProcessL ($$$$) {
  				}
  				next LINE;
  			}
@@ -6761,7 +6751,7 @@ index de8772b..4e99c0f 100644
  				if ($CurStringTable{Hdronly}) {
  					push @MmpWarn, "$CurFile($LineNum) : Stringtable HEADERONLY already specified\n";
  					next LINE;
-@@ -710,7 +713,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -709,7 +712,7 @@ sub Mmp_ProcessL ($$$$) {
  			}
  		}
  		# ----------- handle top-level MMP file -------------------	
@@ -6770,7 +6760,7 @@ index de8772b..4e99c0f 100644
  			unless ($_=uc shift @$Line) {
  				push @MmpWarn, "$CurFile($LineNum) : No Argument specified for START block\n";
  				next LINE;
-@@ -721,11 +724,12 @@ sub Mmp_ProcessL ($$$$) {
+@@ -720,11 +723,12 @@ sub Mmp_ProcessL ($$$$) {
  					next LINE;
  				}
  			}
@@ -6784,7 +6774,7 @@ index de8772b..4e99c0f 100644
  				if (@$Line) {
  					push @MmpWarn, "$CurFile($LineNum) : Too many arguments for START BITMAP clause\n";
  				}
-@@ -734,12 +738,13 @@ sub Mmp_ProcessL ($$$$) {
+@@ -733,12 +737,13 @@ sub Mmp_ProcessL ($$$$) {
  				$CurBitMap{Trg} = &Path_Norm($CurBitMap{Trg});
  				next LINE;
  			}
@@ -6800,7 +6790,7 @@ index de8772b..4e99c0f 100644
  					CheckSource_MetaData(%CheckSourceMMPMetaData, $CurFile, "START RESOURCE", $src, $LineNum, $CheckSource_PhysicalCheck, $CurSrcPath);
  					$src = &Path_Norm($src);
  				    
-@@ -749,16 +754,17 @@ sub Mmp_ProcessL ($$$$) {
+@@ -748,16 +753,17 @@ sub Mmp_ProcessL ($$$$) {
  				
  				next LINE;
  			}
@@ -6822,7 +6812,7 @@ index de8772b..4e99c0f 100644
  					$CurStringTable{BaseTrg}=&Path_Split('Base',$Candidate);
  					my $path=&Path_Split('Path',$Candidate);
  					if($path){
-@@ -776,15 +782,18 @@ sub Mmp_ProcessL ($$$$) {
+@@ -775,15 +781,18 @@ sub Mmp_ProcessL ($$$$) {
  			next LINE;
  		}
  
@@ -6843,7 +6833,7 @@ index de8772b..4e99c0f 100644
  			$Data{Source}=&Path_MakeAbs($CurFile, "$dir$file");
  			unless (-e "$Data{Source}") {
  				push @MmpWarn, "$CurFile($LineNum) : AIF source \"$Data{Source}\" not found\n";
-@@ -806,7 +815,8 @@ sub Mmp_ProcessL ($$$$) {
+@@ -805,7 +814,8 @@ sub Mmp_ProcessL ($$$$) {
  			}
  			@ClDepths = (@ClDepths) x @bitmaps;	# make a sufficiently long list of color depths
  			foreach $file (@bitmaps) {
@@ -6853,7 +6843,7 @@ index de8772b..4e99c0f 100644
  					$file = &Path_MakeAbs($CurFile, "$dir$file");
  				}
  				push @{$Data{BitMaps}}, { # sources must be kept in order
-@@ -819,21 +829,21 @@ sub Mmp_ProcessL ($$$$) {
+@@ -818,21 +828,21 @@ sub Mmp_ProcessL ($$$$) {
  			}
  			next LINE;
  		}
@@ -6878,7 +6868,7 @@ index de8772b..4e99c0f 100644
  			if (@$Line) {
  				my $Candidate;
  				foreach $Candidate (@$Line) {
-@@ -856,7 +866,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -855,7 +865,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No Libraries specified for keyword ASSPLIBRARY\n";
  			next LINE;
  		}
@@ -6887,7 +6877,7 @@ index de8772b..4e99c0f 100644
  			if (defined($Capability)) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine CAPABILITY\n";
  				next LINE;
-@@ -907,7 +917,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -906,7 +916,7 @@ sub Mmp_ProcessL ($$$$) {
  			}
  			next LINE;
  		}
@@ -6896,7 +6886,7 @@ index de8772b..4e99c0f 100644
  			if (@$Line) {
  				my $Candidate;
  				foreach $Candidate (@$Line) {
-@@ -930,7 +940,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -929,7 +939,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No Libraries specified for keyword DEBUGLIBRARY\n";
  			next LINE;
  		}
@@ -6905,7 +6895,7 @@ index de8772b..4e99c0f 100644
  			if ($CheckDef) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine DEFFILE\n";
  				next LINE;
-@@ -940,6 +950,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -939,6 +949,7 @@ sub Mmp_ProcessL ($$$$) {
  				push @MmpWarn, "$CurFile($LineNum) : No file specified for keyword DEFFILE\n";
  				next LINE;
  			}
@@ -6913,7 +6903,7 @@ index de8772b..4e99c0f 100644
  
  			$Def{CheckSource_MMPEntry} = $_;		
  			$Def{CheckSource_LineNumber} = $LineNum;
-@@ -960,10 +971,11 @@ sub Mmp_ProcessL ($$$$) {
+@@ -959,10 +970,11 @@ sub Mmp_ProcessL ($$$$) {
  			}
  			next LINE;
  		}
@@ -6926,7 +6916,7 @@ index de8772b..4e99c0f 100644
  					CheckSource_MetaData(%CheckSourceMMPMetaData, $CurFile, $mainElement, $Candidate, $LineNum, $CheckSource_PhysicalCheck, $CurSrcPath);
  					$Candidate = &Path_Norm($Candidate);
  					
-@@ -983,28 +995,28 @@ sub Mmp_ProcessL ($$$$) {
+@@ -982,28 +994,28 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No Files specified for keyword DOCUMENT\n";
  			next LINE;
  		}
@@ -6959,7 +6949,7 @@ index de8772b..4e99c0f 100644
  			if (@$Line) { 
  				my $temp=&main::Genutl_AnyToHex(shift @$Line);
  				if (defined $temp) {
-@@ -1016,14 +1028,14 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1015,14 +1027,14 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No data link address specified for keyword $_\n";
  			next LINE;
  		}
@@ -6976,7 +6966,7 @@ index de8772b..4e99c0f 100644
  			if (@$Line) {
  				my $tempMin=&main::Genutl_AnyToHex(shift @$Line);
  				if (defined $tempMin) {
-@@ -1046,7 +1058,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1045,7 +1057,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No minimum heap size specified for keyword $_\n";
  			next LINE;
  		}
@@ -6985,7 +6975,7 @@ index de8772b..4e99c0f 100644
  			if ($ProcessPriority) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine EPOCPROCESSPRIORITY\n";
  				next LINE;
-@@ -1062,7 +1074,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1061,7 +1073,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No Priority specified for keyword EPOCPROCESSPRIORITY\n";
  			next LINE;
  		}
@@ -6994,7 +6984,7 @@ index de8772b..4e99c0f 100644
  			if (@$Line) {
  				my $temp=&main::Genutl_AnyToHex(shift @$Line);
  				if (defined $temp) {
-@@ -1075,7 +1087,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1074,7 +1086,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No stack size specified for keyword STACKSIZE\n";
  			next LINE;
  		}
@@ -7003,7 +6993,7 @@ index de8772b..4e99c0f 100644
  			if (@$Line) {
  				push @MmpWarn, "$CurFile($LineNum) : Keyword $_ takes no arguments\n";
  			}
-@@ -1083,7 +1095,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1082,7 +1094,7 @@ sub Mmp_ProcessL ($$$$) {
              $CompressTargetMethod=NOCOMPRESSIONMETHOD; # means 'use default'
  			next LINE;
  		}
@@ -7012,7 +7002,7 @@ index de8772b..4e99c0f 100644
  			if (@$Line) {
  				push @MmpWarn, "$CurFile($LineNum) : Keyword $_ takes no arguments\n";
  			}
-@@ -1091,7 +1103,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1090,7 +1102,7 @@ sub Mmp_ProcessL ($$$$) {
              $CompressTargetMethod=NOCOMPRESSIONMETHOD;
  			next LINE;
  		}
@@ -7021,7 +7011,7 @@ index de8772b..4e99c0f 100644
  			if (@$Line) {
  				push @MmpWarn, "$CurFile($LineNum) : Keyword $_ takes no arguments\n";
  			}
-@@ -1099,7 +1111,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1098,7 +1110,7 @@ sub Mmp_ProcessL ($$$$) {
  			$CompressTargetMethod=INFLATECOMPRESSIONMETHOD;
  			next LINE;
  		}
@@ -7030,7 +7020,7 @@ index de8772b..4e99c0f 100644
  			if (@$Line) {
  				push @MmpWarn, "$CurFile($LineNum) : Keyword $_ takes no arguments\n";
  			}
-@@ -1107,14 +1119,14 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1106,14 +1118,14 @@ sub Mmp_ProcessL ($$$$) {
  			$CompressTargetMethod=BYTEPAIRCOMPRESSIONMETHOD;
  			next LINE;
  		}
@@ -7047,7 +7037,7 @@ index de8772b..4e99c0f 100644
  			if ($FirstLib) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine FIRSTLIB\n";
  				next LINE;
-@@ -1128,7 +1140,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1127,7 +1139,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : Nothing specified for keyword FIRSTLIB\n";
  			next LINE;
  		}
@@ -7056,7 +7046,7 @@ index de8772b..4e99c0f 100644
  			if (@$Line) {
  				my $Candidate;
  				foreach $Candidate (@$Line) {
-@@ -1136,7 +1148,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1135,7 +1147,7 @@ sub Mmp_ProcessL ($$$$) {
  						push @MmpWarn, "$CurFile($LineNum) : Duplicate Language \"$Candidate\" at line $CheckLang{$Candidate}\n";
  						next; 
  					}
@@ -7065,7 +7055,7 @@ index de8772b..4e99c0f 100644
  					$CheckLang{$Candidate}="$CurFile($LineNum)";
  				}
  				next LINE;
-@@ -1144,7 +1156,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1143,7 +1155,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No Languages specified for keyword LANG\n";
  			next LINE;
  		}
@@ -7074,7 +7064,7 @@ index de8772b..4e99c0f 100644
  			if (@$Line) {
  				my $Candidate;
  				foreach $Candidate (@$Line) {
-@@ -1168,7 +1180,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1167,7 +1179,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No Libraries specified for keyword LIBRARY\n";
  			next LINE;
  		}
@@ -7083,7 +7073,7 @@ index de8772b..4e99c0f 100644
  			if ($LinkAs) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine LINKAS\n";
  				next LINE;
-@@ -1179,7 +1191,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1178,7 +1190,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No name specified for keyword LINKAS\n";
  			next LINE;
  		}
@@ -7092,7 +7082,7 @@ index de8772b..4e99c0f 100644
  			if ($NoExportLibrary) {
  				push @MmpDie, "$CurFile($LineNum) : Can't specify both EXPORTLIBRARY and NOEXPORTLIBRARY\n";
  				next LINE;
-@@ -1197,7 +1209,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1196,7 +1208,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No name specified for keyword EXPORTLIBRARY\n";
  			next LINE;
  		}
@@ -7101,7 +7091,7 @@ index de8772b..4e99c0f 100644
  			if ($ExportLibrary) {
  				push @MmpDie, "$CurFile($LineNum) : Can't specify both EXPORTLIBRARY and NOEXPORTLIBRARY\n";
  				next LINE;
-@@ -1218,13 +1230,13 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1217,13 +1229,13 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No library specified for keyword NEWLIB\n";
  			next LINE;
  		}
@@ -7117,7 +7107,7 @@ index de8772b..4e99c0f 100644
  					}
  					push @Macros, $Candidate;
  					$CheckMacro{$Candidate}="$CurFile($LineNum)";
-@@ -1233,7 +1245,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1232,7 +1244,7 @@ sub Mmp_ProcessL ($$$$) {
  			}
  			next LINE; 
  		}
@@ -7126,7 +7116,7 @@ index de8772b..4e99c0f 100644
  			if ($NoStrictDef) {
  				push @MmpWarn, "$CurFile($LineNum) : NOSTRICTDEF already set\n";
  				next LINE;
-@@ -1244,7 +1256,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1243,7 +1255,7 @@ sub Mmp_ProcessL ($$$$) {
  			$NoStrictDef=1;
  			next LINE;
  		}
@@ -7135,7 +7125,7 @@ index de8772b..4e99c0f 100644
  			if ($CheckRamTargets) {
  				push @MmpWarn, "$CurFile($LineNum) : RAM targets already specified at line $CheckRamTargets\n";
  				next LINE;
-@@ -1268,10 +1280,11 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1267,10 +1279,11 @@ sub Mmp_ProcessL ($$$$) {
  			}
  			next LINE;
  		}
@@ -7148,7 +7138,7 @@ index de8772b..4e99c0f 100644
  					CheckSource_MetaData(%CheckSourceMMPMetaData, $CurFile, $mainElement, $Candidate, $LineNum, $CheckSource_PhysicalCheck, $CurSrcPath);
  					$Candidate = &Path_Norm($Candidate);
  					
-@@ -1299,7 +1312,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1298,7 +1311,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No Resources specified for keyword RESOURCE\n";
  			next LINE; 
  		}
@@ -7157,7 +7147,7 @@ index de8772b..4e99c0f 100644
  			if ($CheckRomTargets) {
  				push @MmpWarn, "$CurFile($LineNum) : ROM targets already specified at line $CheckRomTargets\n";
  				next LINE;
-@@ -1324,21 +1337,22 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1323,21 +1336,22 @@ sub Mmp_ProcessL ($$$$) {
  			}
  			next LINE;
  		}
@@ -7183,7 +7173,7 @@ index de8772b..4e99c0f 100644
  					$CurSource{BaseTrg}=&Path_Split('Base',$Candidate);
  					my $path=&Path_Split('Path',$Candidate);
  					if($path){
-@@ -1359,12 +1373,13 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1358,12 +1372,13 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No Sources specified for keyword SOURCE\n";
  			next LINE; 
  		}
@@ -7199,7 +7189,7 @@ index de8772b..4e99c0f 100644
  				$CurSrcPath=&Path_MakeEAbs($EPOCPath,$CurFile,$CurSrcPath);
  				if (-d &Path_Chop($CurSrcPath)) {
  					next LINE;
-@@ -1375,7 +1390,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1374,7 +1389,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpDie, "$CurFile($LineNum) : No Source Path specified for keyword SOURCEPATH\n";
  			next LINE;
  		}
@@ -7208,7 +7198,7 @@ index de8772b..4e99c0f 100644
  			if (@$Line) {
  				my $Candidate;
  				foreach $Candidate (@$Line) {
-@@ -1395,21 +1410,21 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1394,21 +1409,21 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No Libraries specified for keyword STATICLIBRARY\n";
  			next LINE;
  		}
@@ -7233,7 +7223,7 @@ index de8772b..4e99c0f 100644
  			if ($MmpFlag{StrictDepend}) {
  				push @MmpWarn, "$CurFile($LineNum) : STRICTDEPEND already set\n";
  				next LINE;
-@@ -1420,14 +1435,15 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1419,14 +1434,15 @@ sub Mmp_ProcessL ($$$$) {
  			$MmpFlag{StrictDepend}=1;
  			next LINE;
  		}
@@ -7251,7 +7241,7 @@ index de8772b..4e99c0f 100644
  					$Candidate=&Path_MakeEAbs($EPOCPath,$CurFile,$Candidate);
  					if ($CheckSysInc{$Candidate}) {
  						next; 
-@@ -1444,10 +1460,11 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1443,10 +1459,11 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No Paths specified for keyword SYSTEMINCLUDE\n";
  			next LINE;
  		}
@@ -7264,7 +7254,7 @@ index de8772b..4e99c0f 100644
  					CheckSource_MetaData(%CheckSourceMMPMetaData, $CurFile, $mainElement, $Candidate, $LineNum, $CheckSource_PhysicalCheck, $CurSrcPath);
  					$Candidate = &Path_Norm($Candidate);
  					
-@@ -1463,7 +1480,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1462,7 +1479,7 @@ sub Mmp_ProcessL ($$$$) {
  					$CurResource{BaseTrg}=&Path_Split('Base',$Candidate);
  					$CurResource{Source}=$source;
  					$CurResource{Hdr}="$CurFile($LineNum)";
@@ -7273,7 +7263,7 @@ index de8772b..4e99c0f 100644
  					my %Resource=%CurResource;
  					undef %CurResource;
  					push @ResourceStruct, \%Resource;
-@@ -1476,7 +1493,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1475,7 +1492,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No Resources specified for keyword SYSTEMRESOURCE\n";
  			next LINE; 
  		}
@@ -7282,7 +7272,7 @@ index de8772b..4e99c0f 100644
  			if ($Trg) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine TARGET\n";
  				next LINE;
-@@ -1489,7 +1506,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1488,7 +1505,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No Target specified for keyword TARGET\n";
  			next LINE;
  		}
@@ -7291,7 +7281,7 @@ index de8772b..4e99c0f 100644
  			if ($TrgPath) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine TARGETPATH\n";
  				next LINE;
-@@ -1498,19 +1515,20 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1497,19 +1514,20 @@ sub Mmp_ProcessL ($$$$) {
  				push @MmpWarn, "$CurFile($LineNum) : No Path specified for keyword TARGETPATH\n";
  				next LINE;
  			}
@@ -7316,7 +7306,7 @@ index de8772b..4e99c0f 100644
  			if ($TrgType) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine TARGETTYPE\n";
  				next LINE;
-@@ -1525,7 +1543,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1524,7 +1542,7 @@ sub Mmp_ProcessL ($$$$) {
  			}
  			next LINE;
  		}
@@ -7325,7 +7315,7 @@ index de8772b..4e99c0f 100644
  			if (@$Line) {
  				foreach (@$Line) {
  					if ($#UidList>=1) {
-@@ -1545,7 +1563,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1544,7 +1562,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No Uids specified for keyword UID\n";
  			next LINE;
  		}
@@ -7334,7 +7324,7 @@ index de8772b..4e99c0f 100644
  			if ($SecureId) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine SECUREID\n";
  				next LINE;
-@@ -1564,7 +1582,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1563,7 +1581,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : Missing argument for keyword SECUREID\n";
  			next LINE;
  		}
@@ -7343,7 +7333,7 @@ index de8772b..4e99c0f 100644
  			if (defined($VendorId)) {
  				push @MmpWarn, "$CurFile($LineNum) : Attempt to redefine VENDORID\n";
  				next LINE;
-@@ -1583,14 +1601,15 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1582,14 +1600,15 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : Missing argument for keyword VENDORID\n";
  			next LINE;
  		}
@@ -7361,7 +7351,7 @@ index de8772b..4e99c0f 100644
  					$Candidate=&Path_MakeEAbs($EPOCPath,$CurFile,$Candidate);
  					if ($CheckUserInc{$Candidate}) {
  						next; 
-@@ -1607,14 +1626,14 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1606,14 +1625,14 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : No Paths specified for keyword USERINCLUDE\n";
  			next LINE;
  		}
@@ -7378,7 +7368,7 @@ index de8772b..4e99c0f 100644
  			if (%Version) {
  				push @MmpDie, "$CurFile($LineNum) : Attempt to redefine VERSION\n";
  				next LINE;
-@@ -1704,7 +1723,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1703,7 +1722,7 @@ sub Mmp_ProcessL ($$$$) {
  			push @MmpWarn, "$CurFile($LineNum) : ARMFPU must specify either SOFTVFP or VFPV2 as an argument\n";
  			next LINE;
  		}
@@ -7387,7 +7377,7 @@ index de8772b..4e99c0f 100644
  			#revert "PAGED" keyword from code and data paged to code paged only
  			#if ($CodePagingTargetMode == PAGED or $DataPagingTargetMode == PAGED) {
  			if ($CodePagingTargetMode == PAGED) {
-@@ -1720,7 +1739,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1719,7 +1738,7 @@ sub Mmp_ProcessL ($$$$) {
  			#$DataPagingTargetMode = PAGED;
  			next LINE;
  			}
@@ -7396,7 +7386,7 @@ index de8772b..4e99c0f 100644
  			if ($CodePagingTargetMode == UNPAGED or $DataPagingTargetMode == UNPAGED) {
  				push @MmpWarn, "$CurFile($LineNum) : duplicate paging setting\n";
  			}
-@@ -1731,7 +1750,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1730,7 +1749,7 @@ sub Mmp_ProcessL ($$$$) {
  			$DataPagingTargetMode = UNPAGED;
  			next LINE;
  			}
@@ -7405,7 +7395,7 @@ index de8772b..4e99c0f 100644
  			if ($CodePagingTargetMode == PAGED) {
  				push @MmpWarn, "$CurFile($LineNum) : duplicate paging setting\n";
  			}
-@@ -1741,7 +1760,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1740,7 +1759,7 @@ sub Mmp_ProcessL ($$$$) {
  			$CodePagingTargetMode = PAGED;
  			next LINE;
  			}
@@ -7414,7 +7404,7 @@ index de8772b..4e99c0f 100644
  			if ($CodePagingTargetMode == UNPAGED) {
  				push @MmpWarn, "$CurFile($LineNum) : duplicate paging setting\n";
  			}
-@@ -1751,7 +1770,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1750,7 +1769,7 @@ sub Mmp_ProcessL ($$$$) {
  			$CodePagingTargetMode = UNPAGED;
  			next LINE;
  			}
@@ -7423,7 +7413,7 @@ index de8772b..4e99c0f 100644
  			if ($DataPagingTargetMode == PAGED) {
  				push @MmpWarn, "$CurFile($LineNum) : duplicate paging setting\n";
  			}
-@@ -1761,7 +1780,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1760,7 +1779,7 @@ sub Mmp_ProcessL ($$$$) {
  			$DataPagingTargetMode = PAGED;
  			next LINE;
  			}
@@ -7432,7 +7422,7 @@ index de8772b..4e99c0f 100644
  			if ($DataPagingTargetMode == UNPAGED) {
  				push @MmpWarn, "$CurFile($LineNum) : duplicate paging setting\n";
  			}
-@@ -1771,18 +1790,18 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1770,18 +1789,18 @@ sub Mmp_ProcessL ($$$$) {
  			$DataPagingTargetMode = UNPAGED;
  			next LINE;
  			}
@@ -7454,7 +7444,7 @@ index de8772b..4e99c0f 100644
  			push @MmpDie, "$CurFile($LineNum) : FEATUREVARIANT specified multiple times" if ($FeatureVariant);
  			$FeatureVariant = 1;
  			next LINE;
-@@ -1901,7 +1920,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -1900,7 +1919,7 @@ sub Mmp_ProcessL ($$$$) {
  	}
  
  	# check for languages
@@ -7463,7 +7453,7 @@ index de8772b..4e99c0f 100644
  
    if (&main::EPOCSecurePlatform() && !defined($Capability) &&
      (($TrgType{Basic} eq "DLL") || (uc($TrgType) eq "EXEXP")))
-@@ -2091,7 +2110,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -2090,7 +2109,7 @@ sub Mmp_ProcessL ($$$$) {
  #	Get the EPOC entrypoint static library
  	unless ($FirstLib) {
  		unless ($TrgType{FirstLib}) {
@@ -7472,7 +7462,7 @@ index de8772b..4e99c0f 100644
  		}
  		else {
  			$FirstLib=$TrgType{FirstLib};
-@@ -2138,7 +2157,7 @@ sub Mmp_ProcessL ($$$$) {
+@@ -2137,7 +2156,7 @@ sub Mmp_ProcessL ($$$$) {
  	# apply the default .DEF filename, and
  	# check as far as possible that the project is frozen
  	if (($TrgType{NeedDeffile} or $CheckDef)) {
@@ -7481,7 +7471,7 @@ index de8772b..4e99c0f 100644
  			my $augment;
  			if ($ASSPExports) {
  			    if ($$Plat_ref{DefFile} =~ /^\s*EABI\s*/i ) {
-@@ -2153,10 +2172,11 @@ sub Mmp_ProcessL ($$$$) {
+@@ -2152,10 +2171,11 @@ sub Mmp_ProcessL ($$$$) {
  					$augment = lc("B$$Plat_ref{DefFile}");
  			    }
  			}
@@ -7539,7 +7529,7 @@ index 68b592f..0149125 100644
  	}
  }
 diff --git a/output.pm b/output.pm
-index 091319d..0b4f586 100644
+index 658c67d..f9eb1c6 100644
 --- a/output.pm
 +++ b/output.pm
 @@ -15,7 +15,7 @@
@@ -7551,15 +7541,15 @@ index 091319d..0b4f586 100644
  require Exporter;
  @ISA=qw(Exporter);
  @EXPORT=qw(
-@@ -24,7 +24,6 @@ require Exporter;
+@@ -23,7 +23,6 @@ require Exporter;
+ 	OutText
  );
- 
  
 -
  my $Len=80;
  my $PreWrap="\\";
  my $PreWrapLen=length($PreWrap);
-@@ -95,9 +94,8 @@ sub OutWrite () {
+@@ -94,9 +93,8 @@ sub OutWrite () {
  
  sub Output (@) {
  	OutWrite if $Buf;	# output the formatted text before doing any more output
@@ -7905,10 +7895,10 @@ index 0000000..e0f25e6
 +ROOT=$EPOCROOT/epoc32/tools
 +wine $ROOT/$PGM.exe "$@"
 diff --git a/prepdef.pl b/prepdef.pl
-index 7257f08..efa1d07 100644
+index 9dbd22b..c5423ea 100644
 --- a/prepdef.pl
 +++ b/prepdef.pl
-@@ -34,9 +34,9 @@ BEGIN {
+@@ -33,9 +33,9 @@ BEGIN {
  }
  
  use lib $PerlLibPath;
@@ -7922,7 +7912,7 @@ index 7257f08..efa1d07 100644
  
  
 diff --git a/prepfile.pm b/prepfile.pm
-index c4b1e22..5c190c2 100644
+index e8fa082..27a095a 100644
 --- a/prepfile.pm
 +++ b/prepfile.pm
 @@ -16,7 +16,7 @@
@@ -7934,9 +7924,9 @@ index c4b1e22..5c190c2 100644
  
  require Exporter;
  @ISA=qw(Exporter);
-@@ -26,9 +26,9 @@ require Exporter;
+@@ -25,9 +25,9 @@ require Exporter;
+ 	Prepfile_SetVerbose Prepfile_SetUpperCase Prepfile_ProcessL Prepfile_SetCmdOptions
  );
- 
  
 -use Checkgcc;
 -use Pathutl;
@@ -7947,7 +7937,7 @@ index c4b1e22..5c190c2 100644
  
  my %Mode=(
  	Verbose=>0,
-@@ -58,11 +58,11 @@ sub Prepfile_ProcessL ($$;$@) {
+@@ -57,11 +57,11 @@ sub Prepfile_ProcessL ($$;$@) {
  	die "\nERROR: Project File \"$FILE\" not found\n" unless -e $FILE;
  
  	my $exe = &PreprocessorToUseExe();
@@ -7961,7 +7951,7 @@ index c4b1e22..5c190c2 100644
  							" -I .",
  							" -I ",&Path_PrefixWithDriveAndQuote(&Path_Split('Path',$FILE));
  
-@@ -80,12 +80,15 @@ sub Prepfile_ProcessL ($$;$@) {
+@@ -79,12 +79,15 @@ sub Prepfile_ProcessL ($$;$@) {
  	}
  	# all macros made upper case and suppress user-expansion of macros for nefarious purposes
  
@@ -7978,7 +7968,7 @@ index c4b1e22..5c190c2 100644
  
  	# read the processed output
  	#--------------------------
-@@ -102,20 +105,13 @@ sub Prepfile_ProcessL ($$;$@) {
+@@ -101,20 +104,13 @@ sub Prepfile_ProcessL ($$;$@) {
  
  		my @Tmp=();
  
@@ -8000,7 +7990,7 @@ index c4b1e22..5c190c2 100644
  			$CurFile=&Path_AbsToWork($CurFile);
  			@Tmp=('#', $CurFile);
  			push @{$ArrayRef}, [ @Tmp ];
-@@ -128,8 +124,8 @@ sub Prepfile_ProcessL ($$;$@) {
+@@ -127,8 +123,8 @@ sub Prepfile_ProcessL ($$;$@) {
  		# don't upper case everything until you've done this.
  		
  		foreach $Macro (@Macros) {

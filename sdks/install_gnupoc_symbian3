@@ -2,7 +2,7 @@
 
 if test $# != 2 -o $0 != "./install_gnupoc_symbian3"; then
   echo "Usage: ./install_gnupoc_symbian3 <path-to-sdk-zip> <target-dir>"
-  echo " e.g.: ./install_gnupoc_symbian3 Symbian_3_SDK_v0_9_en.zip ~/symbian-sdks/symbian3"
+  echo " e.g.: ./install_gnupoc_symbian3 Symbian_3_SDK_v1_0_en.zip ~/symbian-sdks/symbian3"
   exit 1
 fi
 
