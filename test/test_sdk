@@ -90,9 +90,9 @@ s60_50)
 	EXAMPLEPKG=../sis/helloworldbasic_gcce.pkg
 	;;
 symbian3)
-	PKG=Symbian_3_SDK_v0_9_en.zip
+	PKG=Symbian_3_SDK_v1_0_en.zip
 	EXAMPLE=examples/symbian/gui/helloworldbasic/group
-	EXAMPLEPKG=../sis/helloworldbasic_gcce.pkg
+	EXAMPLEPKG=../sis/helloworldbasic.pkg
 	;;
 uiq_30)
 	PKG=UIQ3.0SDK.exe
