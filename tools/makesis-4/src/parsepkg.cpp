@@ -2015,9 +2015,17 @@ BOOL CParsePkg::DoesExist(LPWSTR pszFile, DWORD *pdwSize)
 			while (*tmp && *tmp != ')')
 				varName[i++] = *tmp++;
 			varName[i++] = '\0';
-			i = 0;
 			var = getenv(varName);
+			if (!var) {
+				// Try an uppercase-only version of the env variable
+				char varNameUpper[MAX_PATH];
+				for (i = 0; varName[i]; i++)
+					varNameUpper[i] = toupper(varName[i]);
+				varNameUpper[i] = '\0';
+				var = getenv(varNameUpper);
+			}
 			if (var) {
+				i = 0;
 				while (var[i])
 					*out++ = var[i++];
 			} else {
