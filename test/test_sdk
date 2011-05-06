@@ -132,7 +132,7 @@ cd $EPOCROOT/$EXAMPLE
 bldmake bldfiles
 abld build $TARGET urel
 cd `dirname $EXAMPLEPKG`
-makesis `basename $EXAMPLEPKG`
+platform=$TARGET target=urel makesis `basename $EXAMPLEPKG`
 if [ "$TOOL" = "EKA2" ]; then
 	signsis `basename $EXAMPLEPKG | sed s/pkg/sis/`
 fi
