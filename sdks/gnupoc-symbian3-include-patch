@@ -137,6 +137,19 @@ index 9cb6cee..fb5cd9a 100644
          {
          return (!( (iType == aDCSettingSelection.iType) && ( iId == aDCSettingSelection.iId ) ));
          };     
+diff --git a/mw/eikccpu.h b/mw/eikccpu.h
+index cc52f12..f43fce1 100644
+--- a/mw/eikccpu.h
++++ b/mw/eikccpu.h
+@@ -227,7 +227,7 @@ private:
+      * @param aContainer The pointer of the top Container.
+      * @param aEmbedCba The pointer of the CBA embed in the container. 
+      */
+-    void CAknCcpuSupport::UseNewCBAToCoverEmbedCBA( CCoeControl* aContainer, 
++    void UseNewCBAToCoverEmbedCBA( CCoeControl* aContainer, 
+              CEikCba* aEmbedCba );
+ private:
+     /**
 diff --git a/mw/eikedwin.h b/mw/eikedwin.h
 index 7618d96..72fb85e 100644
 --- a/mw/eikedwin.h
