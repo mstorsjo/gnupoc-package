@@ -32,11 +32,14 @@ sub dodir($) {
 
       while(my $line = <FHIN>) {
         if($line =~ m/^#include/) {
-	  $line =~ tr [A-Z\\] [a-z/];
-	  $line =~ s/gles\//GLES\//;
-	  $line =~ s/gles2\//GLES2\//;
-	  $line =~ s/egl\//EGL\//;
-	  $line =~ s/product_include/PRODUCT_INCLUDE/;
+	  my @values = split('//', $line);
+	  $values[0] =~ tr [A-Z\\] [a-z/];
+	  $values[0] =~ s/gles\//GLES\//;
+	  $values[0] =~ s/gles2\//GLES2\//;
+	  $values[0] =~ s/egl\//EGL\//;
+	  $values[0] =~ s/product_include/PRODUCT_INCLUDE/;
+
+	  $line = join('//', @values);
 	}
 	$line =~ s/[\r\n]//g;
 	print FHOUT "$line\n";
