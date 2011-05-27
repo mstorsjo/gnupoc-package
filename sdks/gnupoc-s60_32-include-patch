@@ -12,7 +12,7 @@ index b5ea427..e940531 100644
          // This class does not need a destructor because memory allocation
          // policy for variant class has been implemented by TAiwGenericParam
 diff --git a/AknBidiTextUtils.h b/AknBidiTextUtils.h
-index c69b70b..258df6b 100644
+index 3d6dd0b..65d348c 100644
 --- a/AknBidiTextUtils.h
 +++ b/AknBidiTextUtils.h
 @@ -424,7 +424,7 @@ class AknBidiTextUtils
@@ -127,7 +127,7 @@ index affbb52..bc93cc5 100644
  
  	CContactIdArray* SortLC(const CArrayFix<TSortPref>* aSortOrder, const CContactIdArray* aIdArray);
 diff --git a/eikmenup.h b/eikmenup.h
-index bad4bee..7a57260 100644
+index f6d956b..ff0fd58 100644
 --- a/eikmenup.h
 +++ b/eikmenup.h
 @@ -239,7 +239,7 @@ inline void CEikMenuPaneItem::CreateExtendedDataBlock()
@@ -198,7 +198,7 @@ index cc98028..3d15e38 100644
  	/** Connect this WSP session. This function does nothing when called for text-mode.
  	*/
 diff --git a/irs.h b/irs.h
-index ee1fb47..52cee9a 100644
+index 484c205..c8f35fd 100644
 --- a/irs.h
 +++ b/irs.h
 @@ -72,7 +72,7 @@ private:
@@ -211,7 +211,7 @@ index ee1fb47..52cee9a 100644
  	/**
  	 * Creates a server send operation to perform the send
 diff --git a/miutmsg.h b/miutmsg.h
-index 37bf09a..8201baf 100644
+index b10906b..1ef8ebf 100644
 --- a/miutmsg.h
 +++ b/miutmsg.h
 @@ -846,7 +846,7 @@ class CImHtmlConverter : public CBase

@@ -25,7 +25,7 @@ index e620801..67aa628 100644
  
  inline TBool VersitUtils::IsWhiteSpace(TUint aChar)
 diff --git a/graphics/streammap.h b/graphics/streammap.h
-index b8a3d58..42be3f0 100644
+index bdb3fca..5db0c73 100644
 --- a/graphics/streammap.h
 +++ b/graphics/streammap.h
 @@ -177,7 +177,7 @@ NONSHARABLE_CLASS(COpenWfcStreamMap): public CBase
@@ -51,7 +51,7 @@ index fdc3a1a..4eccb13 100644
          // This class does not need a destructor because memory allocation
          // policy for variant class has been implemented by TAiwGenericParam
 diff --git a/mw/AknBidiTextUtils.h b/mw/AknBidiTextUtils.h
-index cd92153..3f2ba4b 100644
+index a65b788..2ea217b 100644
 --- a/mw/AknBidiTextUtils.h
 +++ b/mw/AknBidiTextUtils.h
 @@ -422,7 +422,7 @@ class AknBidiTextUtils
@@ -151,7 +151,7 @@ index cc52f12..f43fce1 100644
  private:
      /**
 diff --git a/mw/eikedwin.h b/mw/eikedwin.h
-index 7618d96..72fb85e 100644
+index 4c96e3f..a6003e6 100644
 --- a/mw/eikedwin.h
 +++ b/mw/eikedwin.h
 @@ -1583,7 +1583,7 @@ public:

@@ -178,7 +178,7 @@ index dcb68d0..22aec5d 100644
  
  	inline TUint32 Sum();
 diff --git a/messaging/sms/smsmessagewrappers.h b/messaging/sms/smsmessagewrappers.h
-index 8544e78..a804f3f 100644
+index afbd649..bffa379 100644
 --- a/messaging/sms/smsmessagewrappers.h
 +++ b/messaging/sms/smsmessagewrappers.h
 @@ -39,7 +39,7 @@ protected:
@@ -218,7 +218,7 @@ index 8544e78..a804f3f 100644
  
  #endif // __SMS_MESSAGE_WRAPPERS_H__
 diff --git a/miutmsg.h b/miutmsg.h
-index a3c8dcb..75e6ab4 100644
+index c6fa0e9..cb91228 100644
 --- a/miutmsg.h
 +++ b/miutmsg.h
 @@ -830,7 +830,7 @@ class CImHtmlConverter : public CBase

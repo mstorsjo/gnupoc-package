@@ -79,7 +79,7 @@ index 3b30318..9ae00e2 100644
  
  typedef TPckgBuf<TLocalDriveCapsV3> TLocalDriveCapsV3Buf;
 diff --git a/eikmenup.h b/eikmenup.h
-index 4d75f26..2451407 100644
+index f924d03..3ac3062 100644
 --- a/eikmenup.h
 +++ b/eikmenup.h
 @@ -180,7 +180,7 @@ inline void CEikMenuPaneItem::CreateExtendedDataBlock()
@@ -137,7 +137,7 @@ index 4c71729..6bd1082 100644
  	IMPORT_C TBool GetMimeTypeL(const TDesC8& aImageData, const TDesC& aFileName, TDes8& aMimeType);
  
 diff --git a/miutmsg.h b/miutmsg.h
-index 059f92a..dc5287b 100644
+index 8cc54dc..e821bd4 100644
 --- a/miutmsg.h
 +++ b/miutmsg.h
 @@ -829,7 +829,7 @@ class CImHtmlConverter : public CBase

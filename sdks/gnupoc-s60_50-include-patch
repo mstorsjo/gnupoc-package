@@ -12,7 +12,7 @@ index 47ad4ed..4255de3 100644
          // This class does not need a destructor because memory allocation
          // policy for variant class has been implemented by TAiwGenericParam
 diff --git a/AknBidiTextUtils.h b/AknBidiTextUtils.h
-index 9278716..ef5b396 100644
+index 3eae0fb..f6d5de1 100644
 --- a/AknBidiTextUtils.h
 +++ b/AknBidiTextUtils.h
 @@ -424,7 +424,7 @@ class AknBidiTextUtils
@@ -127,7 +127,7 @@ index 58fb900..9569a1a 100644
  
  	CContactIdArray* SortLC(const CArrayFix<TSortPref>* aSortOrder, const CContactIdArray* aIdArray);
 diff --git a/eikmenup.h b/eikmenup.h
-index a0b96a3..17fe991 100644
+index 4df5121..1aa00a1 100644
 --- a/eikmenup.h
 +++ b/eikmenup.h
 @@ -239,7 +239,7 @@ inline void CEikMenuPaneItem::CreateExtendedDataBlock()
@@ -198,7 +198,7 @@ index 0f8bd5b..baec2d9 100644
  private:
  	TBool static UseErrorDiffuser(const TDisplayMode& aBitmapDisplayMode, const TDisplayMode& aImageDisplayMode);
 diff --git a/irs.h b/irs.h
-index ee1fb47..52cee9a 100644
+index 484c205..c8f35fd 100644
 --- a/irs.h
 +++ b/irs.h
 @@ -72,7 +72,7 @@ private:
@@ -211,7 +211,7 @@ index ee1fb47..52cee9a 100644
  	/**
  	 * Creates a server send operation to perform the send
 diff --git a/miutmsg.h b/miutmsg.h
-index 89adf0b..4d3223b 100644
+index 7113cfb..4ad702f 100644
 --- a/miutmsg.h
 +++ b/miutmsg.h
 @@ -880,7 +880,7 @@ class CImHtmlConverter : public CBase

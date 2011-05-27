@@ -1,5 +1,5 @@
 diff --git a/AknBidiTextUtils.h b/AknBidiTextUtils.h
-index 4b9b1be..e276a92 100644
+index e7e6ac5..a9d41fb 100644
 --- a/AknBidiTextUtils.h
 +++ b/AknBidiTextUtils.h
 @@ -424,7 +424,7 @@ class AknBidiTextUtils
@@ -92,7 +92,7 @@ index ba8020e..c67519f 100644
  
  typedef TPckgBuf<TLocalDriveCapsV3> TLocalDriveCapsV3Buf;
 diff --git a/eikmenup.h b/eikmenup.h
-index 17f65df..e0cb56b 100644
+index 56e67dd..46b5ab5 100644
 --- a/eikmenup.h
 +++ b/eikmenup.h
 @@ -239,7 +239,7 @@ inline void CEikMenuPaneItem::CreateExtendedDataBlock()
@@ -150,7 +150,7 @@ index 5504e03..3ed6e9d 100644
  	/** Connect this WSP session. This function does nothing when called for text-mode.
  	*/
 diff --git a/imcvrecv.h b/imcvrecv.h
-index 3a69e85..ac0f241 100644
+index 46a2eb2..ff0de49 100644
 --- a/imcvrecv.h
 +++ b/imcvrecv.h
 @@ -118,7 +118,7 @@ public:
@@ -163,7 +163,7 @@ index 3a69e85..ac0f241 100644
  	IMPORT_C void ResetL();
  	IMPORT_C void ResetForHeadersL();
 diff --git a/irs.h b/irs.h
-index 11b9355..e526f73 100644
+index 5de0dc8..a7c67f7 100644
 --- a/irs.h
 +++ b/irs.h
 @@ -72,7 +72,7 @@ private:
@@ -176,7 +176,7 @@ index 11b9355..e526f73 100644
  	/**
  	 * Creates a server send operation to perform the send
 diff --git a/miutmsg.h b/miutmsg.h
-index 17ac531..79468f3 100644
+index adb6cab..ffe5c32 100644
 --- a/miutmsg.h
 +++ b/miutmsg.h
 @@ -846,7 +846,7 @@ class CImHtmlConverter : public CBase
