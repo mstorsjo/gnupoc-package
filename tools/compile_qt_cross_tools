@@ -30,6 +30,7 @@ do
     cp .qmake.cache.orig .qmake.cache
     rm -f src/corelib/global/qconfig.h
     cp src/corelib/global/qconfig.h.orig src/corelib/global/qconfig.h
+    cp mkspecs/qconfig.pri.orig mkspecs/qconfig.pri
     rm -rf mkspecs/default
     ln -s $DEF_SPEC mkspecs/default
     exit 1
@@ -38,11 +39,13 @@ done << __END
 
 cp .qmake.cache .qmake.cache.orig
 cp src/corelib/global/qconfig.h src/corelib/global/qconfig.h.orig
+cp mkspecs/qconfig.pri mkspecs/qconfig.pri.orig
 ./configure -opensource -fast -confirm-license
 $MAKE sub-tools-bootstrap sub-moc sub-rcc sub-uic
 cp .qmake.cache.orig .qmake.cache
 rm -f src/corelib/global/qconfig.h
 cp src/corelib/global/qconfig.h.orig src/corelib/global/qconfig.h
+cp mkspecs/qconfig.pri.orig mkspecs/qconfig.pri
 rm -rf mkspecs/default
 ln -s $DEF_SPEC mkspecs/default
 
