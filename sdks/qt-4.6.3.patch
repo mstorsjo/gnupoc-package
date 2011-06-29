@@ -38,21 +38,6 @@ index ba31116..7e3784c 100644
  
  QMAKE_IDL		= midl
  QMAKE_LIB		= ar -ru
-diff --git a/mkspecs/features/symbian/stl.prf b/mkspecs/features/symbian/stl.prf
-index 85c758a..3091fce 100644
---- a/mkspecs/features/symbian/stl.prf
-+++ b/mkspecs/features/symbian/stl.prf
-@@ -21,8 +21,8 @@ STL_LIB = -llibstdcppv5.dll
- STL_MMP_RULE = "STDCPP"
- 
- # Fall back to old implementation if that is the only one that is found
--exists($${EPOCROOT}epoc32/release/armv5/urel/libstdcpp.dll)|exists($${EPOCROOT}epoc32/release/winscw/udeb/libstdcpp.dll) {
--    !exists($${EPOCROOT}epoc32/release/armv5/urel/libstdcppv5.dll):!exists($${EPOCROOT}epoc32/release/winscw/udeb/libstdcppv5.dll) {
-+exists($${EPOCROOT}epoc32/release/armv5/lib/libstdcpp.dso)|exists($${EPOCROOT}epoc32/release/winscw/udeb/libstdcpp.dll) {
-+    !exists($${EPOCROOT}epoc32/release/armv5/lib/libstdcppv5.dso):!exists($${EPOCROOT}epoc32/release/winscw/udeb/libstdcppv5.dll) {
-         STL_LIB = -llibstdcpp.dll
-         STL_MMP_RULE =
-     }
 diff --git a/qmake/generators/makefile.cpp b/qmake/generators/makefile.cpp
 index ad865a2..527bd0d 100644
 --- a/qmake/generators/makefile.cpp
