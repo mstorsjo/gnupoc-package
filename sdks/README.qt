@@ -62,8 +62,6 @@ http://wiki.forum.nokia.com/index.php/Nokia_Smart_Installer_for_Symbian.
 Place smartinstaller.sis in the qt directory (~/symbian-sdks/qt_4.7.1
 in the example above), and make installer_sis should work.
 
-Note, the smart installer currently available only seems to install Qt 4.6.3.
-
 
 If using Qt 4.7.0 or newer, you can use another makespec, which doesn't
 use the traditional abld toolchain, and thus has much less overhead. To
