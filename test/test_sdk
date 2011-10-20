@@ -80,7 +80,7 @@ s60_31)
 	EXAMPLEPKG=../sis/helloworldbasic_gcce.pkg
 	;;
 s60_32)
-	PKG=S60-3.2-SDK-f.inc3.2130.zip
+	PKG=S60_SDK_3.2_v1.1.1_en.zip
 	EXAMPLE=s60cppexamples/helloworldbasic/group
 	EXAMPLEPKG=../sis/helloworldbasic_gcce.pkg
 	;;
