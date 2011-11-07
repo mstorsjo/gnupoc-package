@@ -23,6 +23,19 @@ index df926c3..7d53303 100644
  
  IMPORT_C float	acosf(float);
  IMPORT_C float	asinf(float);
+diff --git a/stdapis/signgam.h b/stdapis/signgam.h
+index 84e6aa3..66bbc81 100644
+--- a/stdapis/signgam.h
++++ b/stdapis/signgam.h
+@@ -54,7 +54,7 @@
+ extern "C" {
+ #endif  /*__cplusplus*/
+ 			
+-IMPORT_C int* __signgam();
++IMPORT_C int* __signgam(void);
+ 	
+ #ifdef __cplusplus
+ 	}
 diff --git a/stdapis/sys/cdefs.h b/stdapis/sys/cdefs.h
 index 426b705..0f2040e 100644
 --- a/stdapis/sys/cdefs.h
