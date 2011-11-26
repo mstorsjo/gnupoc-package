@@ -85,7 +85,7 @@ s60_32)
 	EXAMPLEPKG=../sis/helloworldbasic_gcce.pkg
 	;;
 s60_50)
-	PKG=S60_5th_Edition_SDK_v1_0_en.zip
+	PKG=S60_5th_SDK_ASP_v1.0.1.zip
 	EXAMPLE=s60cppexamples/helloworldbasic/group
 	EXAMPLEPKG=../sis/helloworldbasic_gcce.pkg
 	;;
