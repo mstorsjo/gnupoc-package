@@ -89,8 +89,8 @@ The rest of the toolchain
 -------------------------
 
 If you want to use native versions of the SDK tools instead of running
-them through wine, which is strongly suggested, compile and install
-them using the appropriate script:
+them through wine (using the native versions is strongly suggested),
+compile and install them using the appropriate script:
 
 ./install_eka1_tools ~/symbian-gcc
 
