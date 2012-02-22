@@ -1,0 +1,58 @@
+#!/bin/sh
+
+if [ $# -lt 2 -o $0 != "./install_csl_gcc_2011.09-67" ]; then
+  echo "Usage: ./install_csl_gcc_2011.09-67 <path-to-gcc-package> <target-dir>"
+  echo " e.g.: ./install_csl_gcc_2011.09-67 arm-2011.09-67-arm-none-symbianelf.src.tar.bz2 ~/csl-gcc"
+  exit 1
+fi
+
+SRC=$1
+DEST=`echo $2 | sed s:/\$::`
+MAKEOPTS=$3
+
+mkdir -p $DEST || exit 1
+DEST=`cd $DEST && pwd`
+
+MAKE=make
+if [ "`which gmake`" != "" ]; then
+        MAKE=gmake
+fi
+
+TEMPLIBS=`pwd`/csl-build/libs
+
+while read a
+do
+  echo "$a"
+  sh -c "$a"
+  if test $? != 0; then
+    echo "Unexpected error: aborting."
+    exit 1
+  fi
+done << __END
+
+tar -jxvf $SRC
+mv arm-2011.09-67-arm-none-symbianelf csl-build
+cd csl-build && tar -jxvf binutils-2011.09-67.tar.bz2
+cd csl-build/binutils-2011.09 && ./configure --target=arm-none-symbianelf --prefix=$DEST --disable-werror
+cd csl-build/binutils-2011.09 && $MAKE $MAKEOPTS
+cd csl-build/binutils-2011.09 && $MAKE installdirs install-host install-target
+cd csl-build && tar -jxvf gmp-2011.09-67.tar.bz2
+cd csl-build/gmp-2011.09 && ./configure --prefix=$TEMPLIBS --disable-shared
+cd csl-build/gmp-2011.09 && $MAKE $MAKEOPTS && $MAKE install
+cd csl-build && tar -jxvf mpfr-2011.09-67.tar.bz2
+cd csl-build/mpfr-2011.09 && ./configure --prefix=$TEMPLIBS --with-gmp=$TEMPLIBS --disable-shared
+cd csl-build/mpfr-2011.09 && $MAKE $MAKEOPTS && $MAKE install
+cd csl-build && tar -jxvf mpc-2011.09-67.tar.bz2
+cd csl-build/mpc-0.9 && ./configure --prefix=$TEMPLIBS --with-gmp=$TEMPLIBS --disable-shared
+cd csl-build/mpc-0.9 && $MAKE $MAKEOPTS && $MAKE install
+cd csl-build && tar -jxvf gcc-2011.09-67.tar.bz2
+mkdir -p csl-build/gcc-build
+cd csl-build/gcc-build && ../gcc-4.6-2011.09/configure --target=arm-none-symbianelf --enable-languages=c,c++ --prefix=$DEST --with-gmp=$TEMPLIBS --disable-libmudflap --disable-libssp --disable-libstdcxx-pch
+cd csl-build/gcc-build && $MAKE $MAKEOPTS
+cd csl-build/gcc-build && $MAKE installdirs install-target
+cd csl-build/gcc-build/gcc && $MAKE install-common install-headers install-mkheaders install-cpp install-driver install-lto-wrapper
+cd csl-build/gcc-build/lto-plugin && $MAKE install
+rm -rf csl-build
+
+__END
+

@@ -54,10 +54,11 @@ Experimental GCC 4.x for S60 3rd/5th ed, UIQ 3 and Symbian^3
 
 If you for some reason want to use a newer GCC version, there
 is experimental support for this. The currently supported
-releases are CodeSourcery 2009q1-162 and 4.4-172, in addition
-to the standard one above. They can be downloaded from
-http://www.codesourcery.com/sgpp/lite/arm/portal/release822 (for 2009q1-162)
-and http://www.codesourcery.com/sgpp/lite/arm/portal/release1258 (for 4.4-172).
+releases are CodeSourcery 2009q1-162, 4.4-172 and 2011.09-67,
+in addition to the standard one above. They can be downloaded from
+http://www.codesourcery.com/sgpp/lite/arm/portal/release822 (for 2009q1-162),
+http://www.codesourcery.com/sgpp/lite/arm/portal/release1258 (for 4.4-172) and
+https://sourcery.mentor.com/sgpp/lite/arm/portal/release1991 (for 2011.09-67).
 Select IA32 GNU/Linux TAR, IA32 GNU/Linux Installer, IA32 Mac
 OS X Installer, or Source TAR for other platforms, depending
 on which ones are available for the release you chose.
@@ -71,13 +72,21 @@ For the 2009q1-162 version, fix libgcc.a in the extracted directory:
 ./fix_csl_gcc_div ~/arm-2009q1
 (This command should be executed in the gnupoc-package/tools
 directory, and ~/arm-2009q1 is where the toolchain was
-extracted above). This step isn't required for the 4.4-172 release.
+extracted above). This step isn't required for the 4.4-172 or
+2011.09-67 releases.
+
+For the 2011.09-67 version, add -lgcc_eh to the STATIC_LIBS_LIST
+line in <SDK>/epoc32/tools/compilation_config/gcce.mk. For Qt SDKs,
+this needs to be added after "-lgcc" at two places in
+<QTSDK>/mkspecs/features/symbian/symbian_building.prf.
 
 
 In order to build from source:
 ./install_csl_gcc_2009q1 arm-2009q1-162-arm-none-symbianelf.src.tar.bz2 ~/csl-gcc-2009q1
 or:
 ./install_csl_gcc_4.4-172 symbian-adt-4.4-172-arm-none-symbianelf.src.tar.bz2 ~/csl-gcc-4.4-172
+or:
+./install_csl_gcc_2011.09-67 arm-2011.09-67-arm-none-symbianelf.src.tar.bz2 ~/csl-gcc-2011.09-67
 
 See more info about using the newer GCC versions on
 http://wiki.forum.nokia.com/index.php/How_to_use_GCCE_4_with_Symbian_SDKs.
