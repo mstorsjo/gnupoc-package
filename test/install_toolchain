@@ -2,7 +2,7 @@
 
 if [ $# -lt 3 -o $0 != "./install_toolchain" ]; then
 	echo "Usage: ./install_toolchain <source-dir> <toolchain> <target-dir>"
-	echo "Valid toolchain names: EKA1, EKA2, EKA2-2009q1, EKA2-4.4-172"
+	echo "Valid toolchain names: EKA1, EKA2, EKA2-2009q1, EKA2-4.4-172, EKA2-2011.09-67"
 	exit 1
 fi
 
@@ -33,6 +33,10 @@ EKA2-2009q1)
 EKA2-4.4-172)
 	./install_eka2_tools $DEST
 	./install_csl_gcc_4.4-172 $SRC/symbian-adt-4.4-172-arm-none-symbianelf.src.tar.bz2 $DEST $MAKEOPTS
+	;;
+EKA2-2011.09-67)
+	./install_eka2_tools $DEST
+	./install_csl_gcc_2011.09-67 $SRC/arm-2011.09-67-arm-none-symbianelf.src.tar.bz2 $DEST $MAKEOPTS
 	;;
 *)
 	echo Unsupported toolchain $TOOLCHAIN
