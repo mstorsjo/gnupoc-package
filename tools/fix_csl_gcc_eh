@@ -1,0 +1,26 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]; then
+  echo "Usage: ./fix_csl_gcc_eh <target-dir>"
+  echo " e.g.: ./fix_csl_gcc_eh ~/csl-gcc"
+  exit 1
+fi
+
+PATH=$1/bin:$PATH
+DIR=$(dirname $(arm-none-symbianelf-gcc -print-libgcc-file-name))
+if [ ! -d $DIR ]; then
+	echo $DIR not found
+	exit 1
+fi
+cd $DIR
+if [ ! -f libgcc_eh.a ]; then
+	echo libgcc_eh.a not found
+	exit 1
+fi
+mkdir temp
+cd temp
+arm-none-symbianelf-ar x ../libgcc_eh.a
+arm-none-symbianelf-ar rs `arm-none-symbianelf-gcc -print-libgcc-file-name` *.o
+cd ..
+rm -rf temp
+

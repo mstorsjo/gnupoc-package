@@ -72,13 +72,11 @@ For the 2009q1-162 version, fix libgcc.a in the extracted directory:
 ./fix_csl_gcc_div ~/arm-2009q1
 (This command should be executed in the gnupoc-package/tools
 directory, and ~/arm-2009q1 is where the toolchain was
-extracted above). This step isn't required for the 4.4-172 or
-2011.09-67 releases.
+extracted above). This step isn't required for the 4.4-172 release.
 
-For the 2011.09-67 version, add -lgcc_eh to the STATIC_LIBS_LIST
-line in <SDK>/epoc32/tools/compilation_config/gcce.mk. For Qt SDKs,
-this needs to be added after "-lgcc" at two places in
-<QTSDK>/mkspecs/features/symbian/symbian_building.prf.
+For the 2011.09-67 version, add the object files from libgcc_eh.a to
+libgcc.a, by running:
+./fix_csl_gcc_eh ~/arm-2011.09
 
 
 In order to build from source:
