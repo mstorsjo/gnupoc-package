@@ -62,9 +62,9 @@ mv Symbian_tools $DEST/symbiantools
 ./lowercase -symlink $DEST/epoc32/release
 ./lowercase $DEST/epoc32/data
 ./fixinclude $DEST/epoc32/include
-./lowercase $DEST/examples
 ./fixinclude $DEST/examples
 ./fixexamples $DEST/examples
+./lowercase -symlink $DEST/examples
 for i in \`find $DEST/epoc32/tools -name \\\*.pl -or -name \\\*.pm\`; do ./dos2unix \$i; done
 cp -pR $DEST/epoc32/tools $DEST/epoc32/tools_orig
 cat gnupoc-symbian3-include-patch | (cd $DEST/epoc32/include; patch -p1)

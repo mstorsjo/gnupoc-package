@@ -52,9 +52,9 @@ mv S60Ex $DEST/s60ex
 ./lowercase -symlink $DEST/epoc32/release
 ./lowercase $DEST/epoc32/data
 ./fixinclude $DEST/epoc32/include
-./lowercase $DEST/s60ex
 ./fixinclude $DEST/s60ex
 ./fixexamples $DEST/s60ex
+./lowercase -symlink $DEST/s60ex
 ./lowercase $DEST/examples
 ./fixinclude $DEST/examples
 ./fixexamples $DEST/examples

@@ -75,9 +75,9 @@ mv S60_tools $DEST/s60tools
 ./lowercase -symlink $DEST/epoc32/release
 ./lowercase $DEST/epoc32/data
 ./fixinclude $DEST/epoc32/include
-./lowercase $DEST/s60cppexamples
 ./fixinclude $DEST/s60cppexamples
 ./fixexamples $DEST/s60cppexamples
+./lowercase -symlink $DEST/s60cppexamples
 ./lowercase $DEST/examples
 ./fixinclude $DEST/examples
 ./fixexamples $DEST/examples
