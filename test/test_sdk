@@ -70,7 +70,7 @@ s60_28)
 	EXAMPLEPKG=../sis/helloworldbasic.pkg
 	;;
 s60_30)
-	PKG=S60-SDK-0616-3.0-mr.3.749.zip
+	PKG=S60_SDK_0616_3.0_mr.3.749.zip
 	EXAMPLE=s60ex/helloworldbasic/group
 	EXAMPLEPKG=../sis/helloworldbasic_gcce.pkg
 	;;
