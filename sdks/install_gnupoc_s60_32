@@ -27,9 +27,7 @@ done << __END
 mkdir -p _e
 unzip -qn $SRC -d _e
 
-unshield -g SelfRegFiles2 x _e/S60_SDK_3.2_v1.1.1_en/data2.cab
-mv SelfRegFiles2/* _e
-rmdir SelfRegFiles2
+if [ -f _e/S60_SDK_3.2_v1.1.1_en/data2.cab ]; then unshield -g SelfRegFiles2 x _e/S60_SDK_3.2_v1.1.1_en/data2.cab; mv SelfRegFiles2/* _e; rmdir SelfRegFiles2; fi
 
 unshield -g CPP_API x _e/data2.cab
 ./mergedir CPP_API/epoc32 $DEST/epoc32
