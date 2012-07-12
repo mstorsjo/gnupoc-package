@@ -2,7 +2,7 @@
 
 if test $# != 2 -o $0 != "./install_gnupoc_s60_31"; then
   echo "Usage: ./install_gnupoc_s60_31 <path-to-sdk-zip> <target-dir>"
-  echo " e.g.: ./install_gnupoc_s60_31 S60-SDK-200634-3.1-Cpp-f.1090b.zip ~/symbian-sdks/s60_31"
+  echo " e.g.: ./install_gnupoc_s60_31 S60_SDK_3.1_CPP_v1.0.1_en.zip ~/symbian-sdks/s60_31"
   exit 1
 fi
 
@@ -26,6 +26,8 @@ done << __END
 ### Unzip & Copy selected files
 mkdir -p _e
 unzip -qn $SRC -d _e
+
+if [ -f _e/S60_SDK_3.1_CPP_v1.0.1_en/data2.cab ]; then unshield -g SelfRegFiles2 x _e/S60_SDK_3.1_CPP_v1.0.1_en/data2.cab; mv SelfRegFiles2/* _e; rmdir SelfRegFiles2; fi
 
 unshield -g Epoc32 x _e/data2.cab
 mv Epoc32 $DEST/epoc32

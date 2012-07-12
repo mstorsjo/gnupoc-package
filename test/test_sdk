@@ -75,7 +75,7 @@ s60_30)
 	EXAMPLEPKG=../sis/helloworldbasic_gcce.pkg
 	;;
 s60_31)
-	PKG=S60-SDK-200634-3.1-Cpp-f.1090b.zip
+	PKG=S60_SDK_3.1_CPP_v1.0.1_en.zip
 	EXAMPLE=s60ex/helloworldbasic/group
 	EXAMPLEPKG=../sis/helloworldbasic_gcce.pkg
 	;;
