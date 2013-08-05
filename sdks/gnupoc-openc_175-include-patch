@@ -50,3 +50,16 @@ index 426b705..0f2040e 100644
  #if __FreeBSD_cc_version >= 300001 && defined(__GNUC__) && !defined(__INTEL_COMPILER)
  #define	__printf0like(fmtarg, firstvararg) \
  	    __attribute__((__format__ (__printf0__, fmtarg, firstvararg)))
+diff --git a/stdapis/sys/un.h b/stdapis/sys/un.h
+index 2c09784..8fd753d 100644
+--- a/stdapis/sys/un.h
++++ b/stdapis/sys/un.h
+@@ -53,7 +53,7 @@ struct sockaddr_un {
+ #else
+ struct sockaddr_un
+ 	{
+-	u_short sun_family;
++	__uint16_t sun_family;
+ 	char sun_path[255];
+ 	unsigned char sun_len;
+ 	};
