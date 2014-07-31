@@ -1,6 +1,6 @@
 diff -urN gcc-csl-arm-orig/gcc/c-parse.in gcc-csl-arm/gcc/c-parse.in
---- gcc-csl-arm-orig/gcc/c-parse.in	2004-12-30 23:33:19.000000000 +0100
-+++ gcc-csl-arm/gcc/c-parse.in	2009-06-10 19:41:06.490516576 +0200
+--- gcc-csl-arm-orig/gcc/c-parse.in	2004-12-31 00:33:19.000000000 +0200
++++ gcc-csl-arm/gcc/c-parse.in	2014-07-31 11:25:02.000000000 +0300
 @@ -1730,7 +1730,7 @@
  
  structsp_attr:
@@ -34,3 +34,37 @@ diff -urN gcc-csl-arm-orig/gcc/c-parse.in gcc-csl-arm/gcc/c-parse.in
  	  enumlist maybecomma_warn '}' maybe_attribute
  		{ $$ = finish_enum ($<ttype>3, nreverse ($4),
  				    chainon ($1, $7)); }
+diff -urN gcc-csl-arm-orig/gcc/cp/cfns.gperf gcc-csl-arm/gcc/cp/cfns.gperf
+--- gcc-csl-arm-orig/gcc/cp/cfns.gperf	2003-07-25 16:57:43.000000000 +0300
++++ gcc-csl-arm/gcc/cp/cfns.gperf	2014-07-31 11:36:26.000000000 +0300
+@@ -6,6 +6,7 @@
+ #ifdef __GNUC__
+ __inline
+ #endif
++static
+ const char * libc_name_p (const char *, unsigned int);
+ %}
+ %%
+diff -urN gcc-csl-arm-orig/gcc/cp/cfns.h gcc-csl-arm/gcc/cp/cfns.h
+--- gcc-csl-arm-orig/gcc/cp/cfns.h	2003-07-26 22:31:30.000000000 +0300
++++ gcc-csl-arm/gcc/cp/cfns.h	2014-07-31 11:25:59.000000000 +0300
+@@ -37,6 +37,7 @@
+ #ifdef __GNUC__
+ __inline
+ #endif
++static
+ const char * libc_name_p (const char *, unsigned int);
+ /* maximum key range = 391, duplicates = 0 */
+ 
+diff -urN gcc-csl-arm-orig/gcc/cp/cp-tree.h gcc-csl-arm/gcc/cp/cp-tree.h
+--- gcc-csl-arm-orig/gcc/cp/cp-tree.h	2004-12-31 00:34:15.000000000 +0200
++++ gcc-csl-arm/gcc/cp/cp-tree.h	2014-07-31 11:45:01.000000000 +0300
+@@ -1022,7 +1022,7 @@
+    are put in this structure to save space.  */
+ struct lang_type_header GTY(())
+ {
+-  BOOL_BITFIELD is_lang_type_class : 1;
++  unsigned int  is_lang_type_class : 1;
+ 
+   BOOL_BITFIELD has_type_conversion : 1;
+   BOOL_BITFIELD has_init_ref : 1;
