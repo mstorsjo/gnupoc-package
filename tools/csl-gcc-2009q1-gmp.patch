@@ -1,0 +1,15 @@
+diff -urN gmp-stable-orig/configure gmp-stable/configure
+--- gmp-stable-orig/configure	2009-04-10 00:03:52.000000000 +0300
++++ gmp-stable/configure	2014-07-31 13:20:17.000000000 +0300
+@@ -7941,9 +7941,9 @@
+ else
+   cat >conftest.c <<EOF
+ int
+-main (int argc, char *argv)
++main (int argc, char **argv)
+ {
+-  exit(0);
++  return 0;
+ }
+ EOF
+ gmp_compile="$CC_FOR_BUILD conftest.c"

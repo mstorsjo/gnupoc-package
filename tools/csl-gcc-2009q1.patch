@@ -1,6 +1,6 @@
-diff -ur gcc-4.3-orig/gcc/cp/Make-lang.in gcc-4.3/gcc/cp/Make-lang.in
---- gcc-4.3-orig/gcc/cp/Make-lang.in	2011-01-27 11:31:23.000000000 +0200
-+++ gcc-4.3/gcc/cp/Make-lang.in	2011-01-27 11:46:07.000000000 +0200
+diff -urN gcc-4.3-orig/gcc/cp/Make-lang.in gcc-4.3/gcc/cp/Make-lang.in
+--- gcc-4.3-orig/gcc/cp/Make-lang.in	2009-04-09 23:45:32.000000000 +0300
++++ gcc-4.3/gcc/cp/Make-lang.in	2014-07-31 13:24:18.000000000 +0300
 @@ -73,7 +73,7 @@
  CXX_C_OBJS = attribs.o c-common.o c-format.o c-pragma.o c-semantics.o c-lex.o \
  	c-dump.o $(CXX_TARGET_OBJS) c-pretty-print.o c-opts.o c-pch.o \
@@ -10,3 +10,49 @@ diff -ur gcc-4.3-orig/gcc/cp/Make-lang.in gcc-4.3/gcc/cp/Make-lang.in
  
  # Language-specific object files for C++ and Objective C++.
  CXX_AND_OBJCXX_OBJS = cp/call.o cp/decl.o cp/expr.o cp/pt.o cp/typeck2.o \
+diff -urN gcc-4.3-orig/gcc/cp/cfns.gperf gcc-4.3/gcc/cp/cfns.gperf
+--- gcc-4.3-orig/gcc/cp/cfns.gperf	2009-04-09 23:45:32.000000000 +0300
++++ gcc-4.3/gcc/cp/cfns.gperf	2014-07-31 13:30:23.000000000 +0300
+@@ -6,6 +6,7 @@
+ #ifdef __GNUC__
+ __inline
+ #endif
++static
+ const char * libc_name_p (const char *, unsigned int);
+ %}
+ %%
+diff -urN gcc-4.3-orig/gcc/cp/cfns.h gcc-4.3/gcc/cp/cfns.h
+--- gcc-4.3-orig/gcc/cp/cfns.h	2009-04-09 23:45:32.000000000 +0300
++++ gcc-4.3/gcc/cp/cfns.h	2014-07-31 13:30:30.000000000 +0300
+@@ -37,6 +37,7 @@
+ #ifdef __GNUC__
+ __inline
+ #endif
++static
+ const char * libc_name_p (const char *, unsigned int);
+ /* maximum key range = 391, duplicates = 0 */
+ 
+diff -urN gcc-4.3-orig/gcc/toplev.c gcc-4.3/gcc/toplev.c
+--- gcc-4.3-orig/gcc/toplev.c	2009-04-09 23:49:47.000000000 +0300
++++ gcc-4.3/gcc/toplev.c	2014-07-31 13:27:07.000000000 +0300
+@@ -536,7 +536,7 @@
+    for floor_log2 and exact_log2; see toplev.h.  That construct, however,
+    conflicts with the ISO C++ One Definition Rule.   */
+ 
+-#if GCC_VERSION < 3004 || !defined (__cplusplus)
++#if 1
+ 
+ /* Given X, an unsigned number, return the largest int Y such that 2**Y <= X.
+    If X is 0, return -1.  */
+diff -urN gcc-4.3-orig/gcc/toplev.h gcc-4.3/gcc/toplev.h
+--- gcc-4.3-orig/gcc/toplev.h	2009-04-09 23:49:47.000000000 +0300
++++ gcc-4.3/gcc/toplev.h	2014-07-31 13:27:15.000000000 +0300
+@@ -162,7 +162,7 @@
+ extern int floor_log2                  (unsigned HOST_WIDE_INT);
+ 
+ /* Inline versions of the above for speed.  */
+-#if GCC_VERSION >= 3004
++#if 0
+ # if HOST_BITS_PER_WIDE_INT == HOST_BITS_PER_LONG
+ #  define CLZ_HWI __builtin_clzl
+ #  define CTZ_HWI __builtin_ctzl
