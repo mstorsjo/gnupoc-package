@@ -16,9 +16,6 @@ if [ "`which gmake`" != "" ]; then
         MAKE=gmake
 fi
 
-cpp=`which cpp`
-if [ ! -e $DEST/bin/cpp ] && [ "`file $cpp | grep 'shell script'`" != "" ]; then LINK_CPP=1; fi
-
 while read a
 do
   echo "$a"
@@ -41,7 +38,7 @@ rm -rf src
 cp thumb-specs $DEST/lib/gcc-lib/thumb-epoc-pe/2.9-psion-98r2/specs
 cd $DEST/bin; if [ ! -e thumb-epoc-pe-cpp ]; then ln -s ../lib/gcc-lib/thumb-epoc-pe/2.9-psion-98r2/cpp thumb-epoc-pe-cpp; fi
 cd $DEST/bin; if [ ! -e as ]; then ln -s arm-epoc-pe-as as; fi
-if [ "$LINK_CPP" != "" ]; then cd $DEST/bin; ln -s arm-epoc-pe-cpp cpp; fi
+cd $DEST/bin; if [ ! -e cpp ]; then ln -s arm-epoc-pe-cpp cpp; fi
 
 __END
 
