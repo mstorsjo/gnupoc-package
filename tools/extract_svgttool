@@ -24,6 +24,8 @@ java -cp ../lib/help.jar:../lib/jh.jar:../lib/svg2svgt.jar:../config com.nokia.s
 EOF
 
 chmod a+x $DEST/bin/svgttool.sh || exit 1
-sed -i 's/\\\\/\//g' $DEST/config/SVG2SVGTProperties.properties
-sed -i 's/\\\\/\//g' $DEST/config/StringBundle_GB.properties
+sed 's/\\\\/\//g' $DEST/config/SVG2SVGTProperties.properties > tmp
+mv tmp $DEST/config/SVG2SVGTProperties.properties
+sed 's/\\\\/\//g' $DEST/config/StringBundle_GB.properties > tmp
+mv tmp $DEST/config/StringBundle_GB.properties
 
