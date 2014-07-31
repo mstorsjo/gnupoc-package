@@ -39,7 +39,7 @@ cd obj-thumb; $MAKE install-binutils install-gas install-ld install-gcc
 rm -rf obj-thumb
 rm -rf src
 cp thumb-specs $DEST/lib/gcc-lib/thumb-epoc-pe/2.9-psion-98r2/specs
-cd $DEST/bin; ln -s ../lib/gcc-lib/thumb-epoc-pe/2.9-psion-98r2/cpp thumb-epoc-pe-cpp
+cd $DEST/bin; if [ ! -e thumb-epoc-pe-cpp ]; then ln -s ../lib/gcc-lib/thumb-epoc-pe/2.9-psion-98r2/cpp thumb-epoc-pe-cpp; fi
 cd $DEST/bin; if [ ! -e as ]; then ln -s arm-epoc-pe-as as; fi
 if [ "$LINK_CPP" != "" ]; then cd $DEST/bin; ln -s arm-epoc-pe-cpp cpp; fi
 

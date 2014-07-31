@@ -39,7 +39,7 @@ cd obj; $MAKE install-binutils install-gas install-ld install-gcc
 rm -rf obj
 rm -rf src
 cp arm-specs $DEST/lib/gcc-lib/arm-epoc-pe/2.9-psion-98r2/specs
-cd $DEST/bin; ln -s ../lib/gcc-lib/arm-epoc-pe/2.9-psion-98r2/cpp arm-epoc-pe-cpp
+cd $DEST/bin; if [ ! -e arm-epoc-pe-cpp ]; then ln -s ../lib/gcc-lib/arm-epoc-pe/2.9-psion-98r2/cpp arm-epoc-pe-cpp; fi
 cd $DEST/bin; if [ ! -e as ]; then ln -s arm-epoc-pe-as as; fi
 if [ "$LINK_CPP" != "" ]; then cd $DEST/bin; ln -s arm-epoc-pe-cpp cpp; fi
 
