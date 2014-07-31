@@ -10,7 +10,7 @@
 #GCC_VERSION=2	# For Darwin use gcc 2.95.2 - gcc 3.1 is b0rken !
 #CC=/usr/local/encap/gcc-3.1/bin/g++  # Solaris
 CC=g++$(GCC_VERSION)
-CFLAGS=-O2 -Wall -Wno-deprecated -gstabs+ -I../include
+CFLAGS=-O2 -Wall -Wno-deprecated -I../include
 LFLAGS=
 DEPS=bmconv.h rgb.h
 OBJS=\

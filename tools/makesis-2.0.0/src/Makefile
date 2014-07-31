@@ -3,7 +3,7 @@
 #
 
 #GCC_VERSION=-2.95
-CFLAGS+=-Wall -gstabs+
+CFLAGS+=-Wall
 CFLAGS+=-I../include
 #CFLAGS+=-D_UNICODE -DUNICODE
 LFLAGS=

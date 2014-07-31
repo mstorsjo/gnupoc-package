@@ -3,7 +3,7 @@
 #
 
 # GCC_VERSION=-2.95
-CFLAGS+=-Wall -gstabs+ -Wno-deprecated
+CFLAGS+=-Wall -Wno-deprecated
 CFLAGS+=-I../inc -I../deflate
 LFLAGS=
 DEPS=\

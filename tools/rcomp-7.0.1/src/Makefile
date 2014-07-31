@@ -4,7 +4,7 @@
 
 GCC_VERSION=-2.95
 GCC_VERSION=
-CFLAGS+=-Wall -gstabs+ -Wno-deprecated
+CFLAGS+=-Wall -Wno-deprecated
 CFLAGS+=-I../inc -Iderived
 LFLAGS=
 DEPS=\
