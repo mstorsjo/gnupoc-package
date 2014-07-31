@@ -37,15 +37,19 @@ cd csl-build/binutils-2011.09 && ./configure --target=arm-none-symbianelf --pref
 cd csl-build/binutils-2011.09 && $MAKE $MAKEOPTS
 cd csl-build/binutils-2011.09 && $MAKE installdirs install-host install-target
 cd csl-build && tar -jxvf gmp-2011.09-67.tar.bz2
+cd csl-build && patch -p0 < ../csl-gcc-2011.09-67-gmp.patch
 cd csl-build/gmp-2011.09 && ./configure --prefix=$TEMPLIBS --disable-shared
 cd csl-build/gmp-2011.09 && $MAKE $MAKEOPTS && $MAKE install
 cd csl-build && tar -jxvf mpfr-2011.09-67.tar.bz2
+cd csl-build && patch -p0 < ../csl-gcc-2011.09-67-mpfr.patch
 cd csl-build/mpfr-2011.09 && ./configure --prefix=$TEMPLIBS --with-gmp=$TEMPLIBS --disable-shared
 cd csl-build/mpfr-2011.09 && $MAKE $MAKEOPTS && $MAKE install
 cd csl-build && tar -jxvf mpc-2011.09-67.tar.bz2
+cd csl-build && patch -p0 < ../csl-gcc-2011.09-67-mpc.patch
 cd csl-build/mpc-0.9 && ./configure --prefix=$TEMPLIBS --with-gmp=$TEMPLIBS --disable-shared
 cd csl-build/mpc-0.9 && $MAKE $MAKEOPTS && $MAKE install
 cd csl-build && tar -jxvf gcc-2011.09-67.tar.bz2
+cd csl-build && patch -p0 < ../csl-gcc-2011.09-67.patch
 mkdir -p csl-build/gcc-build
 cd csl-build/gcc-build && ../gcc-4.6-2011.09/configure --target=arm-none-symbianelf --enable-languages=c,c++ --prefix=$DEST --with-gmp=$TEMPLIBS --disable-libmudflap --disable-libssp --disable-libstdcxx-pch
 cd csl-build/gcc-build && $MAKE $MAKEOPTS

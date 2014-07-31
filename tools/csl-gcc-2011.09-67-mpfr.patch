@@ -1,0 +1,12 @@
+diff -urN mpfr-2011.09-orig/config.guess mpfr-2011.09/config.guess
+--- mpfr-2011.09-orig/config.guess	2011-11-28 20:11:36.000000000 +0200
++++ mpfr-2011.09/config.guess	2014-07-31 13:46:59.000000000 +0300
+@@ -1204,7 +1204,7 @@
+ 	echo ${UNAME_MACHINE}-apple-rhapsody${UNAME_RELEASE}
+ 	exit ;;
+     *:Darwin:*:*)
+-	UNAME_PROCESSOR=`uname -p` || UNAME_PROCESSOR=unknown
++	UNAME_PROCESSOR=`uname -m` || UNAME_PROCESSOR=unknown
+ 	case $UNAME_PROCESSOR in
+ 	    i386)
+ 		eval $set_cc_for_build

@@ -1,0 +1,12 @@
+diff -urN gmp-2011.09-orig/configfsf.guess gmp-2011.09/configfsf.guess
+--- gmp-2011.09-orig/configfsf.guess	2011-11-28 20:11:35.000000000 +0200
++++ gmp-2011.09/configfsf.guess	2014-07-31 13:45:24.000000000 +0300
+@@ -1241,7 +1241,7 @@
+ 	echo ${UNAME_MACHINE}-apple-rhapsody${UNAME_RELEASE}
+ 	exit ;;
+     *:Darwin:*:*)
+-	UNAME_PROCESSOR=`uname -p` || UNAME_PROCESSOR=unknown
++	UNAME_PROCESSOR=`uname -m` || UNAME_PROCESSOR=unknown
+ 	case $UNAME_PROCESSOR in
+ 	    unknown) UNAME_PROCESSOR=powerpc ;;
+ 	esac
