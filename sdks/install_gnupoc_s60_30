@@ -2,7 +2,7 @@
 
 if test $# != 2 -o $0 != "./install_gnupoc_s60_30"; then
   echo "Usage: ./install_gnupoc_s60_30 <path-to-sdk-zip> <target-dir>"
-  echo " e.g.: ./install_gnupoc_s60_30 S60_SDK_0616_3.0_mr.3.749.zip ~/symbian-sdks/s60_30"
+  echo " e.g.: ./install_gnupoc_s60_30 S60-SDK-0616-3.0-mr.3.749.zip ~/symbian-sdks/s60_30"
   exit 1
 fi
 
