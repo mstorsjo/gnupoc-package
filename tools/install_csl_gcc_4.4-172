@@ -37,6 +37,7 @@ cd csl-build/binutils-stable && ./configure --target=arm-none-symbianelf --prefi
 cd csl-build/binutils-stable && $MAKE $MAKEOPTS
 cd csl-build/binutils-stable && $MAKE installdirs install-host install-target
 cd csl-build && tar -jxvf gmp-4.4-172.tar.bz2
+cd csl-build && patch -p0 < ../csl-gcc-4.4-172-gmp.patch
 cd csl-build/gmp-stable && ./configure --prefix=$TEMPLIBS --disable-shared
 cd csl-build/gmp-stable && $MAKE $MAKEOPTS && $MAKE install
 cd csl-build && tar -jxvf mpfr-4.4-172.tar.bz2
