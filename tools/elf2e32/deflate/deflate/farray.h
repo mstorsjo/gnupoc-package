@@ -71,9 +71,11 @@ inline T& TFixedArray<T,S>::operator[](TInt aIndex)
 template <class T,TInt S>
 inline const T& TFixedArray<T,S>::operator[](TInt aIndex) const
 	{return const_cast<ThisClass&>(*this)[aIndex];}
+/*
 template <class T,TInt S>
 inline T& TFixedArray<T,S>::At(TInt aIndex)
 	{verify(InRange(aIndex));return iRep[aIndex];}
+*/
 template <class T,TInt S>
 inline const T& TFixedArray<T,S>::At(TInt aIndex) const
 	{return const_cast<ThisClass&>(*this).At(aIndex);}
