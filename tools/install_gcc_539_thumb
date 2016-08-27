@@ -16,6 +16,8 @@ if [ "`which gmake`" != "" ]; then
         MAKE=gmake
 fi
 
+export CFLAGS="-O2 -pipe -std=gnu89"
+
 while read a
 do
   echo "$a"
