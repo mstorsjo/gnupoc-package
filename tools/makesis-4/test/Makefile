@@ -20,3 +20,6 @@ regtest:
 	../src/makesis -t7d7,7,19,c,3b,9 test19.pkg
 	../src/signsis test1.sis test1.sisx selfsigned.cer selfsigned.key
 	md5sum -c md5sums
+
+clean:
+	rm -f *.sis *.sisx
