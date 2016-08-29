@@ -10,4 +10,8 @@ name=`basename $1`
 dir=`dirname $1`
 cd $dir 2> /dev/null && dir=`pwd`
 cd $cwd
-echo $dir/$name
+if [ "$dir" = "/" ]; then
+	echo /$name
+else
+	echo $dir/$name
+fi
